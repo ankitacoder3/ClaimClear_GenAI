@@ -1,0 +1,13 @@
+# Agents (Member 3): LangGraph graph + the claimclear_tools client.
+# A SEPARATE environment from the servers: langchain-mcp-adapters needs mcp<2,
+# the servers use mcp 2.3. Python 3.14 recommended (PyYAML has no 3.15 wheel yet).
+#   py -3.14 -m venv .venv-agents
+#   .venv-agents/Scripts/python.exe -m pip install -r requirements-agents.txt
+-e contracts                      # claimclear_contracts: CaseState, hand-offs, tool schemas, errors, verdict wording
+-e agents/toolkit                 # claimclear_tools: connection, per-agent tools, signals, critic checks
+-e servers/policy_kb[tools]        # policy-wording retrieval as in-process tools (the agents normally use its MCP server)
+-e memory                         # claimclear_memory: per-user policy profile, claims, balances, grievance status
+langchain-mcp-adapters>=0.3,<0.4
+langgraph
+langchain-openai
+pytest>=8

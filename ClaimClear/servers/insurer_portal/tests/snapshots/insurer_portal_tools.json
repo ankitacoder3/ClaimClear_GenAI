@@ -1,0 +1,212 @@
+[
+  {
+    "annotations": {
+      "destructive_hint": false,
+      "idempotent_hint": true,
+      "open_world_hint": true,
+      "read_only_hint": false
+    },
+    "input_schema": {
+      "properties": {
+        "approval_token": {
+          "maxLength": 256,
+          "minLength": 16,
+          "title": "Approval Token",
+          "type": "string"
+        },
+        "case_id": {
+          "description": "The case the grievance is about",
+          "pattern": "^case_[0-9a-f]{16}$",
+          "title": "Case Id",
+          "type": "string"
+        },
+        "claim_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "row_ids": {
+          "description": "The disputable letter rows the grievance covers",
+          "items": {
+            "maxLength": 32,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 50,
+          "minItems": 1,
+          "title": "Row Ids",
+          "type": "array"
+        },
+        "text": {
+          "description": "The exact approved grievance text",
+          "maxLength": 20000,
+          "minLength": 50,
+          "title": "Text",
+          "type": "string"
+        },
+        "text_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Text Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "case_id",
+        "claim_id",
+        "row_ids",
+        "text",
+        "text_sha256",
+        "approval_token"
+      ],
+      "title": "file_grievanceArguments",
+      "type": "object"
+    },
+    "meta": {
+      "access": "write",
+      "requires": "approval_token"
+    },
+    "name": "file_grievance",
+    "output_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "dry_run": {
+          "title": "Dry Run",
+          "type": "boolean"
+        },
+        "duplicate": {
+          "description": "True when this exact text was already filed for the case; the earlier reference is returned and nothing is filed twice",
+          "title": "Duplicate",
+          "type": "boolean"
+        },
+        "filed_at": {
+          "description": "ISO time the portal accepted it",
+          "title": "Filed At",
+          "type": "string"
+        },
+        "reference": {
+          "description": "Keep it: grievance_status and claimclear_memory update_grievance use it",
+          "title": "Reference",
+          "type": "string"
+        },
+        "status": {
+          "description": "dry_run while the mock portal isn't connected; nothing was sent",
+          "enum": [
+            "dry_run",
+            "filed",
+            "acknowledged",
+            "resolved",
+            "rejected",
+            "escalated",
+            "closed"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "text_sha256": {
+          "description": "SHA-256 of the exact text that was filed",
+          "title": "Text Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "reference",
+        "status",
+        "filed_at",
+        "text_sha256",
+        "duplicate",
+        "dry_run"
+      ],
+      "title": "FileGrievanceOut",
+      "type": "object"
+    }
+  },
+  {
+    "annotations": {
+      "destructive_hint": false,
+      "idempotent_hint": true,
+      "open_world_hint": false,
+      "read_only_hint": true
+    },
+    "input_schema": {
+      "properties": {
+        "reference": {
+          "description": "The portal's reference from file_grievance",
+          "maxLength": 30,
+          "pattern": "^[A-Z]{2,8}-[0-9A-F]{8,16}$",
+          "title": "Reference",
+          "type": "string"
+        }
+      },
+      "required": [
+        "reference"
+      ],
+      "title": "grievance_statusArguments",
+      "type": "object"
+    },
+    "meta": {
+      "access": "read"
+    },
+    "name": "grievance_status",
+    "output_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "case_id": {
+          "title": "Case Id",
+          "type": "string"
+        },
+        "claim_id": {
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "dry_run": {
+          "title": "Dry Run",
+          "type": "boolean"
+        },
+        "insurer_response": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Insurer Response"
+        },
+        "last_update": {
+          "title": "Last Update",
+          "type": "string"
+        },
+        "reference": {
+          "title": "Reference",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "dry_run",
+            "filed",
+            "acknowledged",
+            "resolved",
+            "rejected",
+            "escalated",
+            "closed"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "reference",
+        "case_id",
+        "claim_id",
+        "status",
+        "last_update",
+        "insurer_response",
+        "dry_run"
+      ],
+      "title": "GrievanceStatusOut",
+      "type": "object"
+    }
+  }
+]

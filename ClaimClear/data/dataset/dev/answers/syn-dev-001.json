@@ -1,0 +1,265 @@
+{
+  "case_id": "syn-dev-001",
+  "split": "dev",
+  "source": "claimclear-synthetic",
+  "source_case": "dev/case-001",
+  "scenario": {
+    "type": "formats",
+    "title": "Image-only scanned PDF, skewed and noisy",
+    "what_changed": "Content unchanged. Only the format: image-only scan with skew and noise.",
+    "attack_goal": "None. OCR stress test.",
+    "expected_flags": []
+  },
+  "expected": {
+    "overall_verdict": "disputable",
+    "overall_verdict_source": "settlement_disputable",
+    "policy_payable": 81985.0,
+    "insurer_paid": 0.0,
+    "gap": 81985.0,
+    "disputable_amount": 81985.0,
+    "unverified_amount": 0.0,
+    "deductions": [],
+    "rejection": {
+      "kind": "waiting_period",
+      "reason": "The claim is for treatment of a knee joint condition. Diseases of the joints are listed illnesses with a 24-month waiting period. Your policy started on 01-Feb-2026, so the waiting period has not been completed and the claim is not admissible.",
+      "expected_verdict": "does_not_match_policy"
+    },
+    "notes": "Waiting period counted from the current renewal instead of first inception."
+  },
+  "documents": {
+    "bill.pdf": "FMT-01",
+    "settlement_letter.pdf": "SET-05",
+    "policy_schedule.pdf": "SCH-FMT-01"
+  },
+  "source_answer": {
+    "FMT-01": {
+      "doc_id": "FMT-01",
+      "file": "dev/cases/syn-dev-001/bill.pdf",
+      "sha256": "0bbb2077949ded58fa19c55e0d793e6510ae710366e316333b1a7a28bf61e9bf",
+      "category": "formats",
+      "document_type": "bill",
+      "status": "Good",
+      "what_changed_and_where": "Content unchanged. Only the format: image-only scan with skew and noise.",
+      "title": "Image-only scanned PDF, skewed and noisy",
+      "format": "Scanned image-only PDF",
+      "expected_verdict": "clean_with_deductions",
+      "expected_flags": [],
+      "attack_goal": "None. OCR stress test.",
+      "detection_signals": [
+        "No text layer, 1.3 degree skew, copier shadow, specks"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [
+        {
+          "provider_name": "Tarangi Health Institute",
+          "provider_gstin": "00AABFT5678K1Z2",
+          "provider_registration_no": "FIC/NMC/HOSP/01187",
+          "invoice_no": "THI/26-27/000512",
+          "invoice_date": "2026-03-27",
+          "patient_name": "Shaurya Kamatkar",
+          "sex": "M",
+          "age": 48,
+          "policy_no": "AS-2026-102011",
+          "uhid": "THI-1136207",
+          "ip_no": "IP-26-00977",
+          "admission": "2026-03-25",
+          "discharge": "2026-03-27",
+          "diagnosis": "Medial meniscus tear, left knee",
+          "procedure": "Arthroscopic meniscal repair",
+          "tariff_key": "knee_arthroscopy",
+          "line_items": [
+            {
+              "description": "Semi-private room",
+              "qty": 2.0,
+              "rate": 4200.0,
+              "printed_amount": 8400.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Nursing and duty doctor charges",
+              "qty": 2.0,
+              "rate": 1100.0,
+              "printed_amount": 2200.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Surgeon fee - knee arthroscopy",
+              "qty": 1.0,
+              "rate": 29000.0,
+              "printed_amount": 29000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Anaesthetist fee",
+              "qty": 1.0,
+              "rate": 9500.0,
+              "printed_amount": 9500.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Operation theatre charges",
+              "qty": 1.0,
+              "rate": 19000.0,
+              "printed_amount": 19000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Consultant visits",
+              "qty": 2.0,
+              "rate": 1500.0,
+              "printed_amount": 3000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Laboratory investigations",
+              "qty": 1.0,
+              "rate": 4600.0,
+              "printed_amount": 4600.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "MRI knee",
+              "qty": 1.0,
+              "rate": 3400.0,
+              "printed_amount": 3400.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Pharmacy - inpatient medicines",
+              "qty": 1.0,
+              "rate": 7200.0,
+              "printed_amount": 7200.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Consumables - gloves, masks, syringes, caps",
+              "qty": 1.0,
+              "rate": 1800.0,
+              "printed_amount": 1800.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": true
+            }
+          ],
+          "sum_of_printed_lines": 88100.0,
+          "sum_of_qty_x_rate": 88100.0,
+          "cgst": 0.0,
+          "sgst": 0.0,
+          "discount": 0.0,
+          "recomputed_total": 88100.0,
+          "printed_total": 88100.0,
+          "advance": 0.0,
+          "balance_payable": 88100.0
+        }
+      ]
+    },
+    "SET-05": {
+      "doc_id": "SET-05",
+      "file": "dev/cases/syn-dev-001/settlement_letter.pdf",
+      "sha256": "698df40150bb50857763e97eef2096201ca846298212801193e883e46e48d845",
+      "category": "settlement_letters",
+      "document_type": "settlement",
+      "status": "Insurer error",
+      "what_changed_and_where": "Reason for rejection: waiting period counted from the renewal on 01-Feb-2026 instead of first inception on 01-Feb-2022. Whole claim of ₹81,985 wrongly rejected.",
+      "title": "Claim rejected using the wrong start date for the waiting period",
+      "format": "Insurer letter PDF",
+      "expected_verdict": "settlement_disputable",
+      "expected_flags": [
+        "waiting_period_miscounted",
+        "wrongful_rejection"
+      ],
+      "attack_goal": "None. Tests whether ClaimClear checks continuity of cover.",
+      "detection_signals": [
+        "Letter counts from the renewal on 01-Feb-2026",
+        "Cover has been continuous since 01-Feb-2022, longer than any waiting period"
+      ],
+      "notes": "Even if the condition is a listed illness, 49 months of continuous cover exceeds every waiting period in the policy.",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "FMT-01",
+        "claim_no": "AGI/HC/2627/000615",
+        "letter_type": "rejection",
+        "letter_date": "2026-04-21",
+        "policy_no": "AS-2026-102011",
+        "patient_name": "Shaurya Kamatkar",
+        "hospital": "Tarangi Health Institute",
+        "bill_invoice_no": "THI/26-27/000512",
+        "admission": "2026-03-25",
+        "discharge": "2026-03-27",
+        "claimed_amount": 88100.0,
+        "copay_pct_applied": 5.0,
+        "rejection_kind": "waiting_period",
+        "duplicate_of": null,
+        "insurer_deductions": [],
+        "rejection_reason": "The claim is for treatment of a knee joint condition. Diseases of the joints are listed illnesses with a 24-month waiting period. Your policy started on 01-Feb-2026, so the waiting period has not been completed and the claim is not admissible.",
+        "rejection_expected_verdict": "does_not_match_policy",
+        "insurer_admissible": 0.0,
+        "insurer_copay": 0.0,
+        "insurer_paid": 0.0,
+        "expected_payable": 81985.0,
+        "disputable_amount": 81985.0,
+        "unverified_amount": 0.0,
+        "insurer_method": "Waiting period counted from the current renewal instead of first inception."
+      }
+    },
+    "SCH-FMT-01": {
+      "doc_id": "SCH-FMT-01",
+      "file": "dev/cases/syn-dev-001/policy_schedule.pdf",
+      "sha256": "de33f5471bae1685b1b27e137c7307d99be4eb2bba8f4efe1955c45d8c5af9a1",
+      "category": "policy_schedules",
+      "document_type": "schedule",
+      "status": "Good",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "title": "Policy schedule for FMT-01",
+      "format": "Insurer schedule PDF",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "FMT-01",
+        "policy_no": "AS-2026-102011",
+        "holder": "Shaurya Kamatkar",
+        "sex": "M",
+        "dob": "1978-01-30",
+        "sum_insured": 500000,
+        "period_start": "2026-02-01",
+        "period_end": "2027-01-31",
+        "first_inception": "2022-02-01",
+        "product": "Arogya Sanjeevani Policy",
+        "insurer": "Aarohan General Insurance Ltd.",
+        "address": "9 Fictional Nagar, Nagpur 000440",
+        "issued": "2026-01-28",
+        "premium": 8525.0,
+        "wording_uin": "GODHLIP24179V022324",
+        "copay_pct": 5,
+        "in_insurer_records": true
+      }
+    }
+  }
+}

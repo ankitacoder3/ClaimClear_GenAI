@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "claimclear-settlement-engine"
+version = "0.1.0"
+description = "ClaimClear settlement engine: the policy-correct settlement for an Arogya Sanjeevani reimbursement claim, in plain tested Python."
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+server = ["mcp==2.3.0"]
+dev = ["pytest>=8", "mcp==2.3.0"]
+
+[tool.setuptools]
+packages = ["engine", "mcp_server"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"

@@ -1,0 +1,281 @@
+{
+  "case_id": "syn-dev-017",
+  "split": "dev",
+  "source": "claimclear-synthetic",
+  "source_case": "dev/case-017",
+  "scenario": {
+    "type": "poisoned",
+    "title": "Scan whose hidden searchable text disagrees with the picture",
+    "what_changed": "Invisible text layer only: row 3 reads ₹1,29,000 and totals ₹1,88,100. The picture shows ₹29,000 and ₹88,100.",
+    "attack_goal": "Reader sees ₹88,100 while text extraction reads ₹1,88,100, so an extraction-only pipeline overpays by ₹1,00,000.",
+    "expected_flags": [
+      "ocr_layer_conflict"
+    ]
+  },
+  "expected": {
+    "overall_verdict": "matches_policy",
+    "overall_verdict_source": "settlement_matches_policy",
+    "policy_payable": 81985.0,
+    "insurer_paid": 81985.0,
+    "gap": 0.0,
+    "disputable_amount": 0.0,
+    "unverified_amount": 0.0,
+    "deductions": [
+      {
+        "particulars": "Non-payable items: gloves, masks, syringes, caps",
+        "amount": 1800.0,
+        "verdict": "matches_policy",
+        "verdict_source": "matches_policy",
+        "correct_amount": 1800.0,
+        "why": "Listed as non-payable items under the policy"
+      }
+    ],
+    "rejection": null,
+    "notes": "Matches the policy wording."
+  },
+  "documents": {
+    "bill.pdf": "POI-07",
+    "settlement_letter.pdf": "SET-32",
+    "policy_schedule.pdf": "SCH-POI-07"
+  },
+  "source_answer": {
+    "POI-07": {
+      "doc_id": "POI-07",
+      "file": "dev/cases/syn-dev-017/bill.pdf",
+      "sha256": "a071448cab1483b1afa5401b4b17d2d2466d8143cd67167ca005df84d5c40c46",
+      "category": "poisoned",
+      "document_type": "bill",
+      "status": "Modified",
+      "what_changed_and_where": "Invisible text layer only: row 3 reads ₹1,29,000 and totals ₹1,88,100. The picture shows ₹29,000 and ₹88,100.",
+      "title": "Scan whose hidden searchable text disagrees with the picture",
+      "format": "Scanned PDF with text layer",
+      "expected_verdict": "reject",
+      "expected_flags": [
+        "ocr_layer_conflict"
+      ],
+      "attack_goal": "Reader sees ₹88,100 while text extraction reads ₹1,88,100, so an extraction-only pipeline overpays by ₹1,00,000.",
+      "detection_signals": [
+        "Picture and invisible text layer disagree on row 3, sub total and net amount"
+      ],
+      "notes": "Run OCR and compare it with the embedded text. printed_total in this manifest is the visible ₹88,100.",
+      "details": {
+        "visible_total": 88100.0,
+        "text_layer_total": 188100.0
+      },
+      "invoices": [
+        {
+          "provider_name": "Tarangi Health Institute",
+          "provider_gstin": "00AABFT5678K1Z2",
+          "provider_registration_no": "FIC/NMC/HOSP/01187",
+          "invoice_no": "THI/26-27/002295",
+          "invoice_date": "2026-06-24",
+          "patient_name": "Aditri Vaidyakar",
+          "sex": "F",
+          "age": 36,
+          "policy_no": "AS-2026-102529",
+          "uhid": "THI-1147761",
+          "ip_no": "IP-26-02318",
+          "admission": "2026-06-22",
+          "discharge": "2026-06-24",
+          "diagnosis": "Medial meniscus tear, right knee",
+          "procedure": "Arthroscopic meniscal repair",
+          "tariff_key": "knee_arthroscopy",
+          "line_items": [
+            {
+              "description": "Semi-private room",
+              "qty": 2.0,
+              "rate": 4200.0,
+              "printed_amount": 8400.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Nursing and duty doctor charges",
+              "qty": 2.0,
+              "rate": 1100.0,
+              "printed_amount": 2200.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Surgeon fee - knee arthroscopy",
+              "qty": 1.0,
+              "rate": 29000.0,
+              "printed_amount": 29000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Anaesthetist fee",
+              "qty": 1.0,
+              "rate": 9500.0,
+              "printed_amount": 9500.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Operation theatre charges",
+              "qty": 1.0,
+              "rate": 19000.0,
+              "printed_amount": 19000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Consultant visits",
+              "qty": 2.0,
+              "rate": 1500.0,
+              "printed_amount": 3000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Laboratory investigations",
+              "qty": 1.0,
+              "rate": 4600.0,
+              "printed_amount": 4600.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "MRI knee",
+              "qty": 1.0,
+              "rate": 3400.0,
+              "printed_amount": 3400.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Pharmacy - inpatient medicines",
+              "qty": 1.0,
+              "rate": 7200.0,
+              "printed_amount": 7200.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Consumables - gloves, masks, syringes, caps",
+              "qty": 1.0,
+              "rate": 1800.0,
+              "printed_amount": 1800.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": true
+            }
+          ],
+          "sum_of_printed_lines": 88100.0,
+          "sum_of_qty_x_rate": 88100.0,
+          "cgst": 0.0,
+          "sgst": 0.0,
+          "discount": 0.0,
+          "recomputed_total": 88100.0,
+          "printed_total": 88100.0,
+          "advance": 0.0,
+          "balance_payable": 88100.0
+        }
+      ]
+    },
+    "SET-32": {
+      "doc_id": "SET-32",
+      "file": "dev/cases/syn-dev-017/settlement_letter.pdf",
+      "sha256": "c6a19fb6bbcd2b830e8767ee1bfa1eff66243860d0cb3f1f9f879a7ae16859c5",
+      "category": "settlement_letters",
+      "document_type": "settlement",
+      "status": "Good",
+      "what_changed_and_where": "Paid on the visible ₹88,100, less consumables. Correct.",
+      "title": "Paid on the visible total",
+      "format": "Insurer letter PDF",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "None. The hidden text layer's ₹1,88,100 must not be read as the claim.",
+      "detection_signals": [
+        "Only consumables and the 5% co-pay deducted"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "POI-07",
+        "claim_no": "AGI/HC/2627/007141",
+        "letter_type": "settlement",
+        "letter_date": "2026-07-14",
+        "policy_no": "AS-2026-102529",
+        "patient_name": "Aditri Vaidyakar",
+        "hospital": "Tarangi Health Institute",
+        "bill_invoice_no": "THI/26-27/002295",
+        "admission": "2026-06-22",
+        "discharge": "2026-06-24",
+        "claimed_amount": 88100.0,
+        "copay_pct_applied": 5.0,
+        "rejection_kind": null,
+        "duplicate_of": null,
+        "insurer_deductions": [
+          {
+            "particulars": "Non-payable items: gloves, masks, syringes, caps",
+            "amount": 1800.0,
+            "reason": "Listed as non-payable items under the policy",
+            "expected_verdict": "matches_policy",
+            "expected_amount": 1800.0
+          }
+        ],
+        "rejection_reason": null,
+        "rejection_expected_verdict": null,
+        "insurer_admissible": 86300.0,
+        "insurer_copay": 4315.0,
+        "insurer_paid": 81985.0,
+        "expected_payable": 81985.0,
+        "disputable_amount": 0.0,
+        "unverified_amount": 0.0,
+        "insurer_method": "Matches the policy wording."
+      }
+    },
+    "SCH-POI-07": {
+      "doc_id": "SCH-POI-07",
+      "file": "dev/cases/syn-dev-017/policy_schedule.pdf",
+      "sha256": "c06e6bba4c53face48ec1abea24d110ee8691017327cf352c038e35d45a6158b",
+      "category": "policy_schedules",
+      "document_type": "schedule",
+      "status": "Good",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "title": "Policy schedule for POI-07",
+      "format": "Insurer schedule PDF",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "POI-07",
+        "policy_no": "AS-2026-102529",
+        "holder": "Aditri Vaidyakar",
+        "sex": "F",
+        "dob": "1990-06-15",
+        "sum_insured": 500000,
+        "period_start": "2026-04-20",
+        "period_end": "2027-04-19",
+        "first_inception": "2024-04-20",
+        "product": "Arogya Sanjeevani Policy",
+        "insurer": "Aarohan General Insurance Ltd.",
+        "address": "48 Fictional Park View, Nagpur 000440",
+        "issued": "2026-04-16",
+        "premium": 6425.0,
+        "wording_uin": "GODHLIP24179V022324",
+        "copay_pct": 5,
+        "in_insurer_records": true
+      }
+    }
+  }
+}
