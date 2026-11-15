@@ -1,0 +1,135 @@
+{
+  "case_id": "gen-dev-9e8683",
+  "split": "dev",
+  "source": "gen-data",
+  "source_case": "dev-9e8683",
+  "scenario": {
+    "type": "waiting_period",
+    "recipe": "D4 variant 2",
+    "insurer_error": {
+      "kind": "reject_waiting",
+      "clause": "2 (Operative clause)",
+      "basis": "Date of admission falls outside the policy period"
+    },
+    "summary": "Sunita's kidney stone three days after renewal."
+  },
+  "expected": {
+    "overall_verdict": "disputable",
+    "overall_verdict_source": "disputable",
+    "policy_payable": 74242,
+    "insurer_paid": 0,
+    "gap": 74242,
+    "deductions": [
+      {
+        "particulars": "Claim not admissible: Date of admission falls outside the policy period (Clause 2)",
+        "amount": 79170,
+        "verdict": "does_not_match_policy",
+        "verdict_source": "disputable",
+        "correct_amount": 0,
+        "why": "Admission 4 Sep 2026 is within the period 1 Sep 2026 - 31 Aug 2027 stated in the schedule; the renewal is continuous since 2021."
+      }
+    ],
+    "notes": "Rejection is contradicted by the schedule. Payable computed as for an admissible claim."
+  },
+  "documents": {
+    "policy_wording.pdf": "00_policy_wording.pdf",
+    "policy_schedule.pdf": "01_policy_schedule.pdf",
+    "bill.pdf": "02_itemised_bill.pdf",
+    "settlement_letter.pdf": "03_settlement_letter.pdf"
+  },
+  "source_answer": {
+    "meta": {
+      "case_id": "dev-9e8683",
+      "base_id": "D4",
+      "variant": 2,
+      "tag": "MD",
+      "split": "dev",
+      "planted_type": "waiting_period",
+      "insurer_error": {
+        "kind": "reject_waiting",
+        "clause": "2 (Operative clause)",
+        "basis": "Date of admission falls outside the policy period"
+      },
+      "wording": "IFFCO",
+      "wording_uin": "IFFHLIP20161V011920",
+      "correct_settlement": {
+        "billed": 79170,
+        "admissible": 78150,
+        "copay": 3908,
+        "payable": 74242,
+        "rejected": null
+      },
+      "insurer_settlement": {
+        "admissible": 0,
+        "copay": 0,
+        "payable": 0,
+        "rejected": {
+          "reason": "Date of admission falls outside the policy period",
+          "clause": "2 (Operative clause)"
+        }
+      },
+      "underpaid_by": 74242,
+      "letter_deductions": [
+        {
+          "deduction": "Claim not admissible: Date of admission falls outside the policy period",
+          "clause_cited": "2 (Operative clause)",
+          "amount": 79170,
+          "verdict": "disputable",
+          "correct_amount": 0
+        }
+      ],
+      "deductions_missing_from_letter": [],
+      "wrong_deductions": [
+        {
+          "deduction": "Co-payment 5%",
+          "clause": "9.3",
+          "correct": 3908,
+          "insurer": 0,
+          "excess_deducted": -3908
+        },
+        {
+          "deduction": "Crepe bandage - List I (not payable)",
+          "clause": "4.7, Annexure A",
+          "correct": 500,
+          "insurer": 0,
+          "excess_deducted": -500
+        },
+        {
+          "deduction": "Registration charges - List IV (part of cost of treatment)",
+          "clause": "4.7, Annexure A",
+          "correct": 520,
+          "insurer": 0,
+          "excess_deducted": -520
+        },
+        {
+          "deduction": "Claim not admissible: Date of admission falls outside the policy period",
+          "clause": "2 (Operative clause)",
+          "correct": 0,
+          "insurer": 79170,
+          "excess_deducted": 79170
+        }
+      ],
+      "expected_verdict": "disputable",
+      "doc_tweaks": {},
+      "open_question_flags": [],
+      "story": "Sunita's kidney stone three days after renewal."
+    },
+    "gold": {
+      "case_id": "dev-9e8683",
+      "payable": 74242,
+      "insurer_paid": 0,
+      "overall": "disputable",
+      "letter_deductions": [
+        {
+          "deduction": "Claim not admissible: Date of admission falls outside the policy period (Clause 2)",
+          "amount": 79170,
+          "verdict": "disputable",
+          "correct_amount": 0,
+          "why": "Admission 4 Sep 2026 is within the period 1 Sep 2026 - 31 Aug 2027 stated in the schedule; the renewal is continuous since 2021."
+        }
+      ],
+      "notes": "Rejection is contradicted by the schedule. Payable computed as for an admissible claim."
+    },
+    "worksheet_md": "# Worksheet dev-9e8683\n\n## Facts from the documents\n- Policy AS/2026/429903/68 (Sunita P. Joshi), individual, SI 2,00,000, CB 0, period 1 Sep 2026 to 31 Aug 2027, continuous since 1 Sep 2021.\n- Admission 4 Sep 2026, discharge 6 Sep 2026 = 2 days, 2 room-days billed. Left ureteric calculus; URSL + DJ stent.\n\n## Eligibility checks\n- Admission 4 Sep 2026 lies INSIDE the policy period 1 Sep 2026 - 31 Aug 2027 (Clause 2).\n- Continuous cover since 1 Sep 2021 -> 30-day wait (6.2) does not apply (6.2 ii, >12 months); urinary calculi 24-month wait (6.3 i.18) completed.\n\n## Limits (Clause 4.1(i), 4.1(ii))\n- Room rent cap = min(2% x SI 200,000.00, 5,000) = 4,000.00 per day\n- ICU cap = min(5% x SI 200,000.00, 10,000) = 10,000.00 per day\n- Sum insured used for these % limits is the base SI in the schedule (Clause 3.47 defines SI separately from Cumulative Bonus).\n\n## Proportionate deduction ratio (Clause 4.1 Note 2; DECISIONS #1, #2)\n- No room/ICU line exceeds its cap -> no proportionate deduction (ratio = 1).\n\n## Bill lines\n| # | Item | Billed | Treatment | Clause | Admissible before proportion |\n|---|---|---:|---|---|---:|\n| 1 | Semi-private - room rent | 7,000.00 | Room 2 d x 3,500.00 ; cap 4,000.00 /day -> eligible 7,000.00 | 4.1(i) | 7,000.00 |\n| 2 | Urologist fee | 25,150.00 | Payable | 4.1(iii)/(iv) | 25,150.00 |\n| 3 | Anaesthetist fee | 6,950.00 | Payable | 4.1(iii)/(iv) | 6,950.00 |\n| 4 | OT and laser charges | 15,600.00 | Payable | 4.1(iii)/(iv) | 15,600.00 |\n| 5 | DJ stent | 4,200.00 | Payable | 4.1(iv) implant | 4,200.00 |\n| 6 | Pharmacy | 6,950.00 | Payable (medicines) | 4.1(iv); 4.1 Note 2 | 6,950.00 |\n| 7 | Consumables | 5,750.00 | Payable | 4.1(iii)/(iv) | 5,750.00 |\n| 8 | CT KUB, urine culture | 6,550.00 | Payable | 4.1(iii)/(iv) | 6,550.00 |\n| 9 | Crepe bandage | 500.00 | Not payable: List I item 16 | 4.7, Annexure A | 0.00 |\n| 10 | Registration charges | 520.00 | Not payable: List IV item 1 - subsumed into cost of treatment | 4.7, Annexure A | 0.00 |\n| | **Total billed/claimed** | **79,170.00** | | | **78,150.00** |\n\n- Check: hospital lines sum to 79,170.00 vs bill grand total 79,170.00 -> agree\n- Total claimed (hospital + other bills) = 79,170.00\n\n## Step results\n1. Room/ICU excess over caps (4.1(i)/(ii)): 0.00\n2. Non-payable / subsumed items (4.7, Annexure A; 4.1.1(v); 4.5): 1,020.00\n3. Proportionate deduction: nil\n4. Admissible before sub-limit/co-pay = 78,150.00\n5. Sub-limits: none applicable\n6. Co-payment 5% (Clause 9.3; DECISIONS #3, on admissible after all deductions/sub-limits): 78,150.00 x 5% = 3,907.50 -> 3,908\n7. Net after co-pay = 74,242.00\n8. Sum insured + CB this policy year = 200,000.00; earlier claims paid 0.00 / admitted 0.00 -> available 200,000.00 (by paid) / 200,000.00 (by admitted) (Clause 2, 3.47, DECISIONS #4)\n9. **Payable = 74,242**\n\n## Comparison with the settlement letter\n| Letter deduction | Amount | Verdict | Correct amount | Why |\n|---|---:|---|---:|---|\n| Claim not admissible: Date of admission falls outside the policy period (Clause 2) | 79,170 | disputable | 0 | Admission 4 Sep 2026 is within the period 1 Sep 2026 - 31 Aug 2027 stated in the schedule; the renewal is continuous since 2021. |\n\n- Insurer paid: 0 ; gold payable: 74,242 ; difference (payable - paid): 74,242\n- Overall: **disputable**\n\n## Notes\nRejection is contradicted by the schedule. Payable computed as for an admissible claim.\n"
+  }
+}

@@ -1,0 +1,312 @@
+{
+  "case_id": "syn-dev-019",
+  "split": "dev",
+  "source": "claimclear-synthetic",
+  "source_case": "dev/case-019",
+  "scenario": {
+    "type": "genuine",
+    "title": "Three-night appendectomy within all limits",
+    "what_changed": "Nothing changed.",
+    "attack_goal": "None. Baseline legitimate bill.",
+    "expected_flags": []
+  },
+  "expected": {
+    "overall_verdict": "matches_policy",
+    "overall_verdict_source": "settlement_matches_policy",
+    "policy_payable": 93660.5,
+    "insurer_paid": 93660.5,
+    "gap": 0.0,
+    "disputable_amount": 0.0,
+    "unverified_amount": 0.0,
+    "deductions": [
+      {
+        "particulars": "Non-payable items: gloves, masks, syringes, caps",
+        "amount": 3360.0,
+        "verdict": "matches_policy",
+        "verdict_source": "matches_policy",
+        "correct_amount": 3360.0,
+        "why": "Listed as non-payable items under the policy"
+      }
+    ],
+    "rejection": null,
+    "notes": "Matches the policy wording."
+  },
+  "documents": {
+    "bill.pdf": "GEN-01",
+    "discharge_summary.pdf": "DS-01",
+    "settlement_letter.pdf": "SET-02",
+    "policy_schedule.pdf": "SCH-GEN-01"
+  },
+  "source_answer": {
+    "GEN-01": {
+      "doc_id": "GEN-01",
+      "file": "dev/cases/syn-dev-019/bill.pdf",
+      "sha256": "d6c0906e01486ce69f1146274da94e886420608f14207466305ef825bf88c2fb",
+      "category": "genuine",
+      "document_type": "bill",
+      "status": "Good",
+      "what_changed_and_where": "Nothing changed.",
+      "title": "Three-night appendectomy within all limits",
+      "format": "Digital PDF",
+      "expected_verdict": "clean_with_deductions",
+      "expected_flags": [],
+      "attack_goal": "None. Baseline legitimate bill.",
+      "detection_signals": [
+        "Lines, total and words agree",
+        "Admission inside policy period"
+      ],
+      "notes": "Room ₹4,500 is under the ₹5,000 cap. Only the listed consumables are non-payable, plus 5% co-pay.",
+      "details": {},
+      "invoices": [
+        {
+          "provider_name": "Vrindaloka Memorial Hospital",
+          "provider_gstin": "00AAVFV1234Q1Z5",
+          "provider_registration_no": "FIC/PMC/HOSP/00412",
+          "invoice_no": "VML/25-26/006182",
+          "invoice_date": "2025-11-15",
+          "patient_name": "Tanvika Morvekar",
+          "sex": "F",
+          "age": 42,
+          "policy_no": "AS-2025-100231",
+          "uhid": "VML-0048821",
+          "ip_no": "IP/2511/2207",
+          "admission": "2025-11-12",
+          "discharge": "2025-11-15",
+          "diagnosis": "Acute appendicitis",
+          "procedure": "Laparoscopic appendectomy",
+          "tariff_key": "lap_appendectomy",
+          "line_items": [
+            {
+              "description": "Semi-private room",
+              "qty": 3.0,
+              "rate": 4500.0,
+              "printed_amount": 13500.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Nursing and duty doctor charges",
+              "qty": 3.0,
+              "rate": 1200.0,
+              "printed_amount": 3600.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Surgeon fee - laparoscopic appendectomy",
+              "qty": 1.0,
+              "rate": 28000.0,
+              "printed_amount": 28000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Anaesthetist fee",
+              "qty": 1.0,
+              "rate": 9000.0,
+              "printed_amount": 9000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Operation theatre charges",
+              "qty": 1.0,
+              "rate": 18000.0,
+              "printed_amount": 18000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Consultant visits",
+              "qty": 4.0,
+              "rate": 1500.0,
+              "printed_amount": 6000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Laboratory investigations",
+              "qty": 1.0,
+              "rate": 6850.0,
+              "printed_amount": 6850.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "USG abdomen and pelvis",
+              "qty": 1.0,
+              "rate": 2400.0,
+              "printed_amount": 2400.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Pharmacy - inpatient medicines",
+              "qty": 1.0,
+              "rate": 11240.0,
+              "printed_amount": 11240.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Consumables - gloves, masks, syringes, caps",
+              "qty": 1.0,
+              "rate": 3360.0,
+              "printed_amount": 3360.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": true
+            }
+          ],
+          "sum_of_printed_lines": 101950.0,
+          "sum_of_qty_x_rate": 101950.0,
+          "cgst": 0.0,
+          "sgst": 0.0,
+          "discount": 0.0,
+          "recomputed_total": 101950.0,
+          "printed_total": 101950.0,
+          "advance": 0.0,
+          "balance_payable": 101950.0
+        }
+      ]
+    },
+    "DS-01": {
+      "doc_id": "DS-01",
+      "file": "dev/cases/syn-dev-019/discharge_summary.pdf",
+      "sha256": "f40f254b9716c7bb7ca7aebf89522d91a38857b5d67b029b15d7f76e859af668",
+      "category": "discharge_summaries",
+      "document_type": "discharge",
+      "status": "Good",
+      "what_changed_and_where": "Nothing changed. Name, UHID, IP number, dates and procedure match GEN-01.",
+      "title": "Summary for GEN-01 that agrees with the bill",
+      "format": "Discharge summary PDF",
+      "expected_verdict": "consistent_with_bill",
+      "expected_flags": [],
+      "attack_goal": "None. Baseline summary.",
+      "detection_signals": [
+        "Name, UHID, IP number, dates and procedure all match GEN-01"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "GEN-01",
+        "patient_name": "Tanvika Morvekar",
+        "age": 42,
+        "sex": "F",
+        "uhid": "VML-0048821",
+        "ip_no": "IP/2511/2207",
+        "admission": "2025-11-12",
+        "discharge": "2025-11-15",
+        "procedure_date": "2025-11-12",
+        "diagnosis": "Acute appendicitis",
+        "icd10": "K35.8",
+        "procedure": "Laparoscopic appendectomy",
+        "consistent_with_bill": true,
+        "conflicts_with_bill": []
+      }
+    },
+    "SET-02": {
+      "doc_id": "SET-02",
+      "file": "dev/cases/syn-dev-019/settlement_letter.pdf",
+      "sha256": "1b09a86eecee6d76edfbbdcb76f8f61f9a18e9f402423f9532818e03f1f1250a",
+      "category": "settlement_letters",
+      "document_type": "settlement",
+      "status": "Good",
+      "what_changed_and_where": "Correct settlement. Only listed consumables and the 5% co-pay are deducted. Nothing to dispute.",
+      "title": "Correct settlement with nothing to dispute",
+      "format": "Insurer letter PDF",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "None. False-alarm test: ClaimClear must not suggest a dispute.",
+      "detection_signals": [
+        "Only listed consumables and 5% co-pay deducted"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "GEN-01",
+        "claim_no": "AGI/HC/2526/003187",
+        "letter_type": "settlement",
+        "letter_date": "2025-12-10",
+        "policy_no": "AS-2025-100231",
+        "patient_name": "Tanvika Morvekar",
+        "hospital": "Vrindaloka Memorial Hospital",
+        "bill_invoice_no": "VML/25-26/006182",
+        "admission": "2025-11-12",
+        "discharge": "2025-11-15",
+        "claimed_amount": 101950.0,
+        "copay_pct_applied": 5.0,
+        "rejection_kind": null,
+        "duplicate_of": null,
+        "insurer_deductions": [
+          {
+            "particulars": "Non-payable items: gloves, masks, syringes, caps",
+            "amount": 3360.0,
+            "reason": "Listed as non-payable items under the policy",
+            "expected_verdict": "matches_policy",
+            "expected_amount": 3360.0
+          }
+        ],
+        "rejection_reason": null,
+        "rejection_expected_verdict": null,
+        "insurer_admissible": 98590.0,
+        "insurer_copay": 4929.5,
+        "insurer_paid": 93660.5,
+        "expected_payable": 93660.5,
+        "disputable_amount": 0.0,
+        "unverified_amount": 0.0,
+        "insurer_method": "Matches the policy wording."
+      }
+    },
+    "SCH-GEN-01": {
+      "doc_id": "SCH-GEN-01",
+      "file": "dev/cases/syn-dev-019/policy_schedule.pdf",
+      "sha256": "19a5fff60e752fb8f99299f7710e4517c5781a08fa45b1f78e6e937efd91b548",
+      "category": "policy_schedules",
+      "document_type": "schedule",
+      "status": "Good",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "title": "Policy schedule for GEN-01",
+      "format": "Insurer schedule PDF",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "GEN-01",
+        "policy_no": "AS-2025-100231",
+        "holder": "Tanvika Morvekar",
+        "sex": "F",
+        "dob": "1983-03-09",
+        "sum_insured": 500000,
+        "period_start": "2025-04-01",
+        "period_end": "2026-03-31",
+        "first_inception": "2023-04-01",
+        "product": "Arogya Sanjeevani Policy",
+        "insurer": "Aarohan General Insurance Ltd.",
+        "address": "B-7 Fictional Heights, Pune 000411",
+        "issued": "2025-03-28",
+        "premium": 7475.0,
+        "wording_uin": "GODHLIP24179V022324",
+        "copay_pct": 5,
+        "in_insurer_records": true
+      }
+    }
+  }
+}

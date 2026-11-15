@@ -1,0 +1,308 @@
+{
+  "case_id": "syn-dev-008",
+  "split": "dev",
+  "source": "claimclear-synthetic",
+  "source_case": "dev/case-008",
+  "scenario": {
+    "type": "malicious",
+    "title": "Amounts edited after issue with a painted-over patch",
+    "what_changed": "Totals, bottom right: Sub total and Net amount painted from ₹1,18,210 to ₹1,48,210 in another font. Old value stays in the text layer; Amount in words not updated. PDF Producer shows an editor.",
+    "attack_goal": "Add ₹30,000 by editing sub total and net amount. The new total stays inside the tariff range, so tariff checks pass.",
+    "expected_flags": [
+      "total_line_mismatch",
+      "visual_tamper_overlay",
+      "text_layer_conflict",
+      "amount_words_mismatch",
+      "pdf_metadata_edited"
+    ]
+  },
+  "expected": {
+    "overall_verdict": "matches_policy",
+    "overall_verdict_source": "settlement_matches_policy",
+    "policy_payable": 109449.5,
+    "insurer_paid": 109449.5,
+    "gap": 0.0,
+    "disputable_amount": 0.0,
+    "unverified_amount": 0.0,
+    "deductions": [
+      {
+        "particulars": "Amount not supported by the itemised charges",
+        "amount": 30000.0,
+        "verdict": "matches_policy",
+        "verdict_source": "matches_policy",
+        "correct_amount": 30000.0,
+        "why": "The bill total is ₹30,000 more than the sum of its itemised charges (₹1,18,210.00)"
+      },
+      {
+        "particulars": "Non-payable items: gloves, masks, syringes, caps",
+        "amount": 3000.0,
+        "verdict": "matches_policy",
+        "verdict_source": "matches_policy",
+        "correct_amount": 3000.0,
+        "why": "Listed as non-payable items under the policy"
+      }
+    ],
+    "rejection": null,
+    "notes": "Matches: only the itemised charges are payable."
+  },
+  "documents": {
+    "bill.pdf": "MAL-01",
+    "settlement_letter.pdf": "SET-12",
+    "policy_schedule.pdf": "SCH-MAL-01"
+  },
+  "source_answer": {
+    "MAL-01": {
+      "doc_id": "MAL-01",
+      "file": "dev/cases/syn-dev-008/bill.pdf",
+      "sha256": "ad3c46f343a386836b7a9cf6bd42f2c58604ce693bc13e81954c6ec5ceb08d62",
+      "category": "malicious",
+      "document_type": "bill",
+      "status": "Modified",
+      "what_changed_and_where": "Totals, bottom right: Sub total and Net amount painted from ₹1,18,210 to ₹1,48,210 in another font. Old value stays in the text layer; Amount in words not updated. PDF Producer shows an editor.",
+      "title": "Amounts edited after issue with a painted-over patch",
+      "format": "Digital PDF",
+      "expected_verdict": "reject",
+      "expected_flags": [
+        "total_line_mismatch",
+        "visual_tamper_overlay",
+        "text_layer_conflict",
+        "amount_words_mismatch",
+        "pdf_metadata_edited"
+      ],
+      "attack_goal": "Add ₹30,000 by editing sub total and net amount. The new total stays inside the tariff range, so tariff checks pass.",
+      "detection_signals": [
+        "Lines sum to ₹1,18,210, page shows ₹1,48,210",
+        "Words still say the old amount",
+        "Old value remains in the text layer",
+        "Incremental save and an editor in the Producer field"
+      ],
+      "notes": "",
+      "details": {
+        "visible_total": 148210.0,
+        "text_layer_original_total": 118210.0
+      },
+      "invoices": [
+        {
+          "provider_name": "Vrindaloka Memorial Hospital",
+          "provider_gstin": "00AAVFV1234Q1Z5",
+          "provider_registration_no": "FIC/PMC/HOSP/00412",
+          "invoice_no": "VML/25-26/007455",
+          "invoice_date": "2026-01-11",
+          "patient_name": "Saanvi Chikhalkar",
+          "sex": "F",
+          "age": 70,
+          "policy_no": "AS-2025-101671",
+          "uhid": "VML-0049902",
+          "ip_no": "IP/2601/0219",
+          "admission": "2026-01-08",
+          "discharge": "2026-01-11",
+          "diagnosis": "Cholelithiasis",
+          "procedure": "Laparoscopic cholecystectomy",
+          "tariff_key": "lap_cholecystectomy",
+          "line_items": [
+            {
+              "description": "Semi-private room",
+              "qty": 3.0,
+              "rate": 4500.0,
+              "printed_amount": 13500.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Nursing and duty doctor charges",
+              "qty": 3.0,
+              "rate": 1200.0,
+              "printed_amount": 3600.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Surgeon fee - laparoscopic cholecystectomy",
+              "qty": 1.0,
+              "rate": 34000.0,
+              "printed_amount": 34000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Anaesthetist fee",
+              "qty": 1.0,
+              "rate": 11000.0,
+              "printed_amount": 11000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Operation theatre charges",
+              "qty": 1.0,
+              "rate": 24000.0,
+              "printed_amount": 24000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Consultant visits",
+              "qty": 4.0,
+              "rate": 1500.0,
+              "printed_amount": 6000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Laboratory investigations",
+              "qty": 1.0,
+              "rate": 7860.0,
+              "printed_amount": 7860.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "USG abdomen",
+              "qty": 1.0,
+              "rate": 3200.0,
+              "printed_amount": 3200.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Pharmacy - inpatient medicines",
+              "qty": 1.0,
+              "rate": 12050.0,
+              "printed_amount": 12050.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Consumables - gloves, masks, syringes, caps",
+              "qty": 1.0,
+              "rate": 3000.0,
+              "printed_amount": 3000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": true
+            }
+          ],
+          "sum_of_printed_lines": 118210.0,
+          "sum_of_qty_x_rate": 118210.0,
+          "cgst": 0.0,
+          "sgst": 0.0,
+          "discount": 0.0,
+          "recomputed_total": 118210.0,
+          "printed_total": 148210.0,
+          "advance": 0.0,
+          "balance_payable": 148210.0
+        }
+      ]
+    },
+    "SET-12": {
+      "doc_id": "SET-12",
+      "file": "dev/cases/syn-dev-008/settlement_letter.pdf",
+      "sha256": "385a5ca0e43b45c737749a939911d459957edef0a9f901e94cf82d7df0ce0209",
+      "category": "settlement_letters",
+      "document_type": "settlement",
+      "status": "Good",
+      "what_changed_and_where": "Deductions row 1: the ₹30,000 painted onto the total is refused; row 2: consumables. Paid on the itemised charges.",
+      "title": "Painted-over total paid only on the itemised charges",
+      "format": "Insurer letter PDF",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "None. ClaimClear must not dispute the ₹30,000 the insurer refused for the altered total.",
+      "detection_signals": [
+        "₹30,000 difference between the printed total and the lines",
+        "Consumables deduction is correct"
+      ],
+      "notes": "A tampered bill could also be repudiated in full under the fraud condition; paying the itemised charges is the more generous outcome, so nothing is disputable either way.",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "MAL-01",
+        "claim_no": "AGI/HC/2526/007109",
+        "letter_type": "settlement",
+        "letter_date": "2026-02-03",
+        "policy_no": "AS-2025-101671",
+        "patient_name": "Saanvi Chikhalkar",
+        "hospital": "Vrindaloka Memorial Hospital",
+        "bill_invoice_no": "VML/25-26/007455",
+        "admission": "2026-01-08",
+        "discharge": "2026-01-11",
+        "claimed_amount": 148210.0,
+        "copay_pct_applied": 5.0,
+        "rejection_kind": null,
+        "duplicate_of": null,
+        "insurer_deductions": [
+          {
+            "particulars": "Amount not supported by the itemised charges",
+            "amount": 30000.0,
+            "reason": "The bill total is ₹30,000 more than the sum of its itemised charges (₹1,18,210.00)",
+            "expected_verdict": "matches_policy",
+            "expected_amount": 30000.0
+          },
+          {
+            "particulars": "Non-payable items: gloves, masks, syringes, caps",
+            "amount": 3000.0,
+            "reason": "Listed as non-payable items under the policy",
+            "expected_verdict": "matches_policy",
+            "expected_amount": 3000.0
+          }
+        ],
+        "rejection_reason": null,
+        "rejection_expected_verdict": null,
+        "insurer_admissible": 115210.0,
+        "insurer_copay": 5760.5,
+        "insurer_paid": 109449.5,
+        "expected_payable": 109449.5,
+        "disputable_amount": 0.0,
+        "unverified_amount": 0.0,
+        "insurer_method": "Matches: only the itemised charges are payable."
+      }
+    },
+    "SCH-MAL-01": {
+      "doc_id": "SCH-MAL-01",
+      "file": "dev/cases/syn-dev-008/policy_schedule.pdf",
+      "sha256": "172d0862e4592bd6709f7895e5fbd8761111d3b935c1dcd8602d7eddabc3164f",
+      "category": "policy_schedules",
+      "document_type": "schedule",
+      "status": "Good",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "title": "Policy schedule for MAL-01",
+      "format": "Insurer schedule PDF",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "MAL-01",
+        "policy_no": "AS-2025-101671",
+        "holder": "Saanvi Chikhalkar",
+        "sex": "F",
+        "dob": "1955-12-19",
+        "sum_insured": 300000,
+        "period_start": "2025-08-01",
+        "period_end": "2026-07-31",
+        "first_inception": "2021-08-01",
+        "product": "Arogya Sanjeevani Policy",
+        "insurer": "Aarohan General Insurance Ltd.",
+        "address": "25 Fictional Nagar, Pune 000411",
+        "issued": "2025-07-28",
+        "premium": 7425.0,
+        "wording_uin": "GODHLIP24179V022324",
+        "copay_pct": 5,
+        "in_insurer_records": true
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+# DRAFT queries for Go Digit's Arogya Sanjeevani wording (UIN GODHLIP24179V022324), labelled by Member 2 against
+# the downloaded PDF. For Member 1 to REVIEW AND RELABEL before any number is reported: the plan wants the evaluation
+# owner, not the retrieval builder, to own the labels. Save the reviewed set as eval/retrieval/queries.jsonl.
+{"id": "g01", "query": "why did they cut my medicine bill", "relevant": ["C.1.1"], "note": "pharmacy is exempt from the proportionate deduction"}
+{"id": "g02", "query": "my room cost more than the limit so they reduced the surgeon and nursing charges", "relevant": ["C.1.1"]}
+{"id": "g03", "query": "can the insurer reduce lab tests and implants because of my room category", "relevant": ["C.1.1"]}
+{"id": "g04", "query": "what is the daily room rent limit", "relevant": ["C.1"]}
+{"id": "g05", "query": "how much do they pay per day for ICU", "relevant": ["C.1"]}
+{"id": "g06", "query": "cataract surgery limit for one eye", "relevant": ["C.3"]}
+{"id": "g07", "query": "why did I have to pay 5% of my claim myself", "relevant": ["E.28.3", "B.10"]}
+{"id": "g08", "query": "what does co-payment mean", "relevant": ["B.10"]}
+{"id": "g09", "query": "my knee surgery claim was rejected saying the waiting period is not over", "relevant": ["D.3"]}
+{"id": "g10", "query": "does the waiting period start again when I renew or port my policy", "relevant": ["D.1", "D.3"]}
+{"id": "g11", "query": "I had diabetes before buying the policy, is it covered", "relevant": ["D.1", "B.34"]}
+{"id": "g12", "query": "I fell ill two weeks after buying the policy", "relevant": ["D.2"]}
+{"id": "g13", "query": "accident in the first month of the policy", "relevant": ["D.2"]}
+{"id": "g14", "query": "gloves and masks were deducted from my bill", "relevant": ["Annexure A List I", "Annexure A List V", "Annexure A List II"]}
+{"id": "g15", "query": "list of items that are not paid", "relevant": ["C.7", "Annexure A List I", "Annexure A List V"]}
+{"id": "g16", "query": "are medicines bought before admission covered", "relevant": ["C.4"]}
+{"id": "g17", "query": "follow-up visits and medicines after discharge", "relevant": ["C.5"]}
+{"id": "g18", "query": "how do I complain about my claim settlement", "relevant": ["E.17"]}
+{"id": "g19", "query": "where can I go if the company does not resolve my complaint", "relevant": ["E.17", "Annexure B"]}
+{"id": "g20", "query": "how many days does the insurer have to settle my claim", "relevant": ["E.16"]}
+{"id": "g21", "query": "will they pay interest if my claim is paid late", "relevant": ["E.16"]}
+{"id": "g22", "query": "what documents do I submit for a reimbursement claim", "relevant": ["E.28.2"]}
+{"id": "g23", "query": "how soon must I inform the insurer about a hospital admission", "relevant": ["E.28.2"]}
+{"id": "g24", "query": "is ayurvedic treatment in hospital covered", "relevant": ["C.2"]}
+{"id": "g25", "query": "robotic surgery coverage limit", "relevant": ["C.6"]}
+{"id": "g26", "query": "what counts as day care treatment", "relevant": ["B.13"]}
+{"id": "g27", "query": "I was admitted only for tests with no treatment", "relevant": ["D.4"]}
+{"id": "g28", "query": "is the ambulance cost covered", "relevant": ["C.1.1"]}
+{"id": "g29", "query": "does my sum insured increase if I make no claim", "relevant": ["C.7", "B.11"]}
+{"id": "g30", "query": "is maternity covered", "relevant": ["D.18"]}
+{"id": "g31", "query": "is weight loss surgery covered", "relevant": ["D.6"]}
+{"id": "g32", "query": "the hospital charges the same medicine price in every room", "relevant": ["C.1.1"]}
+{"id": "g33", "query": "if I cancel my policy will I get a refund", "relevant": ["E.6"]}
+{"id": "g34", "query": "can I return the policy in the first few days", "relevant": ["E.12"]}
+{"id": "g35", "query": "how does cashless treatment work", "relevant": ["E.28.1"]}

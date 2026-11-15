@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+
+# Environments and secrets
+.venv/
+.venv-agents/
+venv/
+.env
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local runtime data: case store, text cache, policy-kb index, memory database, dataset map.
+# Every machine builds its own (see README.md, "Run it step by step").
+var/
+.venv-bootstrap/
+.python/
+.coverage
+.hypothesis/

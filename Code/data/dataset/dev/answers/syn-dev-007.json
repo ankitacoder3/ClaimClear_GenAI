@@ -1,0 +1,225 @@
+{
+  "case_id": "syn-dev-007",
+  "split": "dev",
+  "source": "claimclear-synthetic",
+  "source_case": "dev/case-007",
+  "scenario": {
+    "type": "formats",
+    "title": "Hand-filled nursing home bill on a pre-printed form",
+    "what_changed": "Content unchanged. Only the format: scanned hand-filled form.",
+    "attack_goal": "None. Handwriting extraction stress test.",
+    "expected_flags": []
+  },
+  "expected": {
+    "overall_verdict": "disputable",
+    "overall_verdict_source": "settlement_disputable",
+    "policy_payable": 12160.0,
+    "insurer_paid": 11520.0,
+    "gap": 640.0,
+    "disputable_amount": 640.0,
+    "unverified_amount": 0.0,
+    "deductions": [],
+    "rejection": null,
+    "notes": "Co-payment applied at 10% instead of the policy's 5%."
+  },
+  "documents": {
+    "bill.png": "FMT-03",
+    "settlement_letter.pdf": "SET-23",
+    "policy_schedule.pdf": "SCH-FMT-03"
+  },
+  "source_answer": {
+    "FMT-03": {
+      "doc_id": "FMT-03",
+      "file": "dev/cases/syn-dev-007/bill.png",
+      "sha256": "595b5990b93bf6b184bf102e12c47bbce0d676df98e705d6319400f6b4537f6d",
+      "category": "formats",
+      "document_type": "bill",
+      "status": "Good",
+      "what_changed_and_where": "Content unchanged. Only the format: scanned hand-filled form.",
+      "title": "Hand-filled nursing home bill on a pre-printed form",
+      "format": "Scanned PNG of hand-filled form",
+      "expected_verdict": "clean_with_deductions",
+      "expected_flags": [],
+      "attack_goal": "None. Handwriting extraction stress test.",
+      "detection_signals": [
+        "Script font with baseline jitter",
+        "Amounts as 3000/- with Rs. and no rupee sign",
+        "Stamp and signature over a printed grid"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [
+        {
+          "provider_name": "Sahaja Seva Nursing Home",
+          "provider_gstin": "00AADFS3456P1Z1",
+          "provider_registration_no": "FIC/STR/NH/00093",
+          "invoice_no": "2214",
+          "invoice_date": "2026-02-24",
+          "patient_name": "Ojas Pendharke",
+          "sex": "M",
+          "age": 35,
+          "policy_no": "AS-2026-102133",
+          "uhid": "",
+          "ip_no": "97/26",
+          "admission": "2026-02-22",
+          "discharge": "2026-02-24",
+          "diagnosis": "Viral fever with dehydration",
+          "procedure": "Medical management",
+          "tariff_key": "viral_fever_medical",
+          "line_items": [
+            {
+              "description": "General ward",
+              "qty": 2.0,
+              "rate": 1500.0,
+              "printed_amount": 3000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Nursing charges",
+              "qty": 2.0,
+              "rate": 500.0,
+              "printed_amount": 1000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Doctor visits",
+              "qty": 4.0,
+              "rate": 400.0,
+              "printed_amount": 1600.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "IV fluids and injections",
+              "qty": 1.0,
+              "rate": 3200.0,
+              "printed_amount": 3200.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Blood tests",
+              "qty": 1.0,
+              "rate": 1850.0,
+              "printed_amount": 1850.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Medicines",
+              "qty": 1.0,
+              "rate": 2150.0,
+              "printed_amount": 2150.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            }
+          ],
+          "sum_of_printed_lines": 12800.0,
+          "sum_of_qty_x_rate": 12800.0,
+          "cgst": 0.0,
+          "sgst": 0.0,
+          "discount": 0.0,
+          "recomputed_total": 12800.0,
+          "printed_total": 12800.0,
+          "advance": 0.0,
+          "balance_payable": 12800.0
+        }
+      ]
+    },
+    "SET-23": {
+      "doc_id": "SET-23",
+      "file": "dev/cases/syn-dev-007/settlement_letter.pdf",
+      "sha256": "e5e4fb030df0655eec416cd106f13bd31679f794acb5210b53ee5403c1e09a37",
+      "category": "settlement_letters",
+      "document_type": "settlement",
+      "status": "Insurer error",
+      "what_changed_and_where": "Totals: co-payment taken as 10% instead of 5%. Underpaid by ₹640.",
+      "title": "Co-payment taken as 10% instead of 5%",
+      "format": "Insurer letter PDF",
+      "expected_verdict": "settlement_disputable",
+      "expected_flags": [
+        "copay_misapplied"
+      ],
+      "attack_goal": "None. Tests whether ClaimClear checks the co-payment against the wording.",
+      "detection_signals": [
+        "Co-payment 10%; the policy has 5% on every claim"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "FMT-03",
+        "claim_no": "AGI/HC/2526/007127",
+        "letter_type": "settlement",
+        "letter_date": "2026-03-17",
+        "policy_no": "AS-2026-102133",
+        "patient_name": "Ojas Pendharke",
+        "hospital": "Sahaja Seva Nursing Home",
+        "bill_invoice_no": "2214",
+        "admission": "2026-02-22",
+        "discharge": "2026-02-24",
+        "claimed_amount": 12800.0,
+        "copay_pct_applied": 10.0,
+        "rejection_kind": null,
+        "duplicate_of": null,
+        "insurer_deductions": [],
+        "rejection_reason": null,
+        "rejection_expected_verdict": null,
+        "insurer_admissible": 12800.0,
+        "insurer_copay": 1280.0,
+        "insurer_paid": 11520.0,
+        "expected_payable": 12160.0,
+        "disputable_amount": 640.0,
+        "unverified_amount": 0.0,
+        "insurer_method": "Co-payment applied at 10% instead of the policy's 5%."
+      }
+    },
+    "SCH-FMT-03": {
+      "doc_id": "SCH-FMT-03",
+      "file": "dev/cases/syn-dev-007/policy_schedule.pdf",
+      "sha256": "35395a46049b02562f7a67cff483f9465edc9cef1b121f5184d8127c6e0e6412",
+      "category": "policy_schedules",
+      "document_type": "schedule",
+      "status": "Good",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "title": "Policy schedule for FMT-03",
+      "format": "Insurer schedule PDF",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "FMT-03",
+        "policy_no": "AS-2026-102133",
+        "holder": "Ojas Pendharke",
+        "sex": "M",
+        "dob": "1990-10-12",
+        "sum_insured": 200000,
+        "period_start": "2026-01-05",
+        "period_end": "2027-01-04",
+        "first_inception": "2024-01-05",
+        "product": "Arogya Sanjeevani Policy",
+        "insurer": "Aarohan General Insurance Ltd.",
+        "address": "61 Fictional Lane, Satara 000415",
+        "issued": "2026-01-01",
+        "premium": 2570.0,
+        "wording_uin": "GODHLIP24179V022324",
+        "copay_pct": 5,
+        "in_insurer_records": true
+      }
+    }
+  }
+}

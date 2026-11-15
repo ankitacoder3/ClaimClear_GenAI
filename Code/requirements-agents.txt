@@ -1,0 +1,19 @@
+# Agents (Member 3): the LangGraph multi-agent graph (claimclear_graph) + the claimclear_tools client.
+# A SEPARATE environment from the servers: langchain-mcp-adapters needs mcp<2,
+# the servers use mcp 2.3. Use Python 3.12-3.14 (several dependencies have no 3.15 wheels yet);
+# start.py / start.bat / start.sh pick or download a suitable Python automatically.
+#   py -3.14 -m venv .venv-agents
+#   .venv-agents/Scripts/python.exe -m pip install -r requirements-agents.txt
+-e contracts                      # claimclear_contracts: CaseState, hand-offs, tool schemas, errors, verdict wording
+-e agents/toolkit                 # claimclear_tools: connection, per-agent tools, signals, critic checks
+-e agents/orchestration           # claimclear_graph: supervisor, specialists, critic loop, approval gate (Member 3)
+-e servers/policy_kb[tools]        # policy-wording retrieval as in-process tools (the agents normally use its MCP server)
+-e memory                         # claimclear_memory: per-user policy profile, claims, balances, grievance status
+langchain-mcp-adapters>=0.3,<0.4
+langgraph
+langgraph-checkpoint-sqlite     # durable checkpoints: paused cases survive a restart
+langchain-openai
+pytest>=8
+pytest-cov>=5                     # coverage gate in CI
+hypothesis>=6                     # property-based tests (the streaming guard)
+pytest-randomly>=3                # random test order: catches order-dependent tests

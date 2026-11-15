@@ -1,0 +1,204 @@
+{
+  "case_id": "gen-dev-81d177",
+  "split": "dev",
+  "source": "gen-data",
+  "source_case": "dev-81d177",
+  "scenario": {
+    "type": "proportionate",
+    "recipe": "D3 variant 1",
+    "insurer_error": {
+      "kind": "prop_wrong_rate",
+      "rate": 6000
+    },
+    "summary": "Imran's hernia repair; twin-sharing room within limit."
+  },
+  "expected": {
+    "overall_verdict": "disputable",
+    "overall_verdict_source": "disputable",
+    "policy_payable": 92197,
+    "insurer_paid": 79451,
+    "gap": 12746,
+    "deductions": [
+      {
+        "particulars": "Less: Discharge procedure charges - List II (part of room charges)",
+        "amount": 470,
+        "verdict": "matches_policy",
+        "verdict_source": "matches",
+        "correct_amount": 470,
+        "why": "List II item 30 (Clause 4.7)."
+      },
+      {
+        "particulars": "Less: Documentation charges - List II (part of room charges)",
+        "amount": 280,
+        "verdict": "matches_policy",
+        "verdict_source": "matches",
+        "correct_amount": 280,
+        "why": "List II item 29."
+      },
+      {
+        "particulars": "Less: Attendant food - List I (not payable)",
+        "amount": 1200,
+        "verdict": "matches_policy",
+        "verdict_source": "matches",
+        "correct_amount": 1200,
+        "why": "List I (food other than patient diet / attendant charges)."
+      },
+      {
+        "particulars": "Less: Proportionate deduction (room category above eligibility)",
+        "amount": 13417,
+        "verdict": "does_not_match_policy",
+        "verdict_source": "disputable",
+        "correct_amount": 0,
+        "why": "Room 4,800/day is within the cap of 5,000 (2% of 2.5L = 5,000, Clause 4.1(i)); Note 2 does not apply."
+      },
+      {
+        "particulars": "Less: Co-payment 5%",
+        "amount": 4182,
+        "verdict": "method_matches",
+        "verdict_source": "consequential",
+        "correct_amount": 4853,
+        "why": "Method right; base cut by the wrong 13,417. 5% of 97,050 = 4,852.5 -> 4,853."
+      }
+    ],
+    "notes": "Deluxe twin sharing at 4,800 is below the 5,000 room cap, so no proportionate deduction."
+  },
+  "documents": {
+    "policy_wording.pdf": "00_policy_wording.pdf",
+    "policy_schedule.pdf": "01_policy_schedule.pdf",
+    "bill.pdf": "02_itemised_bill.pdf",
+    "settlement_letter.pdf": "03_settlement_letter.pdf"
+  },
+  "source_answer": {
+    "meta": {
+      "case_id": "dev-81d177",
+      "base_id": "D3",
+      "variant": 1,
+      "tag": "MD",
+      "split": "dev",
+      "planted_type": "proportionate",
+      "insurer_error": {
+        "kind": "prop_wrong_rate",
+        "rate": 6000
+      },
+      "wording": "IFFCO",
+      "wording_uin": "IFFHLIP20161V011920",
+      "correct_settlement": {
+        "billed": 99000,
+        "admissible": 97050,
+        "copay": 4853,
+        "payable": 92197,
+        "rejected": null
+      },
+      "insurer_settlement": {
+        "admissible": 83633,
+        "copay": 4182,
+        "payable": 79451,
+        "rejected": null
+      },
+      "underpaid_by": 12746,
+      "letter_deductions": [
+        {
+          "deduction": "Discharge procedure charges - List II (part of room charges)",
+          "clause_cited": "4.7, Annexure A",
+          "amount": 470,
+          "verdict": "matches",
+          "correct_amount": 470
+        },
+        {
+          "deduction": "Documentation charges - List II (part of room charges)",
+          "clause_cited": "4.7, Annexure A",
+          "amount": 280,
+          "verdict": "matches",
+          "correct_amount": 280
+        },
+        {
+          "deduction": "Attendant food - List I (not payable)",
+          "clause_cited": "4.7, Annexure A",
+          "amount": 1200,
+          "verdict": "matches",
+          "correct_amount": 1200
+        },
+        {
+          "deduction": "Proportionate deduction (room category above eligibility)",
+          "clause_cited": "4.1 Note 2",
+          "amount": 13417,
+          "verdict": "disputable",
+          "correct_amount": 0
+        },
+        {
+          "deduction": "Co-payment 5%",
+          "clause_cited": "9.3",
+          "amount": 4182,
+          "verdict": "consequential",
+          "correct_amount": 4853
+        }
+      ],
+      "deductions_missing_from_letter": [],
+      "wrong_deductions": [
+        {
+          "deduction": "Co-payment 5%",
+          "clause": "9.3",
+          "correct": 4853,
+          "insurer": 4182,
+          "excess_deducted": -671
+        },
+        {
+          "deduction": "Proportionate deduction (room category above eligibility)",
+          "clause": "4.1 Note 2",
+          "correct": 0,
+          "insurer": 13417,
+          "excess_deducted": 13417
+        }
+      ],
+      "expected_verdict": "disputable",
+      "doc_tweaks": {},
+      "open_question_flags": [],
+      "story": "Imran's hernia repair; twin-sharing room within limit."
+    },
+    "gold": {
+      "case_id": "dev-81d177",
+      "payable": 92197,
+      "insurer_paid": 79451,
+      "overall": "disputable",
+      "letter_deductions": [
+        {
+          "deduction": "Less: Discharge procedure charges - List II (part of room charges)",
+          "amount": 470,
+          "verdict": "matches",
+          "correct_amount": 470,
+          "why": "List II item 30 (Clause 4.7)."
+        },
+        {
+          "deduction": "Less: Documentation charges - List II (part of room charges)",
+          "amount": 280,
+          "verdict": "matches",
+          "correct_amount": 280,
+          "why": "List II item 29."
+        },
+        {
+          "deduction": "Less: Attendant food - List I (not payable)",
+          "amount": 1200,
+          "verdict": "matches",
+          "correct_amount": 1200,
+          "why": "List I (food other than patient diet / attendant charges)."
+        },
+        {
+          "deduction": "Less: Proportionate deduction (room category above eligibility)",
+          "amount": 13417,
+          "verdict": "disputable",
+          "correct_amount": 0,
+          "why": "Room 4,800/day is within the cap of 5,000 (2% of 2.5L = 5,000, Clause 4.1(i)); Note 2 does not apply."
+        },
+        {
+          "deduction": "Less: Co-payment 5%",
+          "amount": 4182,
+          "verdict": "consequential",
+          "correct_amount": 4853,
+          "why": "Method right; base cut by the wrong 13,417. 5% of 97,050 = 4,852.5 -> 4,853."
+        }
+      ],
+      "notes": "Deluxe twin sharing at 4,800 is below the 5,000 room cap, so no proportionate deduction."
+    },
+    "worksheet_md": "# Worksheet dev-81d177\n\n## Facts from the documents\n- Policy AS/2026/320305/49 (Imran S. Khan), individual, SI 2,50,000, CB 0, period 10-Jan-2026 to 09-Jan-2027, continuous since 10-Jan-2022.\n- Admission 20-Aug-2026, discharge 22-Aug-2026 = 2 days, 2 room-days billed. Right inguinal hernia, lap TEP with mesh.\n\n## Eligibility checks\n- Renewal with continuous cover since 10-Jan-2022; admission 20-Aug-2026 lies within the policy period 10-Jan-2026 to 09-Jan-2027 (Clause 2). 30-day (6.2), 24/48-month (6.3) and PED (6.1) waiting periods: hernia 24-month wait (6.3 i.12) completed 10-Jan-2024.\n\n## Limits (Clause 4.1(i), 4.1(ii))\n- Room rent cap = min(2% x SI 250,000.00, 5,000) = 5,000.00 per day\n- ICU cap = min(5% x SI 250,000.00, 10,000) = 10,000.00 per day\n- Sum insured used for these % limits is the base SI in the schedule (Clause 3.47 defines SI separately from Cumulative Bonus).\n\n## Proportionate deduction ratio (Clause 4.1 Note 2; DECISIONS #1, #2)\n- No room/ICU line exceeds its cap -> no proportionate deduction (ratio = 1).\n\n## Bill lines\n| # | Item | Billed | Treatment | Clause | Admissible before proportion |\n|---|---|---:|---|---|---:|\n| 1 | Deluxe twin sharing - room rent | 9,600.00 | Room 2 d x 4,800.00 ; cap 5,000.00 /day -> eligible 9,600.00 | 4.1(i) | 9,600.00 |\n| 2 | Surgeon fee | 33,750.00 | Payable | 4.1(iii)/(iv) | 33,750.00 |\n| 3 | Anaesthetist fee | 10,000.00 | Payable | 4.1(iii)/(iv) | 10,000.00 |\n| 4 | OT charges | 16,150.00 | Payable | 4.1(iii)/(iv) | 16,150.00 |\n| 5 | Prolene mesh 15x15 | 12,050.00 | Payable | 4.1(iv) implant | 12,050.00 |\n| 6 | Pharmacy | 6,950.00 | Payable (medicines) | 4.1(iv); 4.1 Note 2 | 6,950.00 |\n| 7 | Consumables | 5,250.00 | Payable | 4.1(iii)/(iv) | 5,250.00 |\n| 8 | USG, blood work, ECG | 3,300.00 | Payable | 4.1(iii)/(iv) | 3,300.00 |\n| 9 | Discharge procedure charges | 470.00 | Not payable: List II item 30 - subsumed into room charges | 4.7, Annexure A | 0.00 |\n| 10 | Documentation charges | 280.00 | Not payable: List II item 29 - subsumed into room charges | 4.7, Annexure A | 0.00 |\n| 11 | Attendant food | 1,200.00 | Not payable: List I items 9 / 24 (food other than patient diet; attendant charges) | 4.7, Annexure A | 0.00 |\n| | **Total billed/claimed** | **99,000.00** | | | **97,050.00** |\n\n- Check: hospital lines sum to 99,000.00 vs bill grand total 99,000.00 -> agree\n- Total claimed (hospital + other bills) = 99,000.00\n\n## Step results\n1. Room/ICU excess over caps (4.1(i)/(ii)): 0.00\n2. Non-payable / subsumed items (4.7, Annexure A; 4.1.1(v); 4.5): 1,950.00\n3. Proportionate deduction: nil\n4. Admissible before sub-limit/co-pay = 97,050.00\n5. Sub-limits: none applicable\n6. Co-payment 5% (Clause 9.3; DECISIONS #3, on admissible after all deductions/sub-limits): 97,050.00 x 5% = 4,852.50 -> 4,853\n7. Net after co-pay = 92,197.00\n8. Sum insured + CB this policy year = 250,000.00; earlier claims paid 0.00 / admitted 0.00 -> available 250,000.00 (by paid) / 250,000.00 (by admitted) (Clause 2, 3.47, DECISIONS #4)\n9. **Payable = 92,197**\n\n## Comparison with the settlement letter\n| Letter deduction | Amount | Verdict | Correct amount | Why |\n|---|---:|---|---:|---|\n| Less: Discharge procedure charges - List II (part of room charges) | 470 | matches | 470 | List II item 30 (Clause 4.7). |\n| Less: Documentation charges - List II (part of room charges) | 280 | matches | 280 | List II item 29. |\n| Less: Attendant food - List I (not payable) | 1,200 | matches | 1,200 | List I (food other than patient diet / attendant charges). |\n| Less: Proportionate deduction (room category above eligibility) | 13,417 | disputable | 0 | Room 4,800/day is within the cap of 5,000 (2% of 2.5L = 5,000, Clause 4.1(i)); Note 2 does not apply. |\n| Less: Co-payment 5% | 4,182 | consequential | 4,853 | Method right; base cut by the wrong 13,417. 5% of 97,050 = 4,852.5 -> 4,853. |\n\n- Insurer paid: 79,451 ; gold payable: 92,197 ; difference (payable - paid): 12,746\n- Overall: **disputable**\n\n## Notes\nDeluxe twin sharing at 4,800 is below the 5,000 room cap, so no proportionate deduction.\n"
+  }
+}
