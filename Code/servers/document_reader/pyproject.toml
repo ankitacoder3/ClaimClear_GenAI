@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "claimclear-document-reader"
+version = "0.1.0"
+description = "ClaimClear document reader: PDF, JPG and PNG to text with source spans, hidden-content flags and OCR for scans; a cache so each file is OCR'd once; an MCP server for the app's upload pipeline."
+requires-python = ">=3.10"
+dependencies = ["pymupdf>=1.24", "pydantic>=2"]
+
+[project.optional-dependencies]
+server = ["mcp==2.3.0"]
+dev = ["pytest>=8", "mcp==2.3.0"]
+
+[tool.setuptools]
+packages = ["document_reader"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"
+filterwarnings = ["ignore:'typing.ByteString':DeprecationWarning"]

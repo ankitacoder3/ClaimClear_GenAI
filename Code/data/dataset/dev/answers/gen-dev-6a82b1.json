@@ -1,0 +1,225 @@
+{
+  "case_id": "gen-dev-6a82b1",
+  "split": "dev",
+  "source": "gen-data",
+  "source_case": "dev-6a82b1",
+  "scenario": {
+    "type": "proportionate",
+    "recipe": "D1 variant 2",
+    "insurer_error": {
+      "kind": "prop_on_medicines"
+    },
+    "summary": "Neha's gall bladder surgery: ICU night then private room, both above caps; pre-admission ultrasound."
+  },
+  "expected": {
+    "overall_verdict": "disputable",
+    "overall_verdict_source": "disputable",
+    "policy_payable": 90879,
+    "insurer_paid": 88928,
+    "gap": 1951,
+    "deductions": [
+      {
+        "particulars": "Less: Room / ICU rent above eligible limit",
+        "amount": 6500,
+        "verdict": "matches_policy",
+        "verdict_source": "matches",
+        "correct_amount": 6500,
+        "why": "Room 3 x 1,500 + ICU 2,000 (Clause 4.1(i)/(ii))."
+      },
+      {
+        "particulars": "Less: Gloves and masks - List I (not payable)",
+        "amount": 750,
+        "verdict": "matches_policy",
+        "verdict_source": "matches",
+        "correct_amount": 750,
+        "why": "List I items 56, 60."
+      },
+      {
+        "particulars": "Less: Mineral water - List I (not payable)",
+        "amount": 160,
+        "verdict": "matches_policy",
+        "verdict_source": "matches",
+        "correct_amount": 160,
+        "why": "List I item 12."
+      },
+      {
+        "particulars": "Less: Admission kit - List II (part of room charges)",
+        "amount": 450,
+        "verdict": "matches_policy",
+        "verdict_source": "matches",
+        "correct_amount": 450,
+        "why": "List II item 27."
+      },
+      {
+        "particulars": "Less: Proportionate deduction (room category above eligibility)",
+        "amount": 20042,
+        "verdict": "does_not_match_policy",
+        "verdict_source": "disputable",
+        "correct_amount": 17988,
+        "why": "Clause 4.1 Note 2 exempts cost of medicines; insurer proportioned the 8,900 drugs too (86,850 x 1,500/6,500 = 20,042)."
+      },
+      {
+        "particulars": "Less: Co-payment 5%",
+        "amount": 4680,
+        "verdict": "method_matches",
+        "verdict_source": "consequential",
+        "correct_amount": 4783,
+        "why": "Method right; base reduced by the excess proportionate cut. 5% of 95,662."
+      }
+    ],
+    "notes": "Both room and ICU exceed caps; per DECISIONS #2 the lower ratio is applied. Drugs & IV fluids treated as medicines (exempt); consumables, implants, diagnostics are proportioned (DECISIONS #1). Pre-hospitalisation bill not proportioned (Note 2 covers expenses \"incurred at the Hospital\")."
+  },
+  "documents": {
+    "policy_wording.pdf": "00_policy_wording.pdf",
+    "policy_schedule.pdf": "01_policy_schedule.pdf",
+    "bill.pdf": "02_itemised_bill.pdf",
+    "settlement_letter.pdf": "03_settlement_letter.pdf",
+    "other_bills.pdf": "05_other_bills.pdf"
+  },
+  "source_answer": {
+    "meta": {
+      "case_id": "dev-6a82b1",
+      "base_id": "D1",
+      "variant": 2,
+      "tag": "MD",
+      "split": "dev",
+      "planted_type": "proportionate",
+      "insurer_error": {
+        "kind": "prop_on_medicines"
+      },
+      "wording": "IFFCO",
+      "wording_uin": "IFFHLIP20161V011920",
+      "correct_settlement": {
+        "billed": 121510,
+        "admissible": 95662,
+        "copay": 4783,
+        "payable": 90879,
+        "rejected": null
+      },
+      "insurer_settlement": {
+        "admissible": 93608,
+        "copay": 4680,
+        "payable": 88928,
+        "rejected": null
+      },
+      "underpaid_by": 1951,
+      "letter_deductions": [
+        {
+          "deduction": "Room / ICU rent above eligible limit",
+          "clause_cited": "4.1(i), 4.1(ii)",
+          "amount": 6500,
+          "verdict": "matches",
+          "correct_amount": 6500
+        },
+        {
+          "deduction": "Gloves and masks - List I (not payable)",
+          "clause_cited": "4.7, Annexure A",
+          "amount": 750,
+          "verdict": "matches",
+          "correct_amount": 750
+        },
+        {
+          "deduction": "Mineral water - List I (not payable)",
+          "clause_cited": "4.7, Annexure A",
+          "amount": 160,
+          "verdict": "matches",
+          "correct_amount": 160
+        },
+        {
+          "deduction": "Admission kit - List II (part of room charges)",
+          "clause_cited": "4.7, Annexure A",
+          "amount": 450,
+          "verdict": "matches",
+          "correct_amount": 450
+        },
+        {
+          "deduction": "Proportionate deduction (room category above eligibility)",
+          "clause_cited": "4.1 Note 2",
+          "amount": 20042,
+          "verdict": "disputable",
+          "correct_amount": 17988
+        },
+        {
+          "deduction": "Co-payment 5%",
+          "clause_cited": "9.3",
+          "amount": 4680,
+          "verdict": "consequential",
+          "correct_amount": 4783
+        }
+      ],
+      "deductions_missing_from_letter": [],
+      "wrong_deductions": [
+        {
+          "deduction": "Co-payment 5%",
+          "clause": "9.3",
+          "correct": 4783,
+          "insurer": 4680,
+          "excess_deducted": -103
+        },
+        {
+          "deduction": "Proportionate deduction (room category above eligibility)",
+          "clause": "4.1 Note 2",
+          "correct": 17988,
+          "insurer": 20042,
+          "excess_deducted": 2054
+        }
+      ],
+      "expected_verdict": "disputable",
+      "doc_tweaks": {},
+      "open_question_flags": [],
+      "story": "Neha's gall bladder surgery: ICU night then private room, both above caps; pre-admission ultrasound."
+    },
+    "gold": {
+      "case_id": "dev-6a82b1",
+      "payable": 90879,
+      "insurer_paid": 88928,
+      "overall": "disputable",
+      "letter_deductions": [
+        {
+          "deduction": "Less: Room / ICU rent above eligible limit",
+          "amount": 6500,
+          "verdict": "matches",
+          "correct_amount": 6500,
+          "why": "Room 3 x 1,500 + ICU 2,000 (Clause 4.1(i)/(ii))."
+        },
+        {
+          "deduction": "Less: Gloves and masks - List I (not payable)",
+          "amount": 750,
+          "verdict": "matches",
+          "correct_amount": 750,
+          "why": "List I items 56, 60."
+        },
+        {
+          "deduction": "Less: Mineral water - List I (not payable)",
+          "amount": 160,
+          "verdict": "matches",
+          "correct_amount": 160,
+          "why": "List I item 12."
+        },
+        {
+          "deduction": "Less: Admission kit - List II (part of room charges)",
+          "amount": 450,
+          "verdict": "matches",
+          "correct_amount": 450,
+          "why": "List II item 27."
+        },
+        {
+          "deduction": "Less: Proportionate deduction (room category above eligibility)",
+          "amount": 20042,
+          "verdict": "disputable",
+          "correct_amount": 17988,
+          "why": "Clause 4.1 Note 2 exempts cost of medicines; insurer proportioned the 8,900 drugs too (86,850 x 1,500/6,500 = 20,042)."
+        },
+        {
+          "deduction": "Less: Co-payment 5%",
+          "amount": 4680,
+          "verdict": "consequential",
+          "correct_amount": 4783,
+          "why": "Method right; base reduced by the excess proportionate cut. 5% of 95,662."
+        }
+      ],
+      "notes": "Both room and ICU exceed caps; per DECISIONS #2 the lower ratio is applied. Drugs & IV fluids treated as medicines (exempt); consumables, implants, diagnostics are proportioned (DECISIONS #1). Pre-hospitalisation bill not proportioned (Note 2 covers expenses \"incurred at the Hospital\")."
+    },
+    "worksheet_md": "# Worksheet dev-6a82b1\n\n## Facts from the documents\n- Policy AS/2026/661794/75, individual, SI 3,00,000, CB 0, period 01/06/2026-31/05/2027, continuous since 01/06/2022.\n- Admission 14/09/2026, discharge 18/09/2026 = 4 days = ICU 1 + room 3 (consistent). Lap cholecystectomy for cholelithiasis.\n- Room 3 x 6,500; ICU 1 x 12,000. Bill total 119,710; other bill 04/09 USG 1,800; claimed 121,510.\n\n## Eligibility checks\n- Renewal with continuous cover since 01/06/2022; admission 14/09/2026 lies within the policy period 01/06/2026-31/05/2027 (Clause 2). 30-day (6.2), 24/48-month (6.3) and PED (6.1) waiting periods: gall bladder calculi 24-month wait (6.3 i.18) completed (>4 years).\n\n## Limits (Clause 4.1(i), 4.1(ii))\n- Room rent cap = min(2% x SI 300,000.00, 5,000) = 5,000.00 per day\n- ICU cap = min(5% x SI 300,000.00, 10,000) = 10,000.00 per day\n- Sum insured used for these % limits is the base SI in the schedule (Clause 3.47 defines SI separately from Cumulative Bonus).\n\n## Proportionate deduction ratio (Clause 4.1 Note 2; DECISIONS #1, #2)\n- ICU rate 12,000.00 > cap 10,000.00 -> ratio 10,000.00/12,000.00 = 0.833333\n- ROOM rate 6,500.00 > cap 5,000.00 -> ratio 5,000.00/6,500.00 = 0.769231\n- Ratio applied to all other hospital charges except medicines = lowest ratio = 0.769231\n\n## Bill lines\n| # | Item | Billed | Treatment | Clause | Admissible before proportion |\n|---|---|---:|---|---|---:|\n| 1 | Surgical ICU - room rent | 12,000.00 | ICU 1 d x 12,000.00 ; cap 10,000.00 /day -> eligible 10,000.00 (excess 2,000.00) | 4.1(ii) | 10,000.00 |\n| 2 | Single private AC - room rent | 19,500.00 | Room 3 d x 6,500.00 ; cap 5,000.00 /day -> eligible 15,000.00 (excess 4,500.00) | 4.1(i) | 15,000.00 |\n| 3 | Surgeon charges - Lap. cholecystectomy | 36,800.00 | Payable; subject to proportion | 4.1(iii)/(iv) | 36,800.00 |\n| 4 | Anaesthesia charges | 10,650.00 | Payable; subject to proportion | 4.1(iii)/(iv) | 10,650.00 |\n| 5 | Physician visit charges | 3,900.00 | Payable; subject to proportion | 4.1(iii)/(iv) | 3,900.00 |\n| 6 | Operation theatre rent | 13,850.00 | Payable; subject to proportion | 4.1(iii)/(iv) | 13,850.00 |\n| 7 | Laboratory & radiology | 6,300.00 | Payable; subject to proportion | 4.1(iii)/(iv) | 6,300.00 |\n| 8 | Drugs & IV fluids | 8,900.00 | Payable; medicines exempt from proportion | 4.1(iv); 4.1 Note 2 | 8,900.00 |\n| 9 | Surgical consumables | 6,450.00 | Payable; subject to proportion | 4.1(iii)/(iv) | 6,450.00 |\n| 10 | Gloves and masks | 750.00 | Not payable: List I items 56 (gloves), 60 (mask) | 4.7, Annexure A | 0.00 |\n| 11 | Mineral water | 160.00 | Not payable: List I item 12 | 4.7, Annexure A | 0.00 |\n| 12 | Admission kit | 450.00 | Not payable: List II item 27 - subsumed into room charges | 4.7, Annexure A | 0.00 |\n| 13 | 04/09/2026 Ultrasound abdomen - other bill | 1,800.00 | Pre-hospitalisation, 10 days before admission, same condition - payable; not proportioned (not incurred at the hospital) | 4.4 / 3.36 | 1,800.00 |\n| | **Total billed/claimed** | **121,510.00** | | | **113,650.00** |\n\n- Check: hospital lines sum to 119,710.00 vs bill grand total 119,710.00 -> agree\n- Total claimed (hospital + other bills) = 121,510.00\n\n## Step results\n1. Room/ICU excess over caps (4.1(i)/(ii)): 6,500.00\n2. Non-payable / subsumed items (4.7, Annexure A; 4.1.1(v); 4.5): 1,360.00\n3. Proportionate deduction (4.1 Note 2): base (non-medicine hospital charges other than room/ICU) 77,950.00 x (1 - 0.769231) = 17,988.46 -> rounded 17,988\n4. Admissible before sub-limit/co-pay = 95,662.00\n5. Sub-limits: none applicable\n6. Co-payment 5% (Clause 9.3; DECISIONS #3, on admissible after all deductions/sub-limits): 95,662.00 x 5% = 4,783.10 -> 4,783\n7. Net after co-pay = 90,879.00\n8. Sum insured + CB this policy year = 300,000.00; earlier claims paid 0.00 / admitted 0.00 -> available 300,000.00 (by paid) / 300,000.00 (by admitted) (Clause 2, 3.47, DECISIONS #4)\n9. **Payable = 90,879**\n\n## Comparison with the settlement letter\n| Letter deduction | Amount | Verdict | Correct amount | Why |\n|---|---:|---|---:|---|\n| Less: Room / ICU rent above eligible limit | 6,500 | matches | 6,500 | Room 3 x 1,500 + ICU 2,000 (Clause 4.1(i)/(ii)). |\n| Less: Gloves and masks - List I (not payable) | 750 | matches | 750 | List I items 56, 60. |\n| Less: Mineral water - List I (not payable) | 160 | matches | 160 | List I item 12. |\n| Less: Admission kit - List II (part of room charges) | 450 | matches | 450 | List II item 27. |\n| Less: Proportionate deduction (room category above eligibility) | 20,042 | disputable | 17,988 | Clause 4.1 Note 2 exempts cost of medicines; insurer proportioned the 8,900 drugs too (86,850 x 1,500/6,500 = 20,042). |\n| Less: Co-payment 5% | 4,680 | consequential | 4,783 | Method right; base reduced by the excess proportionate cut. 5% of 95,662. |\n\n- Insurer paid: 88,928 ; gold payable: 90,879 ; difference (payable - paid): 1,951\n- Overall: **disputable**\n\n## Notes\nBoth room and ICU exceed caps; per DECISIONS #2 the lower ratio is applied. Drugs & IV fluids treated as medicines (exempt); consumables, implants, diagnostics are proportioned (DECISIONS #1). Pre-hospitalisation bill not proportioned (Note 2 covers expenses \"incurred at the Hospital\").\n"
+  }
+}

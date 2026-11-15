@@ -1,0 +1,268 @@
+{
+  "case_id": "syn-dev-018",
+  "split": "dev",
+  "source": "claimclear-synthetic",
+  "source_case": "dev/case-018",
+  "scenario": {
+    "type": "malicious",
+    "title": "Exact duplicate of a bill that was already paid",
+    "what_changed": "Nothing edited on the page. The whole bill was already paid under CLM-2025-00811.",
+    "attack_goal": "Claim twice for one admission. The document alone is flawless.",
+    "expected_flags": [
+      "duplicate_invoice_exact"
+    ]
+  },
+  "expected": {
+    "overall_verdict": "matches_policy",
+    "overall_verdict_source": "settlement_matches_policy",
+    "policy_payable": 0.0,
+    "insurer_paid": 0.0,
+    "gap": 0.0,
+    "disputable_amount": 0.0,
+    "unverified_amount": 0.0,
+    "deductions": [],
+    "rejection": {
+      "kind": "duplicate",
+      "reason": "This hospitalisation was already settled under claim CLM-2025-00811 (Vrindaloka Memorial Hospital, admitted 18-Aug-2025, acute appendicitis). The same expenses cannot be paid twice.",
+      "expected_verdict": "matches_policy"
+    },
+    "notes": "Matches: the expenses were already paid."
+  },
+  "documents": {
+    "bill.pdf": "MAL-02",
+    "settlement_letter.pdf": "SET-13",
+    "policy_schedule.pdf": "SCH-MAL-02"
+  },
+  "source_answer": {
+    "MAL-02": {
+      "doc_id": "MAL-02",
+      "file": "dev/cases/syn-dev-018/bill.pdf",
+      "sha256": "36066adb7818e6703bd4c15436230bb81d26f29bbe5506f713c7122e6fe188af",
+      "category": "malicious",
+      "document_type": "bill",
+      "status": "Duplicate",
+      "what_changed_and_where": "Nothing edited on the page. The whole bill was already paid under CLM-2025-00811.",
+      "title": "Exact duplicate of a bill that was already paid",
+      "format": "Digital PDF",
+      "expected_verdict": "reject",
+      "expected_flags": [
+        "duplicate_invoice_exact"
+      ],
+      "attack_goal": "Claim twice for one admission. The document alone is flawless.",
+      "detection_signals": [
+        "Invoice number, IP number and lines match settled claim CLM-2025-00811",
+        "Only claim history can catch this"
+      ],
+      "notes": "",
+      "details": {
+        "duplicate_of": "CLM-2025-00811"
+      },
+      "invoices": [
+        {
+          "provider_name": "Vrindaloka Memorial Hospital",
+          "provider_gstin": "00AAVFV1234Q1Z5",
+          "provider_registration_no": "FIC/PMC/HOSP/00412",
+          "invoice_no": "VML/25-26/004417",
+          "invoice_date": "2025-08-21",
+          "patient_name": "Lavanya Ikkurthi",
+          "sex": "F",
+          "age": 53,
+          "policy_no": "AS-2025-101122",
+          "uhid": "VML-0046230",
+          "ip_no": "IP/2508/1466",
+          "admission": "2025-08-18",
+          "discharge": "2025-08-21",
+          "diagnosis": "Acute appendicitis",
+          "procedure": "Laparoscopic appendectomy",
+          "tariff_key": "lap_appendectomy",
+          "line_items": [
+            {
+              "description": "Semi-private room",
+              "qty": 3.0,
+              "rate": 4000.0,
+              "printed_amount": 12000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Nursing and duty doctor charges",
+              "qty": 3.0,
+              "rate": 1100.0,
+              "printed_amount": 3300.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Surgeon fee - laparoscopic appendectomy",
+              "qty": 1.0,
+              "rate": 25000.0,
+              "printed_amount": 25000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Anaesthetist fee",
+              "qty": 1.0,
+              "rate": 8000.0,
+              "printed_amount": 8000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Operation theatre charges",
+              "qty": 1.0,
+              "rate": 15000.0,
+              "printed_amount": 15000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Consultant visits",
+              "qty": 3.0,
+              "rate": 1400.0,
+              "printed_amount": 4200.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Laboratory investigations",
+              "qty": 1.0,
+              "rate": 6100.0,
+              "printed_amount": 6100.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "USG abdomen",
+              "qty": 1.0,
+              "rate": 2200.0,
+              "printed_amount": 2200.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Pharmacy - inpatient medicines",
+              "qty": 1.0,
+              "rate": 8540.0,
+              "printed_amount": 8540.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Consumables - gloves, masks, syringes, caps",
+              "qty": 1.0,
+              "rate": 2000.0,
+              "printed_amount": 2000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": true
+            }
+          ],
+          "sum_of_printed_lines": 86340.0,
+          "sum_of_qty_x_rate": 86340.0,
+          "cgst": 0.0,
+          "sgst": 0.0,
+          "discount": 0.0,
+          "recomputed_total": 86340.0,
+          "printed_total": 86340.0,
+          "advance": 0.0,
+          "balance_payable": 86340.0
+        }
+      ]
+    },
+    "SET-13": {
+      "doc_id": "SET-13",
+      "file": "dev/cases/syn-dev-018/settlement_letter.pdf",
+      "sha256": "1180cfec779c158411856f57629797eec122952f2ec783dbbb74b32bb64f4675",
+      "category": "settlement_letters",
+      "document_type": "settlement",
+      "status": "Good",
+      "what_changed_and_where": "Correct rejection: already paid under CLM-2025-00811.",
+      "title": "Duplicate claim rejected",
+      "format": "Insurer letter PDF",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "The insurer's decision is right. ClaimClear must not draft a grievance.",
+      "detection_signals": [
+        "Same admission as CLM-2025-00811"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "MAL-02",
+        "claim_no": "AGI/HC/2526/007110",
+        "letter_type": "rejection",
+        "letter_date": "2026-01-20",
+        "policy_no": "AS-2025-101122",
+        "patient_name": "Lavanya Ikkurthi",
+        "hospital": "Vrindaloka Memorial Hospital",
+        "bill_invoice_no": "VML/25-26/004417",
+        "admission": "2025-08-18",
+        "discharge": "2025-08-21",
+        "claimed_amount": 86340.0,
+        "copay_pct_applied": 5.0,
+        "rejection_kind": "duplicate",
+        "duplicate_of": "CLM-2025-00811",
+        "insurer_deductions": [],
+        "rejection_reason": "This hospitalisation was already settled under claim CLM-2025-00811 (Vrindaloka Memorial Hospital, admitted 18-Aug-2025, acute appendicitis). The same expenses cannot be paid twice.",
+        "rejection_expected_verdict": "matches_policy",
+        "insurer_admissible": 0.0,
+        "insurer_copay": 0.0,
+        "insurer_paid": 0.0,
+        "expected_payable": 0.0,
+        "disputable_amount": 0.0,
+        "unverified_amount": 0.0,
+        "insurer_method": "Matches: the expenses were already paid."
+      }
+    },
+    "SCH-MAL-02": {
+      "doc_id": "SCH-MAL-02",
+      "file": "dev/cases/syn-dev-018/policy_schedule.pdf",
+      "sha256": "fe2215a0a21ee73872572fc6ad036685c0be9b552591b57adbdd4e2fb034f0d7",
+      "category": "policy_schedules",
+      "document_type": "schedule",
+      "status": "Good",
+      "what_changed_and_where": "Nothing changed. Same policy as POI-03, so the two schedules are identical files.",
+      "title": "Policy schedule for MAL-02",
+      "format": "Insurer schedule PDF",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "MAL-02",
+        "policy_no": "AS-2025-101122",
+        "holder": "Lavanya Ikkurthi",
+        "sex": "F",
+        "dob": "1972-06-30",
+        "sum_insured": 500000,
+        "period_start": "2025-06-01",
+        "period_end": "2026-05-31",
+        "first_inception": "2022-06-01",
+        "product": "Arogya Sanjeevani Policy",
+        "insurer": "Aarohan General Insurance Ltd.",
+        "address": "42 Fictional Colony, Pune 000411",
+        "issued": "2025-05-28",
+        "premium": 9400.0,
+        "wording_uin": "GODHLIP24179V022324",
+        "copay_pct": 5,
+        "in_insurer_records": true
+      }
+    }
+  }
+}

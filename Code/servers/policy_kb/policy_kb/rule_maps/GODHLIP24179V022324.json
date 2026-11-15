@@ -1,0 +1,39 @@
+{
+  "wording": "GODHLIP24179V022324",
+  "insurer": "Go Digit General Insurance Limited",
+  "product": "Arogya Sanjeevani Policy",
+  "checked_on": "2026-11-09",
+  "checked_by": "Member 2 (each clause read against the downloaded PDF, SHA-256 70ec4e51...a75b)",
+  "note": "Maps the settlement engine's rule_ref values (servers/settlement_engine/engine/rules.py RULE_REFS) to clause IDs in this wording. The first clause listed is the one to cite; the rest are supporting definitions or lists.",
+  "rules": {
+    "room_rent_cap": {"clauses": ["C.1", "B.40"], "where": "C.1 item i: room rent up to 2% of sum insured, maximum Rs. 5,000 per day"},
+    "icu_cap": {"clauses": ["C.1", "B.24"], "where": "C.1 item ii: ICU/ICCU up to 5% of sum insured, maximum Rs. 10,000 per day"},
+    "gst_follows_charge": {"clauses": [], "where": "Not addressed in this wording; the engine's rule follows general practice. Member 1 to confirm."},
+    "proportionate_deduction": {
+      "clauses": ["C.1.1"],
+      "where": "C.1.1 Notes 2 and 3: proportionate deduction except pharmacy and consumables, implants and medical devices, diagnostics; not applied where the hospital does not follow differential billing",
+      "differs_from_engine": "Note 2 applies the proportionate deduction when the room OR ICU/ICCU rate exceeds its limit. The engine (IRDAI 2020 norm) never triggers it from an ICU excess. Decided: the engine keeps the IRDAI 2020 rule (eval/dev_cases/decisions.json)."
+    },
+    "non_payable_items": {
+      "clauses": ["C.7", "Annexure A List I", "Annexure A List II", "Annexure A List III", "Annexure A List IV", "Annexure A List V"],
+      "where": "C.7 points to Annexure A: List I optional (non-payable) items, Lists II-IV items subsumed into room, procedure or treatment charges, List V additional non-payable items"
+    },
+    "cataract_limit": {"clauses": ["C.3"], "where": "C.3: 25% of sum insured or Rs. 40,000, whichever is lower, per eye per policy year"},
+    "initial_waiting_period": {"clauses": ["D.2"], "where": "D.2 (Code Excl03): first 30 days, except accidents"},
+    "listed_illness_waiting_period": {"clauses": ["D.3"], "where": "D.3 (Code Excl02): 24 months for the listed conditions, 36 months for joint replacement and age-related osteoarthritis/osteoporosis; continuity of cover counts"},
+    "pre_existing_waiting_period": {"clauses": ["D.1", "B.34"], "where": "D.1 (Code Excl01): 36 months of continuous coverage from first inception"},
+    "copay": {"clauses": ["E.28.3", "B.10"], "where": "E.28.3: each claim subject to a co-payment of 5% of the admissible claim amount; amount payable is after the co-payment"},
+    "sum_insured": {"clauses": ["A", "B.51"], "where": "A (operative clause): maximum liability per policy year is the sum insured plus cumulative bonus"},
+    "expenses_actually_incurred": {"clauses": ["B.26"], "where": "B.26 defines Medical Expenses as those necessarily and actually incurred, so a charge billed twice for the same day is paid once"},
+    "pre_hospitalisation": {"clauses": ["C.4", "B.35"], "where": "C.4: pre-hospitalisation expenses for a fixed period of 30 days before the admission"},
+    "post_hospitalisation": {"clauses": ["C.5", "B.36"], "where": "C.5: post-hospitalisation expenses for a fixed period of 60 days from the discharge"},
+    "ambulance_limit": {"clauses": ["C.1.1"], "where": "C.1.1 item v: road ambulance up to Rs. 2,000 per hospitalisation (Annexure A List I item 67 points to this sub-limit)"},
+    "policy_period": {"clauses": ["A"], "where": "A (operative clause): the company pays when an insured person is hospitalised during the policy period"}
+  },
+  "other_useful_clauses": {
+    "claim_settlement_timeline": ["E.16"],
+    "grievance_redressal": ["E.17", "Annexure B"],
+    "claim_documents_and_notification": ["E.28.2"],
+    "cashless_procedure": ["E.28.1"]
+  }
+}

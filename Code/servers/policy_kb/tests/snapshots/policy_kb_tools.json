@@ -1,0 +1,1066 @@
+[
+  {
+    "annotations": {
+      "destructive_hint": false,
+      "idempotent_hint": true,
+      "open_world_hint": false,
+      "read_only_hint": true
+    },
+    "input_schema": {
+      "properties": {
+        "case_id": {
+          "anyOf": [
+            {
+              "pattern": "^case_[0-9a-f]{16}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Required with an uploaded wording (upload:doc_...)",
+          "title": "Case Id"
+        },
+        "rule_ref": {
+          "description": "A settlement-engine rule_ref, e.g. 'room_rent_cap', 'copay'",
+          "maxLength": 60,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "title": "Rule Ref",
+          "type": "string"
+        },
+        "wording_uin": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Z]{7}\\d{5}V\\d{6}$|^upload:doc_[0-9a-f]{16}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The case's wording (case-records get_policy wording_uin). Omit for the default wording.",
+          "title": "Wording Uin"
+        }
+      },
+      "required": [
+        "rule_ref"
+      ],
+      "title": "clauses_for_ruleArguments",
+      "type": "object"
+    },
+    "meta": {
+      "access": "read"
+    },
+    "name": "clauses_for_rule",
+    "output_schema": {
+      "$defs": {
+        "ClauseOut": {
+          "additionalProperties": false,
+          "properties": {
+            "citation": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Citation"
+            },
+            "clause_id": {
+              "title": "Clause Id",
+              "type": "string"
+            },
+            "codes": {
+              "description": "IRDAI exclusion codes printed in the clause, e.g. Excl01",
+              "items": {
+                "type": "string"
+              },
+              "title": "Codes",
+              "type": "array"
+            },
+            "found": {
+              "description": "False when the wording has no such clause; then do not cite it",
+              "title": "Found",
+              "type": "boolean"
+            },
+            "page_end": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Page End"
+            },
+            "page_start": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Page Start"
+            },
+            "parent_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Parent Id"
+            },
+            "section": {
+              "title": "Section",
+              "type": "string"
+            },
+            "synthetic": {
+              "title": "Synthetic",
+              "type": "boolean"
+            },
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "title": {
+              "title": "Title",
+              "type": "string"
+            },
+            "wording": {
+              "$ref": "#/$defs/WordingOut"
+            }
+          },
+          "required": [
+            "found",
+            "clause_id",
+            "title",
+            "section",
+            "parent_id",
+            "text",
+            "page_start",
+            "page_end",
+            "codes",
+            "citation",
+            "wording",
+            "synthetic"
+          ],
+          "title": "ClauseOut",
+          "type": "object"
+        },
+        "WordingOut": {
+          "additionalProperties": false,
+          "description": "Which policy wording the clauses come from.",
+          "properties": {
+            "downloaded_on": {
+              "description": "ISO date the wording was downloaded",
+              "title": "Downloaded On",
+              "type": "string"
+            },
+            "insurer": {
+              "title": "Insurer",
+              "type": "string"
+            },
+            "product": {
+              "title": "Product",
+              "type": "string"
+            },
+            "reviewed": {
+              "description": "False for uploaded wordings: say the wording was not reviewed when quoting it",
+              "title": "Reviewed",
+              "type": "boolean"
+            },
+            "sha256": {
+              "description": "SHA-256 of the downloaded file",
+              "title": "Sha256",
+              "type": "string"
+            },
+            "source": {
+              "description": "catalogue: a reviewed, pre-stored wording; uploaded: the policyholder's own PDF",
+              "enum": [
+                "catalogue",
+                "uploaded"
+              ],
+              "title": "Source",
+              "type": "string"
+            },
+            "source_url": {
+              "title": "Source Url",
+              "type": "string"
+            },
+            "synthetic": {
+              "description": "True for a test wording: never show its text to a user as policy wording",
+              "title": "Synthetic",
+              "type": "boolean"
+            },
+            "uin": {
+              "description": "IRDAI unique identification number of the product",
+              "title": "Uin",
+              "type": "string"
+            },
+            "version": {
+              "title": "Version",
+              "type": "string"
+            }
+          },
+          "required": [
+            "insurer",
+            "product",
+            "uin",
+            "version",
+            "source_url",
+            "downloaded_on",
+            "sha256",
+            "synthetic",
+            "source",
+            "reviewed"
+          ],
+          "title": "WordingOut",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "clauses": {
+          "description": "The first is the clause to cite; may be empty if the wording does not address the rule",
+          "items": {
+            "$ref": "#/$defs/ClauseOut"
+          },
+          "title": "Clauses",
+          "type": "array"
+        },
+        "differs_from_engine": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Set when the wording and the settlement engine disagree; a verdict-policy decision",
+          "title": "Differs From Engine"
+        },
+        "rule_ref": {
+          "title": "Rule Ref",
+          "type": "string"
+        },
+        "synthetic": {
+          "title": "Synthetic",
+          "type": "boolean"
+        },
+        "where": {
+          "description": "Where in the clauses the rule is stated (reviewed note)",
+          "title": "Where",
+          "type": "string"
+        },
+        "wording": {
+          "$ref": "#/$defs/WordingOut"
+        }
+      },
+      "required": [
+        "rule_ref",
+        "where",
+        "differs_from_engine",
+        "clauses",
+        "wording",
+        "synthetic"
+      ],
+      "title": "RuleClausesOut",
+      "type": "object"
+    }
+  },
+  {
+    "annotations": {
+      "destructive_hint": false,
+      "idempotent_hint": true,
+      "open_world_hint": false,
+      "read_only_hint": true
+    },
+    "input_schema": {
+      "properties": {
+        "case_id": {
+          "anyOf": [
+            {
+              "pattern": "^case_[0-9a-f]{16}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Required with an uploaded wording (upload:doc_...)",
+          "title": "Case Id"
+        },
+        "clause_id": {
+          "description": "Printed clause number, e.g. 'C.1.1', '5.2', 'Annexure A List I'",
+          "maxLength": 60,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9 .\\-\u2013]+$",
+          "title": "Clause Id",
+          "type": "string"
+        },
+        "wording_uin": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Z]{7}\\d{5}V\\d{6}$|^upload:doc_[0-9a-f]{16}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The case's wording (case-records get_policy wording_uin). Omit for the default wording.",
+          "title": "Wording Uin"
+        }
+      },
+      "required": [
+        "clause_id"
+      ],
+      "title": "get_clauseArguments",
+      "type": "object"
+    },
+    "meta": {
+      "access": "read"
+    },
+    "name": "get_clause",
+    "output_schema": {
+      "$defs": {
+        "WordingOut": {
+          "additionalProperties": false,
+          "description": "Which policy wording the clauses come from.",
+          "properties": {
+            "downloaded_on": {
+              "description": "ISO date the wording was downloaded",
+              "title": "Downloaded On",
+              "type": "string"
+            },
+            "insurer": {
+              "title": "Insurer",
+              "type": "string"
+            },
+            "product": {
+              "title": "Product",
+              "type": "string"
+            },
+            "reviewed": {
+              "description": "False for uploaded wordings: say the wording was not reviewed when quoting it",
+              "title": "Reviewed",
+              "type": "boolean"
+            },
+            "sha256": {
+              "description": "SHA-256 of the downloaded file",
+              "title": "Sha256",
+              "type": "string"
+            },
+            "source": {
+              "description": "catalogue: a reviewed, pre-stored wording; uploaded: the policyholder's own PDF",
+              "enum": [
+                "catalogue",
+                "uploaded"
+              ],
+              "title": "Source",
+              "type": "string"
+            },
+            "source_url": {
+              "title": "Source Url",
+              "type": "string"
+            },
+            "synthetic": {
+              "description": "True for a test wording: never show its text to a user as policy wording",
+              "title": "Synthetic",
+              "type": "boolean"
+            },
+            "uin": {
+              "description": "IRDAI unique identification number of the product",
+              "title": "Uin",
+              "type": "string"
+            },
+            "version": {
+              "title": "Version",
+              "type": "string"
+            }
+          },
+          "required": [
+            "insurer",
+            "product",
+            "uin",
+            "version",
+            "source_url",
+            "downloaded_on",
+            "sha256",
+            "synthetic",
+            "source",
+            "reviewed"
+          ],
+          "title": "WordingOut",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "citation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Citation"
+        },
+        "clause_id": {
+          "title": "Clause Id",
+          "type": "string"
+        },
+        "codes": {
+          "description": "IRDAI exclusion codes printed in the clause, e.g. Excl01",
+          "items": {
+            "type": "string"
+          },
+          "title": "Codes",
+          "type": "array"
+        },
+        "found": {
+          "description": "False when the wording has no such clause; then do not cite it",
+          "title": "Found",
+          "type": "boolean"
+        },
+        "page_end": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Page End"
+        },
+        "page_start": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Page Start"
+        },
+        "parent_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Parent Id"
+        },
+        "section": {
+          "title": "Section",
+          "type": "string"
+        },
+        "synthetic": {
+          "title": "Synthetic",
+          "type": "boolean"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "wording": {
+          "$ref": "#/$defs/WordingOut"
+        }
+      },
+      "required": [
+        "found",
+        "clause_id",
+        "title",
+        "section",
+        "parent_id",
+        "text",
+        "page_start",
+        "page_end",
+        "codes",
+        "citation",
+        "wording",
+        "synthetic"
+      ],
+      "title": "ClauseOut",
+      "type": "object"
+    }
+  },
+  {
+    "annotations": {
+      "destructive_hint": false,
+      "idempotent_hint": true,
+      "open_world_hint": false,
+      "read_only_hint": true
+    },
+    "input_schema": {
+      "properties": {
+        "case_id": {
+          "anyOf": [
+            {
+              "pattern": "^case_[0-9a-f]{16}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Required with an uploaded wording (upload:doc_...)",
+          "title": "Case Id"
+        },
+        "insurer": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Insurer"
+        },
+        "query": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Query"
+        }
+      },
+      "title": "list_policiesArguments",
+      "type": "object"
+    },
+    "meta": {
+      "access": "read"
+    },
+    "name": "list_policies",
+    "output_schema": {
+      "$defs": {
+        "PolicySummaryOut": {
+          "additionalProperties": false,
+          "properties": {
+            "clause_count": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Clause Count"
+            },
+            "has_rule_map": {
+              "description": "False: clauses_for_rule returns NO_RULE_MAP; use search_clauses",
+              "title": "Has Rule Map",
+              "type": "boolean"
+            },
+            "index_available": {
+              "title": "Index Available",
+              "type": "boolean"
+            },
+            "insurer": {
+              "title": "Insurer",
+              "type": "string"
+            },
+            "product": {
+              "title": "Product",
+              "type": "string"
+            },
+            "reviewed": {
+              "title": "Reviewed",
+              "type": "boolean"
+            },
+            "source": {
+              "enum": [
+                "catalogue",
+                "uploaded"
+              ],
+              "title": "Source",
+              "type": "string"
+            },
+            "version": {
+              "title": "Version",
+              "type": "string"
+            },
+            "wording_uin": {
+              "description": "Pass to the other policy-kb tools as wording_uin",
+              "title": "Wording Uin",
+              "type": "string"
+            }
+          },
+          "required": [
+            "wording_uin",
+            "insurer",
+            "product",
+            "version",
+            "source",
+            "reviewed",
+            "index_available",
+            "clause_count",
+            "has_rule_map"
+          ],
+          "title": "PolicySummaryOut",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "default_wording_uin": {
+          "title": "Default Wording Uin",
+          "type": "string"
+        },
+        "policies": {
+          "items": {
+            "$ref": "#/$defs/PolicySummaryOut"
+          },
+          "title": "Policies",
+          "type": "array"
+        }
+      },
+      "required": [
+        "default_wording_uin",
+        "policies"
+      ],
+      "title": "ListPoliciesOut",
+      "type": "object"
+    }
+  },
+  {
+    "annotations": {
+      "destructive_hint": false,
+      "idempotent_hint": true,
+      "open_world_hint": false,
+      "read_only_hint": false
+    },
+    "input_schema": {
+      "$defs": {
+        "PageIn": {
+          "additionalProperties": false,
+          "properties": {
+            "page": {
+              "maximum": 10000,
+              "minimum": 1,
+              "title": "Page",
+              "type": "integer"
+            },
+            "text": {
+              "description": "Visible text of the page only (case-records page.text), never hidden_text",
+              "maxLength": 20000,
+              "title": "Text",
+              "type": "string"
+            }
+          },
+          "required": [
+            "page",
+            "text"
+          ],
+          "title": "PageIn",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "case_id": {
+          "description": "The case the upload belongs to",
+          "pattern": "^case_[0-9a-f]{16}$",
+          "title": "Case Id",
+          "type": "string"
+        },
+        "document_id": {
+          "description": "The uploaded policy's document_id",
+          "pattern": "^doc_[0-9a-f]{16}$",
+          "title": "Document Id",
+          "type": "string"
+        },
+        "pages": {
+          "items": {
+            "$ref": "#/$defs/PageIn"
+          },
+          "maxItems": 300,
+          "minItems": 1,
+          "title": "Pages",
+          "type": "array"
+        }
+      },
+      "required": [
+        "case_id",
+        "document_id",
+        "pages"
+      ],
+      "title": "register_uploaded_wordingArguments",
+      "type": "object"
+    },
+    "meta": {
+      "access": "write",
+      "caller": "app"
+    },
+    "name": "register_uploaded_wording",
+    "output_schema": {
+      "additionalProperties": false,
+      "properties": {
+        "case_id": {
+          "title": "Case Id",
+          "type": "string"
+        },
+        "catalogue_match": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Set when the detected UIN is in the catalogue: the reviewed copy can be used instead",
+          "title": "Catalogue Match"
+        },
+        "clause_count": {
+          "title": "Clause Count",
+          "type": "integer"
+        },
+        "detected_uin": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Detected Uin"
+        },
+        "document_id": {
+          "title": "Document Id",
+          "type": "string"
+        },
+        "in_scope": {
+          "description": "False when the text doesn't look like an Arogya Sanjeevani policy",
+          "title": "In Scope",
+          "type": "boolean"
+        },
+        "reviewed": {
+          "title": "Reviewed",
+          "type": "boolean"
+        },
+        "structure": {
+          "description": "pages: numbered clauses weren't recognised, so each page is one searchable chunk",
+          "enum": [
+            "clauses",
+            "pages"
+          ],
+          "title": "Structure",
+          "type": "string"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        },
+        "wording_uin": {
+          "description": "upload:doc_<id>; store it on the case (case-records set_wording)",
+          "title": "Wording Uin",
+          "type": "string"
+        }
+      },
+      "required": [
+        "wording_uin",
+        "case_id",
+        "document_id",
+        "clause_count",
+        "structure",
+        "in_scope",
+        "detected_uin",
+        "catalogue_match",
+        "reviewed",
+        "warnings"
+      ],
+      "title": "RegisterUploadOut",
+      "type": "object"
+    }
+  },
+  {
+    "annotations": {
+      "destructive_hint": false,
+      "idempotent_hint": true,
+      "open_world_hint": false,
+      "read_only_hint": true
+    },
+    "input_schema": {
+      "properties": {
+        "case_id": {
+          "anyOf": [
+            {
+              "pattern": "^case_[0-9a-f]{16}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Required with an uploaded wording (upload:doc_...)",
+          "title": "Case Id"
+        },
+        "k": {
+          "default": 5,
+          "description": "How many clauses to return (1-10)",
+          "maximum": 10,
+          "minimum": 1,
+          "title": "K",
+          "type": "integer"
+        },
+        "query": {
+          "description": "The policyholder's question or policy terms, e.g. 'why did they cut my medicine bill'",
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Query",
+          "type": "string"
+        },
+        "wording_uin": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Z]{7}\\d{5}V\\d{6}$|^upload:doc_[0-9a-f]{16}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The case's wording (case-records get_policy wording_uin). Omit for the default wording.",
+          "title": "Wording Uin"
+        }
+      },
+      "required": [
+        "query"
+      ],
+      "title": "search_clausesArguments",
+      "type": "object"
+    },
+    "meta": {
+      "access": "read"
+    },
+    "name": "search_clauses",
+    "output_schema": {
+      "$defs": {
+        "ClauseHitOut": {
+          "additionalProperties": false,
+          "properties": {
+            "citation": {
+              "description": "Wording and clause number, to show next to a quote",
+              "title": "Citation",
+              "type": "string"
+            },
+            "clause_id": {
+              "description": "As printed in the wording, e.g. C.1.1; pass to get_clause",
+              "title": "Clause Id",
+              "type": "string"
+            },
+            "page_end": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Page End"
+            },
+            "page_start": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Page Start"
+            },
+            "ranks": {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "description": "1-based rank in each retriever (bm25, vector, rerank)",
+              "title": "Ranks",
+              "type": "object"
+            },
+            "score": {
+              "description": "Ranking score; only meaningful for ordering",
+              "title": "Score",
+              "type": "number"
+            },
+            "section": {
+              "title": "Section",
+              "type": "string"
+            },
+            "text": {
+              "description": "The clause's own text, exactly as extracted",
+              "title": "Text",
+              "type": "string"
+            },
+            "title": {
+              "title": "Title",
+              "type": "string"
+            }
+          },
+          "required": [
+            "clause_id",
+            "title",
+            "section",
+            "text",
+            "score",
+            "page_start",
+            "page_end",
+            "ranks",
+            "citation"
+          ],
+          "title": "ClauseHitOut",
+          "type": "object"
+        },
+        "WordingOut": {
+          "additionalProperties": false,
+          "description": "Which policy wording the clauses come from.",
+          "properties": {
+            "downloaded_on": {
+              "description": "ISO date the wording was downloaded",
+              "title": "Downloaded On",
+              "type": "string"
+            },
+            "insurer": {
+              "title": "Insurer",
+              "type": "string"
+            },
+            "product": {
+              "title": "Product",
+              "type": "string"
+            },
+            "reviewed": {
+              "description": "False for uploaded wordings: say the wording was not reviewed when quoting it",
+              "title": "Reviewed",
+              "type": "boolean"
+            },
+            "sha256": {
+              "description": "SHA-256 of the downloaded file",
+              "title": "Sha256",
+              "type": "string"
+            },
+            "source": {
+              "description": "catalogue: a reviewed, pre-stored wording; uploaded: the policyholder's own PDF",
+              "enum": [
+                "catalogue",
+                "uploaded"
+              ],
+              "title": "Source",
+              "type": "string"
+            },
+            "source_url": {
+              "title": "Source Url",
+              "type": "string"
+            },
+            "synthetic": {
+              "description": "True for a test wording: never show its text to a user as policy wording",
+              "title": "Synthetic",
+              "type": "boolean"
+            },
+            "uin": {
+              "description": "IRDAI unique identification number of the product",
+              "title": "Uin",
+              "type": "string"
+            },
+            "version": {
+              "title": "Version",
+              "type": "string"
+            }
+          },
+          "required": [
+            "insurer",
+            "product",
+            "uin",
+            "version",
+            "source_url",
+            "downloaded_on",
+            "sha256",
+            "synthetic",
+            "source",
+            "reviewed"
+          ],
+          "title": "WordingOut",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "hits": {
+          "items": {
+            "$ref": "#/$defs/ClauseHitOut"
+          },
+          "title": "Hits",
+          "type": "array"
+        },
+        "query": {
+          "title": "Query",
+          "type": "string"
+        },
+        "synthetic": {
+          "title": "Synthetic",
+          "type": "boolean"
+        },
+        "wording": {
+          "$ref": "#/$defs/WordingOut"
+        }
+      },
+      "required": [
+        "query",
+        "wording",
+        "synthetic",
+        "hits"
+      ],
+      "title": "SearchClausesOut",
+      "type": "object"
+    }
+  }
+]

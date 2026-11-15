@@ -1,0 +1,6171 @@
+{
+ "dataset_id": "SET-01",
+ "case_id": "case_dfffbb62bd3168eb",
+ "claim": {
+  "claim_id": "AGI/HC/2526/004512",
+  "policy_no": "AS-2025-100478",
+  "admission": "2026-01-19",
+  "discharge": "2026-01-22",
+  "lines": [
+   {
+    "line_id": "L01",
+    "description": "Private room",
+    "amount": "21000.0",
+    "qty": "3.0",
+    "rate": "7000.0",
+    "gst_pct": "5.0",
+    "non_payable": null,
+    "category": null,
+    "date": null
+   },
+   {
+    "line_id": "L02",
+    "description": "Nursing and duty doctor charges",
+    "amount": "4500.0",
+    "qty": "3.0",
+    "rate": "1500.0",
+    "gst_pct": "0",
+    "non_payable": null,
+    "category": null,
+    "date": null
+   },
+   {
+    "line_id": "L03",
+    "description": "Surgeon fee - laparoscopic cholecystectomy",
+    "amount": "32000.0",
+    "qty": "1.0",
+    "rate": "32000.0",
+    "gst_pct": "0",
+    "non_payable": null,
+    "category": null,
+    "date": null
+   },
+   {
+    "line_id": "L04",
+    "description": "Anaesthetist fee",
+    "amount": "11000.0",
+    "qty": "1.0",
+    "rate": "11000.0",
+    "gst_pct": "0",
+    "non_payable": null,
+    "category": null,
+    "date": null
+   },
+   {
+    "line_id": "L05",
+    "description": "Operation theatre charges",
+    "amount": "22000.0",
+    "qty": "1.0",
+    "rate": "22000.0",
+    "gst_pct": "0",
+    "non_payable": null,
+    "category": null,
+    "date": null
+   },
+   {
+    "line_id": "L06",
+    "description": "Consultant visits",
+    "amount": "5400.0",
+    "qty": "3.0",
+    "rate": "1800.0",
+    "gst_pct": "0",
+    "non_payable": null,
+    "category": null,
+    "date": null
+   },
+   {
+    "line_id": "L07",
+    "description": "Laboratory investigations",
+    "amount": "7200.0",
+    "qty": "1.0",
+    "rate": "7200.0",
+    "gst_pct": "0",
+    "non_payable": null,
+    "category": null,
+    "date": null
+   },
+   {
+    "line_id": "L08",
+    "description": "MRCP",
+    "amount": "6500.0",
+    "qty": "1.0",
+    "rate": "6500.0",
+    "gst_pct": "0",
+    "non_payable": null,
+    "category": null,
+    "date": null
+   },
+   {
+    "line_id": "L09",
+    "description": "Pharmacy - inpatient medicines",
+    "amount": "12900.0",
+    "qty": "1.0",
+    "rate": "12900.0",
+    "gst_pct": "0",
+    "non_payable": null,
+    "category": null,
+    "date": null
+   },
+   {
+    "line_id": "L10",
+    "description": "Laparoscopic clips and retrieval bag",
+    "amount": "4800.0",
+    "qty": "1.0",
+    "rate": "4800.0",
+    "gst_pct": "0",
+    "non_payable": null,
+    "category": null,
+    "date": null
+   }
+  ],
+  "diagnosis": "Cholelithiasis with cholecystitis",
+  "procedure": "Laparoscopic cholecystectomy",
+  "discount": "0",
+  "printed_total": "128350.0",
+  "condition_type": null,
+  "room_priced_by_category": {}
+ },
+ "letter": {
+  "letter_id": "AGI/HC/2526/004512",
+  "letter_type": "settlement",
+  "claimed_amount": "128350.0",
+  "rows": [
+   {
+    "row_id": "R1",
+    "particulars": "Room rent above eligible limit (₹2,000 a day for 3 days)",
+    "amount": "6000.0",
+    "reason": "Room rent is limited to 2% of sum insured, at most ₹5,000 a day",
+    "kind": null
+   },
+   {
+    "row_id": "R2",
+    "particulars": "GST on room rent above eligible limit",
+    "amount": "300.0",
+    "reason": "Follows the room rent deduction",
+    "kind": null
+   },
+   {
+    "row_id": "R3",
+    "particulars": "Proportionate deduction on associated medical expenses (₹5,000 / ₹7,000)",
+    "amount": "30371.43",
+    "reason": "Room category above eligibility, so associated expenses are reduced in the same proportion",
+    "kind": null
+   }
+  ],
+  "paid_amount": "87094.64",
+  "copay_amount": "4583.93",
+  "rejection_reason": ""
+ },
+ "answers": null,
+ "live_outcome": null,
+ "live_paused_for_approval": true,
+ "calls": [
+  {
+   "key": "[\"list_case_documents\", [\"case_dfffbb62bd3168eb\"], {}]",
+   "result": {
+    "case_id": "case_dfffbb62bd3168eb",
+    "policy_no": "AS-2025-100478",
+    "documents": [
+     {
+      "document_id": "doc_03b5e74322726c01",
+      "role": "bill",
+      "media_type": "application/pdf",
+      "size_bytes": 85610,
+      "sha256": "03b5e74322726c01b66c3e015567e785393e77f0736a616b474b64197490f2fb"
+     },
+     {
+      "document_id": "doc_928779f13efdcd37",
+      "role": "discharge_summary",
+      "media_type": "application/pdf",
+      "size_bytes": 85182,
+      "sha256": "928779f13efdcd37cae2282503a5996b2712ded75ebb645624a344c6ba26bed8"
+     },
+     {
+      "document_id": "doc_942e07845ed7604a",
+      "role": "policy_schedule",
+      "media_type": "application/pdf",
+      "size_bytes": 103998,
+      "sha256": "942e07845ed7604aeaaad7de112cecf0579344149dd199d82897689468e67e52"
+     },
+     {
+      "document_id": "doc_53c308cb2a52d5f2",
+      "role": "settlement_letter",
+      "media_type": "application/pdf",
+      "size_bytes": 104361,
+      "sha256": "53c308cb2a52d5f295c31a0f5dbf7fec737075050f76f282257ba579348b64bd"
+     }
+    ]
+   }
+  },
+  {
+   "key": "[\"get_document_text\", [\"case_dfffbb62bd3168eb\", \"doc_928779f13efdcd37\"], {}]",
+   "result": {
+    "document_id": "doc_928779f13efdcd37",
+    "media_type": "application/pdf",
+    "page_count": 1,
+    "pages_returned": [
+     1
+    ],
+    "metadata": {
+     "title": "Discharge summary IP-26-00318",
+     "author": "Tarangi Health Institute",
+     "subject": "Discharge summary",
+     "creator": "Billing system",
+     "producer": "ReportLab PDF Library - (opensource)",
+     "creationDate": "D:20000101000000+00'00'",
+     "modDate": "D:20000101000000+00'00'"
+    },
+    "pdf_flags": [],
+    "pages": [
+     {
+      "page": 1,
+      "width": 595.3,
+      "height": 841.9,
+      "source": "text_layer",
+      "text": "Tarangi Health Institute Plot 7, Sanjeevan Layout, Nagpur 000440 | +91 00000 25331 |billing@tarangihealth.example\nSurgery, orthopaedics and critical care GSTIN: 00AABFT5678K1Z2 | Reg. No: FIC/NMC/HOSP/01187\nDISCHARGE SUMMARY\nPatient Rudransh Kelapure Age / Sex 58 / M\nUHID THI-1120457 IP No. IP-26-00318\nAdmitted 19/01/2026 Discharged 22/01/2026\nConsultant Dr. Mithila Ghorpadkar Room Private, Wing B\nPayer 20/01/2026\nAarohan General Insurance Ltd.(reimbursement) Proceduredate\nFinal diagnosis\nCholelithiasis with cholecystitis (ICD-10 K80.1)\nProcedure\nLaparoscopic cholecystectomy\nPresenting complaints\nRecurrent pain in the right upper abdomen after meals for 3 months, and an acute episode with vomiting for 2 days.\nPast history\nHypertension for 6 years, controlled on amlodipine 5 mg. No diabetes.\nExamination on admission\nTenderness in the right hypochondrium, Murphy's sign positive. Pulse 92/min, BP 138/86 mmHg.\nInvestigations\nUltrasound: multiple gallbladder stones with wall thickening of 5 mm. MRCP: no common bile duct stones, duct 5 mm. Alkalinephosphatase mildly raised.\nCourse in hospital\nIV antibiotics and analgesics, then laparoscopic cholecystectomy on 20-Jan-2026. Two clips applied; gallbladder sent forhistopathology. Recovery uneventful. The patient chose a private single room.\nCondition at discharge\nStable, pain-free, tolerating diet.\nAdvice\nLow-fat diet for 2 weeks. Continue blood pressure medicine. Bring the histopathology report to the follow-up visit.\nDischarge medicines\nMedicine Dose When For\nCefuroxime 500 mg 1 tablet Twice daily after food 5 days\nParacetamol 650 mg 1 tablet When needed for pain, up to 3 a day 3 days\nAmlodipine 5 mg 1 tablet Once daily Continue\nFollow-up\nSurgical OPD on 29-Jan-2026.\nDr. Mithila Ghorpadkar, MS (General Surgery), Consultant Surgeon\nFor Tarangi Health Institute\nSynthetic test document - ClaimSense evaluation dataset - fictional data - not valid for any claim Page 1",
+      "hidden_text": "",
+      "spans": [
+       {
+        "span_id": "p1-s1",
+        "text": "Tarangi Health Institute",
+        "bbox": [
+         48.5,
+         59.9,
+         216.5,
+         74.9
+        ],
+        "font_size": 15.0,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s2",
+        "text": "Plot 7, Sanjeevan Layout, Nagpur 000440 | +91 00000 25331 |billing@tarangihealth.example",
+        "bbox": [
+         357.4,
+         59.3,
+         546.8,
+         75.2
+        ],
+        "font_size": 7.0,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s3",
+        "text": "Surgery, orthopaedics and critical care",
+        "bbox": [
+         48.5,
+         77.3,
+         183.0,
+         85.3
+        ],
+        "font_size": 8.0,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s4",
+        "text": "GSTIN: 00AABFT5678K1Z2 | Reg. No: FIC/NMC/HOSP/01187",
+        "bbox": [
+         361.6,
+         77.2,
+         546.7,
+         84.2
+        ],
+        "font_size": 7.0,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s5",
+        "text": "DISCHARGE SUMMARY",
+        "bbox": [
+         231.4,
+         103.5,
+         363.9,
+         115.5
+        ],
+        "font_size": 12.0,
+        "color": "#0b7a75",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s6",
+        "text": "Patient",
+        "bbox": [
+         48.5,
+         124.5,
+         77.1,
+         133.0
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s7",
+        "text": "Rudransh Kelapure",
+        "bbox": [
+         114.9,
+         124.5,
+         185.6,
+         133.0
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s8",
+        "text": "Age / Sex",
+        "bbox": [
+         303.6,
+         124.5,
+         342.0,
+         133.0
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s9",
+        "text": "58 / M",
+        "bbox": [
+         370.0,
+         124.5,
+         394.7,
+         133.0
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s10",
+        "text": "UHID",
+        "bbox": [
+         48.5,
+         138.4,
+         70.1,
+         146.9
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s11",
+        "text": "THI-1120457",
+        "bbox": [
+         114.9,
+         138.4,
+         163.1,
+         146.9
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s12",
+        "text": "IP No.",
+        "bbox": [
+         303.6,
+         138.4,
+         328.1,
+         146.9
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s13",
+        "text": "IP-26-00318",
+        "bbox": [
+         370.0,
+         138.4,
+         415.9,
+         146.9
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s14",
+        "text": "Admitted",
+        "bbox": [
+         48.5,
+         152.3,
+         86.4,
+         160.8
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s15",
+        "text": "19/01/2026",
+        "bbox": [
+         114.9,
+         152.3,
+         158.1,
+         160.8
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s16",
+        "text": "Discharged",
+        "bbox": [
+         303.6,
+         152.3,
+         348.3,
+         160.8
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s17",
+        "text": "22/01/2026",
+        "bbox": [
+         370.0,
+         152.3,
+         413.3,
+         160.8
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s18",
+        "text": "Consultant",
+        "bbox": [
+         48.5,
+         166.2,
+         91.8,
+         174.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s19",
+        "text": "Dr. Mithila Ghorpadkar",
+        "bbox": [
+         114.9,
+         166.2,
+         200.5,
+         174.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s20",
+        "text": "Room",
+        "bbox": [
+         303.6,
+         166.2,
+         327.4,
+         174.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s21",
+        "text": "Private, Wing B",
+        "bbox": [
+         370.0,
+         166.2,
+         426.7,
+         174.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s22",
+        "text": "Payer",
+        "bbox": [
+         48.5,
+         180.0,
+         70.9,
+         188.5
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s23",
+        "text": "20/01/2026",
+        "bbox": [
+         370.0,
+         180.0,
+         413.3,
+         188.5
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s24",
+        "text": "Aarohan General Insurance Ltd.(reimbursement)",
+        "bbox": [
+         114.9,
+         180.0,
+         232.1,
+         199.4
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s25",
+        "text": "Proceduredate",
+        "bbox": [
+         303.6,
+         180.0,
+         344.5,
+         199.4
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s26",
+        "text": "Final diagnosis",
+        "bbox": [
+         48.5,
+         211.4,
+         111.0,
+         220.4
+        ],
+        "font_size": 9.0,
+        "color": "#0b7a75",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s27",
+        "text": "Cholelithiasis with cholecystitis (ICD-10 K80.1)",
+        "bbox": [
+         48.5,
+         222.8,
+         219.8,
+         231.3
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s28",
+        "text": "Procedure",
+        "bbox": [
+         48.5,
+         239.8,
+         91.8,
+         248.8
+        ],
+        "font_size": 9.0,
+        "color": "#0b7a75",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s29",
+        "text": "Laparoscopic cholecystectomy",
+        "bbox": [
+         48.5,
+         251.2,
+         162.4,
+         259.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s30",
+        "text": "Presenting complaints",
+        "bbox": [
+         48.5,
+         268.3,
+         142.8,
+         277.3
+        ],
+        "font_size": 9.0,
+        "color": "#0b7a75",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s31",
+        "text": "Recurrent pain in the right upper abdomen after meals for 3 months, and an acute episode with vomiting for 2 days.",
+        "bbox": [
+         48.5,
+         279.7,
+         483.3,
+         288.2
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s32",
+        "text": "Past history",
+        "bbox": [
+         48.5,
+         296.7,
+         98.2,
+         305.7
+        ],
+        "font_size": 9.0,
+        "color": "#0b7a75",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s33",
+        "text": "Hypertension for 6 years, controlled on amlodipine 5 mg. No diabetes.",
+        "bbox": [
+         48.5,
+         308.1,
+         312.1,
+         316.6
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s34",
+        "text": "Examination on admission",
+        "bbox": [
+         48.5,
+         325.1,
+         159.8,
+         334.1
+        ],
+        "font_size": 9.0,
+        "color": "#0b7a75",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s35",
+        "text": "Tenderness in the right hypochondrium, Murphy's sign positive. Pulse 92/min, BP 138/86 mmHg.",
+        "bbox": [
+         48.5,
+         336.5,
+         410.1,
+         345.0
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s36",
+        "text": "Investigations",
+        "bbox": [
+         48.5,
+         353.5,
+         108.0,
+         362.5
+        ],
+        "font_size": 9.0,
+        "color": "#0b7a75",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s37",
+        "text": "Ultrasound: multiple gallbladder stones with wall thickening of 5 mm. MRCP: no common bile duct stones, duct 5 mm. Alkalinephosphatase mildly raised.",
+        "bbox": [
+         48.5,
+         364.9,
+         522.5,
+         385.3
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s38",
+        "text": "Course in hospital",
+        "bbox": [
+         48.5,
+         393.8,
+         124.4,
+         402.8
+        ],
+        "font_size": 9.0,
+        "color": "#0b7a75",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s39",
+        "text": "IV antibiotics and analgesics, then laparoscopic cholecystectomy on 20-Jan-2026. Two clips applied; gallbladder sent forhistopathology. Recovery uneventful. The patient chose a private single room.",
+        "bbox": [
+         48.5,
+         405.2,
+         496.5,
+         425.6
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s40",
+        "text": "Condition at discharge",
+        "bbox": [
+         48.5,
+         434.2,
+         144.2,
+         443.2
+        ],
+        "font_size": 9.0,
+        "color": "#0b7a75",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s41",
+        "text": "Stable, pain-free, tolerating diet.",
+        "bbox": [
+         48.5,
+         445.6,
+         169.2,
+         454.1
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s42",
+        "text": "Advice",
+        "bbox": [
+         48.5,
+         462.6,
+         77.0,
+         471.6
+        ],
+        "font_size": 9.0,
+        "color": "#0b7a75",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s43",
+        "text": "Low-fat diet for 2 weeks. Continue blood pressure medicine. Bring the histopathology report to the follow-up visit.",
+        "bbox": [
+         48.5,
+         474.0,
+         476.4,
+         482.5
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s44",
+        "text": "Discharge medicines",
+        "bbox": [
+         48.5,
+         491.0,
+         135.1,
+         500.0
+        ],
+        "font_size": 9.0,
+        "color": "#0b7a75",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s45",
+        "text": "Medicine",
+        "bbox": [
+         48.5,
+         506.9,
+         85.2,
+         515.4
+        ],
+        "font_size": 8.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s46",
+        "text": "Dose",
+        "bbox": [
+         232.2,
+         506.9,
+         252.0,
+         515.4
+        ],
+        "font_size": 8.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s47",
+        "text": "When",
+        "bbox": [
+         303.6,
+         506.9,
+         327.0,
+         515.4
+        ],
+        "font_size": 8.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s48",
+        "text": "For",
+        "bbox": [
+         477.1,
+         506.9,
+         490.1,
+         515.4
+        ],
+        "font_size": 8.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s49",
+        "text": "Cefuroxime 500 mg",
+        "bbox": [
+         48.5,
+         522.8,
+         122.1,
+         531.3
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s50",
+        "text": "1 tablet",
+        "bbox": [
+         232.2,
+         522.8,
+         260.7,
+         531.3
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s51",
+        "text": "Twice daily after food",
+        "bbox": [
+         303.6,
+         522.8,
+         384.1,
+         531.3
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s52",
+        "text": "5 days",
+        "bbox": [
+         477.1,
+         522.8,
+         501.1,
+         531.3
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s53",
+        "text": "Paracetamol 650 mg",
+        "bbox": [
+         48.5,
+         538.7,
+         125.6,
+         547.2
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s54",
+        "text": "1 tablet",
+        "bbox": [
+         232.2,
+         538.7,
+         260.7,
+         547.2
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s55",
+        "text": "When needed for pain, up to 3 a day",
+        "bbox": [
+         303.6,
+         538.7,
+         441.1,
+         547.2
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s56",
+        "text": "3 days",
+        "bbox": [
+         477.1,
+         538.7,
+         501.1,
+         547.2
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s57",
+        "text": "Amlodipine 5 mg",
+        "bbox": [
+         48.5,
+         554.5,
+         113.3,
+         563.0
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s58",
+        "text": "1 tablet",
+        "bbox": [
+         232.2,
+         554.5,
+         260.7,
+         563.0
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s59",
+        "text": "Once daily",
+        "bbox": [
+         303.6,
+         554.5,
+         343.1,
+         563.0
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s60",
+        "text": "Continue",
+        "bbox": [
+         477.1,
+         554.5,
+         511.2,
+         563.0
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s61",
+        "text": "Follow-up",
+        "bbox": [
+         48.5,
+         574.0,
+         91.1,
+         583.0
+        ],
+        "font_size": 9.0,
+        "color": "#0b7a75",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s62",
+        "text": "Surgical OPD on 29-Jan-2026.",
+        "bbox": [
+         48.5,
+         585.4,
+         160.4,
+         593.9
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s63",
+        "text": "Dr. Mithila Ghorpadkar, MS (General Surgery), Consultant Surgeon",
+        "bbox": [
+         280.0,
+         622.3,
+         546.7,
+         630.8
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s64",
+        "text": "For Tarangi Health Institute",
+        "bbox": [
+         444.6,
+         633.2,
+         546.8,
+         641.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s65",
+        "text": "Synthetic test document - ClaimSense evaluation dataset - fictional data - not valid for any claim",
+        "bbox": [
+         170.4,
+         814.6,
+         424.8,
+         820.6
+        ],
+        "font_size": 6.0,
+        "color": "#737373",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s66",
+        "text": "Page 1",
+        "bbox": [
+         533.7,
+         814.6,
+         552.8,
+         820.6
+        ],
+        "font_size": 6.0,
+        "color": "#737373",
+        "hidden": false,
+        "hidden_reasons": []
+       }
+      ],
+      "has_images": false,
+      "ocr_status": "not_needed",
+      "warnings": []
+     }
+    ],
+    "annotations": [],
+    "form_fields": [],
+    "attachments": [],
+    "warnings": [],
+    "untrusted_content": true
+   }
+  },
+  {
+   "key": "[\"get_document_text\", [\"case_dfffbb62bd3168eb\", \"doc_03b5e74322726c01\"], {}]",
+   "result": {
+    "document_id": "doc_03b5e74322726c01",
+    "media_type": "application/pdf",
+    "page_count": 1,
+    "pages_returned": [
+     1
+    ],
+    "metadata": {
+     "title": "Bill THI/25-26/009014",
+     "author": "Tarangi Health Institute",
+     "subject": "Medical bill",
+     "creator": "Billing system",
+     "producer": "ReportLab PDF Library - (opensource)",
+     "creationDate": "D:20000101000000+00'00'",
+     "modDate": "D:20000101000000+00'00'"
+    },
+    "pdf_flags": [],
+    "pages": [
+     {
+      "page": 1,
+      "width": 595.3,
+      "height": 841.9,
+      "source": "text_layer",
+      "text": "Tarangi Health Institute Plot 7, Sanjeevan Layout, Nagpur 000440 | +91 00000 25331 |billing@tarangihealth.example\nSurgery, orthopaedics and critical care GSTIN: 00AABFT5678K1Z2 | Reg. No: FIC/NMC/HOSP/01187\nINPATIENT FINAL BILL\nBill No. THI/25-26/009014 Bill Date 22/01/2026\nPatient Rudransh Kelapure Age / Sex 58 / M\nUHID THI-1120457 IP No. IP-26-00318\nPolicy No. AS-2025-100478 Insurer Aarohan General Insurance Ltd.\nAdmitted 19/01/2026 Discharged 22/01/2026\nConsultant Dr. Mithila Ghorpadkar Room Private, Wing B\nDiagnosis Cholelithiasis with cholecystitis Procedure Laparoscopic cholecystectomy\n# Particulars Qty Rate GST % Amount\n1 Private room 3 7,000.00 5 21,000.00\n2 Nursing and duty doctor charges 3 1,500.00 0 4,500.00\n3 Surgeon fee - laparoscopic cholecystectomy 1 32,000.00 0 32,000.00\n4 Anaesthetist fee 1 11,000.00 0 11,000.00\n5 Operation theatre charges 1 22,000.00 0 22,000.00\n6 Consultant visits 3 1,800.00 0 5,400.00\n7 Laboratory investigations 1 7,200.00 0 7,200.00\n8 MRCP 1 6,500.00 0 6,500.00\n9 Pharmacy - inpatient medicines 1 12,900.00 0 12,900.00\n10 Laparoscopic clips and retrieval bag 1 4,800.00 0 4,800.00\nSub total ₹1,27,300.00\nCGST ₹525.00\nSGST ₹525.00\nNet amount ₹1,28,350.00\nAmount in words: Rupees One Lakh Twenty Eight Thousand Three Hundred Fifty Only\nPatient / Attendant signature For Tarangi Health Institute Authorised signatory\nSynthetic test document - ClaimSense evaluation dataset - fictional data - not valid for any claim Page 1",
+      "hidden_text": "",
+      "spans": [
+       {
+        "span_id": "p1-s1",
+        "text": "Tarangi Health Institute",
+        "bbox": [
+         48.5,
+         59.9,
+         216.5,
+         74.9
+        ],
+        "font_size": 15.0,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s2",
+        "text": "Plot 7, Sanjeevan Layout, Nagpur 000440 | +91 00000 25331 |billing@tarangihealth.example",
+        "bbox": [
+         357.4,
+         59.3,
+         546.8,
+         75.2
+        ],
+        "font_size": 7.0,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s3",
+        "text": "Surgery, orthopaedics and critical care",
+        "bbox": [
+         48.5,
+         77.3,
+         183.0,
+         85.3
+        ],
+        "font_size": 8.0,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s4",
+        "text": "GSTIN: 00AABFT5678K1Z2 | Reg. No: FIC/NMC/HOSP/01187",
+        "bbox": [
+         361.6,
+         77.2,
+         546.7,
+         84.2
+        ],
+        "font_size": 7.0,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s5",
+        "text": "INPATIENT FINAL BILL",
+        "bbox": [
+         239.3,
+         103.2,
+         356.0,
+         114.2
+        ],
+        "font_size": 11.0,
+        "color": "#0b7a75",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s6",
+        "text": "Bill No.",
+        "bbox": [
+         48.5,
+         123.2,
+         77.8,
+         131.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s7",
+        "text": "THI/25-26/009014",
+        "bbox": [
+         114.9,
+         123.2,
+         183.4,
+         131.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s8",
+        "text": "Bill Date",
+        "bbox": [
+         303.6,
+         123.2,
+         337.4,
+         131.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s9",
+        "text": "22/01/2026",
+        "bbox": [
+         370.0,
+         123.2,
+         413.3,
+         131.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s10",
+        "text": "Patient",
+        "bbox": [
+         48.5,
+         137.1,
+         77.1,
+         145.6
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s11",
+        "text": "Rudransh Kelapure",
+        "bbox": [
+         114.9,
+         137.1,
+         185.6,
+         145.6
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s12",
+        "text": "Age / Sex",
+        "bbox": [
+         303.6,
+         137.1,
+         342.0,
+         145.6
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s13",
+        "text": "58 / M",
+        "bbox": [
+         370.0,
+         137.1,
+         394.7,
+         145.6
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s14",
+        "text": "UHID",
+        "bbox": [
+         48.5,
+         151.0,
+         70.1,
+         159.5
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s15",
+        "text": "THI-1120457",
+        "bbox": [
+         114.9,
+         151.0,
+         163.1,
+         159.5
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s16",
+        "text": "IP No.",
+        "bbox": [
+         303.6,
+         151.0,
+         328.1,
+         159.5
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s17",
+        "text": "IP-26-00318",
+        "bbox": [
+         370.0,
+         151.0,
+         415.9,
+         159.5
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s18",
+        "text": "Policy No.",
+        "bbox": [
+         48.5,
+         164.9,
+         89.0,
+         173.4
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s19",
+        "text": "AS-2025-100478",
+        "bbox": [
+         114.9,
+         164.9,
+         177.5,
+         173.4
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s20",
+        "text": "Insurer",
+        "bbox": [
+         303.6,
+         164.9,
+         331.7,
+         173.4
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s21",
+        "text": "Aarohan General Insurance Ltd.",
+        "bbox": [
+         370.0,
+         164.9,
+         487.2,
+         173.4
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s22",
+        "text": "Admitted",
+        "bbox": [
+         48.5,
+         178.8,
+         86.4,
+         187.3
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s23",
+        "text": "19/01/2026",
+        "bbox": [
+         114.9,
+         178.8,
+         158.1,
+         187.3
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s24",
+        "text": "Discharged",
+        "bbox": [
+         303.6,
+         178.8,
+         348.3,
+         187.3
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s25",
+        "text": "22/01/2026",
+        "bbox": [
+         370.0,
+         178.8,
+         413.3,
+         187.3
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s26",
+        "text": "Consultant",
+        "bbox": [
+         48.5,
+         192.6,
+         91.8,
+         201.1
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s27",
+        "text": "Dr. Mithila Ghorpadkar",
+        "bbox": [
+         114.9,
+         192.6,
+         200.5,
+         201.1
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s28",
+        "text": "Room",
+        "bbox": [
+         303.6,
+         192.6,
+         327.4,
+         201.1
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s29",
+        "text": "Private, Wing B",
+        "bbox": [
+         370.0,
+         192.6,
+         426.7,
+         201.1
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s30",
+        "text": "Diagnosis",
+        "bbox": [
+         48.5,
+         206.5,
+         87.3,
+         215.0
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s31",
+        "text": "Cholelithiasis with cholecystitis",
+        "bbox": [
+         114.9,
+         206.5,
+         229.8,
+         215.0
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s32",
+        "text": "Procedure",
+        "bbox": [
+         303.6,
+         206.5,
+         344.5,
+         215.0
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s33",
+        "text": "Laparoscopic cholecystectomy",
+        "bbox": [
+         370.0,
+         206.5,
+         483.8,
+         215.0
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s34",
+        "text": "#",
+        "bbox": [
+         48.5,
+         229.4,
+         53.6,
+         237.9
+        ],
+        "font_size": 8.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s35",
+        "text": "Particulars",
+        "bbox": [
+         71.2,
+         229.4,
+         113.4,
+         237.9
+        ],
+        "font_size": 8.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s36",
+        "text": "Qty",
+        "bbox": [
+         353.8,
+         229.4,
+         368.2,
+         237.9
+        ],
+        "font_size": 8.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s37",
+        "text": "Rate",
+        "bbox": [
+         412.5,
+         229.4,
+         430.5,
+         237.9
+        ],
+        "font_size": 8.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s38",
+        "text": "GST %",
+        "bbox": [
+         447.6,
+         229.4,
+         473.1,
+         237.9
+        ],
+        "font_size": 8.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s39",
+        "text": "Amount",
+        "bbox": [
+         514.2,
+         229.4,
+         546.8,
+         237.9
+        ],
+        "font_size": 8.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s40",
+        "text": "1",
+        "bbox": [
+         48.5,
+         245.3,
+         53.1,
+         253.8
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s41",
+        "text": "Private room",
+        "bbox": [
+         71.2,
+         245.3,
+         119.3,
+         253.8
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s42",
+        "text": "3",
+        "bbox": [
+         363.6,
+         245.3,
+         368.2,
+         253.8
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s43",
+        "text": "7,000.00",
+        "bbox": [
+         399.4,
+         245.3,
+         430.5,
+         253.8
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s44",
+        "text": "5",
+        "bbox": [
+         468.5,
+         245.3,
+         473.1,
+         253.8
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s45",
+        "text": "21,000.00",
+        "bbox": [
+         511.0,
+         245.3,
+         546.8,
+         253.8
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s46",
+        "text": "2",
+        "bbox": [
+         48.5,
+         261.2,
+         53.1,
+         269.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s47",
+        "text": "Nursing and duty doctor charges",
+        "bbox": [
+         71.2,
+         261.2,
+         194.9,
+         269.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s48",
+        "text": "3",
+        "bbox": [
+         363.6,
+         261.2,
+         368.2,
+         269.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s49",
+        "text": "1,500.00",
+        "bbox": [
+         399.4,
+         261.2,
+         430.5,
+         269.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s50",
+        "text": "0",
+        "bbox": [
+         468.5,
+         261.2,
+         473.1,
+         269.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s51",
+        "text": "4,500.00",
+        "bbox": [
+         515.6,
+         261.2,
+         546.8,
+         269.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s52",
+        "text": "3",
+        "bbox": [
+         48.5,
+         277.0,
+         53.1,
+         285.5
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s53",
+        "text": "Surgeon fee - laparoscopic cholecystectomy",
+        "bbox": [
+         71.2,
+         277.0,
+         236.5,
+         285.5
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s54",
+        "text": "1",
+        "bbox": [
+         363.6,
+         277.0,
+         368.2,
+         285.5
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s55",
+        "text": "32,000.00",
+        "bbox": [
+         394.8,
+         277.0,
+         430.5,
+         285.5
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s56",
+        "text": "0",
+        "bbox": [
+         468.5,
+         277.0,
+         473.1,
+         285.5
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s57",
+        "text": "32,000.00",
+        "bbox": [
+         511.0,
+         277.0,
+         546.8,
+         285.5
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s58",
+        "text": "4",
+        "bbox": [
+         48.5,
+         292.9,
+         53.1,
+         301.4
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s59",
+        "text": "Anaesthetist fee",
+        "bbox": [
+         71.2,
+         292.9,
+         131.3,
+         301.4
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s60",
+        "text": "1",
+        "bbox": [
+         363.6,
+         292.9,
+         368.2,
+         301.4
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s61",
+        "text": "11,000.00",
+        "bbox": [
+         394.8,
+         292.9,
+         430.5,
+         301.4
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s62",
+        "text": "0",
+        "bbox": [
+         468.5,
+         292.9,
+         473.1,
+         301.4
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s63",
+        "text": "11,000.00",
+        "bbox": [
+         511.0,
+         292.9,
+         546.8,
+         301.4
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s64",
+        "text": "5",
+        "bbox": [
+         48.5,
+         308.8,
+         53.1,
+         317.3
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s65",
+        "text": "Operation theatre charges",
+        "bbox": [
+         71.2,
+         308.8,
+         169.6,
+         317.3
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s66",
+        "text": "1",
+        "bbox": [
+         363.6,
+         308.8,
+         368.2,
+         317.3
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s67",
+        "text": "22,000.00",
+        "bbox": [
+         394.8,
+         308.8,
+         430.5,
+         317.3
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s68",
+        "text": "0",
+        "bbox": [
+         468.5,
+         308.8,
+         473.1,
+         317.3
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s69",
+        "text": "22,000.00",
+        "bbox": [
+         511.0,
+         308.8,
+         546.8,
+         317.3
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s70",
+        "text": "6",
+        "bbox": [
+         48.5,
+         324.7,
+         53.1,
+         333.2
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s71",
+        "text": "Consultant visits",
+        "bbox": [
+         71.2,
+         324.7,
+         132.2,
+         333.2
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s72",
+        "text": "3",
+        "bbox": [
+         363.6,
+         324.7,
+         368.2,
+         333.2
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s73",
+        "text": "1,800.00",
+        "bbox": [
+         399.4,
+         324.7,
+         430.5,
+         333.2
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s74",
+        "text": "0",
+        "bbox": [
+         468.5,
+         324.7,
+         473.1,
+         333.2
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s75",
+        "text": "5,400.00",
+        "bbox": [
+         515.6,
+         324.7,
+         546.8,
+         333.2
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s76",
+        "text": "7",
+        "bbox": [
+         48.5,
+         340.6,
+         53.1,
+         349.1
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s77",
+        "text": "Laboratory investigations",
+        "bbox": [
+         71.2,
+         340.6,
+         165.7,
+         349.1
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s78",
+        "text": "1",
+        "bbox": [
+         363.6,
+         340.6,
+         368.2,
+         349.1
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s79",
+        "text": "7,200.00",
+        "bbox": [
+         399.4,
+         340.6,
+         430.5,
+         349.1
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s80",
+        "text": "0",
+        "bbox": [
+         468.5,
+         340.6,
+         473.1,
+         349.1
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s81",
+        "text": "7,200.00",
+        "bbox": [
+         515.6,
+         340.6,
+         546.8,
+         349.1
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s82",
+        "text": "8",
+        "bbox": [
+         48.5,
+         356.4,
+         53.1,
+         364.9
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s83",
+        "text": "MRCP",
+        "bbox": [
+         71.2,
+         356.4,
+         93.9,
+         364.9
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s84",
+        "text": "1",
+        "bbox": [
+         363.6,
+         356.4,
+         368.2,
+         364.9
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s85",
+        "text": "6,500.00",
+        "bbox": [
+         399.4,
+         356.4,
+         430.5,
+         364.9
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s86",
+        "text": "0",
+        "bbox": [
+         468.5,
+         356.4,
+         473.1,
+         364.9
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s87",
+        "text": "6,500.00",
+        "bbox": [
+         515.6,
+         356.4,
+         546.8,
+         364.9
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s88",
+        "text": "9",
+        "bbox": [
+         48.5,
+         372.3,
+         53.1,
+         380.8
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s89",
+        "text": "Pharmacy - inpatient medicines",
+        "bbox": [
+         71.2,
+         372.3,
+         189.1,
+         380.8
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s90",
+        "text": "1",
+        "bbox": [
+         363.6,
+         372.3,
+         368.2,
+         380.8
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s91",
+        "text": "12,900.00",
+        "bbox": [
+         394.8,
+         372.3,
+         430.5,
+         380.8
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s92",
+        "text": "0",
+        "bbox": [
+         468.5,
+         372.3,
+         473.1,
+         380.8
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s93",
+        "text": "12,900.00",
+        "bbox": [
+         511.0,
+         372.3,
+         546.8,
+         380.8
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s94",
+        "text": "10",
+        "bbox": [
+         48.5,
+         388.2,
+         57.7,
+         396.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s95",
+        "text": "Laparoscopic clips and retrieval bag",
+        "bbox": [
+         71.2,
+         388.2,
+         204.9,
+         396.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s96",
+        "text": "1",
+        "bbox": [
+         363.6,
+         388.2,
+         368.2,
+         396.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s97",
+        "text": "4,800.00",
+        "bbox": [
+         399.4,
+         388.2,
+         430.5,
+         396.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s98",
+        "text": "0",
+        "bbox": [
+         468.5,
+         388.2,
+         473.1,
+         396.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s99",
+        "text": "4,800.00",
+        "bbox": [
+         515.6,
+         388.2,
+         546.8,
+         396.7
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s100",
+        "text": "Sub total",
+        "bbox": [
+         348.7,
+         409.1,
+         382.4,
+         417.6
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s101",
+        "text": "₹1,27,300.00",
+        "bbox": [
+         494.0,
+         409.1,
+         540.8,
+         417.6
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s102",
+        "text": "CGST",
+        "bbox": [
+         348.7,
+         423.0,
+         368.7,
+         431.5
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s103",
+        "text": "₹525.00",
+        "bbox": [
+         511.4,
+         423.0,
+         540.8,
+         431.5
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s104",
+        "text": "SGST",
+        "bbox": [
+         348.7,
+         436.8,
+         368.0,
+         445.3
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s105",
+        "text": "₹525.00",
+        "bbox": [
+         511.4,
+         436.8,
+         540.8,
+         445.3
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s106",
+        "text": "Net amount",
+        "bbox": [
+         348.7,
+         450.7,
+         396.8,
+         459.2
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s107",
+        "text": "₹1,28,350.00",
+        "bbox": [
+         489.8,
+         450.7,
+         540.7,
+         459.2
+        ],
+        "font_size": 8.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s108",
+        "text": "Amount in words: Rupees One Lakh Twenty Eight Thousand Three Hundred Fifty Only",
+        "bbox": [
+         48.5,
+         467.0,
+         349.9,
+         475.0
+        ],
+        "font_size": 8.0,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s109",
+        "text": "Patient / Attendant signature",
+        "bbox": [
+         48.5,
+         502.2,
+         151.0,
+         510.2
+        ],
+        "font_size": 8.0,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s110",
+        "text": "For Tarangi Health Institute Authorised signatory",
+        "bbox": [
+         374.9,
+         502.2,
+         546.8,
+         510.2
+        ],
+        "font_size": 8.0,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s111",
+        "text": "Synthetic test document - ClaimSense evaluation dataset - fictional data - not valid for any claim",
+        "bbox": [
+         170.4,
+         814.6,
+         424.8,
+         820.6
+        ],
+        "font_size": 6.0,
+        "color": "#737373",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s112",
+        "text": "Page 1",
+        "bbox": [
+         533.7,
+         814.6,
+         552.8,
+         820.6
+        ],
+        "font_size": 6.0,
+        "color": "#737373",
+        "hidden": false,
+        "hidden_reasons": []
+       }
+      ],
+      "has_images": false,
+      "ocr_status": "not_needed",
+      "warnings": []
+     }
+    ],
+    "annotations": [],
+    "form_fields": [],
+    "attachments": [],
+    "warnings": [],
+    "untrusted_content": true
+   }
+  },
+  {
+   "key": "[\"get_document_text\", [\"case_dfffbb62bd3168eb\", \"doc_942e07845ed7604a\"], {}]",
+   "result": {
+    "document_id": "doc_942e07845ed7604a",
+    "media_type": "application/pdf",
+    "page_count": 1,
+    "pages_returned": [
+     1
+    ],
+    "metadata": {
+     "title": "Policy schedule AS-2025-100478",
+     "author": "Aarohan General Insurance Ltd.",
+     "subject": "Policy schedule",
+     "creator": "Billing system",
+     "producer": "ReportLab PDF Library - (opensource)",
+     "creationDate": "D:20000101000000+00'00'",
+     "modDate": "D:20000101000000+00'00'"
+    },
+    "pdf_flags": [],
+    "pages": [
+     {
+      "page": 1,
+      "width": 595.3,
+      "height": 841.9,
+      "source": "text_layer",
+      "text": "Aarohan General Insurance Ltd.\nAarohan House, 21 Sagar Marg, Mumbai 000400\ncare@aarohan.example | +91 00000 12000\nHealth Insurance IRDAI Reg. No. FIC-000\nPOLICY SCHEDULE\nArogya Sanjeevani Policy - Individual\nPolicy No. AS-2025-100478 Policyholder Rudransh Kelapure\nAddress 12 Fictional Housing Society, Nagpur 000440 Plan Individual\nPolicy period 15-Jul-2025 to 14-Jul-2026 15-Jul-2022 (continuous cover since)\nFirstinception\nSum insured ₹3,00,000.00 ₹6,165.00 (inclusive of applicable taxes)\nPremiumpaid\nDate of issue 11-Jul-2025 Intermediary Direct\nInsured persons\nInsured person Relationship Sex Date of birth Sum insured\nPre-existing diseasesdeclared\nRudransh Kelapure Self Male 21-Aug-1967 ₹3,00,000.00 None\nLimits, co-payment and waiting periods\n2% of sum insured a day, up to ₹5,000(₹5,000.00 a day under this policy) ICU / ICCUcharges 5% of sum insured a day, up to ₹10,000(₹10,000.00 a day under this policy)\nRoom rent,boarding andnursing\nCo-payment 5% of every admissible claim\nCataracttreatment 25% of sum insured or ₹40,000 per eye,whichever is lower (₹40,000.00 per eye)\n30 days before admission 60 days after discharge\nPre-hospitalisation Post-hospitalisation\n30 days from first inception, except accidents\nInitial waitingperiod 24 or 36 months from first inception, as listedin the policy wording\nSpecifieddiseases andprocedures\n36 months from first inception\nPre-existingdiseases\nThis schedule must be read with the Arogya Sanjeevani Policy wording, which sets out the full cover, definitions, conditions andexclusions. If this schedule and the wording differ, the wording applies. Claims: claims@aarohan.example. Grievances:grievance@aarohan.example.\nFor Aarohan General Insurance Ltd.\nAuthorised signatory\nThis is a computer-generated schedule and needs no signature.\nSynthetic test document - ClaimSense evaluation dataset - fictional data - not valid for any claim Page 1",
+      "hidden_text": "",
+      "spans": [
+       {
+        "span_id": "p1-s1",
+        "text": "Aarohan General Insurance Ltd.",
+        "bbox": [
+         48.5,
+         60.3,
+         245.5,
+         75.3
+        ],
+        "font_size": 15.0,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s2",
+        "text": "Aarohan House, 21 Sagar Marg, Mumbai 000400",
+        "bbox": [
+         398.7,
+         58.9,
+         546.8,
+         66.4
+        ],
+        "font_size": 7.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s3",
+        "text": "care@aarohan.example | +91 00000 12000",
+        "bbox": [
+         414.3,
+         68.5,
+         546.8,
+         76.0
+        ],
+        "font_size": 7.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s4",
+        "text": "Health Insurance",
+        "bbox": [
+         48.5,
+         77.6,
+         107.0,
+         86.1
+        ],
+        "font_size": 8.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s5",
+        "text": "IRDAI Reg. No. FIC-000",
+        "bbox": [
+         477.9,
+         78.1,
+         546.8,
+         85.6
+        ],
+        "font_size": 7.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s6",
+        "text": "POLICY SCHEDULE",
+        "bbox": [
+         249.0,
+         107.6,
+         346.3,
+         120.6
+        ],
+        "font_size": 13.0,
+        "color": "#6b1d3a",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s7",
+        "text": "Arogya Sanjeevani Policy - Individual",
+        "bbox": [
+         223.6,
+         123.5,
+         371.6,
+         133.5
+        ],
+        "font_size": 10.0,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s8",
+        "text": "Policy No.",
+        "bbox": [
+         48.5,
+         145.7,
+         87.9,
+         155.2
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s9",
+        "text": "AS-2025-100478",
+        "bbox": [
+         114.9,
+         145.7,
+         178.7,
+         155.2
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s10",
+        "text": "Policyholder",
+        "bbox": [
+         303.6,
+         145.7,
+         352.8,
+         155.2
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s11",
+        "text": "Rudransh Kelapure",
+        "bbox": [
+         370.0,
+         145.7,
+         443.2,
+         155.2
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s12",
+        "text": "Address",
+        "bbox": [
+         48.5,
+         160.9,
+         80.2,
+         170.4
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s13",
+        "text": "12 Fictional Housing Society, Nagpur 000440",
+        "bbox": [
+         114.9,
+         160.9,
+         286.6,
+         170.4
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s14",
+        "text": "Plan",
+        "bbox": [
+         303.6,
+         160.9,
+         320.8,
+         170.4
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s15",
+        "text": "Individual",
+        "bbox": [
+         370.0,
+         160.9,
+         407.7,
+         170.4
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s16",
+        "text": "Policy period",
+        "bbox": [
+         48.5,
+         176.0,
+         99.8,
+         185.5
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s17",
+        "text": "15-Jul-2025 to 14-Jul-2026",
+        "bbox": [
+         114.9,
+         176.0,
+         217.1,
+         185.5
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s18",
+        "text": "15-Jul-2022 (continuous cover since)",
+        "bbox": [
+         370.0,
+         176.0,
+         511.1,
+         185.5
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s19",
+        "text": "Firstinception",
+        "bbox": [
+         303.6,
+         176.0,
+         340.8,
+         197.7
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s20",
+        "text": "Sum insured",
+        "bbox": [
+         48.5,
+         203.4,
+         97.6,
+         212.9
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s21",
+        "text": "₹3,00,000.00",
+        "bbox": [
+         114.9,
+         203.4,
+         165.3,
+         212.9
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s22",
+        "text": "₹6,165.00 (inclusive of applicable taxes)",
+        "bbox": [
+         370.0,
+         203.4,
+         523.6,
+         212.9
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s23",
+        "text": "Premiumpaid",
+        "bbox": [
+         303.6,
+         203.4,
+         339.7,
+         225.0
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s24",
+        "text": "Date of issue",
+        "bbox": [
+         48.5,
+         230.7,
+         99.5,
+         240.2
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s25",
+        "text": "11-Jul-2025",
+        "bbox": [
+         114.9,
+         230.7,
+         159.8,
+         240.2
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s26",
+        "text": "Intermediary",
+        "bbox": [
+         303.6,
+         230.7,
+         355.2,
+         240.2
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s27",
+        "text": "Direct",
+        "bbox": [
+         370.0,
+         230.7,
+         393.2,
+         240.2
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s28",
+        "text": "Insured persons",
+        "bbox": [
+         48.5,
+         252.5,
+         114.8,
+         262.5
+        ],
+        "font_size": 10.0,
+        "color": "#6b1d3a",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s29",
+        "text": "Insured person",
+        "bbox": [
+         48.5,
+         270.1,
+         107.7,
+         279.6
+        ],
+        "font_size": 9.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s30",
+        "text": "Relationship",
+        "bbox": [
+         171.0,
+         270.1,
+         220.3,
+         279.6
+        ],
+        "font_size": 9.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s31",
+        "text": "Sex",
+        "bbox": [
+         237.3,
+         270.1,
+         250.9,
+         279.6
+        ],
+        "font_size": 9.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s32",
+        "text": "Date of birth",
+        "bbox": [
+         288.3,
+         270.1,
+         338.7,
+         279.6
+        ],
+        "font_size": 9.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s33",
+        "text": "Sum insured",
+        "bbox": [
+         364.9,
+         270.1,
+         413.9,
+         279.6
+        ],
+        "font_size": 9.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s34",
+        "text": "Pre-existing diseasesdeclared",
+        "bbox": [
+         441.4,
+         270.1,
+         523.2,
+         291.8
+        ],
+        "font_size": 9.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s35",
+        "text": "Rudransh Kelapure",
+        "bbox": [
+         48.5,
+         300.5,
+         121.8,
+         310.0
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s36",
+        "text": "Self",
+        "bbox": [
+         171.0,
+         300.5,
+         185.1,
+         310.0
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s37",
+        "text": "Male",
+        "bbox": [
+         237.3,
+         300.5,
+         256.9,
+         310.0
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s38",
+        "text": "21-Aug-1967",
+        "bbox": [
+         288.3,
+         300.5,
+         338.0,
+         310.0
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s39",
+        "text": "₹3,00,000.00",
+        "bbox": [
+         364.9,
+         300.5,
+         415.4,
+         310.0
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s40",
+        "text": "None",
+        "bbox": [
+         441.4,
+         300.5,
+         462.3,
+         310.0
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s41",
+        "text": "Limits, co-payment and waiting periods",
+        "bbox": [
+         48.5,
+         323.7,
+         212.3,
+         333.7
+        ],
+        "font_size": 10.0,
+        "color": "#6b1d3a",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s42",
+        "text": "2% of sum insured a day, up to ₹5,000(₹5,000.00 a day under this policy)",
+        "bbox": [
+         114.9,
+         339.9,
+         262.1,
+         361.6
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s43",
+        "text": "ICU / ICCUcharges",
+        "bbox": [
+         303.6,
+         339.9,
+         344.6,
+         361.6
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s44",
+        "text": "5% of sum insured a day, up to ₹10,000(₹10,000.00 a day under this policy)",
+        "bbox": [
+         370.0,
+         339.9,
+         522.1,
+         361.6
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s45",
+        "text": "Room rent,boarding andnursing",
+        "bbox": [
+         48.5,
+         339.9,
+         100.9,
+         373.7
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s46",
+        "text": "Co-payment",
+        "bbox": [
+         303.6,
+         379.4,
+         351.9,
+         388.9
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s47",
+        "text": "5% of every admissible claim",
+        "bbox": [
+         370.0,
+         379.4,
+         480.8,
+         388.9
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s48",
+        "text": "Cataracttreatment",
+        "bbox": [
+         48.5,
+         379.4,
+         88.9,
+         401.1
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s49",
+        "text": "25% of sum insured or ₹40,000 per eye,whichever is lower (₹40,000.00 per eye)",
+        "bbox": [
+         114.9,
+         379.4,
+         269.4,
+         401.1
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s50",
+        "text": "30 days before admission",
+        "bbox": [
+         114.9,
+         406.7,
+         213.1,
+         416.2
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s51",
+        "text": "60 days after discharge",
+        "bbox": [
+         370.0,
+         406.7,
+         459.2,
+         416.2
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s52",
+        "text": "Pre-hospitalisation",
+        "bbox": [
+         48.5,
+         406.7,
+         102.5,
+         428.4
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s53",
+        "text": "Post-hospitalisation",
+        "bbox": [
+         303.6,
+         406.7,
+         357.9,
+         428.4
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s54",
+        "text": "30 days from first inception, except accidents",
+        "bbox": [
+         114.9,
+         434.0,
+         289.8,
+         443.5
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s55",
+        "text": "Initial waitingperiod",
+        "bbox": [
+         48.5,
+         434.0,
+         102.7,
+         455.7
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s56",
+        "text": "24 or 36 months from first inception, as listedin the policy wording",
+        "bbox": [
+         370.0,
+         434.0,
+         546.2,
+         455.7
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s57",
+        "text": "Specifieddiseases andprocedures",
+        "bbox": [
+         303.6,
+         434.0,
+         353.7,
+         467.9
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s58",
+        "text": "36 months from first inception",
+        "bbox": [
+         114.9,
+         473.5,
+         232.9,
+         483.0
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s59",
+        "text": "Pre-existingdiseases",
+        "bbox": [
+         48.5,
+         473.5,
+         95.1,
+         495.2
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s60",
+        "text": "This schedule must be read with the Arogya Sanjeevani Policy wording, which sets out the full cover, definitions, conditions andexclusions. If this schedule and the wording differ, the wording applies. Claims: claims@aarohan.example. Grievances:grievance@aarohan.example.",
+        "bbox": [
+         48.5,
+         507.3,
+         540.0,
+         544.4
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s61",
+        "text": "For Aarohan General Insurance Ltd.",
+        "bbox": [
+         48.5,
+         566.7,
+         188.3,
+         576.2
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s62",
+        "text": "Authorised signatory",
+        "bbox": [
+         48.5,
+         578.8,
+         129.0,
+         588.3
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s63",
+        "text": "This is a computer-generated schedule and needs no signature.",
+        "bbox": [
+         48.5,
+         598.2,
+         254.0,
+         606.2
+        ],
+        "font_size": 8.0,
+        "color": "#808080",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s64",
+        "text": "Synthetic test document - ClaimSense evaluation dataset - fictional data - not valid for any claim",
+        "bbox": [
+         170.4,
+         814.6,
+         424.8,
+         820.6
+        ],
+        "font_size": 6.0,
+        "color": "#737373",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s65",
+        "text": "Page 1",
+        "bbox": [
+         533.7,
+         814.6,
+         552.8,
+         820.6
+        ],
+        "font_size": 6.0,
+        "color": "#737373",
+        "hidden": false,
+        "hidden_reasons": []
+       }
+      ],
+      "has_images": false,
+      "ocr_status": "not_needed",
+      "warnings": []
+     }
+    ],
+    "annotations": [],
+    "form_fields": [],
+    "attachments": [],
+    "warnings": [],
+    "untrusted_content": true
+   }
+  },
+  {
+   "key": "[\"get_document_text\", [\"case_dfffbb62bd3168eb\", \"doc_53c308cb2a52d5f2\"], {}]",
+   "result": {
+    "document_id": "doc_53c308cb2a52d5f2",
+    "media_type": "application/pdf",
+    "page_count": 1,
+    "pages_returned": [
+     1
+    ],
+    "metadata": {
+     "title": "Claim AGI/HC/2526/004512",
+     "author": "Aarohan General Insurance Ltd.",
+     "subject": "Claim settlement letter",
+     "creator": "Billing system",
+     "producer": "ReportLab PDF Library - (opensource)",
+     "creationDate": "D:20000101000000+00'00'",
+     "modDate": "D:20000101000000+00'00'"
+    },
+    "pdf_flags": [],
+    "pages": [
+     {
+      "page": 1,
+      "width": 595.3,
+      "height": 841.9,
+      "source": "text_layer",
+      "text": "Aarohan General Insurance Ltd.\nAarohan House, 21 Sagar Marg, Mumbai 000400\nclaims@aarohan.example | +91 00000 12000\nHealth Claims Department IRDAI Reg. No. FIC-000\nRef: AGI/HC/2526/004512 Date: 18-Feb-2026\nRudransh Kelapure\n12 Fictional Housing Society, Nagpur 000440\nSubject: Settlement of reimbursement claim AGI/HC/2526/004512 under policy AS-2025-100478\nDear Rudransh Kelapure,\nWe have processed your reimbursement claim below. The amount payable under your Arogya Sanjeevani Policy is calculated asshown.\nClaim No. AGI/HC/2526/004512 Policy No. AS-2025-100478\nPatient Rudransh Kelapure Hospital Tarangi Health Institute\nAdmitted 19-Jan-2026 Discharged 22-Jan-2026\nDiagnosis Cholelithiasis with cholecystitis Bill No. THI/25-26/009014\nDeductions\nNo. Particulars Amount Reason\n1 6,000.00\nRoom rent above eligible limit (₹2,000 a day for 3days) Room rent is limited to 2% of sum insured, atmost ₹5,000 a day\n2 GST on room rent above eligible limit 300.00 Follows the room rent deduction\n3 30,371.43\nProportionate deduction on associated medicalexpenses (₹5,000 / ₹7,000) Room category above eligibility, so associatedexpenses are reduced in the same proportion\nAmount claimed ₹1,28,350.00\nLess: deductions -₹36,671.43\nAdmissible amount ₹91,678.57\nLess: co-payment 5% -₹4,583.93\nAmount paid ₹87,094.64\n₹87,094.64 has been paid by NEFT to your bank account ending 0000 on 18-Feb-2026. Payment reference FICT2602184471.\nIf you disagree with this decision, you may write to our Grievance Redressal Officer at grievance@aarohan.example, quoting yourclaim number. If your grievance is not resolved, you may approach the Insurance Ombudsman.\nYours sincerely,\nFor Aarohan General Insurance Ltd.\nAuthorised signatory, Health Claims\nThis is a computer-generated letter and needs no signature.\nSynthetic test document - ClaimSense evaluation dataset - fictional data - not valid for any claim Page 1",
+      "hidden_text": "",
+      "spans": [
+       {
+        "span_id": "p1-s1",
+        "text": "Aarohan General Insurance Ltd.",
+        "bbox": [
+         48.5,
+         60.3,
+         245.5,
+         75.3
+        ],
+        "font_size": 15.0,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s2",
+        "text": "Aarohan House, 21 Sagar Marg, Mumbai 000400",
+        "bbox": [
+         398.7,
+         58.9,
+         546.8,
+         66.4
+        ],
+        "font_size": 7.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s3",
+        "text": "claims@aarohan.example | +91 00000 12000",
+        "bbox": [
+         408.3,
+         68.5,
+         546.7,
+         76.0
+        ],
+        "font_size": 7.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s4",
+        "text": "Health Claims Department",
+        "bbox": [
+         48.5,
+         77.6,
+         140.0,
+         86.1
+        ],
+        "font_size": 8.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s5",
+        "text": "IRDAI Reg. No. FIC-000",
+        "bbox": [
+         477.9,
+         78.1,
+         546.8,
+         85.6
+        ],
+        "font_size": 7.5,
+        "color": "#ffffff",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s6",
+        "text": "Ref: AGI/HC/2526/004512",
+        "bbox": [
+         48.5,
+         109.8,
+         150.0,
+         119.3
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s7",
+        "text": "Date: 18-Feb-2026",
+        "bbox": [
+         475.0,
+         111.4,
+         546.8,
+         120.9
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s8",
+        "text": "Rudransh Kelapure",
+        "bbox": [
+         48.5,
+         132.5,
+         123.6,
+         142.0
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s9",
+        "text": "12 Fictional Housing Society, Nagpur 000440",
+        "bbox": [
+         48.5,
+         144.7,
+         220.3,
+         154.2
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s10",
+        "text": "Subject: Settlement of reimbursement claim AGI/HC/2526/004512 under policy AS-2025-100478",
+        "bbox": [
+         48.5,
+         166.5,
+         428.6,
+         176.0
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s11",
+        "text": "Dear Rudransh Kelapure,",
+        "bbox": [
+         48.5,
+         184.6,
+         144.7,
+         194.1
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s12",
+        "text": "We have processed your reimbursement claim below. The amount payable under your Arogya Sanjeevani Policy is calculated asshown.",
+        "bbox": [
+         48.5,
+         202.4,
+         540.7,
+         225.7
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s13",
+        "text": "Claim No.",
+        "bbox": [
+         48.5,
+         237.5,
+         86.7,
+         247.0
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s14",
+        "text": "AGI/HC/2526/004512",
+        "bbox": [
+         114.9,
+         237.5,
+         198.9,
+         247.0
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s15",
+        "text": "Policy No.",
+        "bbox": [
+         303.6,
+         237.5,
+         343.0,
+         247.0
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s16",
+        "text": "AS-2025-100478",
+        "bbox": [
+         370.0,
+         237.5,
+         433.8,
+         247.0
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s17",
+        "text": "Patient",
+        "bbox": [
+         48.5,
+         252.6,
+         77.1,
+         262.1
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s18",
+        "text": "Rudransh Kelapure",
+        "bbox": [
+         114.9,
+         252.6,
+         188.1,
+         262.1
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s19",
+        "text": "Hospital",
+        "bbox": [
+         303.6,
+         252.6,
+         336.3,
+         262.1
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s20",
+        "text": "Tarangi Health Institute",
+        "bbox": [
+         370.0,
+         252.6,
+         461.0,
+         262.1
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s21",
+        "text": "Admitted",
+        "bbox": [
+         48.5,
+         267.8,
+         85.9,
+         277.3
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s22",
+        "text": "19-Jan-2026",
+        "bbox": [
+         114.9,
+         267.8,
+         162.1,
+         277.3
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s23",
+        "text": "Discharged",
+        "bbox": [
+         303.6,
+         267.8,
+         347.3,
+         277.3
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s24",
+        "text": "22-Jan-2026",
+        "bbox": [
+         370.0,
+         267.8,
+         417.2,
+         277.3
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s25",
+        "text": "Diagnosis",
+        "bbox": [
+         48.5,
+         282.9,
+         86.2,
+         292.4
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s26",
+        "text": "Cholelithiasis with cholecystitis",
+        "bbox": [
+         114.9,
+         282.9,
+         234.5,
+         292.4
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s27",
+        "text": "Bill No.",
+        "bbox": [
+         303.6,
+         282.9,
+         332.0,
+         292.4
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s28",
+        "text": "THI/25-26/009014",
+        "bbox": [
+         370.0,
+         282.9,
+         441.3,
+         292.4
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s29",
+        "text": "Deductions",
+        "bbox": [
+         48.5,
+         302.7,
+         95.4,
+         312.7
+        ],
+        "font_size": 10.0,
+        "color": "#6b1d3a",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s30",
+        "text": "No.",
+        "bbox": [
+         48.5,
+         319.9,
+         62.4,
+         329.4
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s31",
+        "text": "Particulars",
+        "bbox": [
+         76.9,
+         319.9,
+         118.9,
+         329.4
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s32",
+        "text": "Amount",
+        "bbox": [
+         320.8,
+         319.9,
+         352.9,
+         329.4
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s33",
+        "text": "Reason",
+        "bbox": [
+         364.9,
+         319.9,
+         393.7,
+         329.4
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s34",
+        "text": "1",
+        "bbox": [
+         48.5,
+         337.1,
+         53.3,
+         346.6
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s35",
+        "text": "6,000.00",
+        "bbox": [
+         319.2,
+         337.1,
+         352.9,
+         346.6
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s36",
+        "text": "Room rent above eligible limit (₹2,000 a day for 3days)",
+        "bbox": [
+         76.9,
+         337.1,
+         267.4,
+         358.7
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s37",
+        "text": "Room rent is limited to 2% of sum insured, atmost ₹5,000 a day",
+        "bbox": [
+         364.9,
+         337.1,
+         539.1,
+         358.7
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s38",
+        "text": "2",
+        "bbox": [
+         48.5,
+         366.4,
+         53.3,
+         375.9
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s39",
+        "text": "GST on room rent above eligible limit",
+        "bbox": [
+         76.9,
+         366.4,
+         220.4,
+         375.9
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s40",
+        "text": "300.00",
+        "bbox": [
+         326.4,
+         366.4,
+         352.9,
+         375.9
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s41",
+        "text": "Follows the room rent deduction",
+        "bbox": [
+         364.9,
+         366.4,
+         491.8,
+         375.9
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s42",
+        "text": "3",
+        "bbox": [
+         48.5,
+         383.5,
+         53.3,
+         393.0
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s43",
+        "text": "30,371.43",
+        "bbox": [
+         314.4,
+         383.5,
+         352.9,
+         393.0
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s44",
+        "text": "Proportionate deduction on associated medicalexpenses (₹5,000 / ₹7,000)",
+        "bbox": [
+         76.9,
+         383.5,
+         259.7,
+         405.2
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s45",
+        "text": "Room category above eligibility, so associatedexpenses are reduced in the same proportion",
+        "bbox": [
+         364.9,
+         383.5,
+         542.0,
+         405.2
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s46",
+        "text": "Amount claimed",
+        "bbox": [
+         314.6,
+         421.4,
+         378.3,
+         430.9
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s47",
+        "text": "₹1,28,350.00",
+        "bbox": [
+         490.3,
+         421.4,
+         540.8,
+         430.9
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s48",
+        "text": "Less: deductions",
+        "bbox": [
+         314.6,
+         439.5,
+         378.3,
+         449.0
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s49",
+        "text": "-₹36,671.43",
+        "bbox": [
+         494.6,
+         439.5,
+         540.8,
+         449.0
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s50",
+        "text": "Admissible amount",
+        "bbox": [
+         314.6,
+         457.7,
+         388.8,
+         467.2
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s51",
+        "text": "₹91,678.57",
+        "bbox": [
+         497.5,
+         457.7,
+         540.8,
+         467.2
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s52",
+        "text": "Less: co-payment 5%",
+        "bbox": [
+         314.6,
+         475.8,
+         395.5,
+         485.3
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s53",
+        "text": "-₹4,583.93",
+        "bbox": [
+         499.4,
+         475.8,
+         540.8,
+         485.3
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s54",
+        "text": "Amount paid",
+        "bbox": [
+         314.6,
+         494.0,
+         366.1,
+         503.5
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s55",
+        "text": "₹87,094.64",
+        "bbox": [
+         497.2,
+         494.0,
+         540.8,
+         503.5
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s56",
+        "text": "₹87,094.64 has been paid by NEFT to your bank account ending 0000 on 18-Feb-2026. Payment reference FICT2602184471.",
+        "bbox": [
+         48.5,
+         519.2,
+         525.5,
+         528.7
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s57",
+        "text": "If you disagree with this decision, you may write to our Grievance Redressal Officer at grievance@aarohan.example, quoting yourclaim number. If your grievance is not resolved, you may approach the Insurance Ombudsman.",
+        "bbox": [
+         48.5,
+         536.9,
+         546.7,
+         560.2
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s58",
+        "text": "Yours sincerely,",
+        "bbox": [
+         48.5,
+         582.5,
+         108.8,
+         592.0
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s59",
+        "text": "For Aarohan General Insurance Ltd.",
+        "bbox": [
+         48.5,
+         610.3,
+         188.3,
+         619.8
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s60",
+        "text": "Authorised signatory, Health Claims",
+        "bbox": [
+         48.5,
+         622.4,
+         186.5,
+         631.9
+        ],
+        "font_size": 9.5,
+        "color": "#000000",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s61",
+        "text": "This is a computer-generated letter and needs no signature.",
+        "bbox": [
+         48.5,
+         641.8,
+         243.1,
+         649.8
+        ],
+        "font_size": 8.0,
+        "color": "#808080",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s62",
+        "text": "Synthetic test document - ClaimSense evaluation dataset - fictional data - not valid for any claim",
+        "bbox": [
+         170.4,
+         814.6,
+         424.8,
+         820.6
+        ],
+        "font_size": 6.0,
+        "color": "#737373",
+        "hidden": false,
+        "hidden_reasons": []
+       },
+       {
+        "span_id": "p1-s63",
+        "text": "Page 1",
+        "bbox": [
+         533.7,
+         814.6,
+         552.8,
+         820.6
+        ],
+        "font_size": 6.0,
+        "color": "#737373",
+        "hidden": false,
+        "hidden_reasons": []
+       }
+      ],
+      "has_images": false,
+      "ocr_status": "not_needed",
+      "warnings": []
+     }
+    ],
+    "annotations": [],
+    "form_fields": [],
+    "attachments": [],
+    "warnings": [],
+    "untrusted_content": true
+   }
+  },
+  {
+   "key": "[\"get_claim_history\", [\"case_dfffbb62bd3168eb\"], {}]",
+   "result": []
+  },
+  {
+   "key": "[\"get_policy\", [\"case_dfffbb62bd3168eb\"], {}]",
+   "result": {
+    "policy_no": "AS-2025-100478",
+    "sum_insured": 300000.0,
+    "period_start": "2025-07-15",
+    "period_end": "2026-07-14",
+    "first_inception": "2022-07-15",
+    "holder": "Rudransh Kelapure",
+    "insurer": "Aarohan General Insurance Ltd.",
+    "product": "Arogya Sanjeevani Policy",
+    "wording_uin": "GODHLIP24179V022324",
+    "wording_source": "catalogue"
+   }
+  },
+  {
+   "key": "[\"get_policy_wording\", [\"case_dfffbb62bd3168eb\"], {}]",
+   "result": {
+    "case_id": "case_dfffbb62bd3168eb",
+    "wording_uin": "GODHLIP24179V022324",
+    "wording_source": "catalogue",
+    "status": "not_printed",
+    "schedule_wording_uin": "",
+    "wording_needed": false,
+    "wording_document_id": "",
+    "note": "The policy schedule prints no wording UIN: the standard Arogya Sanjeevani wording (GODHLIP24179V022324) is used. If the user has their policy wording, they can upload it."
+   }
+  },
+  {
+   "key": "[\"search_clauses\", [\"Room rent above eligible limit (₹2,000 a day for 3 days) Room rent is limited to 2% of sum insured, at most ₹5,000 a day\"], {\"case_id\": \"case_dfffbb62bd3168eb\", \"k\": 2, \"wording_uin\": \"GODHLIP24179V022324\"}]",
+   "result": {
+    "query": "Room rent above eligible limit (₹2,000 a day for 3 days) Room rent is limited to 2% of sum insured, at most ₹5,000 a day",
+    "wording": {
+     "insurer": "Go Digit General Insurance Limited",
+     "product": "Arogya Sanjeevani Policy",
+     "uin": "GODHLIP24179V022324",
+     "version": "GODHLIP24179V022324",
+     "source_url": "https://www.godigit.com/content/dam/godigit/directportal/en/downloads/health/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf",
+     "downloaded_on": "2026-11-09",
+     "sha256": "70ec4e51cf03a49c06cd7b06fd2dae16ac4ab3a204591fb1e8568a50858ea75b",
+     "synthetic": false,
+     "source": "catalogue",
+     "reviewed": true
+    },
+    "synthetic": false,
+    "hits": [
+     {
+      "clause_id": "C.1.1",
+      "title": "Other expenses",
+      "section": "BENEFITS COVERED UNDER THE POLICY",
+      "text": "i. Expenses incurred on treatment of cataract subject to the sub limits\nii. Dental treatment, necessitated due to disease or injury\niii. Plastic surgery necessitated due to disease or injury\niv. All day care treatments\nv. Expenses incurred on road Ambulance subject to a maximum of Rs.2000/- per hospitalisation. Note:\n1. Expenses of Hospitalization for a minimum period of 24 consecutive hours only shall be admissible. However, the time limit shall not apply in respect of Day Care Treatment 2. In case of admission to a room/ICU/ICCU at rates exceeding the aforesaid limits, the reimbursement/payment of all other expenses incurred at the Hospital, with the exception of (a) cost of pharmacy and consumables, (b) cost of implants and medical devices, (c) cost of diagnostics, shall be effected in the same proportion as the admissible rate per day bears to the actual rate per day of Room Rent/ICU/ICCU charges. 3. Proportionate deductions will not apply in respect of the hospitals which do not follow differential billing or for those expenses in respect of which differential billing is not adopted based on the room category.",
+      "score": 0.032787,
+      "page_start": 6,
+      "page_end": 6,
+      "ranks": {
+       "bm25": 1,
+       "vector": 1
+      },
+      "citation": "Go Digit General Insurance Limited Arogya Sanjeevani Policy (GODHLIP24179V022324), clause C.1.1"
+     },
+     {
+      "clause_id": "B.40",
+      "title": "Room Rent",
+      "section": "DEFINITIONS",
+      "text": "Room Rent means the amount charged by a hospital towards Room and Boarding expenses and shall include the associated medical expenses.",
+      "score": 0.032258,
+      "page_start": 5,
+      "page_end": 5,
+      "ranks": {
+       "bm25": 2,
+       "vector": 2
+      },
+      "citation": "Go Digit General Insurance Limited Arogya Sanjeevani Policy (GODHLIP24179V022324), clause B.40"
+     }
+    ]
+   }
+  },
+  {
+   "key": "[\"search_clauses\", [\"GST on room rent above eligible limit Follows the room rent deduction\"], {\"case_id\": \"case_dfffbb62bd3168eb\", \"k\": 2, \"wording_uin\": \"GODHLIP24179V022324\"}]",
+   "result": {
+    "query": "GST on room rent above eligible limit Follows the room rent deduction",
+    "wording": {
+     "insurer": "Go Digit General Insurance Limited",
+     "product": "Arogya Sanjeevani Policy",
+     "uin": "GODHLIP24179V022324",
+     "version": "GODHLIP24179V022324",
+     "source_url": "https://www.godigit.com/content/dam/godigit/directportal/en/downloads/health/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf",
+     "downloaded_on": "2026-11-09",
+     "sha256": "70ec4e51cf03a49c06cd7b06fd2dae16ac4ab3a204591fb1e8568a50858ea75b",
+     "synthetic": false,
+     "source": "catalogue",
+     "reviewed": true
+    },
+    "synthetic": false,
+    "hits": [
+     {
+      "clause_id": "C.1.1",
+      "title": "Other expenses",
+      "section": "BENEFITS COVERED UNDER THE POLICY",
+      "text": "i. Expenses incurred on treatment of cataract subject to the sub limits\nii. Dental treatment, necessitated due to disease or injury\niii. Plastic surgery necessitated due to disease or injury\niv. All day care treatments\nv. Expenses incurred on road Ambulance subject to a maximum of Rs.2000/- per hospitalisation. Note:\n1. Expenses of Hospitalization for a minimum period of 24 consecutive hours only shall be admissible. However, the time limit shall not apply in respect of Day Care Treatment 2. In case of admission to a room/ICU/ICCU at rates exceeding the aforesaid limits, the reimbursement/payment of all other expenses incurred at the Hospital, with the exception of (a) cost of pharmacy and consumables, (b) cost of implants and medical devices, (c) cost of diagnostics, shall be effected in the same proportion as the admissible rate per day bears to the actual rate per day of Room Rent/ICU/ICCU charges. 3. Proportionate deductions will not apply in respect of the hospitals which do not follow differential billing or for those expenses in respect of which differential billing is not adopted based on the room category.",
+      "score": 0.032522,
+      "page_start": 6,
+      "page_end": 6,
+      "ranks": {
+       "bm25": 1,
+       "vector": 2
+      },
+      "citation": "Go Digit General Insurance Limited Arogya Sanjeevani Policy (GODHLIP24179V022324), clause C.1.1"
+     },
+     {
+      "clause_id": "B.40",
+      "title": "Room Rent",
+      "section": "DEFINITIONS",
+      "text": "Room Rent means the amount charged by a hospital towards Room and Boarding expenses and shall include the associated medical expenses.",
+      "score": 0.032522,
+      "page_start": 5,
+      "page_end": 5,
+      "ranks": {
+       "bm25": 2,
+       "vector": 1
+      },
+      "citation": "Go Digit General Insurance Limited Arogya Sanjeevani Policy (GODHLIP24179V022324), clause B.40"
+     }
+    ]
+   }
+  },
+  {
+   "key": "[\"search_clauses\", [\"Proportionate deduction on associated medical expenses (₹5,000 / ₹7,000) Room category above eligibility, so associated expenses are reduced in the same proportion\"], {\"case_id\": \"case_dfffbb62bd3168eb\", \"k\": 2, \"wording_uin\": \"GODHLIP24179V022324\"}]",
+   "result": {
+    "query": "Proportionate deduction on associated medical expenses (₹5,000 / ₹7,000) Room category above eligibility, so associated expenses are reduced in the same proportion",
+    "wording": {
+     "insurer": "Go Digit General Insurance Limited",
+     "product": "Arogya Sanjeevani Policy",
+     "uin": "GODHLIP24179V022324",
+     "version": "GODHLIP24179V022324",
+     "source_url": "https://www.godigit.com/content/dam/godigit/directportal/en/downloads/health/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf",
+     "downloaded_on": "2026-11-09",
+     "sha256": "70ec4e51cf03a49c06cd7b06fd2dae16ac4ab3a204591fb1e8568a50858ea75b",
+     "synthetic": false,
+     "source": "catalogue",
+     "reviewed": true
+    },
+    "synthetic": false,
+    "hits": [
+     {
+      "clause_id": "B.40",
+      "title": "Room Rent",
+      "section": "DEFINITIONS",
+      "text": "Room Rent means the amount charged by a hospital towards Room and Boarding expenses and shall include the associated medical expenses.",
+      "score": 0.032787,
+      "page_start": 5,
+      "page_end": 5,
+      "ranks": {
+       "bm25": 1,
+       "vector": 1
+      },
+      "citation": "Go Digit General Insurance Limited Arogya Sanjeevani Policy (GODHLIP24179V022324), clause B.40"
+     },
+     {
+      "clause_id": "C.1.1",
+      "title": "Other expenses",
+      "section": "BENEFITS COVERED UNDER THE POLICY",
+      "text": "i. Expenses incurred on treatment of cataract subject to the sub limits\nii. Dental treatment, necessitated due to disease or injury\niii. Plastic surgery necessitated due to disease or injury\niv. All day care treatments\nv. Expenses incurred on road Ambulance subject to a maximum of Rs.2000/- per hospitalisation. Note:\n1. Expenses of Hospitalization for a minimum period of 24 consecutive hours only shall be admissible. However, the time limit shall not apply in respect of Day Care Treatment 2. In case of admission to a room/ICU/ICCU at rates exceeding the aforesaid limits, the reimbursement/payment of all other expenses incurred at the Hospital, with the exception of (a) cost of pharmacy and consumables, (b) cost of implants and medical devices, (c) cost of diagnostics, shall be effected in the same proportion as the admissible rate per day bears to the actual rate per day of Room Rent/ICU/ICCU charges. 3. Proportionate deductions will not apply in respect of the hospitals which do not follow differential billing or for those expenses in respect of which differential billing is not adopted based on the room category.",
+      "score": 0.032258,
+      "page_start": 6,
+      "page_end": 6,
+      "ranks": {
+       "bm25": 2,
+       "vector": 2
+      },
+      "citation": "Go Digit General Insurance Limited Arogya Sanjeevani Policy (GODHLIP24179V022324), clause C.1.1"
+     }
+    ]
+   }
+  },
+  {
+   "key": "[\"expected_settlement\", [{\"claim\": {\"admission\": \"2026-01-19\", \"claim_id\": \"AGI/HC/2526/004512\", \"condition_type\": null, \"diagnosis\": \"Cholelithiasis with cholecystitis\", \"discharge\": \"2026-01-22\", \"discount\": \"0\", \"lines\": [{\"amount\": \"21000.0\", \"category\": null, \"date\": null, \"description\": \"Private room\", \"gst_pct\": \"5.0\", \"line_id\": \"L01\", \"non_payable\": null, \"qty\": \"3.0\", \"rate\": \"7000.0\"}, {\"amount\": \"4500.0\", \"category\": null, \"date\": null, \"description\": \"Nursing and duty doctor charges\", \"gst_pct\": \"0\", \"line_id\": \"L02\", \"non_payable\": null, \"qty\": \"3.0\", \"rate\": \"1500.0\"}, {\"amount\": \"32000.0\", \"category\": null, \"date\": null, \"description\": \"Surgeon fee - laparoscopic cholecystectomy\", \"gst_pct\": \"0\", \"line_id\": \"L03\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"32000.0\"}, {\"amount\": \"11000.0\", \"category\": null, \"date\": null, \"description\": \"Anaesthetist fee\", \"gst_pct\": \"0\", \"line_id\": \"L04\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"11000.0\"}, {\"amount\": \"22000.0\", \"category\": null, \"date\": null, \"description\": \"Operation theatre charges\", \"gst_pct\": \"0\", \"line_id\": \"L05\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"22000.0\"}, {\"amount\": \"5400.0\", \"category\": null, \"date\": null, \"description\": \"Consultant visits\", \"gst_pct\": \"0\", \"line_id\": \"L06\", \"non_payable\": null, \"qty\": \"3.0\", \"rate\": \"1800.0\"}, {\"amount\": \"7200.0\", \"category\": null, \"date\": null, \"description\": \"Laboratory investigations\", \"gst_pct\": \"0\", \"line_id\": \"L07\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"7200.0\"}, {\"amount\": \"6500.0\", \"category\": null, \"date\": null, \"description\": \"MRCP\", \"gst_pct\": \"0\", \"line_id\": \"L08\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"6500.0\"}, {\"amount\": \"12900.0\", \"category\": null, \"date\": null, \"description\": \"Pharmacy - inpatient medicines\", \"gst_pct\": \"0\", \"line_id\": \"L09\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"12900.0\"}, {\"amount\": \"4800.0\", \"category\": null, \"date\": null, \"description\": \"Laparoscopic clips and retrieval bag\", \"gst_pct\": \"0\", \"line_id\": \"L10\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"4800.0\"}], \"policy_no\": \"AS-2025-100478\", \"printed_total\": \"128350.0\", \"procedure\": \"Laparoscopic cholecystectomy\", \"room_priced_by_category\": {}}, \"history\": [], \"policy\": {\"first_inception\": \"2022-07-15\", \"holder\": \"Rudransh Kelapure\", \"insurer\": \"Aarohan General Insurance Ltd.\", \"period_end\": \"2026-07-14\", \"period_start\": \"2025-07-15\", \"policy_no\": \"AS-2025-100478\", \"product\": \"Arogya Sanjeevani Policy\", \"sum_insured\": 300000.0, \"wording_source\": \"catalogue\", \"wording_uin\": \"GODHLIP24179V022324\"}}], {}]",
+   "result": {
+    "claim_id": "AGI/HC/2526/004512",
+    "status": "computed",
+    "claimed_amount": 128350.0,
+    "deductions": [
+     {
+      "deduction_id": "D-ROOM-L01",
+      "kind": "room_rent_excess",
+      "amount": 6000.0,
+      "description": "Room rent above the limit (₹2,000 a day for 3 days)",
+      "formula": "3 x (7,000 - 5,000)",
+      "rule_ref": "room_rent_cap",
+      "line_ids": [
+       "L01"
+      ],
+      "fact_id": "F-D-ROOM-L01"
+     },
+     {
+      "deduction_id": "D-ROOMGST-L01",
+      "kind": "room_gst_excess",
+      "amount": 300.0,
+      "description": "GST on room rent above the limit",
+      "formula": "5.0% of 6,000",
+      "rule_ref": "gst_follows_charge",
+      "line_ids": [
+       "L01"
+      ],
+      "fact_id": "F-D-ROOMGST-L01"
+     },
+     {
+      "deduction_id": "D-PROPORTIONATE",
+      "kind": "proportionate_deduction",
+      "amount": 21400.0,
+      "description": "Proportionate deduction on associated expenses (15,000 / 21,000)",
+      "formula": "74,900 x (21,000 - 15,000) / 21,000",
+      "rule_ref": "proportionate_deduction",
+      "line_ids": [
+       "L02",
+       "L03",
+       "L04",
+       "L05",
+       "L06"
+      ],
+      "fact_id": "F-D-PROPORTIONATE"
+     }
+    ],
+    "total_deductions": 27700.0,
+    "admissible_amount": 100650.0,
+    "copay_amount": 5032.5,
+    "payable_amount": 95617.5,
+    "facts": [
+     {
+      "fact_id": "F-CLAIMED",
+      "kind": "claimed_amount",
+      "text": "Amount claimed: ₹1,28,350",
+      "amount": 128350.0,
+      "formula": "lines 1,27,300 + GST 1,050",
+      "rule_ref": "",
+      "line_ids": [],
+      "inputs": {
+       "line_sum": "127300.0",
+       "gst": "1050.00",
+       "discount": "0"
+      }
+     },
+     {
+      "fact_id": "F-WAITING",
+      "kind": "waiting_period",
+      "text": "24-month waiting period served: 42 full months of cover since first inception.",
+      "amount": null,
+      "formula": "",
+      "rule_ref": "listed_illness_waiting_period",
+      "line_ids": [],
+      "inputs": {
+       "first_inception": "2022-07-15",
+       "admission": "2026-01-19",
+       "days_since_inception": 1284,
+       "months_since_inception": 42,
+       "required": "24 months",
+       "served": true,
+       "condition_type": "listed_illness_short",
+       "condition_source": "keyword"
+      }
+     },
+     {
+      "fact_id": "F-ROOM-CAP",
+      "kind": "limit",
+      "text": "Room rent limit: ₹5,000 a day",
+      "amount": 5000.0,
+      "formula": "lower of 2% of 3,00,000 and 5,000",
+      "rule_ref": "room_rent_cap",
+      "line_ids": [],
+      "inputs": {
+       "sum_insured": "300000.0"
+      }
+     },
+     {
+      "fact_id": "F-D-ROOM-L01",
+      "kind": "deduction",
+      "text": "Room rent above the limit (₹2,000 a day for 3 days)",
+      "amount": 6000.0,
+      "formula": "3 x (7,000 - 5,000)",
+      "rule_ref": "room_rent_cap",
+      "line_ids": [
+       "L01"
+      ],
+      "inputs": {
+       "deduction_kind": "room_rent_excess"
+      }
+     },
+     {
+      "fact_id": "F-D-ROOMGST-L01",
+      "kind": "deduction",
+      "text": "GST on room rent above the limit",
+      "amount": 300.0,
+      "formula": "5.0% of 6,000",
+      "rule_ref": "gst_follows_charge",
+      "line_ids": [
+       "L01"
+      ],
+      "inputs": {
+       "deduction_kind": "room_gst_excess"
+      }
+     },
+     {
+      "fact_id": "F-PROP-RATIO",
+      "kind": "ratio",
+      "text": "Eligible room rent ₹15,000 of ₹21,000 charged",
+      "amount": null,
+      "formula": "15,000 / 21,000",
+      "rule_ref": "proportionate_deduction",
+      "line_ids": [
+       "L01"
+      ],
+      "inputs": {
+       "eligible_room": "15000.0",
+       "actual_room": "21000.00"
+      }
+     },
+     {
+      "fact_id": "F-PROP-LINKED",
+      "kind": "base",
+      "text": "Associated expenses the cut may apply to: ₹74,900",
+      "amount": 74900.0,
+      "formula": "4,500 + 32,000 + 11,000 + 22,000 + 5,400",
+      "rule_ref": "proportionate_deduction",
+      "line_ids": [
+       "L02",
+       "L03",
+       "L04",
+       "L05",
+       "L06"
+      ],
+      "inputs": {}
+     },
+     {
+      "fact_id": "F-PROP-EXCLUDED",
+      "kind": "base",
+      "text": "Expenses the cut may not apply to (IRDAI 2020 norms): ₹31,400",
+      "amount": 31400.0,
+      "formula": "7,200 + 6,500 + 12,900 + 4,800",
+      "rule_ref": "proportionate_deduction",
+      "line_ids": [
+       "L07",
+       "L08",
+       "L09",
+       "L10"
+      ],
+      "inputs": {
+       "categories": [
+        "diagnostics",
+        "implants",
+        "pharmacy"
+       ]
+      }
+     },
+     {
+      "fact_id": "F-D-PROPORTIONATE",
+      "kind": "deduction",
+      "text": "Proportionate deduction on associated expenses (15,000 / 21,000)",
+      "amount": 21400.0,
+      "formula": "74,900 x (21,000 - 15,000) / 21,000",
+      "rule_ref": "proportionate_deduction",
+      "line_ids": [
+       "L02",
+       "L03",
+       "L04",
+       "L05",
+       "L06"
+      ],
+      "inputs": {
+       "deduction_kind": "proportionate_deduction"
+      }
+     },
+     {
+      "fact_id": "F-ADMISSIBLE",
+      "kind": "admissible",
+      "text": "Admissible amount: ₹1,00,650",
+      "amount": 100650.0,
+      "formula": "claimed 1,28,350 - deductions 27,700",
+      "rule_ref": "",
+      "line_ids": [],
+      "inputs": {}
+     },
+     {
+      "fact_id": "F-COPAY",
+      "kind": "copay",
+      "text": "Co-pay 5%: ₹5,032.50",
+      "amount": 5032.5,
+      "formula": "5% of 1,00,650",
+      "rule_ref": "copay",
+      "line_ids": [],
+      "inputs": {}
+     },
+     {
+      "fact_id": "F-SI-REMAINING",
+      "kind": "limit",
+      "text": "Sum insured left this policy period: ₹3,00,000",
+      "amount": 300000.0,
+      "formula": "3,00,000 - earlier claims this period",
+      "rule_ref": "sum_insured",
+      "line_ids": [],
+      "inputs": {}
+     },
+     {
+      "fact_id": "F-PAYABLE",
+      "kind": "payable",
+      "text": "Amount payable: ₹95,617.50",
+      "amount": 95617.5,
+      "formula": "admissible 1,00,650 - co-pay 5,032.50",
+      "rule_ref": "",
+      "line_ids": [],
+      "inputs": {}
+     }
+    ],
+    "questions": [],
+    "lines": [
+     {
+      "line_id": "L01",
+      "description": "Private room",
+      "amount": 21000.0,
+      "gst": 1050.0,
+      "category": "room",
+      "category_source": "keyword",
+      "non_payable": false,
+      "non_payable_source": "default",
+      "room_linked": false
+     },
+     {
+      "line_id": "L02",
+      "description": "Nursing and duty doctor charges",
+      "amount": 4500.0,
+      "gst": 0.0,
+      "category": "nursing",
+      "category_source": "keyword",
+      "non_payable": false,
+      "non_payable_source": "default",
+      "room_linked": true
+     },
+     {
+      "line_id": "L03",
+      "description": "Surgeon fee - laparoscopic cholecystectomy",
+      "amount": 32000.0,
+      "gst": 0.0,
+      "category": "professional_fees",
+      "category_source": "keyword",
+      "non_payable": false,
+      "non_payable_source": "default",
+      "room_linked": true
+     },
+     {
+      "line_id": "L04",
+      "description": "Anaesthetist fee",
+      "amount": 11000.0,
+      "gst": 0.0,
+      "category": "professional_fees",
+      "category_source": "keyword",
+      "non_payable": false,
+      "non_payable_source": "default",
+      "room_linked": true
+     },
+     {
+      "line_id": "L05",
+      "description": "Operation theatre charges",
+      "amount": 22000.0,
+      "gst": 0.0,
+      "category": "operation_theatre",
+      "category_source": "keyword",
+      "non_payable": false,
+      "non_payable_source": "default",
+      "room_linked": true
+     },
+     {
+      "line_id": "L06",
+      "description": "Consultant visits",
+      "amount": 5400.0,
+      "gst": 0.0,
+      "category": "professional_fees",
+      "category_source": "keyword",
+      "non_payable": false,
+      "non_payable_source": "default",
+      "room_linked": true
+     },
+     {
+      "line_id": "L07",
+      "description": "Laboratory investigations",
+      "amount": 7200.0,
+      "gst": 0.0,
+      "category": "diagnostics",
+      "category_source": "keyword",
+      "non_payable": false,
+      "non_payable_source": "default",
+      "room_linked": false
+     },
+     {
+      "line_id": "L08",
+      "description": "MRCP",
+      "amount": 6500.0,
+      "gst": 0.0,
+      "category": "diagnostics",
+      "category_source": "keyword",
+      "non_payable": false,
+      "non_payable_source": "default",
+      "room_linked": false
+     },
+     {
+      "line_id": "L09",
+      "description": "Pharmacy - inpatient medicines",
+      "amount": 12900.0,
+      "gst": 0.0,
+      "category": "pharmacy",
+      "category_source": "keyword",
+      "non_payable": false,
+      "non_payable_source": "default",
+      "room_linked": false
+     },
+     {
+      "line_id": "L10",
+      "description": "Laparoscopic clips and retrieval bag",
+      "amount": 4800.0,
+      "gst": 0.0,
+      "category": "implants",
+      "category_source": "keyword",
+      "non_payable": false,
+      "non_payable_source": "default",
+      "room_linked": false
+     }
+    ],
+    "warnings": []
+   }
+  },
+  {
+   "key": "[\"reproduce_deduction\", [{\"claim\": {\"admission\": \"2026-01-19\", \"claim_id\": \"AGI/HC/2526/004512\", \"condition_type\": null, \"diagnosis\": \"Cholelithiasis with cholecystitis\", \"discharge\": \"2026-01-22\", \"discount\": \"0\", \"lines\": [{\"amount\": \"21000.0\", \"category\": null, \"date\": null, \"description\": \"Private room\", \"gst_pct\": \"5.0\", \"line_id\": \"L01\", \"non_payable\": null, \"qty\": \"3.0\", \"rate\": \"7000.0\"}, {\"amount\": \"4500.0\", \"category\": null, \"date\": null, \"description\": \"Nursing and duty doctor charges\", \"gst_pct\": \"0\", \"line_id\": \"L02\", \"non_payable\": null, \"qty\": \"3.0\", \"rate\": \"1500.0\"}, {\"amount\": \"32000.0\", \"category\": null, \"date\": null, \"description\": \"Surgeon fee - laparoscopic cholecystectomy\", \"gst_pct\": \"0\", \"line_id\": \"L03\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"32000.0\"}, {\"amount\": \"11000.0\", \"category\": null, \"date\": null, \"description\": \"Anaesthetist fee\", \"gst_pct\": \"0\", \"line_id\": \"L04\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"11000.0\"}, {\"amount\": \"22000.0\", \"category\": null, \"date\": null, \"description\": \"Operation theatre charges\", \"gst_pct\": \"0\", \"line_id\": \"L05\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"22000.0\"}, {\"amount\": \"5400.0\", \"category\": null, \"date\": null, \"description\": \"Consultant visits\", \"gst_pct\": \"0\", \"line_id\": \"L06\", \"non_payable\": null, \"qty\": \"3.0\", \"rate\": \"1800.0\"}, {\"amount\": \"7200.0\", \"category\": null, \"date\": null, \"description\": \"Laboratory investigations\", \"gst_pct\": \"0\", \"line_id\": \"L07\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"7200.0\"}, {\"amount\": \"6500.0\", \"category\": null, \"date\": null, \"description\": \"MRCP\", \"gst_pct\": \"0\", \"line_id\": \"L08\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"6500.0\"}, {\"amount\": \"12900.0\", \"category\": null, \"date\": null, \"description\": \"Pharmacy - inpatient medicines\", \"gst_pct\": \"0\", \"line_id\": \"L09\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"12900.0\"}, {\"amount\": \"4800.0\", \"category\": null, \"date\": null, \"description\": \"Laparoscopic clips and retrieval bag\", \"gst_pct\": \"0\", \"line_id\": \"L10\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"4800.0\"}], \"policy_no\": \"AS-2025-100478\", \"printed_total\": \"128350.0\", \"procedure\": \"Laparoscopic cholecystectomy\", \"room_priced_by_category\": {}}, \"history\": [], \"policy\": {\"first_inception\": \"2022-07-15\", \"holder\": \"Rudransh Kelapure\", \"insurer\": \"Aarohan General Insurance Ltd.\", \"period_end\": \"2026-07-14\", \"period_start\": \"2025-07-15\", \"policy_no\": \"AS-2025-100478\", \"product\": \"Arogya Sanjeevani Policy\", \"sum_insured\": 300000.0, \"wording_source\": \"catalogue\", \"wording_uin\": \"GODHLIP24179V022324\"}}, {\"claimed_amount\": \"128350.0\", \"copay_amount\": \"4583.93\", \"letter_id\": \"AGI/HC/2526/004512\", \"letter_type\": \"settlement\", \"paid_amount\": \"87094.64\", \"rejection_reason\": \"\", \"rows\": [{\"amount\": \"6000.0\", \"kind\": null, \"particulars\": \"Room rent above eligible limit (₹2,000 a day for 3 days)\", \"reason\": \"Room rent is limited to 2% of sum insured, at most ₹5,000 a day\", \"row_id\": \"R1\"}, {\"amount\": \"300.0\", \"kind\": null, \"particulars\": \"GST on room rent above eligible limit\", \"reason\": \"Follows the room rent deduction\", \"row_id\": \"R2\"}, {\"amount\": \"30371.43\", \"kind\": null, \"particulars\": \"Proportionate deduction on associated medical expenses (₹5,000 / ₹7,000)\", \"reason\": \"Room category above eligibility, so associated expenses are reduced in the same proportion\", \"row_id\": \"R3\"}]}, \"R1\"], {}]",
+   "result": {
+    "row_id": "R1",
+    "particulars": "Room rent above eligible limit (₹2,000 a day for 3 days)",
+    "kind": "room_rent",
+    "kind_source": "keyword",
+    "insurer_amount": 6000.0,
+    "policy_amount": 6000.0,
+    "difference": 0.0,
+    "verdict": "matches_policy",
+    "method": "room_rent_policy",
+    "explanation": "₹6,000 is what the policy requires for this row (₹6,000).",
+    "matches": [
+     {
+      "hypothesis_id": "room_rent_policy",
+      "correct": true,
+      "title": "Room rent above the policy limit",
+      "amount": 6000.0,
+      "detail": "Room rent above the limit (₹2,000 a day for 3 days): 3 x (7,000 - 5,000)",
+      "line_ids": []
+     },
+     {
+      "hypothesis_id": "room_cap_max_only",
+      "correct": false,
+      "title": "Room cap at ₹5,000, ignoring 2% of sum insured",
+      "amount": 6000.0,
+      "detail": "3 x (7,000 - 5,000)",
+      "line_ids": [
+       "L01"
+      ]
+     }
+    ],
+    "tested": [
+     "room_rent_policy",
+     "room_cap_max_only",
+     "room_cap_pct_only",
+     "room_days_incl_discharge"
+    ],
+    "exhaustive": true,
+    "rule_ref": "room_rent_cap",
+    "policy_fact_ids": [
+     "F-D-ROOM-L01"
+    ],
+    "questions": []
+   }
+  },
+  {
+   "key": "[\"reproduce_deduction\", [{\"claim\": {\"admission\": \"2026-01-19\", \"claim_id\": \"AGI/HC/2526/004512\", \"condition_type\": null, \"diagnosis\": \"Cholelithiasis with cholecystitis\", \"discharge\": \"2026-01-22\", \"discount\": \"0\", \"lines\": [{\"amount\": \"21000.0\", \"category\": null, \"date\": null, \"description\": \"Private room\", \"gst_pct\": \"5.0\", \"line_id\": \"L01\", \"non_payable\": null, \"qty\": \"3.0\", \"rate\": \"7000.0\"}, {\"amount\": \"4500.0\", \"category\": null, \"date\": null, \"description\": \"Nursing and duty doctor charges\", \"gst_pct\": \"0\", \"line_id\": \"L02\", \"non_payable\": null, \"qty\": \"3.0\", \"rate\": \"1500.0\"}, {\"amount\": \"32000.0\", \"category\": null, \"date\": null, \"description\": \"Surgeon fee - laparoscopic cholecystectomy\", \"gst_pct\": \"0\", \"line_id\": \"L03\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"32000.0\"}, {\"amount\": \"11000.0\", \"category\": null, \"date\": null, \"description\": \"Anaesthetist fee\", \"gst_pct\": \"0\", \"line_id\": \"L04\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"11000.0\"}, {\"amount\": \"22000.0\", \"category\": null, \"date\": null, \"description\": \"Operation theatre charges\", \"gst_pct\": \"0\", \"line_id\": \"L05\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"22000.0\"}, {\"amount\": \"5400.0\", \"category\": null, \"date\": null, \"description\": \"Consultant visits\", \"gst_pct\": \"0\", \"line_id\": \"L06\", \"non_payable\": null, \"qty\": \"3.0\", \"rate\": \"1800.0\"}, {\"amount\": \"7200.0\", \"category\": null, \"date\": null, \"description\": \"Laboratory investigations\", \"gst_pct\": \"0\", \"line_id\": \"L07\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"7200.0\"}, {\"amount\": \"6500.0\", \"category\": null, \"date\": null, \"description\": \"MRCP\", \"gst_pct\": \"0\", \"line_id\": \"L08\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"6500.0\"}, {\"amount\": \"12900.0\", \"category\": null, \"date\": null, \"description\": \"Pharmacy - inpatient medicines\", \"gst_pct\": \"0\", \"line_id\": \"L09\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"12900.0\"}, {\"amount\": \"4800.0\", \"category\": null, \"date\": null, \"description\": \"Laparoscopic clips and retrieval bag\", \"gst_pct\": \"0\", \"line_id\": \"L10\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"4800.0\"}], \"policy_no\": \"AS-2025-100478\", \"printed_total\": \"128350.0\", \"procedure\": \"Laparoscopic cholecystectomy\", \"room_priced_by_category\": {}}, \"history\": [], \"policy\": {\"first_inception\": \"2022-07-15\", \"holder\": \"Rudransh Kelapure\", \"insurer\": \"Aarohan General Insurance Ltd.\", \"period_end\": \"2026-07-14\", \"period_start\": \"2025-07-15\", \"policy_no\": \"AS-2025-100478\", \"product\": \"Arogya Sanjeevani Policy\", \"sum_insured\": 300000.0, \"wording_source\": \"catalogue\", \"wording_uin\": \"GODHLIP24179V022324\"}}, {\"claimed_amount\": \"128350.0\", \"copay_amount\": \"4583.93\", \"letter_id\": \"AGI/HC/2526/004512\", \"letter_type\": \"settlement\", \"paid_amount\": \"87094.64\", \"rejection_reason\": \"\", \"rows\": [{\"amount\": \"6000.0\", \"kind\": null, \"particulars\": \"Room rent above eligible limit (₹2,000 a day for 3 days)\", \"reason\": \"Room rent is limited to 2% of sum insured, at most ₹5,000 a day\", \"row_id\": \"R1\"}, {\"amount\": \"300.0\", \"kind\": null, \"particulars\": \"GST on room rent above eligible limit\", \"reason\": \"Follows the room rent deduction\", \"row_id\": \"R2\"}, {\"amount\": \"30371.43\", \"kind\": null, \"particulars\": \"Proportionate deduction on associated medical expenses (₹5,000 / ₹7,000)\", \"reason\": \"Room category above eligibility, so associated expenses are reduced in the same proportion\", \"row_id\": \"R3\"}]}, \"R2\"], {}]",
+   "result": {
+    "row_id": "R2",
+    "particulars": "GST on room rent above eligible limit",
+    "kind": "room_gst",
+    "kind_source": "keyword",
+    "insurer_amount": 300.0,
+    "policy_amount": 300.0,
+    "difference": 0.0,
+    "verdict": "matches_policy",
+    "method": "room_gst_policy",
+    "explanation": "₹300 is what the policy requires for this row (₹300).",
+    "matches": [
+     {
+      "hypothesis_id": "room_gst_policy",
+      "correct": true,
+      "title": "GST on the disallowed room rent",
+      "amount": 300.0,
+      "detail": "GST on room rent above the limit: 5.0% of 6,000",
+      "line_ids": []
+     }
+    ],
+    "tested": [
+     "room_gst_policy",
+     "room_gst_on_full_room"
+    ],
+    "exhaustive": true,
+    "rule_ref": "gst_follows_charge",
+    "policy_fact_ids": [
+     "F-D-ROOMGST-L01"
+    ],
+    "questions": []
+   }
+  },
+  {
+   "key": "[\"reproduce_deduction\", [{\"claim\": {\"admission\": \"2026-01-19\", \"claim_id\": \"AGI/HC/2526/004512\", \"condition_type\": null, \"diagnosis\": \"Cholelithiasis with cholecystitis\", \"discharge\": \"2026-01-22\", \"discount\": \"0\", \"lines\": [{\"amount\": \"21000.0\", \"category\": null, \"date\": null, \"description\": \"Private room\", \"gst_pct\": \"5.0\", \"line_id\": \"L01\", \"non_payable\": null, \"qty\": \"3.0\", \"rate\": \"7000.0\"}, {\"amount\": \"4500.0\", \"category\": null, \"date\": null, \"description\": \"Nursing and duty doctor charges\", \"gst_pct\": \"0\", \"line_id\": \"L02\", \"non_payable\": null, \"qty\": \"3.0\", \"rate\": \"1500.0\"}, {\"amount\": \"32000.0\", \"category\": null, \"date\": null, \"description\": \"Surgeon fee - laparoscopic cholecystectomy\", \"gst_pct\": \"0\", \"line_id\": \"L03\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"32000.0\"}, {\"amount\": \"11000.0\", \"category\": null, \"date\": null, \"description\": \"Anaesthetist fee\", \"gst_pct\": \"0\", \"line_id\": \"L04\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"11000.0\"}, {\"amount\": \"22000.0\", \"category\": null, \"date\": null, \"description\": \"Operation theatre charges\", \"gst_pct\": \"0\", \"line_id\": \"L05\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"22000.0\"}, {\"amount\": \"5400.0\", \"category\": null, \"date\": null, \"description\": \"Consultant visits\", \"gst_pct\": \"0\", \"line_id\": \"L06\", \"non_payable\": null, \"qty\": \"3.0\", \"rate\": \"1800.0\"}, {\"amount\": \"7200.0\", \"category\": null, \"date\": null, \"description\": \"Laboratory investigations\", \"gst_pct\": \"0\", \"line_id\": \"L07\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"7200.0\"}, {\"amount\": \"6500.0\", \"category\": null, \"date\": null, \"description\": \"MRCP\", \"gst_pct\": \"0\", \"line_id\": \"L08\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"6500.0\"}, {\"amount\": \"12900.0\", \"category\": null, \"date\": null, \"description\": \"Pharmacy - inpatient medicines\", \"gst_pct\": \"0\", \"line_id\": \"L09\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"12900.0\"}, {\"amount\": \"4800.0\", \"category\": null, \"date\": null, \"description\": \"Laparoscopic clips and retrieval bag\", \"gst_pct\": \"0\", \"line_id\": \"L10\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"4800.0\"}], \"policy_no\": \"AS-2025-100478\", \"printed_total\": \"128350.0\", \"procedure\": \"Laparoscopic cholecystectomy\", \"room_priced_by_category\": {}}, \"history\": [], \"policy\": {\"first_inception\": \"2022-07-15\", \"holder\": \"Rudransh Kelapure\", \"insurer\": \"Aarohan General Insurance Ltd.\", \"period_end\": \"2026-07-14\", \"period_start\": \"2025-07-15\", \"policy_no\": \"AS-2025-100478\", \"product\": \"Arogya Sanjeevani Policy\", \"sum_insured\": 300000.0, \"wording_source\": \"catalogue\", \"wording_uin\": \"GODHLIP24179V022324\"}}, {\"claimed_amount\": \"128350.0\", \"copay_amount\": \"4583.93\", \"letter_id\": \"AGI/HC/2526/004512\", \"letter_type\": \"settlement\", \"paid_amount\": \"87094.64\", \"rejection_reason\": \"\", \"rows\": [{\"amount\": \"6000.0\", \"kind\": null, \"particulars\": \"Room rent above eligible limit (₹2,000 a day for 3 days)\", \"reason\": \"Room rent is limited to 2% of sum insured, at most ₹5,000 a day\", \"row_id\": \"R1\"}, {\"amount\": \"300.0\", \"kind\": null, \"particulars\": \"GST on room rent above eligible limit\", \"reason\": \"Follows the room rent deduction\", \"row_id\": \"R2\"}, {\"amount\": \"30371.43\", \"kind\": null, \"particulars\": \"Proportionate deduction on associated medical expenses (₹5,000 / ₹7,000)\", \"reason\": \"Room category above eligibility, so associated expenses are reduced in the same proportion\", \"row_id\": \"R3\"}]}, \"R3\"], {}]",
+   "result": {
+    "row_id": "R3",
+    "particulars": "Proportionate deduction on associated medical expenses (₹5,000 / ₹7,000)",
+    "kind": "proportionate",
+    "kind_source": "keyword",
+    "insurer_amount": 30371.43,
+    "policy_amount": 21400.0,
+    "difference": 8971.43,
+    "verdict": "does_not_match_policy",
+    "method": "prop_on_all_lines",
+    "explanation": "The policy requires ₹21,400. The insurer's ₹30,371.43 is reproduced by: Proportionate cut applied to every non-room line (every non-room line: 106,300 x (21,000 - 15,000) / 21,000). Difference ₹8,971.43.",
+    "matches": [
+     {
+      "hypothesis_id": "prop_incl_non_payable",
+      "correct": false,
+      "title": "Proportionate cut applied before removing non-payable items",
+      "amount": 30371.43,
+      "detail": "every non-room line incl. non-payables: 106,300 x (21,000 - 15,000) / 21,000",
+      "line_ids": [
+       "L02",
+       "L03",
+       "L04",
+       "L05",
+       "L06",
+       "L07",
+       "L08",
+       "L09",
+       "L10"
+      ]
+     },
+     {
+      "hypothesis_id": "prop_on_all_lines",
+      "correct": false,
+      "title": "Proportionate cut applied to every non-room line",
+      "amount": 30371.43,
+      "detail": "every non-room line: 106,300 x (21,000 - 15,000) / 21,000",
+      "line_ids": [
+       "L02",
+       "L03",
+       "L04",
+       "L05",
+       "L06",
+       "L07",
+       "L08",
+       "L09",
+       "L10"
+      ]
+     },
+     {
+      "hypothesis_id": "prop_on_all_lines_incl_icu",
+      "correct": false,
+      "title": "Proportionate cut applied to every non-room line, ICU included",
+      "amount": 30371.43,
+      "detail": "every non-room line incl. ICU: 106,300 x (21,000 - 15,000) / 21,000",
+      "line_ids": [
+       "L02",
+       "L03",
+       "L04",
+       "L05",
+       "L06",
+       "L07",
+       "L08",
+       "L09",
+       "L10"
+      ]
+     }
+    ],
+    "tested": [
+     "proportionate_policy",
+     "prop_incl_diagnostics",
+     "prop_incl_implants",
+     "prop_incl_non_payable",
+     "prop_incl_pharmacy",
+     "prop_on_all_lines",
+     "prop_on_all_lines_incl_icu",
+     "prop_on_whole_bill",
+     "prop_round_each_line"
+    ],
+    "exhaustive": true,
+    "rule_ref": "proportionate_deduction",
+    "policy_fact_ids": [
+     "F-D-PROPORTIONATE"
+    ],
+    "questions": []
+   }
+  },
+  {
+   "key": "[\"reproduce_deduction\", [{\"claim\": {\"admission\": \"2026-01-19\", \"claim_id\": \"AGI/HC/2526/004512\", \"condition_type\": null, \"diagnosis\": \"Cholelithiasis with cholecystitis\", \"discharge\": \"2026-01-22\", \"discount\": \"0\", \"lines\": [{\"amount\": \"21000.0\", \"category\": null, \"date\": null, \"description\": \"Private room\", \"gst_pct\": \"5.0\", \"line_id\": \"L01\", \"non_payable\": null, \"qty\": \"3.0\", \"rate\": \"7000.0\"}, {\"amount\": \"4500.0\", \"category\": null, \"date\": null, \"description\": \"Nursing and duty doctor charges\", \"gst_pct\": \"0\", \"line_id\": \"L02\", \"non_payable\": null, \"qty\": \"3.0\", \"rate\": \"1500.0\"}, {\"amount\": \"32000.0\", \"category\": null, \"date\": null, \"description\": \"Surgeon fee - laparoscopic cholecystectomy\", \"gst_pct\": \"0\", \"line_id\": \"L03\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"32000.0\"}, {\"amount\": \"11000.0\", \"category\": null, \"date\": null, \"description\": \"Anaesthetist fee\", \"gst_pct\": \"0\", \"line_id\": \"L04\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"11000.0\"}, {\"amount\": \"22000.0\", \"category\": null, \"date\": null, \"description\": \"Operation theatre charges\", \"gst_pct\": \"0\", \"line_id\": \"L05\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"22000.0\"}, {\"amount\": \"5400.0\", \"category\": null, \"date\": null, \"description\": \"Consultant visits\", \"gst_pct\": \"0\", \"line_id\": \"L06\", \"non_payable\": null, \"qty\": \"3.0\", \"rate\": \"1800.0\"}, {\"amount\": \"7200.0\", \"category\": null, \"date\": null, \"description\": \"Laboratory investigations\", \"gst_pct\": \"0\", \"line_id\": \"L07\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"7200.0\"}, {\"amount\": \"6500.0\", \"category\": null, \"date\": null, \"description\": \"MRCP\", \"gst_pct\": \"0\", \"line_id\": \"L08\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"6500.0\"}, {\"amount\": \"12900.0\", \"category\": null, \"date\": null, \"description\": \"Pharmacy - inpatient medicines\", \"gst_pct\": \"0\", \"line_id\": \"L09\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"12900.0\"}, {\"amount\": \"4800.0\", \"category\": null, \"date\": null, \"description\": \"Laparoscopic clips and retrieval bag\", \"gst_pct\": \"0\", \"line_id\": \"L10\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"4800.0\"}], \"policy_no\": \"AS-2025-100478\", \"printed_total\": \"128350.0\", \"procedure\": \"Laparoscopic cholecystectomy\", \"room_priced_by_category\": {}}, \"history\": [], \"policy\": {\"first_inception\": \"2022-07-15\", \"holder\": \"Rudransh Kelapure\", \"insurer\": \"Aarohan General Insurance Ltd.\", \"period_end\": \"2026-07-14\", \"period_start\": \"2025-07-15\", \"policy_no\": \"AS-2025-100478\", \"product\": \"Arogya Sanjeevani Policy\", \"sum_insured\": 300000.0, \"wording_source\": \"catalogue\", \"wording_uin\": \"GODHLIP24179V022324\"}}, {\"claimed_amount\": \"128350.0\", \"copay_amount\": \"4583.93\", \"letter_id\": \"AGI/HC/2526/004512\", \"letter_type\": \"settlement\", \"paid_amount\": \"87094.64\", \"rejection_reason\": \"\", \"rows\": [{\"amount\": \"6000.0\", \"kind\": null, \"particulars\": \"Room rent above eligible limit (₹2,000 a day for 3 days)\", \"reason\": \"Room rent is limited to 2% of sum insured, at most ₹5,000 a day\", \"row_id\": \"R1\"}, {\"amount\": \"300.0\", \"kind\": null, \"particulars\": \"GST on room rent above eligible limit\", \"reason\": \"Follows the room rent deduction\", \"row_id\": \"R2\"}, {\"amount\": \"30371.43\", \"kind\": null, \"particulars\": \"Proportionate deduction on associated medical expenses (₹5,000 / ₹7,000)\", \"reason\": \"Room category above eligibility, so associated expenses are reduced in the same proportion\", \"row_id\": \"R3\"}]}, \"COPAY\"], {}]",
+   "result": {
+    "row_id": "COPAY",
+    "particulars": "Co-pay",
+    "kind": "copay",
+    "kind_source": "input",
+    "insurer_amount": 4583.93,
+    "policy_amount": 5032.5,
+    "difference": -448.57,
+    "verdict": "method_matches",
+    "method": "copay_on_insurer_base",
+    "explanation": "The co-pay is worked out the right way (5% of the insurer's admissible 91,678.57), but on the insurer's admissible amount. The policy-correct co-pay is ₹5,032.50; the difference comes from the insurer's other deductions and is counted there.",
+    "matches": [
+     {
+      "hypothesis_id": "copay_on_insurer_base",
+      "correct": false,
+      "title": "Co-pay at the right rate on the insurer's own admissible amount",
+      "amount": 4583.93,
+      "detail": "5% of the insurer's admissible 91,678.57",
+      "line_ids": []
+     }
+    ],
+    "tested": [
+     "copay_policy",
+     "copay_double_rate",
+     "copay_on_claimed",
+     "copay_on_insurer_base",
+     "copay_twice"
+    ],
+    "exhaustive": true,
+    "rule_ref": "copay",
+    "policy_fact_ids": [
+     "F-COPAY"
+    ],
+    "questions": []
+   }
+  },
+  {
+   "key": "[\"audit_settlement_letter\", [{\"claim\": {\"admission\": \"2026-01-19\", \"claim_id\": \"AGI/HC/2526/004512\", \"condition_type\": null, \"diagnosis\": \"Cholelithiasis with cholecystitis\", \"discharge\": \"2026-01-22\", \"discount\": \"0\", \"lines\": [{\"amount\": \"21000.0\", \"category\": null, \"date\": null, \"description\": \"Private room\", \"gst_pct\": \"5.0\", \"line_id\": \"L01\", \"non_payable\": null, \"qty\": \"3.0\", \"rate\": \"7000.0\"}, {\"amount\": \"4500.0\", \"category\": null, \"date\": null, \"description\": \"Nursing and duty doctor charges\", \"gst_pct\": \"0\", \"line_id\": \"L02\", \"non_payable\": null, \"qty\": \"3.0\", \"rate\": \"1500.0\"}, {\"amount\": \"32000.0\", \"category\": null, \"date\": null, \"description\": \"Surgeon fee - laparoscopic cholecystectomy\", \"gst_pct\": \"0\", \"line_id\": \"L03\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"32000.0\"}, {\"amount\": \"11000.0\", \"category\": null, \"date\": null, \"description\": \"Anaesthetist fee\", \"gst_pct\": \"0\", \"line_id\": \"L04\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"11000.0\"}, {\"amount\": \"22000.0\", \"category\": null, \"date\": null, \"description\": \"Operation theatre charges\", \"gst_pct\": \"0\", \"line_id\": \"L05\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"22000.0\"}, {\"amount\": \"5400.0\", \"category\": null, \"date\": null, \"description\": \"Consultant visits\", \"gst_pct\": \"0\", \"line_id\": \"L06\", \"non_payable\": null, \"qty\": \"3.0\", \"rate\": \"1800.0\"}, {\"amount\": \"7200.0\", \"category\": null, \"date\": null, \"description\": \"Laboratory investigations\", \"gst_pct\": \"0\", \"line_id\": \"L07\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"7200.0\"}, {\"amount\": \"6500.0\", \"category\": null, \"date\": null, \"description\": \"MRCP\", \"gst_pct\": \"0\", \"line_id\": \"L08\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"6500.0\"}, {\"amount\": \"12900.0\", \"category\": null, \"date\": null, \"description\": \"Pharmacy - inpatient medicines\", \"gst_pct\": \"0\", \"line_id\": \"L09\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"12900.0\"}, {\"amount\": \"4800.0\", \"category\": null, \"date\": null, \"description\": \"Laparoscopic clips and retrieval bag\", \"gst_pct\": \"0\", \"line_id\": \"L10\", \"non_payable\": null, \"qty\": \"1.0\", \"rate\": \"4800.0\"}], \"policy_no\": \"AS-2025-100478\", \"printed_total\": \"128350.0\", \"procedure\": \"Laparoscopic cholecystectomy\", \"room_priced_by_category\": {}}, \"history\": [], \"policy\": {\"first_inception\": \"2022-07-15\", \"holder\": \"Rudransh Kelapure\", \"insurer\": \"Aarohan General Insurance Ltd.\", \"period_end\": \"2026-07-14\", \"period_start\": \"2025-07-15\", \"policy_no\": \"AS-2025-100478\", \"product\": \"Arogya Sanjeevani Policy\", \"sum_insured\": 300000.0, \"wording_source\": \"catalogue\", \"wording_uin\": \"GODHLIP24179V022324\"}}, {\"claimed_amount\": \"128350.0\", \"copay_amount\": \"4583.93\", \"letter_id\": \"AGI/HC/2526/004512\", \"letter_type\": \"settlement\", \"paid_amount\": \"87094.64\", \"rejection_reason\": \"\", \"rows\": [{\"amount\": \"6000.0\", \"kind\": null, \"particulars\": \"Room rent above eligible limit (₹2,000 a day for 3 days)\", \"reason\": \"Room rent is limited to 2% of sum insured, at most ₹5,000 a day\", \"row_id\": \"R1\"}, {\"amount\": \"300.0\", \"kind\": null, \"particulars\": \"GST on room rent above eligible limit\", \"reason\": \"Follows the room rent deduction\", \"row_id\": \"R2\"}, {\"amount\": \"30371.43\", \"kind\": null, \"particulars\": \"Proportionate deduction on associated medical expenses (₹5,000 / ₹7,000)\", \"reason\": \"Room category above eligibility, so associated expenses are reduced in the same proportion\", \"row_id\": \"R3\"}]}], {}]",
+   "result": {
+    "letter_id": "AGI/HC/2526/004512",
+    "rows": [
+     {
+      "row_id": "R1",
+      "particulars": "Room rent above eligible limit (₹2,000 a day for 3 days)",
+      "kind": "room_rent",
+      "kind_source": "keyword",
+      "insurer_amount": 6000.0,
+      "policy_amount": 6000.0,
+      "difference": 0.0,
+      "verdict": "matches_policy",
+      "method": "room_rent_policy",
+      "explanation": "₹6,000 is what the policy requires for this row (₹6,000).",
+      "matches": [
+       {
+        "hypothesis_id": "room_rent_policy",
+        "correct": true,
+        "title": "Room rent above the policy limit",
+        "amount": 6000.0,
+        "detail": "Room rent above the limit (₹2,000 a day for 3 days): 3 x (7,000 - 5,000)",
+        "line_ids": []
+       },
+       {
+        "hypothesis_id": "room_cap_max_only",
+        "correct": false,
+        "title": "Room cap at ₹5,000, ignoring 2% of sum insured",
+        "amount": 6000.0,
+        "detail": "3 x (7,000 - 5,000)",
+        "line_ids": [
+         "L01"
+        ]
+       }
+      ],
+      "tested": [
+       "room_rent_policy",
+       "room_cap_max_only",
+       "room_cap_pct_only",
+       "room_days_incl_discharge"
+      ],
+      "exhaustive": true,
+      "rule_ref": "room_rent_cap",
+      "policy_fact_ids": [
+       "F-D-ROOM-L01"
+      ],
+      "questions": []
+     },
+     {
+      "row_id": "R2",
+      "particulars": "GST on room rent above eligible limit",
+      "kind": "room_gst",
+      "kind_source": "keyword",
+      "insurer_amount": 300.0,
+      "policy_amount": 300.0,
+      "difference": 0.0,
+      "verdict": "matches_policy",
+      "method": "room_gst_policy",
+      "explanation": "₹300 is what the policy requires for this row (₹300).",
+      "matches": [
+       {
+        "hypothesis_id": "room_gst_policy",
+        "correct": true,
+        "title": "GST on the disallowed room rent",
+        "amount": 300.0,
+        "detail": "GST on room rent above the limit: 5.0% of 6,000",
+        "line_ids": []
+       }
+      ],
+      "tested": [
+       "room_gst_policy",
+       "room_gst_on_full_room"
+      ],
+      "exhaustive": true,
+      "rule_ref": "gst_follows_charge",
+      "policy_fact_ids": [
+       "F-D-ROOMGST-L01"
+      ],
+      "questions": []
+     },
+     {
+      "row_id": "R3",
+      "particulars": "Proportionate deduction on associated medical expenses (₹5,000 / ₹7,000)",
+      "kind": "proportionate",
+      "kind_source": "keyword",
+      "insurer_amount": 30371.43,
+      "policy_amount": 21400.0,
+      "difference": 8971.43,
+      "verdict": "does_not_match_policy",
+      "method": "prop_on_all_lines",
+      "explanation": "The policy requires ₹21,400. The insurer's ₹30,371.43 is reproduced by: Proportionate cut applied to every non-room line (every non-room line: 106,300 x (21,000 - 15,000) / 21,000). Difference ₹8,971.43.",
+      "matches": [
+       {
+        "hypothesis_id": "prop_incl_non_payable",
+        "correct": false,
+        "title": "Proportionate cut applied before removing non-payable items",
+        "amount": 30371.43,
+        "detail": "every non-room line incl. non-payables: 106,300 x (21,000 - 15,000) / 21,000",
+        "line_ids": [
+         "L02",
+         "L03",
+         "L04",
+         "L05",
+         "L06",
+         "L07",
+         "L08",
+         "L09",
+         "L10"
+        ]
+       },
+       {
+        "hypothesis_id": "prop_on_all_lines",
+        "correct": false,
+        "title": "Proportionate cut applied to every non-room line",
+        "amount": 30371.43,
+        "detail": "every non-room line: 106,300 x (21,000 - 15,000) / 21,000",
+        "line_ids": [
+         "L02",
+         "L03",
+         "L04",
+         "L05",
+         "L06",
+         "L07",
+         "L08",
+         "L09",
+         "L10"
+        ]
+       },
+       {
+        "hypothesis_id": "prop_on_all_lines_incl_icu",
+        "correct": false,
+        "title": "Proportionate cut applied to every non-room line, ICU included",
+        "amount": 30371.43,
+        "detail": "every non-room line incl. ICU: 106,300 x (21,000 - 15,000) / 21,000",
+        "line_ids": [
+         "L02",
+         "L03",
+         "L04",
+         "L05",
+         "L06",
+         "L07",
+         "L08",
+         "L09",
+         "L10"
+        ]
+       }
+      ],
+      "tested": [
+       "proportionate_policy",
+       "prop_incl_diagnostics",
+       "prop_incl_implants",
+       "prop_incl_non_payable",
+       "prop_incl_pharmacy",
+       "prop_on_all_lines",
+       "prop_on_all_lines_incl_icu",
+       "prop_on_whole_bill",
+       "prop_round_each_line"
+      ],
+      "exhaustive": true,
+      "rule_ref": "proportionate_deduction",
+      "policy_fact_ids": [
+       "F-D-PROPORTIONATE"
+      ],
+      "questions": []
+     },
+     {
+      "row_id": "COPAY",
+      "particulars": "Co-pay",
+      "kind": "copay",
+      "kind_source": "input",
+      "insurer_amount": 4583.93,
+      "policy_amount": 5032.5,
+      "difference": -448.57,
+      "verdict": "method_matches",
+      "method": "copay_on_insurer_base",
+      "explanation": "The co-pay is worked out the right way (5% of the insurer's admissible 91,678.57), but on the insurer's admissible amount. The policy-correct co-pay is ₹5,032.50; the difference comes from the insurer's other deductions and is counted there.",
+      "matches": [
+       {
+        "hypothesis_id": "copay_on_insurer_base",
+        "correct": false,
+        "title": "Co-pay at the right rate on the insurer's own admissible amount",
+        "amount": 4583.93,
+        "detail": "5% of the insurer's admissible 91,678.57",
+        "line_ids": []
+       }
+      ],
+      "tested": [
+       "copay_policy",
+       "copay_double_rate",
+       "copay_on_claimed",
+       "copay_on_insurer_base",
+       "copay_twice"
+      ],
+      "exhaustive": true,
+      "rule_ref": "copay",
+      "policy_fact_ids": [
+       "F-COPAY"
+      ],
+      "questions": []
+     }
+    ],
+    "policy_payable": 95617.5,
+    "insurer_paid": 87094.64,
+    "gap": 8522.86,
+    "unverified_amount": 0.0,
+    "disputable_amount": 8522.86,
+    "overpaid_amount": 0.0,
+    "letter_arithmetic_gap": 0.0,
+    "policy_deductions_not_on_letter": [
+     "Room rent above the limit (₹2,000 a day for 3 days): ₹6,000"
+    ],
+    "questions": [],
+    "warnings": [],
+    "settlement": {
+     "claim_id": "AGI/HC/2526/004512",
+     "status": "computed",
+     "claimed_amount": 128350.0,
+     "deductions": [
+      {
+       "deduction_id": "D-ROOM-L01",
+       "kind": "room_rent_excess",
+       "amount": 6000.0,
+       "description": "Room rent above the limit (₹2,000 a day for 3 days)",
+       "formula": "3 x (7,000 - 5,000)",
+       "rule_ref": "room_rent_cap",
+       "line_ids": [
+        "L01"
+       ],
+       "fact_id": "F-D-ROOM-L01"
+      },
+      {
+       "deduction_id": "D-ROOMGST-L01",
+       "kind": "room_gst_excess",
+       "amount": 300.0,
+       "description": "GST on room rent above the limit",
+       "formula": "5.0% of 6,000",
+       "rule_ref": "gst_follows_charge",
+       "line_ids": [
+        "L01"
+       ],
+       "fact_id": "F-D-ROOMGST-L01"
+      },
+      {
+       "deduction_id": "D-PROPORTIONATE",
+       "kind": "proportionate_deduction",
+       "amount": 21400.0,
+       "description": "Proportionate deduction on associated expenses (15,000 / 21,000)",
+       "formula": "74,900 x (21,000 - 15,000) / 21,000",
+       "rule_ref": "proportionate_deduction",
+       "line_ids": [
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06"
+       ],
+       "fact_id": "F-D-PROPORTIONATE"
+      }
+     ],
+     "total_deductions": 27700.0,
+     "admissible_amount": 100650.0,
+     "copay_amount": 5032.5,
+     "payable_amount": 95617.5,
+     "facts": [
+      {
+       "fact_id": "F-CLAIMED",
+       "kind": "claimed_amount",
+       "text": "Amount claimed: ₹1,28,350",
+       "amount": 128350.0,
+       "formula": "lines 1,27,300 + GST 1,050",
+       "rule_ref": "",
+       "line_ids": [],
+       "inputs": {
+        "line_sum": "127300.0",
+        "gst": "1050.00",
+        "discount": "0"
+       }
+      },
+      {
+       "fact_id": "F-WAITING",
+       "kind": "waiting_period",
+       "text": "24-month waiting period served: 42 full months of cover since first inception.",
+       "amount": null,
+       "formula": "",
+       "rule_ref": "listed_illness_waiting_period",
+       "line_ids": [],
+       "inputs": {
+        "first_inception": "2022-07-15",
+        "admission": "2026-01-19",
+        "days_since_inception": 1284,
+        "months_since_inception": 42,
+        "required": "24 months",
+        "served": true,
+        "condition_type": "listed_illness_short",
+        "condition_source": "keyword"
+       }
+      },
+      {
+       "fact_id": "F-ROOM-CAP",
+       "kind": "limit",
+       "text": "Room rent limit: ₹5,000 a day",
+       "amount": 5000.0,
+       "formula": "lower of 2% of 3,00,000 and 5,000",
+       "rule_ref": "room_rent_cap",
+       "line_ids": [],
+       "inputs": {
+        "sum_insured": "300000.0"
+       }
+      },
+      {
+       "fact_id": "F-D-ROOM-L01",
+       "kind": "deduction",
+       "text": "Room rent above the limit (₹2,000 a day for 3 days)",
+       "amount": 6000.0,
+       "formula": "3 x (7,000 - 5,000)",
+       "rule_ref": "room_rent_cap",
+       "line_ids": [
+        "L01"
+       ],
+       "inputs": {
+        "deduction_kind": "room_rent_excess"
+       }
+      },
+      {
+       "fact_id": "F-D-ROOMGST-L01",
+       "kind": "deduction",
+       "text": "GST on room rent above the limit",
+       "amount": 300.0,
+       "formula": "5.0% of 6,000",
+       "rule_ref": "gst_follows_charge",
+       "line_ids": [
+        "L01"
+       ],
+       "inputs": {
+        "deduction_kind": "room_gst_excess"
+       }
+      },
+      {
+       "fact_id": "F-PROP-RATIO",
+       "kind": "ratio",
+       "text": "Eligible room rent ₹15,000 of ₹21,000 charged",
+       "amount": null,
+       "formula": "15,000 / 21,000",
+       "rule_ref": "proportionate_deduction",
+       "line_ids": [
+        "L01"
+       ],
+       "inputs": {
+        "eligible_room": "15000.0",
+        "actual_room": "21000.00"
+       }
+      },
+      {
+       "fact_id": "F-PROP-LINKED",
+       "kind": "base",
+       "text": "Associated expenses the cut may apply to: ₹74,900",
+       "amount": 74900.0,
+       "formula": "4,500 + 32,000 + 11,000 + 22,000 + 5,400",
+       "rule_ref": "proportionate_deduction",
+       "line_ids": [
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06"
+       ],
+       "inputs": {}
+      },
+      {
+       "fact_id": "F-PROP-EXCLUDED",
+       "kind": "base",
+       "text": "Expenses the cut may not apply to (IRDAI 2020 norms): ₹31,400",
+       "amount": 31400.0,
+       "formula": "7,200 + 6,500 + 12,900 + 4,800",
+       "rule_ref": "proportionate_deduction",
+       "line_ids": [
+        "L07",
+        "L08",
+        "L09",
+        "L10"
+       ],
+       "inputs": {
+        "categories": [
+         "diagnostics",
+         "implants",
+         "pharmacy"
+        ]
+       }
+      },
+      {
+       "fact_id": "F-D-PROPORTIONATE",
+       "kind": "deduction",
+       "text": "Proportionate deduction on associated expenses (15,000 / 21,000)",
+       "amount": 21400.0,
+       "formula": "74,900 x (21,000 - 15,000) / 21,000",
+       "rule_ref": "proportionate_deduction",
+       "line_ids": [
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06"
+       ],
+       "inputs": {
+        "deduction_kind": "proportionate_deduction"
+       }
+      },
+      {
+       "fact_id": "F-ADMISSIBLE",
+       "kind": "admissible",
+       "text": "Admissible amount: ₹1,00,650",
+       "amount": 100650.0,
+       "formula": "claimed 1,28,350 - deductions 27,700",
+       "rule_ref": "",
+       "line_ids": [],
+       "inputs": {}
+      },
+      {
+       "fact_id": "F-COPAY",
+       "kind": "copay",
+       "text": "Co-pay 5%: ₹5,032.50",
+       "amount": 5032.5,
+       "formula": "5% of 1,00,650",
+       "rule_ref": "copay",
+       "line_ids": [],
+       "inputs": {}
+      },
+      {
+       "fact_id": "F-SI-REMAINING",
+       "kind": "limit",
+       "text": "Sum insured left this policy period: ₹3,00,000",
+       "amount": 300000.0,
+       "formula": "3,00,000 - earlier claims this period",
+       "rule_ref": "sum_insured",
+       "line_ids": [],
+       "inputs": {}
+      },
+      {
+       "fact_id": "F-PAYABLE",
+       "kind": "payable",
+       "text": "Amount payable: ₹95,617.50",
+       "amount": 95617.5,
+       "formula": "admissible 1,00,650 - co-pay 5,032.50",
+       "rule_ref": "",
+       "line_ids": [],
+       "inputs": {}
+      }
+     ],
+     "questions": [],
+     "lines": [
+      {
+       "line_id": "L01",
+       "description": "Private room",
+       "amount": 21000.0,
+       "gst": 1050.0,
+       "category": "room",
+       "category_source": "keyword",
+       "non_payable": false,
+       "non_payable_source": "default",
+       "room_linked": false
+      },
+      {
+       "line_id": "L02",
+       "description": "Nursing and duty doctor charges",
+       "amount": 4500.0,
+       "gst": 0.0,
+       "category": "nursing",
+       "category_source": "keyword",
+       "non_payable": false,
+       "non_payable_source": "default",
+       "room_linked": true
+      },
+      {
+       "line_id": "L03",
+       "description": "Surgeon fee - laparoscopic cholecystectomy",
+       "amount": 32000.0,
+       "gst": 0.0,
+       "category": "professional_fees",
+       "category_source": "keyword",
+       "non_payable": false,
+       "non_payable_source": "default",
+       "room_linked": true
+      },
+      {
+       "line_id": "L04",
+       "description": "Anaesthetist fee",
+       "amount": 11000.0,
+       "gst": 0.0,
+       "category": "professional_fees",
+       "category_source": "keyword",
+       "non_payable": false,
+       "non_payable_source": "default",
+       "room_linked": true
+      },
+      {
+       "line_id": "L05",
+       "description": "Operation theatre charges",
+       "amount": 22000.0,
+       "gst": 0.0,
+       "category": "operation_theatre",
+       "category_source": "keyword",
+       "non_payable": false,
+       "non_payable_source": "default",
+       "room_linked": true
+      },
+      {
+       "line_id": "L06",
+       "description": "Consultant visits",
+       "amount": 5400.0,
+       "gst": 0.0,
+       "category": "professional_fees",
+       "category_source": "keyword",
+       "non_payable": false,
+       "non_payable_source": "default",
+       "room_linked": true
+      },
+      {
+       "line_id": "L07",
+       "description": "Laboratory investigations",
+       "amount": 7200.0,
+       "gst": 0.0,
+       "category": "diagnostics",
+       "category_source": "keyword",
+       "non_payable": false,
+       "non_payable_source": "default",
+       "room_linked": false
+      },
+      {
+       "line_id": "L08",
+       "description": "MRCP",
+       "amount": 6500.0,
+       "gst": 0.0,
+       "category": "diagnostics",
+       "category_source": "keyword",
+       "non_payable": false,
+       "non_payable_source": "default",
+       "room_linked": false
+      },
+      {
+       "line_id": "L09",
+       "description": "Pharmacy - inpatient medicines",
+       "amount": 12900.0,
+       "gst": 0.0,
+       "category": "pharmacy",
+       "category_source": "keyword",
+       "non_payable": false,
+       "non_payable_source": "default",
+       "room_linked": false
+      },
+      {
+       "line_id": "L10",
+       "description": "Laparoscopic clips and retrieval bag",
+       "amount": 4800.0,
+       "gst": 0.0,
+       "category": "implants",
+       "category_source": "keyword",
+       "non_payable": false,
+       "non_payable_source": "default",
+       "room_linked": false
+      }
+     ],
+     "warnings": []
+    }
+   }
+  },
+  {
+   "key": "[\"clauses_for_rule\", [\"copay\"], {\"case_id\": \"case_dfffbb62bd3168eb\", \"wording_uin\": \"GODHLIP24179V022324\"}]",
+   "result": {
+    "rule_ref": "copay",
+    "where": "E.28.3: each claim subject to a co-payment of 5% of the admissible claim amount; amount payable is after the co-payment",
+    "differs_from_engine": null,
+    "clauses": [
+     {
+      "found": true,
+      "clause_id": "E.28.3",
+      "title": "Any delay in notification or submission may be",
+      "section": "GENERAL TERMS & CLAUSES",
+      "parent_id": "E.28",
+      "text": "Any delay in notification or submission may be condoned on merit where delay is proved to be for reasons beyond the control of the Insured Person.\nc. Co-payment Each and every claim under the Policy shall be subject to a Co-payment of 5% applicable to claim amount admissible and payable as per the terms and conditions of the Policy. The amount payable shall be after deduction of the co-payment.\nd. Claim Settlement (provision for Penal Interest) i. The Company shall settle or reject a claim, as the case may be, within 15 days from submission of claim. ii. In case the claim is not settled within the specified timelines, then the claimant is entitled for interest at bank rate plus 2 percent from the date of receipt of intimation to till the date of payment. “Bank rate” shall mean the rate fixed by the Reserve Bank of India (RBI) at the beginning of the financial year in which claim has fallen due.\ne. Services Offered by TPA (To be stated where TPA is involved) Servicing of claims, i.e., claim admissions and assessments, under this Policy by way of pre authorization of cashless treatment or processing of claims other than cashless claims or both, as per the underlying terms and conditions of the policy. The services offered by a TPA shall not include\ni. Claim settlement and claim rejection;\nii. Any services directly to any insured person or to any other person unless such service is in accordance with the terms and conditions of the Agreement entered into with the Company.\nf. Payment of Claim All claims under the policy shall be payable in Indian currency only. No loading shall apply on renewals based on individual claims experience. Insurance is the subject matter of solicitation. TABLE OF BENEFITS Name Arogya Sanjeevani Policy, Go Digit Product Type Individual/ Floater Category of Cover Indemnity Sum insured INR On Individual basis - SI shall apply to each individual family member On Floater basis - SI shall apply to the entire family Policy Period 1 year Eligibility Policy can be availed by persons From the age of 18 years. Policy can be availed for Self and the following family members\ni. legally wedded spouse.\nii. Parents and Parents-in-law.\niii. Dependent Children (i.e. natural or legally adopted) between the age 3 months to 25 years. If the child above 18 years of age is financially independent, he or she shall be ineligible for coverage in the subsequent renewals Grace Period The grace period for payment of the premium for all types of insurance policies shall be:\nfifteen days where premium payment mode is monthly and thirty days in all other cases. Hospitalisation Expenses Expenses of Hospitalization for a minimum period of 24 consecutive hours only shall be admissible Time limit of 24 hrs shall not apply when the treatment is undergone in a Day Care Centre. Pre Hospitalisation For 30 days prior to the date of hospitalization Post Hospitalisation For 60 days from the date of discharge from the hospital Sublimit for room/doctor’s fee 1. Room Rent, Boarding, Nursing Expenses all-inclusive as provided by the Hospital / Nursing Home up to 2% of the sum insured subject to maximum of Rs.5000 /- per day. 2. Intensive Care Unit (ICU) charges / Intensive Cardiac Care Unit (ICCU) charges allinclusive as provided by the Hospital / Nursing Home up to 5% of the sum insured subject to maximum of Rs. 10,000/-, per day Cataract Treatment Up to 25% of Sum insured or Rs.40,000/-, whichever is lower, per eye, under one policy year. AYUSH Expenses incurred for Inpatient Care treatment under Ayurveda, Yoga and Naturopathy, Unani, Siddha and Homeopathy systems of medicines shall be covered up to sum insured, during each Policy year as specified in the policy schedule. Pre-Existing Disease Only PEDs declared in the Proposal Form and accepted for coverage by the company shall be covered after a waiting period of 36 months or 3 years Cumulative bonus Increase in the sum insured by 5% in respect of each claim free year subject to a maximum of 50% of SI. In the event of claim the cumulative bonus shall be reduced at the same rate. Co Pay 5% co pay on all claims",
+      "page_start": 18,
+      "page_end": 19,
+      "codes": [],
+      "citation": "Go Digit General Insurance Limited Arogya Sanjeevani Policy (GODHLIP24179V022324), clause E.28.3",
+      "wording": {
+       "insurer": "Go Digit General Insurance Limited",
+       "product": "Arogya Sanjeevani Policy",
+       "uin": "GODHLIP24179V022324",
+       "version": "GODHLIP24179V022324",
+       "source_url": "https://www.godigit.com/content/dam/godigit/directportal/en/downloads/health/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf",
+       "downloaded_on": "2026-11-09",
+       "sha256": "70ec4e51cf03a49c06cd7b06fd2dae16ac4ab3a204591fb1e8568a50858ea75b",
+       "synthetic": false,
+       "source": "catalogue",
+       "reviewed": true
+      },
+      "synthetic": false
+     },
+     {
+      "found": true,
+      "clause_id": "B.10",
+      "title": "Co-payment",
+      "section": "DEFINITIONS",
+      "parent_id": "B",
+      "text": "Co-payment means a cost sharing requirement under a health insurance policy that provides that the policyholder/insured will bear a specified percentage of the admissible claims amount. A co-payment does not reduce the Sum Insured.",
+      "page_start": 2,
+      "page_end": 3,
+      "codes": [],
+      "citation": "Go Digit General Insurance Limited Arogya Sanjeevani Policy (GODHLIP24179V022324), clause B.10",
+      "wording": {
+       "insurer": "Go Digit General Insurance Limited",
+       "product": "Arogya Sanjeevani Policy",
+       "uin": "GODHLIP24179V022324",
+       "version": "GODHLIP24179V022324",
+       "source_url": "https://www.godigit.com/content/dam/godigit/directportal/en/downloads/health/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf",
+       "downloaded_on": "2026-11-09",
+       "sha256": "70ec4e51cf03a49c06cd7b06fd2dae16ac4ab3a204591fb1e8568a50858ea75b",
+       "synthetic": false,
+       "source": "catalogue",
+       "reviewed": true
+      },
+      "synthetic": false
+     }
+    ],
+    "wording": {
+     "insurer": "Go Digit General Insurance Limited",
+     "product": "Arogya Sanjeevani Policy",
+     "uin": "GODHLIP24179V022324",
+     "version": "GODHLIP24179V022324",
+     "source_url": "https://www.godigit.com/content/dam/godigit/directportal/en/downloads/health/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf",
+     "downloaded_on": "2026-11-09",
+     "sha256": "70ec4e51cf03a49c06cd7b06fd2dae16ac4ab3a204591fb1e8568a50858ea75b",
+     "synthetic": false,
+     "source": "catalogue",
+     "reviewed": true
+    },
+    "synthetic": false
+   }
+  },
+  {
+   "key": "[\"clauses_for_rule\", [\"gst_follows_charge\"], {\"case_id\": \"case_dfffbb62bd3168eb\", \"wording_uin\": \"GODHLIP24179V022324\"}]",
+   "result": {
+    "rule_ref": "gst_follows_charge",
+    "where": "Not addressed in this wording; the engine's rule follows general practice. Member 1 to confirm.",
+    "differs_from_engine": null,
+    "clauses": [],
+    "wording": {
+     "insurer": "Go Digit General Insurance Limited",
+     "product": "Arogya Sanjeevani Policy",
+     "uin": "GODHLIP24179V022324",
+     "version": "GODHLIP24179V022324",
+     "source_url": "https://www.godigit.com/content/dam/godigit/directportal/en/downloads/health/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf",
+     "downloaded_on": "2026-11-09",
+     "sha256": "70ec4e51cf03a49c06cd7b06fd2dae16ac4ab3a204591fb1e8568a50858ea75b",
+     "synthetic": false,
+     "source": "catalogue",
+     "reviewed": true
+    },
+    "synthetic": false
+   }
+  },
+  {
+   "key": "[\"clauses_for_rule\", [\"proportionate_deduction\"], {\"case_id\": \"case_dfffbb62bd3168eb\", \"wording_uin\": \"GODHLIP24179V022324\"}]",
+   "result": {
+    "rule_ref": "proportionate_deduction",
+    "where": "C.1.1 Notes 2 and 3: proportionate deduction except pharmacy and consumables, implants and medical devices, diagnostics; not applied where the hospital does not follow differential billing",
+    "differs_from_engine": "Note 2 applies the proportionate deduction when the room OR ICU/ICCU rate exceeds its limit. The engine (IRDAI 2020 norm) never triggers it from an ICU excess. Decided: the engine keeps the IRDAI 2020 rule (eval/dev_cases/decisions.json).",
+    "clauses": [
+     {
+      "found": true,
+      "clause_id": "C.1.1",
+      "title": "Other expenses",
+      "section": "BENEFITS COVERED UNDER THE POLICY",
+      "parent_id": "C.1",
+      "text": "i. Expenses incurred on treatment of cataract subject to the sub limits\nii. Dental treatment, necessitated due to disease or injury\niii. Plastic surgery necessitated due to disease or injury\niv. All day care treatments\nv. Expenses incurred on road Ambulance subject to a maximum of Rs.2000/- per hospitalisation. Note:\n1. Expenses of Hospitalization for a minimum period of 24 consecutive hours only shall be admissible. However, the time limit shall not apply in respect of Day Care Treatment 2. In case of admission to a room/ICU/ICCU at rates exceeding the aforesaid limits, the reimbursement/payment of all other expenses incurred at the Hospital, with the exception of (a) cost of pharmacy and consumables, (b) cost of implants and medical devices, (c) cost of diagnostics, shall be effected in the same proportion as the admissible rate per day bears to the actual rate per day of Room Rent/ICU/ICCU charges. 3. Proportionate deductions will not apply in respect of the hospitals which do not follow differential billing or for those expenses in respect of which differential billing is not adopted based on the room category.",
+      "page_start": 6,
+      "page_end": 6,
+      "codes": [],
+      "citation": "Go Digit General Insurance Limited Arogya Sanjeevani Policy (GODHLIP24179V022324), clause C.1.1",
+      "wording": {
+       "insurer": "Go Digit General Insurance Limited",
+       "product": "Arogya Sanjeevani Policy",
+       "uin": "GODHLIP24179V022324",
+       "version": "GODHLIP24179V022324",
+       "source_url": "https://www.godigit.com/content/dam/godigit/directportal/en/downloads/health/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf",
+       "downloaded_on": "2026-11-09",
+       "sha256": "70ec4e51cf03a49c06cd7b06fd2dae16ac4ab3a204591fb1e8568a50858ea75b",
+       "synthetic": false,
+       "source": "catalogue",
+       "reviewed": true
+      },
+      "synthetic": false
+     }
+    ],
+    "wording": {
+     "insurer": "Go Digit General Insurance Limited",
+     "product": "Arogya Sanjeevani Policy",
+     "uin": "GODHLIP24179V022324",
+     "version": "GODHLIP24179V022324",
+     "source_url": "https://www.godigit.com/content/dam/godigit/directportal/en/downloads/health/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf",
+     "downloaded_on": "2026-11-09",
+     "sha256": "70ec4e51cf03a49c06cd7b06fd2dae16ac4ab3a204591fb1e8568a50858ea75b",
+     "synthetic": false,
+     "source": "catalogue",
+     "reviewed": true
+    },
+    "synthetic": false
+   }
+  },
+  {
+   "key": "[\"clauses_for_rule\", [\"room_rent_cap\"], {\"case_id\": \"case_dfffbb62bd3168eb\", \"wording_uin\": \"GODHLIP24179V022324\"}]",
+   "result": {
+    "rule_ref": "room_rent_cap",
+    "where": "C.1 item i: room rent up to 2% of sum insured, maximum Rs. 5,000 per day",
+    "differs_from_engine": null,
+    "clauses": [
+     {
+      "found": true,
+      "clause_id": "C.1",
+      "title": "Hospitalization",
+      "section": "BENEFITS COVERED UNDER THE POLICY",
+      "parent_id": "C",
+      "text": "The Company shall indemnify medical expenses incurred for Hospitalization of the Insured Person during the Policy year, up to the Sum Insured and Cumulative Bonus specified in the policy schedule, for,\ni. Room Rent, Boarding, Nursing Expenses as provided by the Hospital / Nursing Home up to 2% of the sum insured subject to maximum of Rs.5000 /-, per day.\nii. Intensive Care Unit (ICU)/ Intensive Cardiac Care Unit (ICCU) expenses up to 5% of sum insured subject to maximum of Rs. 10,000/- per day.\niii. Surgeon, Anaesthetist, Medical Practitioner, Consultants, Specialist Fees whether paid directly to the treating doctor/ surgeon or to the hospital\niv. Anesthesia, blood, oxygen, operation theatre charges, surgical appliances, medicines and drugs, costs towards diagnostics, diagnostic imaging modalities and such similar other expenses.",
+      "page_start": 6,
+      "page_end": 6,
+      "codes": [],
+      "citation": "Go Digit General Insurance Limited Arogya Sanjeevani Policy (GODHLIP24179V022324), clause C.1",
+      "wording": {
+       "insurer": "Go Digit General Insurance Limited",
+       "product": "Arogya Sanjeevani Policy",
+       "uin": "GODHLIP24179V022324",
+       "version": "GODHLIP24179V022324",
+       "source_url": "https://www.godigit.com/content/dam/godigit/directportal/en/downloads/health/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf",
+       "downloaded_on": "2026-11-09",
+       "sha256": "70ec4e51cf03a49c06cd7b06fd2dae16ac4ab3a204591fb1e8568a50858ea75b",
+       "synthetic": false,
+       "source": "catalogue",
+       "reviewed": true
+      },
+      "synthetic": false
+     },
+     {
+      "found": true,
+      "clause_id": "B.40",
+      "title": "Room Rent",
+      "section": "DEFINITIONS",
+      "parent_id": "B",
+      "text": "Room Rent means the amount charged by a hospital towards Room and Boarding expenses and shall include the associated medical expenses.",
+      "page_start": 5,
+      "page_end": 5,
+      "codes": [],
+      "citation": "Go Digit General Insurance Limited Arogya Sanjeevani Policy (GODHLIP24179V022324), clause B.40",
+      "wording": {
+       "insurer": "Go Digit General Insurance Limited",
+       "product": "Arogya Sanjeevani Policy",
+       "uin": "GODHLIP24179V022324",
+       "version": "GODHLIP24179V022324",
+       "source_url": "https://www.godigit.com/content/dam/godigit/directportal/en/downloads/health/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf",
+       "downloaded_on": "2026-11-09",
+       "sha256": "70ec4e51cf03a49c06cd7b06fd2dae16ac4ab3a204591fb1e8568a50858ea75b",
+       "synthetic": false,
+       "source": "catalogue",
+       "reviewed": true
+      },
+      "synthetic": false
+     }
+    ],
+    "wording": {
+     "insurer": "Go Digit General Insurance Limited",
+     "product": "Arogya Sanjeevani Policy",
+     "uin": "GODHLIP24179V022324",
+     "version": "GODHLIP24179V022324",
+     "source_url": "https://www.godigit.com/content/dam/godigit/directportal/en/downloads/health/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf",
+     "downloaded_on": "2026-11-09",
+     "sha256": "70ec4e51cf03a49c06cd7b06fd2dae16ac4ab3a204591fb1e8568a50858ea75b",
+     "synthetic": false,
+     "source": "catalogue",
+     "reviewed": true
+    },
+    "synthetic": false
+   }
+  }
+ ]
+}

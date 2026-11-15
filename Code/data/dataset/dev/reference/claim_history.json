@@ -1,0 +1,167 @@
+[
+  {
+    "claim_id": "CLM-2025-00811",
+    "policy_no": "AS-2025-101122",
+    "patient_name": "Lavanya Ikkurthi",
+    "status": "settled",
+    "provider": "Vrindaloka Memorial Hospital",
+    "invoice_no": "VML/25-26/004417",
+    "invoice_date": "2025-08-21",
+    "ip_no": "IP/2508/1466",
+    "admission": "2025-08-18",
+    "discharge": "2025-08-21",
+    "diagnosis": "Acute appendicitis",
+    "billed_amount": 86340.0,
+    "settled_amount": 80123.0,
+    "line_fingerprint": "c448a888ef8196a9",
+    "line_items": [
+      {
+        "description": "Semi-private room",
+        "amount": 12000.0
+      },
+      {
+        "description": "Nursing and duty doctor charges",
+        "amount": 3300.0
+      },
+      {
+        "description": "Surgeon fee - laparoscopic appendectomy",
+        "amount": 25000.0
+      },
+      {
+        "description": "Anaesthetist fee",
+        "amount": 8000.0
+      },
+      {
+        "description": "Operation theatre charges",
+        "amount": 15000.0
+      },
+      {
+        "description": "Consultant visits",
+        "amount": 4200.0
+      },
+      {
+        "description": "Laboratory investigations",
+        "amount": 6100.0
+      },
+      {
+        "description": "USG abdomen",
+        "amount": 2200.0
+      },
+      {
+        "description": "Pharmacy - inpatient medicines",
+        "amount": 8540.0
+      },
+      {
+        "description": "Consumables - gloves, masks, syringes, caps",
+        "amount": 2000.0
+      }
+    ]
+  },
+  {
+    "claim_id": "CLM-2026-00397",
+    "policy_no": "AS-2026-102076",
+    "patient_name": "Anvi Rajgolkar",
+    "status": "settled",
+    "provider": "Vrindaloka Memorial Hospital",
+    "invoice_no": "VML/26-27/000377",
+    "invoice_date": "2026-04-11",
+    "ip_no": "IP/2604/0299",
+    "admission": "2026-04-08",
+    "discharge": "2026-04-11",
+    "diagnosis": "Acute appendicitis",
+    "billed_amount": 89700.0,
+    "settled_amount": 83315.0,
+    "line_fingerprint": "d32d6c21d6066879",
+    "line_items": [
+      {
+        "description": "Semi-private room",
+        "amount": 13200.0
+      },
+      {
+        "description": "Nursing and duty doctor charges",
+        "amount": 3300.0
+      },
+      {
+        "description": "Surgeon fee - laparoscopic appendectomy",
+        "amount": 26000.0
+      },
+      {
+        "description": "Anaesthetist fee",
+        "amount": 8500.0
+      },
+      {
+        "description": "Operation theatre charges",
+        "amount": 16000.0
+      },
+      {
+        "description": "Consultant visits",
+        "amount": 4500.0
+      },
+      {
+        "description": "Laboratory investigations",
+        "amount": 5900.0
+      },
+      {
+        "description": "USG abdomen",
+        "amount": 2200.0
+      },
+      {
+        "description": "Pharmacy - inpatient medicines",
+        "amount": 8100.0
+      },
+      {
+        "description": "Consumables - gloves, masks, syringes, caps",
+        "amount": 2000.0
+      }
+    ]
+  },
+  {
+    "claim_id": "CLM/2026/2738100",
+    "policy_no": "AS/2025/658678/79",
+    "admission": "2026-02-12",
+    "status": "settled",
+    "settled_amount": 28500.0,
+    "diagnosis": "Senile cataract, left eye",
+    "procedure": "Senile cataract, left eye",
+    "case_id": "gen-dev-147e01"
+  },
+  {
+    "claim_id": "CLM/2026/2738100",
+    "policy_no": "AS/2025/658678/79",
+    "admission": "2026-02-12",
+    "status": "settled",
+    "settled_amount": 28500.0,
+    "diagnosis": "Senile cataract, left eye",
+    "procedure": "Senile cataract, left eye",
+    "case_id": "gen-dev-821b7c"
+  },
+  {
+    "claim_id": "CLM/2026/2738100",
+    "policy_no": "AS/2025/658678/79",
+    "admission": "2026-01-20",
+    "status": "rejected",
+    "settled_amount": 0.0,
+    "diagnosis": "Acute gastroenteritis",
+    "procedure": "Acute gastroenteritis",
+    "case_id": "gen-dev-acf2ec"
+  },
+  {
+    "claim_id": "CLM/2026/2738101",
+    "policy_no": "AS/2025/658678/79",
+    "admission": "2026-06-03",
+    "status": "settled",
+    "settled_amount": 49400.0,
+    "diagnosis": "Lower respiratory tract infection",
+    "procedure": "Lower respiratory tract infection",
+    "case_id": "gen-dev-acf2ec"
+  },
+  {
+    "claim_id": "CLM/2026/4974100",
+    "policy_no": "AS/2025/504009/12",
+    "admission": "2026-04-08",
+    "status": "settled",
+    "settled_amount": 119700.0,
+    "diagnosis": "Benign prostatic hyperplasia - TURP",
+    "procedure": "Benign prostatic hyperplasia - TURP"
+  }
+]
