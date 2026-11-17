@@ -32,7 +32,7 @@
 
 <br>
 
-## About ClaimClear
+### About ClaimClear
 
 ##### Domain: Health Insurance
 ##### Who uses it: Policyholder
@@ -47,7 +47,7 @@
 <br>
 <br>
 
-## Repo Structure
+### Repo Structure
 
 <br>
 </a1>
