@@ -2,6 +2,7 @@
 <a href="#top"></a>
 
 ClaimClear : Empowering Policyholders
+#### By- Team5
 
 <br> 
 
@@ -10,11 +11,8 @@ ClaimClear : Empowering Policyholders
 
 #### 
 ### <i>A post-settlement assistant for health-insurance policyholders </i>
-#### By- Team5
 
-<br>
 
-###
 <br>
 
 <details open>
