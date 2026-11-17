@@ -28,16 +28,15 @@
 
 <a1> 
 
-## Introduction 
+## Introduction :-
 
 <br>
 
-### About ClaimClear
+### About ClaimClear:
 
-'''
-##### Domain: Health Insurance
-##### Who uses it: Policyholder
-'''
+##### Domain-> Health Insurance
+##### Who uses it-> Policyholder
+
 
 <br>
 
@@ -49,7 +48,7 @@
 <br>
 <br>
 
-### Repo Structure
+### Repo Structure:
 
 <br>
 </a1>
