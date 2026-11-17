@@ -1,5 +1,5 @@
 # ClaimClear_GenAI
-<a href="#top">
+<a href="#top"></a>
 
 ClaimClear : Empowering Policyholders
 
