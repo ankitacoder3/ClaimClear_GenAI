@@ -1,4 +1,5 @@
 # ClaimClear_GenAI
+<a href="#top">
 
 
 ## About ClaimClear
@@ -10,4 +11,17 @@
 
 
 ###
+<br>
+
+<details open>
+
+  <summary style="color: red;">Table of Contents</summary>
+<li> <a href="#a1">Introduction</a></li>
+<li> <a href="#a2"> Prerequisites and Techstack</a></li>
+<li> <a href="#a3"> Steps for Execution </a></li>
+<li>  <a href="#a5">Screenshots</a></li>
+<li>  <a href="#a4">Usage</a></li>
+<a href="#end"><u><i>Skip to END...</i></u></a>
+</details>
+</br>
 
