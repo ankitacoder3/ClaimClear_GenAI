@@ -1,8 +1,8 @@
 # ClaimClear_GenAI
 <a href="#top">
 
-#### Empowering Policyholders
-#### A post-settlement assistant for health-insurance policyholders
+### Empowering Policyholders
+### <i>A post-settlement assistant for health-insurance policyholders </i>
 
 <br> 
 
@@ -26,7 +26,9 @@
 </br>
 
 <a1> 
+
 ## Introduction 
+
 <br>
 
 ## About ClaimClear
@@ -36,6 +38,7 @@
 ##### Who uses it: Policyholder
 
 <br>
+
 ## Repo Structure
 
 <br>
