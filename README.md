@@ -1,14 +1,14 @@
 # ClaimClear_GenAI
 <a href="#top"></a>
 
-ClaimClear: By- Team5
+### ClaimClear: By-Team5
 #### Empowering Policyholders
+### <i>A post-settlement assistant for health-insurance policyholders </i>
 
 <br> 
 
 <img width="155" height="145" alt="image" src="https://github.com/user-attachments/assets/d41090c8-6e3d-4ba6-9d6f-91cad10438ef" />
 
-### <i>A post-settlement assistant for health-insurance policyholders </i>
 
 <br>
 
