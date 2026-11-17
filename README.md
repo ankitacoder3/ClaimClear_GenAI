@@ -34,8 +34,10 @@
 
 ### About ClaimClear
 
+'''
 ##### Domain: Health Insurance
 ##### Who uses it: Policyholder
+'''
 
 <br>
 
