@@ -74,7 +74,7 @@ PORTS = {"settlement-engine": 8101, "case-records": 8102, "policy-kb": 8103, "in
          "document-reader": 8105}
 SAMPLES = [("syn-dev-005", "Gall-bladder surgery: a disputable deduction (SET-01)"),
            ("syn-dev-019", "Appendicitis: a clean settlement (SET-02)"),
-           ("syn-dev-017", "The engine asks you a question (SET-32)"),
+           ("gen-dev-0fa297", "The engine asks you a question (room pricing)"),
            ("gen-dev-147e01", "Another insurer's letter, read from the PDF tables")]
 GRACE = float(os.environ.get("CLAIMCLEAR_UI_GRACE", "15"))
 MEMORY_USER_ENV = "CLAIMCLEAR_MEMORY_USER"     # the local user's opaque ID: turns memory on (with consent)

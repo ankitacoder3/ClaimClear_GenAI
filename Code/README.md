@@ -189,7 +189,7 @@ From the repository root, after installing both environments:
 python start.py --auto SET-01
 ```
 
-A self-check without prompts: the servers start, SET-01 runs through every agent, the grievance is approved and filed (dry run), and everything stops. `--auto SET-02` is a clean settlement, `--auto SET-32` answers the engine's question. Without `--auto`, `python start.py` opens the web UI.
+A self-check without prompts: the servers start, SET-01 runs through every agent, the grievance is approved and filed (dry run), and everything stops. `--auto SET-02` is a clean settlement, `--auto SET-22` meets an engine question (a pharmacy receipt's admission dates; the self-check skips it). SET-32 no longer asks: the insurer paid that claim, so the engine audits it on the insurer's own acceptance. Without `--auto`, `python start.py` opens the web UI.
 
 ```bash
 .venv-agents/bin/python eval/graph_dev_cases/run.py

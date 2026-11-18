@@ -78,11 +78,14 @@ class ClaimIn(_In):
         default=None, description="Only set this from the policyholder's answer or the insurer's letter.")
     room_priced_by_category: dict[Category, bool] = Field(
         default_factory=dict, description="The policyholder's answer to Q-ROOM-PRICING, per category.")
+    hospital_gstin: str = Field(
+        default="", max_length=40,
+        description="The hospital's GSTIN exactly as printed on the bill (empty if none). Only its format is checked.")
 
     @model_validator(mode="after")
     def _check(self) -> "ClaimIn":
-        if self.admission and self.discharge and self.discharge < self.admission:
-            raise ValueError("discharge is before admission")
+        # A discharge before the admission is accepted on purpose: it is a fact about the bill. The engine reports
+        # it as an integrity finding and asks for the real dates (engine/integrity.py), instead of refusing the case.
         ids = [line.line_id for line in self.lines]
         if len(ids) != len(set(ids)):
             raise ValueError("line_id values must be unique")

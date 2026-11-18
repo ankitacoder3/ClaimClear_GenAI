@@ -145,3 +145,36 @@ def test_the_plain_table_is_never_rewritten(before):
         return "REWRITTEN"
     fn, _ = node_fn("explainer", rewriter=rewrite)
     assert text(run(fn({**before, "draft_attempt": 1}))) != "REWRITTEN"
+
+
+def _with_integrity(before, definite=True):
+    fact = {"fact_id": "F-INTEGRITY-ROOM-DAYS-EXCEED-STAY", "kind": "integrity", "rule_ref": "fraud",
+            "text": "The bill is inconsistent: the bill charges 13 room and ICU days for a 3-night stay",
+            "amount": None, "formula": "", "line_ids": ["L01"], "inputs": {"code": "room_days_exceed_stay",
+                                                                         "definite": definite}}
+    settlement = {**before["settlement"], "facts": list(before["settlement"]["facts"]) + [fact]}
+    return {**before, "settlement": settlement}
+
+
+def test_a_definite_inconsistency_on_the_bill_is_mentioned(before):
+    fn, _ = node_fn("explainer")
+    out = run(fn(_with_integrity(before)))
+    assert "13 room and ICU days for a 3-night stay" in text(out) and "insurer may question" in text(out)
+    assert any(s["fact_ids"] == ["F-INTEGRITY-ROOM-DAYS-EXCEED-STAY"] for s in out["draft"]["sentences"])
+
+
+def test_a_weak_finding_is_not_mentioned(before):
+    fn, _ = node_fn("explainer")
+    assert "insurer may question" not in text(run(fn(_with_integrity(before, definite=False))))
+
+
+def test_an_assumption_from_the_letter_is_stated(before):
+    fact = {"fact_id": "F-CONDITION-FROM-LETTER", "kind": "assumption", "rule_ref": "listed_illness_waiting_period",
+            "text": "The insurer paid this claim with no waiting-period deduction, so its letter treats the condition "
+                    "as covered (listed illness short); the deductions are checked on that basis",
+            "amount": None, "formula": "", "line_ids": [], "inputs": {"condition_type": "listed_illness_short"}}
+    audit = {**before["letter_audit"], "settlement": {**(before["letter_audit"].get("settlement") or {}),
+                                                      "facts": [fact]}}
+    fn, _ = node_fn("explainer")
+    out = run(fn({**before, "letter_audit": audit}))
+    assert "treats the condition as covered" in text(out)

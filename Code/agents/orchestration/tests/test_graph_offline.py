@@ -235,7 +235,7 @@ def test_missing_policy_asks_the_user():
 
 def test_impossible_claim_goes_back_to_the_reader():
     def invalid(case):
-        raise tool_error("expected_settlement", "INVALID_ARGUMENTS", "discharge is before admission")
+        raise tool_error("expected_settlement", "INVALID_ARGUMENTS", "lines: at least one line is required")
     state = run(Case("SET-01", overrides={"expected_settlement": invalid}).start())
     assert state["outcome"] == "invalid_extraction" and state["route"] == "send_back_to_document_reader"
 

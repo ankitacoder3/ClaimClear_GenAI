@@ -12,7 +12,7 @@ How these tools plug into Member 3's LangGraph agents (environments, connection,
 
 | | |
 |---|---|
-| Status | Signature challenge A, steps 2–4 done: **engine**, **hypothesis library** (49 hypotheses) and **matcher**, served by the **`settlement-engine` MCP server** (4 read-only tools). |
+| Status | Signature challenge A, steps 2–4 done: **engine**, **hypothesis library** (51 hypotheses) and **matcher**, served by the **`settlement-engine` MCP server** (4 read-only tools). |
 | Tests | 321 passing in the project venv. All five settlement letters (SET-01 to SET-05) give the manifest's expected verdict on every row, plus the right disputable and unverifiable amounts, directly and through the MCP tools. |
 | Dependencies | Engine: Python 3.10+ standard library only. MCP server: `mcp==2.3.0` (brings pydantic). Tests: `pytest`. |
 
@@ -363,9 +363,40 @@ If a figure depends on something the engine doesn't know, it returns `Status.NEE
 | `Q-CONDITION-TYPE` | Inside the 30-day period (accident?), or a listed illness between the 24- and 36-month tiers | `Claim.condition_type` |
 | `Q-EYE` | Cataract claim, eye not stated, and the eye changes the result | Add "right/left eye" to `Claim.diagnosis` |
 | `Q-POLICY-PERIOD` | Admission outside the policy period on record | Load the policy schedule for that year |
-| `Q-ADMISSION` | The bill gives no admission date | Ask for the dates of the hospital stay the bill belongs to; `apply_answer` sets them |
+| `Q-ADMISSION` | The bill gives no admission date, or a discharge before the admission | Ask for the dates of the hospital stay the bill belongs to; `apply_answer` sets them |
 
 Not every unknown leads to a question. An unknown line when no room is above the cap only gives a **warning** ("treated as payable"), because its category can't change the result.
+
+## Document integrity (`engine/integrity.py`)
+
+Before any rule, the engine looks for facts on the bill that cannot all be true. It **never decides fraud** and never
+deducts anything because of them: each finding is an `integrity` fact (`rule_ref: "fraud"`) and a warning.
+
+| Code | Finding | Definite |
+|---|---|---|
+| `discharge_before_admission` | Discharge earlier than admission (the engine then stops and asks `Q-ADMISSION`) | yes |
+| `room_days_exceed_stay` | Room + ICU days billed exceed the nights of the stay + 1 | yes |
+| `inpatient_lines_outside_stay` | Every dated room, nursing, surgeon and theatre line falls outside the header's stay | yes |
+| `some_inpatient_lines_outside` | Only some do (a typing slip is possible) | no |
+| `gstin_malformed` | The hospital's GSTIN (`ClaimIn.hospital_gstin`) is not 15 characters in the official pattern | yes |
+
+The GSTIN check is structural only: the synthetic dataset's genuine bills use placeholder GSTINs (state code 00, wrong
+check character), so testing those parts would flag every bill.
+
+**What the findings are used for: only to test a rejection the insurer already made.** Two correct hypotheses use the
+definite findings, and only on the `REJECTION` row (never on a deduction row):
+
+* `not_genuine_documents` (row kind `not_genuine`: "not genuine", "fraud", "services not provided", "not registered",
+  "could not be verified/confirmed") confirms the rejection with the findings as the reason (clause E.5 Fraud, B.18
+  Hospital).
+* `waiting_period_on_line_dates` re-runs the settlement on the stay the hospital's own lines describe; if that
+  admission is inside a waiting period, the rejection matches the policy. When the engine would ask "illness or
+  accident?", the insurer's letter's own word ("illness") is used, as `ClaimIn.condition_type` allows.
+
+A confirmed rejection makes `policy_payable` 0 (nothing is payable on these documents), and the question about
+impossible dates is dropped for that letter. A rejection is now classified among the rejection kinds first
+(`classify_rejection`), so "…so the claim is not payable" no longer turns a waiting-period rejection into an
+unlabelled row. On the dev split this confirms syn-dev-004, -006, -012 and -015 and flags no other case.
 
 ---
 

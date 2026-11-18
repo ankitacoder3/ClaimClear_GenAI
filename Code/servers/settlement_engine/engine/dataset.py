@@ -127,6 +127,7 @@ def claim_from_invoice(inv: dict, claim_id: str) -> Claim:
         procedure=inv.get("procedure") or "",
         discount=D(inv.get("discount") or 0),
         printed_total=D(inv["printed_total"]) if inv.get("printed_total") is not None else None,
+        hospital_gstin=inv.get("provider_gstin") or "",
     )
 
 

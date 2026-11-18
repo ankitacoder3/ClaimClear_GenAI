@@ -55,7 +55,10 @@ def make(services: Services) -> dict:
             extracted = await services.extractor(services.toolkit, case_id, docs, pages)
             claim, letter = extracted.get("claim"), extracted.get("letter")
             update["sources"] = extracted.get("sources", {})
-            how = "extracted"
+            checks = extracted.get("checks") or {}
+            found = sum(len((checks.get(k) or {}).get("found", [])) for k in ("bill", "letter"))
+            left = sum(len((checks.get(k) or {}).get("left", [])) for k in ("bill", "letter"))
+            how = "extracted" + (f", {found} discrepancy(ies) found, {left} left after a second read" if found else "")
         if not (claim and letter):
             update.update(outcome=OUTCOME_EXTRACTION_NEEDED, route="extraction_needed",
                           trace=["DocumentReader: no claim/letter and no extractor configured"])

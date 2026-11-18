@@ -36,7 +36,7 @@ def test_audits_every_row_including_copay(before):
 
 def test_impossible_claim_goes_back_to_the_reader(before):
     def bad(case):
-        raise tool_error("expected_settlement", "INVALID_ARGUMENTS", "discharge is before admission")
+        raise tool_error("expected_settlement", "INVALID_ARGUMENTS", "lines: at least one line is required")
     fn, _ = node_fn("settlement_auditor", overrides={"expected_settlement": bad})
     out = run(fn(before))
     assert out["outcome"] == "invalid_extraction" and out["route"] == "send_back_to_document_reader"
@@ -56,11 +56,52 @@ def needs(fx, qid):
     return lambda case: json.loads(json.dumps(s))
 
 
+def asking(fx, qid):
+    """Overrides for an engine that can't settle ``qid`` from the letter: the settlement and the row audits both
+    carry the question (the auditor asks only what the letter's audit still needs)."""
+    q = [{"question_id": qid, "text": f"question {qid}", "options": [], "line_ids": []}]
+    row = {**call(fx, "reproduce_deduction"), "verdict": "not_verifiable", "questions": q}
+    return {"expected_settlement": needs(fx, qid), "reproduce_deduction": lambda *a, **k: json.loads(json.dumps(row))}
+
+
 def test_answerable_question_pauses_for_the_user(before, fx):
-    fn, tk = node_fn("settlement_auditor", overrides={"expected_settlement": needs(fx, "Q-CONDITION-TYPE")})
+    fn, tk = node_fn("settlement_auditor", overrides=asking(fx, "Q-CONDITION-TYPE"))
     out = run(fn(before))
     assert out["route"] == "ask_user" and [q["question_id"] for q in out["questions"]] == ["Q-CONDITION-TYPE"]
-    assert "reproduce_deduction" not in tk.log                         # rows wait for the answer
+    assert "row_audits" not in out                                     # rows wait for the answer (one probe only)
+
+
+def test_a_question_the_letter_settles_is_not_asked(before, fx):
+    # e.g. SET-32 (syn-dev-017): which waiting-period list? The insurer paid the claim, so the engine audits the
+    # letter on the insurer's own acceptance and the row audits carry no question: nothing is asked.
+    fn, _ = node_fn("settlement_auditor", overrides={"expected_settlement": needs(fx, "Q-CONDITION-TYPE")})
+    out = run(fn(before))
+    assert out["route"] == "audit_rows" and list(out["row_audits"]) == ["R1", "R2", "R3", "COPAY"]
+
+
+def _rejection(before):
+    letter = {**before["letter"], "letter_type": "rejection", "rows": [], "copay_amount": None,
+              "rejection_reason": "The hospital could not confirm the admission; the claim is not genuine."}
+    return {**before, "letter": letter}
+
+
+def test_a_rejection_the_bill_confirms_is_not_held_up_by_a_question(before, fx):
+    # e.g. SET-09: discharge before admission, rejected as not genuine. The engine asks for the real dates, but the
+    # REJECTION row is already confirmed by the bill, so the policyholder isn't asked to "correct" them.
+    confirmed = {"row_id": "REJECTION", "verdict": "matches_policy", "method": "not_genuine_documents",
+                 "difference": 0.0, "questions": []}
+    fn, tk = node_fn("settlement_auditor", overrides={"expected_settlement": needs(fx, "Q-ADMISSION"),
+                                                      "reproduce_deduction": lambda *a, **k: dict(confirmed)})
+    out = run(fn(_rejection(before)))
+    assert out["route"] == "audit_rows" and out["row_audits"]["REJECTION"]["verdict"] == "matches_policy"
+
+
+def test_an_unconfirmed_rejection_still_asks(before, fx):
+    open_row = {"row_id": "REJECTION", "verdict": "not_verifiable", "difference": 0.0,
+                "questions": [{"question_id": "Q-ADMISSION", "text": "dates?", "options": [], "line_ids": []}]}
+    fn, _ = node_fn("settlement_auditor", overrides={"expected_settlement": needs(fx, "Q-ADMISSION"),
+                                                     "reproduce_deduction": lambda *a, **k: dict(open_row)})
+    assert run(fn(_rejection(before)))["route"] == "ask_user"
 
 
 def test_a_question_already_answered_is_not_asked_again(before, fx):
@@ -137,7 +178,14 @@ def loose(dataset_id: str) -> dict:
         elif name in ("expected_settlement", "audit_settlement_letter"):
             first.setdefault(name, c["result"])
     copy = lambda v: json.loads(json.dumps(v))                   # noqa: E731
-    return {"reproduce_deduction": lambda case, letter, row_id, h=None: copy(first[("row", row_id)]),
+    open_q = (first.get("expected_settlement") or {}).get("questions") or []
+
+    def row(case, letter, row_id, h=None):
+        r = copy(first[("row", row_id)])
+        if open_q and not case["claim"].get("condition_type"):      # an engine that can't settle it from the letter
+            r = {**r, "verdict": "not_verifiable", "questions": copy(open_q)}
+        return r
+    return {"reproduce_deduction": row,
             "audit_settlement_letter": lambda case, letter, h=None: copy(first["audit_settlement_letter"]),
             "expected_settlement": lambda case: copy(first["expected_settlement"])}
 

@@ -35,7 +35,8 @@ def test_accident_has_no_waiting_period(rules):
 
 def test_unknown_condition_inside_initial_period_asks_about_accident(rules):
     p = policy(si=500000, start="2026-02-01", end="2027-01-31", inception="2026-02-01")
-    r = compute_settlement(claim([line("L01", "Surgeon fee", 30000)], admission="2026-02-10"), p, rules)
+    r = compute_settlement(claim([line("L01", "Surgeon fee", 30000)], admission="2026-02-10", discharge="2026-02-12"), p,
+                         rules)
     assert r.status == Status.NEEDS_INFORMATION
     assert "accident" in r.questions[0].text
 

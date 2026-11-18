@@ -25,10 +25,12 @@ still refuses it and the graph takes the ``invalid_extraction`` edge.
 from __future__ import annotations
 
 import asyncio
+import json
 import logging
 import os
 import re
 from datetime import datetime
+from decimal import Decimal, InvalidOperation
 from typing import Any, Optional
 
 from claimclear_tools import signals
@@ -171,8 +173,77 @@ async def _ask(reader: Any, prompt: str) -> Any:
             await asyncio.sleep(2)
 
 
+# --------------------------------------------------------------------------- the arithmetic check and the second ask
+
+TOLERANCE = Decimal("1")          # ₹1, the engine's own tolerance for a printed total
+RECHECK = ("\n\nYour previous reading, below, does not add up against the documents: {issues}. Read the documents "
+           "again and correct only what was misread: a missed or repeated line or row, a wrong amount, a missed "
+           "discount or co-pay. Never change an amount just to make the totals agree: write only what is printed."
+           "\n\n<previous_reading>\n{previous}\n</previous_reading>")
+
+
+def _dec(value: Any) -> Optional[Decimal]:
+    try:
+        return None if value is None or isinstance(value, bool) else Decimal(str(value))
+    except (InvalidOperation, ValueError):
+        return None
+
+
+def bill_issues(claim: dict) -> list[str]:
+    """Where the bill as read doesn't add up: its lines (with their GST, less the discount) against its printed total.
+    Plain checking arithmetic, as the engine's own ``F-TOTAL-MISMATCH`` warning does; no figure is produced."""
+    printed = _dec(claim.get("printed_total"))
+    lines = claim.get("lines") or []
+    amounts = [(_dec(x.get("amount")), _dec(x.get("gst_pct")) or Decimal(0)) for x in lines]
+    if printed is None or not lines or any(a is None for a, _ in amounts):
+        return []
+    total = sum((a + a * g / 100 for a, g in amounts), Decimal(0)) - (_dec(claim.get("discount")) or Decimal(0))
+    if abs(total - printed) > TOLERANCE:
+        return [f"the {len(lines)} bill lines read (with their GST, less any discount) come to {total:.2f}, but the "
+                f"printed total read is {printed:.2f}"]
+    return []
+
+
+def letter_issues(letter: dict) -> list[str]:
+    """Where the letter as read doesn't add up: claimed less its deduction rows and co-pay, against the amount paid."""
+    claimed, paid = _dec(letter.get("claimed_amount")), _dec(letter.get("paid_amount"))
+    if claimed is None or paid is None:
+        return []
+    if letter.get("letter_type") == "rejection":
+        return [] if paid == 0 else [f"a rejection letter was read with an amount paid of {paid:.2f}"]
+    rows = [_dec(r.get("amount")) for r in letter.get("rows") or []]
+    if any(r is None for r in rows):
+        return []
+    expected = claimed - sum(rows, Decimal(0)) - (_dec(letter.get("copay_amount")) or Decimal(0))
+    if abs(expected - paid) > TOLERANCE:
+        return [f"the claimed amount read ({claimed:.2f}) less the {len(rows)} deduction rows and the co-pay read "
+                f"comes to {expected:.2f}, but the amount paid read is {paid:.2f}"]
+    return []
+
+
+async def _read(reader: Any, schema: dict, prompt: str, issues_of) -> tuple[dict, list[str], list[str]]:
+    """Read once; if the reading doesn't add up, ask once more naming the discrepancy, and keep whichever reading has
+    fewer discrepancies (code decides). Returns ``(reading, issues_first, issues_kept)``."""
+    first = normalise(dict(await _ask(reader, prompt)), schema)
+    issues = issues_of(first)
+    if not issues:
+        return first, [], []
+    try:
+        again = normalise(dict(await _ask(reader, prompt + RECHECK.format(
+            issues="; ".join(issues), previous=json.dumps(first, ensure_ascii=False, default=str)[:6000]))), schema)
+    except Exception as exc:                             # the second ask is a bonus: keep the first reading
+        log.info("second extraction ask failed (%s)", type(exc).__name__)
+        return first, issues, issues
+    left = issues_of(again)
+    return (again, issues, left) if len(left) < len(issues) else (first, issues, issues)
+
+
 def llm_extractor(llm: Any):
-    """An ``Extractor`` from any LangChain chat model that supports ``with_structured_output``."""
+    """An ``Extractor`` from any LangChain chat model that supports ``with_structured_output``.
+
+    Each reading is normalised (format only), then checked: a bill whose lines don't add up to its printed total,
+    or a letter whose rows don't add up to the amount paid, is read once more with the discrepancy named. The
+    result's ``checks`` says what was found and what is left (the engine warns about anything left)."""
     from .chat import with_max_tokens
     llm = with_max_tokens(llm, extraction_max_tokens())
 
@@ -180,9 +251,13 @@ def llm_extractor(llm: Any):
         claim_schema, letter_schema = toolkit.schema("ClaimIn"), toolkit.schema("LetterIn")
         claim_reader = llm.with_structured_output(claim_schema)
         letter_reader = llm.with_structured_output(letter_schema)
-        claim = await _ask(claim_reader, PROMPT.format(text=_text(documents, pages, BILL_ROLES + LETTER_ROLES)))
-        letter = await _ask(letter_reader, PROMPT.format(text=_text(documents, pages, LETTER_ROLES)))
-        return {"claim": normalise(dict(claim), claim_schema), "letter": normalise(dict(letter), letter_schema),
-                "sources": {}}
+        claim, bill_first, bill_left = await _read(
+            claim_reader, claim_schema, PROMPT.format(text=_text(documents, pages, BILL_ROLES + LETTER_ROLES)),
+            bill_issues)
+        letter, letter_first, letter_left = await _read(
+            letter_reader, letter_schema, PROMPT.format(text=_text(documents, pages, LETTER_ROLES)), letter_issues)
+        return {"claim": claim, "letter": letter, "sources": {},
+                "checks": {"bill": {"found": bill_first, "left": bill_left},
+                           "letter": {"found": letter_first, "left": letter_left}}}
 
     return extract

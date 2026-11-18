@@ -32,6 +32,19 @@ def make(services: Services) -> dict:
         if signals.after_settlement(settlement) == signals.ASK_USER:
             ask = [q for q in signals.questions_to_ask(settlement)
                    if q["question_id"] in ANSWERABLE and q["question_id"] not in answers]
+            first = signals.rows_to_audit(letter)[:1]
+            if ask and first:
+                # Ask only what the letter's audit still needs. The engine settles some questions from the letter
+                # itself: a rejection the bill's own inconsistencies confirm (a discharge before the admission: asking
+                # to "correct" those dates helps no one), or a claim the insurer paid with no waiting-period row (its
+                # letter has accepted the condition as covered). The first row's audit says which questions remain.
+                try:
+                    probe = await tk.reproduce_deduction(case, letter, first[0])
+                except ClaimClearToolError:
+                    probe = None
+                if probe is not None:
+                    still = {q.get("question_id") for q in probe.get("questions", [])}
+                    ask = [q for q in ask if q["question_id"] in still]
             if ask:
                 return {"settlement": settlement, "questions": ask, "route": signals.ASK_USER,
                         "trace": [f"SettlementAuditor: the engine needs answers first: "

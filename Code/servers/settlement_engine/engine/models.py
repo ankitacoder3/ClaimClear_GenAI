@@ -154,6 +154,7 @@ class Claim:
     printed_total: Optional[Decimal] = None
     condition_type: Optional[ConditionType] = None
     room_priced_by_category: dict[Category, bool] = field(default_factory=dict)
+    hospital_gstin: str = ""    # as printed on the bill; only its format is checked (engine/integrity.py)
 
 
 @dataclass(frozen=True)
@@ -341,6 +342,7 @@ class RowKind(str, Enum):
     POLICY_PERIOD = "policy_period"  # a rejection: "admission outside the policy period"
     ALREADY_PAID = "already_paid"    # a rejection: "already settled under claim ..."
     UNITEMISED = "unitemised"        # "amount not supported by the itemised charges"
+    NOT_GENUINE = "not_genuine"      # a rejection: "not genuine", "fraud", "services not provided", "not registered"
     UNSPECIFIED = "unspecified"      # "Other deductions", "as per policy terms"
 
 

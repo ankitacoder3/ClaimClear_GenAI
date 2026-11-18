@@ -118,9 +118,14 @@ def test_set32_live_question_answered(servers_env):
     assert state["answers"] == {"Q-CONDITION-TYPE": "illness"} and state["outcome"] == "no_grievance"
 
 
-def test_set09_live_impossible_dates_go_back_to_the_reader(servers_env):
+def test_set09_live_impossible_dates_confirm_the_rejection(servers_env):
+    # SET-09's bill discharges the patient before admitting them; the insurer rejected it as not genuine. The engine
+    # reports the impossible dates (engine/integrity.py) and confirms the rejection, without asking for "real" dates.
     state, _ = run(drive(servers_env, "SET-09"))
-    assert state["outcome"] == "invalid_extraction"
+    whole = state["row_audits"]["REJECTION"]
+    assert state["outcome"] == "no_grievance" and state.get("answers") in (None, {})
+    assert whole["verdict"] == "matches_policy" and whole["method"] == "not_genuine_documents"
+    assert "discharge date" in whole["explanation"] and state["letter_audit"]["disputable_amount"] == 0
 
 
 def test_set21_live_lookalike_policy_number(servers_env):

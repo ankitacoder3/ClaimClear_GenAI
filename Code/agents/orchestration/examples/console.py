@@ -133,7 +133,7 @@ async def main() -> int:
             return 0 if outcome != "unfinished" else 1
         print("\nClaimClear console. Connected to the MCP servers.")
         print("Cases: " + ", ".join(available))
-        print("Try SET-01 (a disputable deduction), SET-02 (a clean settlement), SET-32 (asks you a question).")
+        print("Try SET-01 (a disputable deduction), SET-02 (a clean settlement), SET-22 (asks you a question).")
         while True:
             try:
                 choice = (await ask("\ncase (or q to quit) > ")).upper()

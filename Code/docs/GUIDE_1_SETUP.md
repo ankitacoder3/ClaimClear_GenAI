@@ -259,7 +259,7 @@ The browser opens ClaimClear. Click a sample case or attach your own documents, 
 | Command | What happens |
 |---|---|
 | `python start.py --auto SET-02` | A clean settlement: every deduction matches the policy, `Outcome: no_grievance` |
-| `python start.py --auto SET-32` | The engine needs to know the type of condition; the self-check answers `illness` and the audit continues (needs Tesseract) |
+| `python start.py --auto SET-22` | The engine needs the admission dates of a pharmacy receipt; the self-check skips the question and the run ends with the question open (SET-32 no longer asks: the insurer paid it, so the engine audits it on the insurer's acceptance) |
 | `python start.py --console` | The same as the web UI, in the terminal: pick a case, answer, then approve, edit or reject |
 
 ---

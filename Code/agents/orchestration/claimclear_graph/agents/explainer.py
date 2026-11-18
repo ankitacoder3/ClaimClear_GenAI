@@ -96,6 +96,16 @@ def make(services: Services) -> dict:
             open_q = [q for q in state.get("questions", []) if q["question_id"] not in (state.get("answers") or {})]
             for q in open_q[:3]:
                 sentences.append(ExplanationSentence(text=f"Still open: {q.get('text', q['question_id'])[:500]}"))
+            for f in (letter_audit.get("settlement") or {}).get("facts", []):
+                if f.get("kind") == "assumption":            # e.g. F-CONDITION-FROM-LETTER (engine/matcher.py)
+                    sentences.append(ExplanationSentence(text=f"{f['text'][:450]}.", fact_ids=[f["fact_id"]]))
+            confirmed = any(r.get("row_id") == "REJECTION" and r.get("verdict") == "matches_policy"
+                            for r in letter_audit.get("rows", []))
+            if not confirmed:      # a confirmed rejection already explains them in its own row
+                for f in (state.get("settlement") or {}).get("facts", []):
+                    if f.get("kind") == "integrity" and (f.get("inputs") or {}).get("definite"):
+                        sentences.append(ExplanationSentence(text=f"{f['text'][:450]}. The insurer may question the "
+                                                                  "bill because of this.", fact_ids=[f["fact_id"]]))
             if (state.get("wording") or {}).get("wording_needed"):
                 sentences.append(ExplanationSentence(text="Your policy wording isn't on file yet; uploading it "
                                                           "lets ClaimClear cite your exact clauses."))

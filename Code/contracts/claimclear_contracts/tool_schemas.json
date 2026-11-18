@@ -2857,6 +2857,13 @@
          "default": "0",
          "title": "Discount"
         },
+        "hospital_gstin": {
+         "default": "",
+         "description": "The hospital's GSTIN exactly as printed on the bill (empty if none). Only its format is checked.",
+         "maxLength": 40,
+         "title": "Hospital Gstin",
+         "type": "string"
+        },
         "lines": {
          "items": {
           "$ref": "#/$defs/BillLineIn"
@@ -3235,6 +3242,7 @@
         "policy_period",
         "already_paid",
         "unitemised",
+        "not_genuine",
         "unspecified"
        ],
        "title": "RowKind",
@@ -3716,6 +3724,7 @@
         "policy_period",
         "already_paid",
         "unitemised",
+        "not_genuine",
         "unspecified"
        ],
        "title": "RowKind",
@@ -4212,6 +4221,13 @@
          ],
          "default": "0",
          "title": "Discount"
+        },
+        "hospital_gstin": {
+         "default": "",
+         "description": "The hospital's GSTIN exactly as printed on the bill (empty if none). Only its format is checked.",
+         "maxLength": 40,
+         "title": "Hospital Gstin",
+         "type": "string"
         },
         "lines": {
          "items": {
@@ -4846,6 +4862,7 @@
         "policy_period",
         "already_paid",
         "unitemised",
+        "not_genuine",
         "unspecified"
        ],
        "title": "RowKind",
@@ -4932,6 +4949,7 @@
         "policy_period",
         "already_paid",
         "unitemised",
+        "not_genuine",
         "unspecified"
        ],
        "title": "RowKind",
@@ -5200,6 +5218,13 @@
          ],
          "default": "0",
          "title": "Discount"
+        },
+        "hospital_gstin": {
+         "default": "",
+         "description": "The hospital's GSTIN exactly as printed on the bill (empty if none). Only its format is checked.",
+         "maxLength": 40,
+         "title": "Hospital Gstin",
+         "type": "string"
         },
         "lines": {
          "items": {
@@ -5579,6 +5604,7 @@
         "policy_period",
         "already_paid",
         "unitemised",
+        "not_genuine",
         "unspecified"
        ],
        "title": "RowKind",
@@ -5720,6 +5746,7 @@
         "policy_period",
         "already_paid",
         "unitemised",
+        "not_genuine",
         "unspecified"
        ],
        "title": "RowKind",
