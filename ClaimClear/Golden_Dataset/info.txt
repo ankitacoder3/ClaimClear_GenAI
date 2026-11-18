@@ -1,0 +1,13 @@
+* Golden Dataset consists of:
+
+1- Dev Folder
+2- Eval Folder
+3- RedTeam Folder
+
+* Stats:-
+
+1 has 20 cases
+2 has 40 cases
+3 has 30 cases
+
+In total, we have 90 cases.
