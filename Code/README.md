@@ -99,6 +99,9 @@ If the test fails, the dialog says why (for example *Is the local model running?
 | `--no-browser` | Doesn't open the browser; open the printed address yourself |
 | `--keep-data` | Keeps uploaded documents, chats and filings after closing (default: deleted) |
 | `--no-local-llm` | Doesn't switch to a running local LLM for this run (uses the saved setting) |
+| `--set-openrouter-key` | Paste your OpenRouter key at a hidden prompt (or pipe it in); it is checked with OpenRouter (no cost), your credit is shown, and it is saved to `.env`. Nothing is saved if OpenRouter refuses it |
+| `--check-openrouter` | Is the saved key accepted, free tier or paid, and how much credit is left |
+| `--memory-user ID` | Long-term memory for this local user: verified claims, grievances and the topics of earlier conversations (amounts never kept), recalled in later chats. Used only after `python -m claimclear_memory consent ID` |
 | `--auto SET-01` | Runs one case with no prompts, approves, and exits: a self-check |
 | `--servers-only` | Just keeps the five servers running (Ctrl+C stops them) |
 | `--reinstall` | Rebuilds both environments |
@@ -260,7 +263,9 @@ Environment variables, with safe defaults under `var/` (git-ignored). Secrets go
 | `OPENROUTER_API_KEY`, `CLAIMCLEAR_CHAT_MODEL` | unset, `openai/gpt-4.1-mini` | OpenRouter, used when no local LLM is set |
 | `CLAIMCLEAR_AUTO_LOCAL` | unset | `0`: `start.py` doesn't switch to a running local LLM by itself (written when you choose OpenRouter in the page) |
 | `CLAIMCLEAR_EXTRACTION_MODEL` | the chat model | Model override for `eval/graph_dev_cases/run.py --llm-extract` |
+| `CLAIMCLEAR_EXTRACTION_MAX_TOKENS` | `4000` | The document reader's extraction reply limit (at least 500). Lower it for a key with little credit: OpenRouter reserves the whole limit and refuses with HTTP 402 when it can't afford it |
 | `CLAIMCLEAR_MAX_TOKENS` | `1500` | The longest reply the chat model may write. Always sent to the provider, so keys with a small credit limit work; the settings test uses 16, document extraction 4,000 |
+| `CLAIMCLEAR_MEMORY_USER` | unset | The local user whose long-term memory the web UI uses (with consent); unset = memory off. See [memory/memory_README.md](memory/memory_README.md#episodic-memory-earlier-conversations) |
 | `CLAIMCLEAR_GATE_SECRET` | unset | Approval-gate HMAC secret. Set it for **both** the gateway and the insurer-portal server: the portal then accepts only `HMAC-SHA256(secret, text_sha256)` tokens. Unset, the portal checks only that a token is present (development) |
 | `CLAIMCLEAR_CASE_STORE`, `CLAIMCLEAR_REFERENCE_DIR` | `var/case_store`, `data/dataset/dev/reference` | Case store and reference data |
 | `CLAIMCLEAR_POLICY_KB_INDEX` | `var/policy_kb/index.json` | Policy index (build it: `python -m policy_kb build --wording ...`) |
@@ -279,9 +284,9 @@ Every server-side variable is listed in [docs/member2_overview.md](docs/member2_
 | [docs/GUIDE_3_LLAMA_ON_WINDOWS.md](docs/GUIDE_3_LLAMA_ON_WINDOWS.md) ([Word](docs/guides/GUIDE_3_LLAMA_ON_WINDOWS.docx), [PDF](docs/guides/GUIDE_3_LLAMA_ON_WINDOWS.pdf)) | Step by step: run Llama locally on Windows with ClaimClear |
 | [docs/architecture.md](docs/architecture.md) | The reference architecture, box by box, mapped to code; the graph, its state, the safety invariants |
 | [docs/integration_notes.md](docs/integration_notes.md) | How the two code bases were merged: what was kept, replaced or removed, every behaviour change, and why |
-| [agents/orchestration/README.md](agents/orchestration/README.md) | The multi-agent graph: nodes, routes, gateway, hooks, extending it with an LLM |
-| [agents/toolkit/README.md](agents/toolkit/README.md) | The client for every MCP server: per-agent tools, signals, critic checks |
-| [servers/README.md](servers/README.md) | How the agents connect to the servers; each server's own README for its tools and errors |
+| [agents/orchestration/orchestration_README.md](agents/orchestration/orchestration_README.md) | The multi-agent graph: nodes, routes, gateway, hooks, extending it with an LLM |
+| [agents/toolkit/toolkit_README.md](agents/toolkit/toolkit_README.md) | The client for every MCP server: per-agent tools, signals, critic checks |
+| [servers/servers_README.md](servers/servers_README.md) | How the agents connect to the servers; each server's own README for its tools and errors |
 | [docs/member2_overview.md](docs/member2_overview.md) | Member 2's full guide: components, step-by-step runs, configuration, production backends |
 | [docs/member2_technical_handover.md](docs/member2_technical_handover.md) | Every tool with real inputs and outputs, hook points, memory, storage |
 | [docs/dataset_guide.md](docs/dataset_guide.md), [docs/memory_policy.md](docs/memory_policy.md) | The cases and answers; what memory keeps and for how long |

@@ -1,6 +1,6 @@
 # ClaimClear memory policy
 
-**Version:** `memory-policy-v1` · **Date:** 9 November 2026 · **Owner:** Member 2 · **Status:** draft for review by Member 1 (domain) and Member 4 (app and privacy)
+**Version:** `memory-policy-v2` · **Date:** 17 November 2026 · **Owner:** Member 2 · **Status:** draft for review by Member 1 (domain) and Member 4 (app and privacy)
 
 > This page is what a policyholder sees before turning memory on. Its version string is `POLICY_VERSION` in `memory/claimclear_memory/store.py`; a test checks that the two match. Changing what memory keeps, or for how long, means a new version, and every user is asked again.
 
@@ -10,6 +10,7 @@
 
 * **Memory is off until you turn it on.** ClaimClear works fully without it. You just re-upload or re-confirm details each time.
 * With memory on, ClaimClear **remembers the claims it has checked for you**, so next time it can count what you have already used of your sum insured, and follow up on a complaint.
+* It also remembers **what you asked about** in earlier conversations (topics only, never amounts), so you can pick up where you left off.
 * **You can see everything it remembers, and delete it all, at any time.**
 * It **forgets on its own** (see [How long we keep it](#how-long-we-keep-it)).
 * It **never** keeps your name, phone number, address, or the text of your complaint letters.
@@ -24,6 +25,7 @@
 | Each claim ClaimClear checked | Claim number, admission and discharge dates, diagnosis and procedure as written on the bill, amount claimed, amount the insurer paid, amount your policy allows, amount that may be disputable, which deductions were checked and how | Some limits are per policy year (for example the sum insured, or the cataract limit per eye). Earlier claims change what is left |
 | What is left of your limits | "Sum insured left this policy year: ₹2,12,905.36" | So you see your remaining cover. This figure is worked out by ClaimClear's settlement engine, never guessed |
 | Complaints you chose to make | Which claim, which deductions, the status (draft, approved, filed, resolved…), the insurer's reference number, the dates | To remind you of open complaints and their deadlines |
+| What you asked about earlier | "Asked about: why R3 was deducted; is the co-pay right" (topics, row and clause numbers only: every amount, number, date, phone number, e-mail and long reference is removed before it is stored) | So a later conversation can continue where you left off ("last time you asked about the co-pay") |
 | Your memory choice | When you turned memory on or off, and the policy version you agreed to | To prove you agreed, and to ask again when this policy changes |
 
 **Health information.** The diagnosis and procedure are health information. Memory keeps them only because some policy limits depend on them (for example, cataract surgery has a limit per eye per year). They are used for nothing else.
@@ -34,13 +36,15 @@
 * The **text of a complaint letter**. Memory keeps a fingerprint (a SHA-256 hash), which proves which exact text you approved without storing it.
 * Your **documents** (bills, discharge summaries, letters). They belong to the case you uploaded them for, not to memory.
 * Anything a document says that you cannot see on the page (hidden text, comments, attachments).
-* Anything an AI model wrote. Memory stores only results from ClaimClear's checking tools, never generated text.
+* Anything an AI model wrote, with one exception: a short topic summary of a conversation (at most 600 characters), from which every amount and number is removed before it is stored. Everything else memory keeps comes from ClaimClear's checking tools.
+* The **answers** ClaimClear gave you. Only your own questions (or their topic summary) are kept.
 
 ## How it is used
 
 * At the start of a session ClaimClear's assistants get a **short summary**: your policy, your latest few claims, any open complaints, and what is left of your limits. Older claims appear only as a count and a date range, without amounts.
 * That summary is **background only**. Every new claim is still checked from scratch by the settlement engine. Memory **never calculates money**; it only repeats figures the engine produced earlier.
 * When ClaimClear quotes a remembered figure, it is checked the same way as any other figure: it must match what the engine produced.
+* Earlier conversations are found **by meaning** when you ask a follow-up question (the few most relevant, newer ones first) and shown to the assistant as background topics. They contain no amounts, so they can never be the source of a figure.
 * Memory is **never shared with your insurer** or anyone else, and other users can never see it.
 
 ## How long we keep it
@@ -52,6 +56,7 @@
 | Open complaints (draft, approved, filed, acknowledged, with the ombudsman) | Kept while open | — |
 | What is left of your limits | When the policy year ends (at your next renewal) | — |
 | Policy details | **730 days**, once no claim on that policy is still stored | When they were last updated |
+| What you asked about in a conversation | **180 days** (at most 200 conversations; the least used go first) | When that topic last came up |
 | **Everything** | **365 days without using ClaimClear** | Your last session |
 
 Expired data is removed every day. It is also removed before any assistant sees your summary, so an expired item is never used, even for one day.
@@ -88,4 +93,7 @@ A new version gets a new version string. Until you agree to the new version, mem
 | No name; complaint text kept only as a hash | `remember_policy`, `update_grievance` | `test_policy_profile_is_stored_without_the_holders_name`, `test_grievance_lifecycle` |
 | Never calculates money; only tool results | `remember_claim` copies engine figures | `test_remember_claim_from_the_audit`, live round trip in `agents/toolkit` |
 | Other users never see it | `MemoryStore.for_user` | `test_users_never_see_each_other` |
+| Conversations: topics only, no amounts or contacts | `episodes.scrub`, `UserMemory.remember_conversation` | `test_scrub_removes_amounts_numbers_and_contacts`, `test_a_model_summary_is_scrubbed_too`, `test_only_the_users_questions_are_summarised` |
+| Conversations found by meaning, bounded | `UserMemory.recall`, `episodes.rank` | `test_recall_finds_the_relevant_conversation`, `test_unrelated_questions_recall_nothing`, `test_episodes_are_capped` |
+| Conversations expire, are exported and forgotten | `Retention.episode_days`, `purge_expired`, `export`, `forget` | `test_episodes_expire`, `test_episodes_are_exported_and_forgotten` |
 | Page and code agree | `POLICY_VERSION`, `Retention` defaults | `test_memory_policy_page_matches_the_code` |

@@ -64,7 +64,13 @@ def as_c0_result(state: dict) -> dict:
 
 
 def _amount(v) -> float:
-    return round(float(v or 0), 2)
+    """An amount for scoring; an LLM may write it as text ("-₹550.00", "Rs. 1,200"). Unreadable counts as 0."""
+    if isinstance(v, str):
+        v = "".join(ch for ch in v if ch.isdigit() or ch in ".-")
+    try:
+        return round(float(v or 0), 2)
+    except ValueError:
+        return 0.0
 
 
 def compare_extraction(got: dict | None, want: dict) -> dict:

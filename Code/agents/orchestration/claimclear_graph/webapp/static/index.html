@@ -190,7 +190,7 @@ function connect(){ws=new WebSocket((location.protocol=="https:"?"wss://":"ws://
     if(t&&t.b===boot)send({type:"resume",thread_id:t.t,boot});else{try{store.removeItem("cc_thread")}catch(e){}}};
   ws.onclose=()=>{$("#model").textContent="reconnecting…";setTimeout(connect,1500)};ws.onmessage=e=>onEvent(JSON.parse(e.data))}
 async function status(){try{const s=await (await fetch("/api/status")).json();boot=s.boot;$("#model").textContent=s.chat_model?"⚙ Model: "+s.model:"⚙ No model configured · set up";$("#nomodel").hidden=!!s.chat_model;
-  $("#status").innerHTML=Object.entries(s.servers).map(([n,on])=>`<span><i class="dot ${on?"on":""}"></i>${esc(n)}</span>`).join("");
+  $("#status").innerHTML=Object.entries(s.servers).map(([n,on])=>`<span><i class="dot ${on?"on":""}"></i>${esc(n)}</span>`).join("")+(s.memory&&s.memory.on?`<span title="Long-term memory (topics of earlier conversations, verified claims), with your consent"><i class="dot ${s.memory.consent?"on":""}"></i>memory: ${s.memory.consent?s.memory.episodes+" earlier conversation(s)":"no consent"}</span>`:"");
   if(!$("#samples").childElementCount){$("#samples").innerHTML=s.samples.map(x=>`<button data-n="${esc(x.name)}">${esc(x.label)}</button>`).join("");$("#samples").querySelectorAll("button").forEach(b=>b.onclick=()=>sample(b.dataset.n,b.textContent))}}catch(e){}}
 let boot=null,modelInfo=null;
 const HELP={openrouter:'Get a key at <b>openrouter.ai</b> → Keys. Model names look like <code>openai/gpt-4.1-mini</code>. Medical records are sent to the model you choose.',

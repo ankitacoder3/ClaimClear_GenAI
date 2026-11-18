@@ -288,7 +288,7 @@ def test_export_and_forget(mem, store):
     json.dumps(data)
     counts = mem.forget()
     assert counts == {"policies": 1, "claims": 1, "balances": 1, "grievances": 1, "grievance_events": 1,
-                      "users": 1, "consent_events": 1}
+                      "episodes": 0, "users": 1, "consent_events": 1}
     assert mem.consent().active is False                                 # forgetting includes the consent
     assert mem.export()["claims"] == [] and mem.context()["figures"] == [] and mem.consent_log() == []
     with sqlite3.connect(store.path) as con:
@@ -398,7 +398,7 @@ def test_migration_from_schema_1(tmp_path):
     assert again.consent().active is False                                    # v1 data needs consent first
     assert again.claim(CLAIM_ID) is not None and again.context()["enabled"] is False
     with sqlite3.connect(path) as con:
-        assert con.execute("SELECT value FROM meta WHERE key='schema_version'").fetchone()[0] == "2"
+        assert con.execute("SELECT value FROM meta WHERE key='schema_version'").fetchone()[0] == "3"
 
 
 # =========================================================================== controls: expiry
@@ -534,9 +534,10 @@ def test_memory_policy_page_matches_the_code():
     page = POLICY_PAGE.read_text(encoding="utf-8")
     assert f"`{POLICY_VERSION}`" in page
     r = Retention()
-    for days in (r.claims_days, r.closed_grievance_days, r.inactive_days):
+    for days in (r.claims_days, r.closed_grievance_days, r.inactive_days, r.episode_days):
         assert f"**{days} days" in page, days
-    tests = {name for name in globals() if name.startswith("test_")}
+    tests = {name for f in Path(__file__).parent.glob("test_*.py")             # every memory test file
+             for name in re.findall(r"^def (test_[a-z0-9_]+)", f.read_text(encoding="utf-8"), re.M)}
     for ref in set(re.findall(r"`(test_[a-z0-9_]+\*?)`", page)):           # every test the page cites exists
         assert (any(t.startswith(ref[:-1]) for t in tests) if ref.endswith("*") else ref in tests), ref
     assert set(USER_TABLES) >= {"users", "consent_events"}

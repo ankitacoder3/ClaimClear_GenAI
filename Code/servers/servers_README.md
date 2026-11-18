@@ -4,15 +4,15 @@ This guide is for **Member 3** (agents and orchestration), from **Member 2** (kn
 
 | Server | Folder | Status | Tools |
 |---|---|---|---|
-| `case-records` | [`case_records/`](case_records/README.md) | ✅ built | `list_case_documents`, `get_document_text`, `get_policy`, `get_policy_wording`, `get_claim_history` |
-| `settlement-engine` | [`settlement_engine/`](settlement_engine/README.md) | ✅ built | `expected_settlement`, `reproduce_deduction`, `audit_settlement_letter`, `list_hypotheses` |
-| `policy-kb` | [`policy_kb/`](policy_kb/README.md) | ✅ built | `list_policies`, `search_clauses`, `get_clause`, `clauses_for_rule` (see [§9](#9-policy-kb-citing-the-wording)); `register_uploaded_wording` for the app only |
-| `insurer-portal` | [`insurer_portal/`](insurer_portal/README.md) | ✅ interface + dry run · 🔜 mock portal (Member 4) | `grievance_status`, `file_grievance` (behind the approval gate) |
-| `document-reader` | [`document_reader/`](document_reader/README.md) | ✅ built · **for the app, not agents** | `read_document`, `reader_status`. All OCR and document reading; case-records' `get_document_text` uses the same reader |
+| `case-records` | [`case_records/`](case_records/case_records_README.md) | ✅ built | `list_case_documents`, `get_document_text`, `get_policy`, `get_policy_wording`, `get_claim_history` |
+| `settlement-engine` | [`settlement_engine/`](settlement_engine/settlement_engine_README.md) | ✅ built | `expected_settlement`, `reproduce_deduction`, `audit_settlement_letter`, `list_hypotheses` |
+| `policy-kb` | [`policy_kb/`](policy_kb/policy_kb_README.md) | ✅ built | `list_policies`, `search_clauses`, `get_clause`, `clauses_for_rule` (see [§9](#9-policy-kb-citing-the-wording)); `register_uploaded_wording` for the app only |
+| `insurer-portal` | [`insurer_portal/`](insurer_portal/insurer_portal/app.py) | ✅ interface + dry run · 🔜 mock portal (Member 4) | `grievance_status`, `file_grievance` (behind the approval gate) |
+| `document-reader` | [`document_reader/`](document_reader/document_reader_README.md) | ✅ built · **for the app, not agents** | `read_document`, `reader_status`. All OCR and document reading; case-records' `get_document_text` uses the same reader |
 
 
 
-> **Fastest path: use [`agents/toolkit`](../agents/toolkit/README.md).** It packages everything in sections 3–9 below: `ClaimClearToolkit` (connection, sessions, per-agent tools, schemas, typed calls), `results` (result and error parsing), `signals` (tool result → graph route), `case` (case assembly, applying answers), `critic` (figure and wording checks). This guide explains what it does and why; the toolkit is the code to import.
+> **Fastest path: use [`agents/toolkit`](../agents/toolkit/toolkit_README.md).** It packages everything in sections 3–9 below: `ClaimClearToolkit` (connection, sessions, per-agent tools, schemas, typed calls), `results` (result and error parsing), `signals` (tool result → graph route), `case` (case assembly, applying answers), `critic` (figure and wording checks). This guide explains what it does and why; the toolkit is the code to import.
 
 ---
 
@@ -333,7 +333,7 @@ What each field holds, who fills it, and its exact shape. The shapes are the ser
 | `questions` | From `settlement.questions` and `row_audits[*].questions` | `[QuestionOut]` | Supervisor → `interrupt()` |
 | `answers` | User, via `interrupt()` | sets `claim.condition_type` / `claim.room_priced_by_category` | Auditor (re-run) |
 | `user_id` | App (M4), from the session | the app's opaque ID | Memory |
-| `memory` | Supervisor ← `claimclear_memory` `store.session_memory(user_id).context(policy_no=...)` at session start (empty without consent) | `{policies, recent_claims, balances, open_grievances, figures, note}` ([memory/](../memory/README.md)) | Everyone; critic takes `figures` |
+| `memory` | Supervisor ← `claimclear_memory` `store.session_memory(user_id).context(policy_no=...)` at session start (empty without consent) | `{policies, recent_claims, balances, open_grievances, figures, note}` ([memory/](../memory/memory_README.md)) | Everyone; critic takes `figures` |
 | `security_flags` | Guardrails (M4) from `pages[*].hidden_text`, `metadata`, `annotations`, `form_fields`, `attachments` | M4 | Supervisor |
 
 **Assembling the `case` argument** for every settlement-engine call:
@@ -436,7 +436,7 @@ Offer a grievance **only** for rows with `verdict == "does_not_match_policy"` an
 
 ## 9. policy-kb: citing the wording
 
-The `policy-kb` server ([servers/policy_kb](policy_kb/README.md#mcp-server-and-agent-tools)) serves the indexed policy wording (today Go Digit's Arogya Sanjeevani, 127 clauses):
+The `policy-kb` server ([servers/policy_kb](policy_kb/policy_kb_README.md#mcp-server-and-agent-tools)) serves the indexed policy wording (today Go Digit's Arogya Sanjeevani, 127 clauses):
 
 | Tool | Use it for |
 |---|---|

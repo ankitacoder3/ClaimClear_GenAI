@@ -1,7 +1,7 @@
 # ClaimClear dataset guide
 
 What the dataset contains, how it is organised, and how the application uses it from upload to a
-scored answer. The short format reference is [`data/dataset/README.md`](../data/dataset/README.md);
+scored answer. The short format reference is [`data/dataset/dataset_README.md`](../data/dataset/dataset_README.md);
 this guide explains the whole picture.
 
 All documents are synthetic: fictional hospitals, insurers and patients. Nothing in the dataset is
@@ -27,7 +27,7 @@ It has two splits:
 ```
 data/
   dataset/                          every case, in one standard format
-    README.md                       the format reference
+    dataset_README.md               the format reference
     policy_rules.json               simplified Arogya Sanjeevani limits (room rent, ICU, cataract, co-pay, waiting periods,
                                     pre/post-hospitalisation days, road ambulance)
     dev/                            42 cases
@@ -207,7 +207,7 @@ flowchart LR
 | `cd servers/case_records && ../../.venv/Scripts/python.exe -m case_records.register_dataset` | registers the dev split for the servers and agents |
 | `... -m case_records.register_dataset --split heldout --store ../../var/heldout/case_store` | held-out, evaluation only, in its own store |
 | `.venv/Scripts/python.exe scripts/try_case_records.py data/dataset/dev/cases/<case_id>` | one case through every case-records tool |
-| `.venv-agents/Scripts/python.exe eval/dev_cases/run.py` | every dev case through the whole application, scored ([results](../eval/dev_cases/README.md)) |
+| `.venv-agents/Scripts/python.exe eval/dev_cases/run.py` | every dev case through the whole application, scored ([results](../eval/dev_cases/dev_cases_README.md)) |
 | `.venv/Scripts/python.exe eval/memory_on_off/run.py` | the synthetic dev cases with memory on and off |
 
 The servers read `data/dataset` by default (`CLAIMCLEAR_DATASET_DIR`). case-records reads
@@ -254,7 +254,7 @@ Where the cases ended:
 | `invalid_extraction`: the claim is impossible | 1 | 0 |
 
 **What still differs from the answer key** (the 8 overall misses; detail in
-[`eval/dev_cases/README.md`](../eval/dev_cases/README.md)):
+[`eval/dev_cases/dev_cases_README.md`](../eval/dev_cases/dev_cases_README.md)):
 
 | Case | What differs | Why |
 |---|---|---|

@@ -133,6 +133,29 @@ class LimitBalance:
 
 
 @dataclass(frozen=True)
+class EpisodeRecord:
+    """One earlier conversation, as topics only (``episodes.py``): the summary is scrubbed of amounts, numbers
+    and contact details, so it can never be a source of figures. The vector is kept in the database, not here."""
+
+    episode_id: str
+    case_id: str
+    claim_id: str
+    summary: str
+    topics: tuple[str, ...]
+    turns: int                        # how many questions it covers (merged conversations add up)
+    source: str                       # "chat" (extractive) or "chat:llm" (summarised by a model, then scrubbed)
+    created_at: str
+    updated_at: str
+    recall_count: int = 0
+    score: Optional[float] = None     # set by ``UserMemory.recall``
+
+    def to_dict(self) -> dict:
+        d = asdict(self)
+        d["topics"] = list(self.topics)
+        return d
+
+
+@dataclass(frozen=True)
 class GrievanceEvent:
     at: str
     status: str

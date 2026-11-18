@@ -75,7 +75,7 @@ ClaimClear checks a health-insurance settlement letter against the policy: it wo
 
 All five servers answered over HTTP (`scripts/dev_servers.py --check`).
 
-**Whole-application run over the 42 dev cases** (`eval/dev_cases/run.py`, details in `eval/dev_cases/README.md`): 41 ran to the end; 34/42 overall verdicts, 88/94 row verdicts, 26/30 payables and 34/38 disputable amounts right. Synthetic cases: 16/22 overall, 19/20 rows, 19/19 disputable amounts. gen-data cases, which use another insurer's wording and phrasing: 18/20 overall, 69/74 rows, 15/19 disputable amounts. Section 16.1 has the full result. The README lists what the gen-data cases showed, what was fixed in the engine, what still differs, and where the answer key may be wrong. Decided: the proportionate deduction keeps IRDAI's 2020 rule, so three gen-data answers that cut consumables and diagnostics are labelled as decided disagreements (`eval/dev_cases/decisions.json`). The dataset itself is explained in `docs/dataset_guide.md`.
+**Whole-application run over the 42 dev cases** (`eval/dev_cases/run.py`, details in `eval/dev_cases/dev_cases_README.md`): 41 ran to the end; 34/42 overall verdicts, 88/94 row verdicts, 26/30 payables and 34/38 disputable amounts right. Synthetic cases: 16/22 overall, 19/20 rows, 19/19 disputable amounts. gen-data cases, which use another insurer's wording and phrasing: 18/20 overall, 69/74 rows, 15/19 disputable amounts. Section 16.1 has the full result. The README lists what the gen-data cases showed, what was fixed in the engine, what still differs, and where the answer key may be wrong. Decided: the proportionate deduction keeps IRDAI's 2020 rule, so three gen-data answers that cut consumables and diagnostics are labelled as decided disagreements (`eval/dev_cases/decisions.json`). The dataset itself is explained in `docs/dataset_guide.md`.
 
 ## 2. System architecture
 
@@ -2471,7 +2471,7 @@ When it needs a fact it does not have (an unknown line the proportionate cut wou
 **Partial:** rows still `not_verifiable`: OT unbundling and lab totals above the itemised rate (SET-16 rows 2 and 5), surgical consumables (SET-33 row 2), a letter on an invented policy (SET-08).
 
 
-The dev-case results and the reasoning behind each fix are in `eval/dev_cases/README.md`. **Decided:** the proportionate deduction keeps IRDAI's 2020 rule; three gen-data answers that follow an older wording are labelled from `eval/dev_cases/decisions.json`.
+The dev-case results and the reasoning behind each fix are in `eval/dev_cases/dev_cases_README.md`. **Decided:** the proportionate deduction keeps IRDAI's 2020 rule; three gen-data answers that follow an older wording are labelled from `eval/dev_cases/decisions.json`.
 
 ## 8. Document processing and OCR
 
@@ -2963,7 +2963,7 @@ Every case read its documents (163 documents, 1,157 pages) and its wording statu
 | syn-dev-017 | asks which waiting-period list a meniscus tear is on | neither list names it outright |
 | syn-dev-021 | asks for the admission date | a pharmacy bill with no admission date, by design |
 
-Results per case: `eval/dev_cases/results/dev_cases.md` (and `.json` with every step's output). The fixes these cases led to, and the reasoning on the answer key, are in `eval/dev_cases/README.md`.
+Results per case: `eval/dev_cases/results/dev_cases.md` (and `.json` with every step's output). The fixes these cases led to, and the reasoning on the answer key, are in `eval/dev_cases/dev_cases_README.md`.
 
 ## 17. Files and modules walkthrough
 

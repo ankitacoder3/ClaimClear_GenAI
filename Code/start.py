@@ -25,6 +25,10 @@ when the page closes (and at start-up, should a previous run have been killed). 
     python start.py --servers-only    just keep the servers running (Ctrl+C stops them)
     python start.py --reinstall       rebuild the environments from scratch
     python start.py --no-local-llm    don't switch to a running local LLM (use the saved setting)
+    python start.py --set-openrouter-key   paste your OpenRouter key at a hidden prompt; checked, then saved to .env
+    python start.py --check-openrouter     is the saved key accepted, and how much credit is left?
+    python start.py --memory-user ID  long-term memory for this local user (verified claims, grievances and the topics
+                                      of earlier conversations), only after: python -m claimclear_memory consent ID
 
 Start it with ANY Python (3.8 or newer, including 3.15 and later). The packages ClaimClear depends on are
 published for Python 3.12-3.14 only, so the environments are always built with one of those: your Python if
@@ -321,13 +325,28 @@ def main() -> int:
                     help="keep uploaded documents, chats and filings after closing (default: deleted)")
     ap.add_argument("--reinstall", action="store_true", help="rebuild both environments")
     ap.add_argument("--no-local-llm", action="store_true", help="don't switch to a running local LLM by itself")
+    ap.add_argument("--set-openrouter-key", action="store_true",
+                    help="paste an OpenRouter API key (hidden prompt or piped input); checked, saved to .env, then exit")
+    ap.add_argument("--check-openrouter", action="store_true",
+                    help="check the saved OpenRouter key (accepted? credit left?) and exit")
+    ap.add_argument("--memory-user", metavar="ID",
+                    help="turn on long-term memory for this local user ID (needs: python -m claimclear_memory consent ID)")
     ap.add_argument("--download-python", action="store_true",
                     help=f"build the environments with a private downloaded Python {DOWNLOAD_VERSION}")
     args = ap.parse_args()
+    if args.set_openrouter_key or args.check_openrouter:
+        import openrouter_key
+        if args.set_openrouter_key:
+            return openrouter_key.set_key(REPO / ".env")
+        return openrouter_key.check_saved(REPO / ".env")
     global FORCE_DOWNLOAD
     FORCE_DOWNLOAD = args.download_python
     load_dotenv()
     choose_local_llm(not args.no_local_llm and os.environ.get("CLAIMCLEAR_AUTO_LOCAL") != "0")
+    if args.memory_user:
+        os.environ["CLAIMCLEAR_MEMORY_USER"] = args.memory_user
+        say(f"long-term memory for user {args.memory_user!r} (used only with that user's consent: "
+            f"python -m claimclear_memory consent {args.memory_user})")
 
     server_py = ensure_env(".venv", "the servers",
                            [["-r", "requirements-servers.txt"], [x for p in SERVER_PACKAGES for x in ("-e", p)]],

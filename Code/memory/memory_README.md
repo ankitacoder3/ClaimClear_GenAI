@@ -5,14 +5,15 @@ The memory part of Member 2's role. It remembers, **per user**, what ClaimClear 
 * the **policy profile**: sum insured, policy period, first inception, insurer, product, and which wording to cite;
 * **verified claims**: what the insurer paid, what the policy allows, what may be disputable, the verdict count, and the disputable rows;
 * **sub-limit balances**: the settlement engine's own "sum insured left" and "cataract limit left" facts for the current policy period;
-* **grievance status**: draft → approved → filed → acknowledged → resolved / rejected → escalated → closed, with every change logged.
+* **grievance status**: draft → approved → filed → acknowledged → resolved / rejected → escalated → closed, with every change logged;
+* **episodic memory** (v3): what the user asked about in earlier conversations, as **topics only** (every amount, number, date and contact scrubbed), found again by meaning with hybrid search. See [Episodic memory](#episodic-memory-earlier-conversations).
 
 | | |
 |---|---|
 | Status | v1 (week 4) and the controls (week 6) done: consent, expiry, trimming and summarising, and the [memory policy page](../docs/memory_policy.md). Memory on vs off is week 8 |
 | Storage | `$CLAIMCLEAR_MEMORY_DB`: a SQLite file (default `<repo>/var/memory/memory.db`, git-ignored), or `postgresql://user:password@host:5432/db[?schema=memory]` for production (`claimclear_memory/db.py`; needs `pg8000`). Same tables and API on both |
 | Dependencies | None (standard library). Runs in the agents' and the app's environments, Python 3.10+ |
-| Tests | 49 on SQLite; `tests/test_postgres.py` runs 42 on PostgreSQL when `CLAIMCLEAR_TEST_POSTGRES` is set (36 of the same tests plus PostgreSQL-only ones); a live round trip through the settlement engine in `agents/toolkit` |
+| Tests | 72 on SQLite (23 for episodic memory in `tests/test_episodes.py`); `tests/test_postgres.py` runs 42 on PostgreSQL when `CLAIMCLEAR_TEST_POSTGRES` is set (36 of the same tests plus PostgreSQL-only ones); a live round trip through the settlement engine in `agents/toolkit` |
 | Owner | Member 2. Used by Member 3's graph and Member 4's app |
 
 ---
@@ -23,6 +24,7 @@ The memory part of Member 2's role. It remembers, **per user**, what ClaimClear 
 2. [Quick start](#quick-start)
 3. [Using it in the LangGraph graph](#using-it-in-the-langgraph-graph)
 4. [Controls: consent, expiry, trimming](#controls-consent-expiry-trimming)
+4a. [Episodic memory: earlier conversations](#episodic-memory-earlier-conversations)
 5. [API](#api)
 6. [What is stored](#what-is-stored)
 7. [Grievance lifecycle](#grievance-lifecycle)
@@ -41,6 +43,58 @@ The memory part of Member 2's role. It remembers, **per user**, what ClaimClear 
 5. **Remembered text is data, not instructions.** The context note says so, and `render()` repeats it in the prompt.
 6. **Only final audits.** An audit still waiting for the policyholder's answers (`needs_information`) is refused.
 7. **Only with consent, and not forever.** Nothing is stored until the user agrees to the [memory policy](../docs/memory_policy.md); data expires on its own (see [Controls](#controls-consent-expiry-trimming)).
+
+---
+
+## Episodic memory: earlier conversations
+
+The structured tables stay the **only source of figures**. Episodic memory adds recall of earlier *conversations*
+on top ("last time you asked about the co-pay on claim X"), in `claimclear_memory/episodes.py`:
+
+```
+turns ──► summary: the user's QUESTIONS only (extractive), or a model summary (optional)
+      ──► scrub(): ₹/Rs/INR amounts, numbers of 3+ digits, dates, phones, e-mails, long IDs → placeholders;
+                   refuses (UnsafeSummary) if anything money-like survives; ≤ 600 characters
+      ──► topics_of(): "co-pay", "proportionate deduction", "R3", "C.1.1" ...
+      ──► embed (HashingEmbedder, offline, 512-dim; or any Embedder) ──► episodes table
+recall(query) ──► BM25 rank + vector rank ──► reciprocal rank fusion (k=60) × recency decay (half-life 90 days)
+              ──► top k (default 3) above a relevance floor; recall_count updated
+```
+
+| Optimisation | How |
+|---|---|
+| Merge, don't duplicate | A new conversation about the same case with cosine ≥ 0.9 to an earlier one updates it (turns add up) |
+| Bounded store | At most 200 episodes per user; the least recalled, then the oldest, are evicted |
+| Bounded prompt | `render_episodes(max_chars=900)`; recall returns at most `k` |
+| Forgetting | `Retention.episode_days` = 180, applied by `purge_expired` (and before every recall) |
+| Never a source of figures | Scrubbed text; not in `context()["figures"]`; the chat's stream guard never allows a figure from it |
+| Model optional | Extractive summary by default; a model summary (questions only, ≤ 200 tokens) is scrubbed the same way and falls back to the extractive one if it fails or is unsafe |
+
+```python
+mem.remember_conversation(turns, case_id=case_id, claim_id=claim_id)        # [(question, answer), ...]
+mem.recall("what did I ask about the proportionate cut?", k=3)            # -> [EpisodeRecord(score=...)]
+render_episodes(mem.recall(question))                                      # prompt block, background only
+```
+
+Command line (the local stand-in for the app's settings screen):
+
+```bash
+python -m claimclear_memory consent u_local      # the user turns memory on (memory policy v2)
+python -m claimclear_memory episodes u_local     # what is remembered
+python -m claimclear_memory recall u_local "co-pay"
+python -m claimclear_memory forget u_local       # delete everything
+```
+
+In the web UI: `python start.py --memory-user u_local` (or `CLAIMCLEAR_MEMORY_USER=u_local`). With consent, the graph
+remembers verified claims and grievances, each finished conversation is saved (on a new case, reset or when the page
+disconnects), and the chat recalls earlier ones. The sidebar shows "memory: N earlier conversation(s)".
+
+**Hot path vs background.** Recall runs in the hot path (before each answer; the database work on a worker thread).
+Saving a conversation runs as a **background task** (`webapp/server.py` `spawn_background`): the optional model
+summary and the database write never delay a new case or a reset, a failing save is logged instead of raised, and
+pending saves are finished (up to 15 s) before the app stops. The graph's structured writes (`remember_policy`,
+`remember_claim`, grievance updates) stay in the hot path on purpose: they are a few milliseconds of SQLite, and
+the record is then in place before the step that depends on it.
 
 ---
 
@@ -253,7 +307,7 @@ Open statuses: `draft`, `approved`, `filed`, `acknowledged`, `escalated`.
 
 ```
 memory/
-├── README.md
+├── memory_README.md
 ├── pyproject.toml                package claimclear-memory, no dependencies
 ├── claimclear_memory/
 │   ├── __init__.py               public API

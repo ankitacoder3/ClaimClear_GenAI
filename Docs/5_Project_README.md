@@ -11,9 +11,9 @@ This repository combines two code bases into one working system:
 | Knowledge, memory and tools | Member 2 | `servers/`, `contracts/`, `memory/`, `agents/toolkit/`, `data/`, `eval/dev_cases/` | Five MCP servers (settlement engine, case records, policy KB, insurer portal, document reader), the shared contracts, long-term memory and the agents' toolkit |
 | Agents and orchestration | Member 3 | `agents/orchestration/`, `eval/graph_dev_cases/` | The LangGraph multi-agent graph: supervisor, six specialists, critic loop with replanning, memory, and the human approval gate |
 
-The architecture below is the reference for both; [docs/architecture.md](docs/architecture.md) maps every box to the code that implements it.
+The architecture below is the reference for both; [docs/architecture.md](../Code/docs/architecture.md) maps every box to the code that implements it.
 
-![ClaimClear architecture: agents and orchestration](docs/diagrams/architecture_agents_orchestration.png)
+![ClaimClear architecture: agents and orchestration](../Code/docs/diagrams/architecture_agents_orchestration.png)
 
 ---
 
@@ -174,7 +174,7 @@ async with ClaimClearToolkit() as tk:                                  # keep it
 | C0 fixed workflow (`eval/dev_cases`) | 42 | 41 | 34/42 | 88/94 | 26/30 | 34/38 |
 | Multi-agent graph (`eval/graph_dev_cases`) | 42 | 41 | 34/42 | 88/94 | 26/30 | 34/38 |
 
-Every case reaches a defined outcome (the one without an audit, syn-dev-004, is an impossible extraction sent back to the document reader). The graph agrees with the fixed workflow on every case's overall verdict (42/42): orchestration adds the plan, the critic's independent re-check and draft review, the questions, the explanation and the approval gate without changing a single figure. The eight misses are the engine's and the answer keys' (three are documented decisions in `eval/dev_cases/decisions.json`). 19 cases stopped at the approval gate; none was filed without approval. Details: [`eval/graph_dev_cases/results/graph_dev_cases.md`](eval/graph_dev_cases/results/graph_dev_cases.md).
+Every case reaches a defined outcome (the one without an audit, syn-dev-004, is an impossible extraction sent back to the document reader). The graph agrees with the fixed workflow on every case's overall verdict (42/42): orchestration adds the plan, the critic's independent re-check and draft review, the questions, the explanation and the approval gate without changing a single figure. The eight misses are the engine's and the answer keys' (three are documented decisions in `eval/dev_cases/decisions.json`). 19 cases stopped at the approval gate; none was filed without approval. Details: [`eval/graph_dev_cases/results/graph_dev_cases.md`](../Code/eval/graph_dev_cases/results/graph_dev_cases.md).
 
 ## 7. Configuration
 
@@ -193,19 +193,19 @@ Environment variables, with safe defaults under `var/` (git-ignored). Secrets go
 | `CLAIMCLEAR_PORTAL_STORE` | `var/insurer_portal/dry_run.json` | The dry-run portal's record of filings |
 | `CLAIMCLEAR_*_URL` | `http://127.0.0.1:810x/mcp` | Server URLs in HTTP mode |
 
-Every server-side variable is listed in [docs/member2_overview.md](docs/member2_overview.md#6-configuration).
+Every server-side variable is listed in [docs/member2_overview.md](../Code/docs/member2_overview.md#6-configuration).
 
 ## 8. Documents
 
 | Document | What it covers |
 |---|---|
-| [docs/GUIDE_1_SETUP.md](docs/GUIDE_1_SETUP.md) ([Word](docs/guides/GUIDE_1_SETUP.docx), [PDF](docs/guides/GUIDE_1_SETUP.pdf)) | **Start here.** Step by step from the zip to a running system, tests and evaluation, with troubleshooting |
-| [docs/GUIDE_2_CODE_WALKTHROUGH.md](docs/GUIDE_2_CODE_WALKTHROUGH.md) ([Word](docs/guides/GUIDE_2_CODE_WALKTHROUGH.docx), [PDF](docs/guides/GUIDE_2_CODE_WALKTHROUGH.pdf)) | Code review of every part, then a simple (SET-02) and a complex (SET-01) case traced node by node |
-| [docs/architecture.md](docs/architecture.md) | The reference architecture, box by box, mapped to code; the graph, its state, the safety invariants |
-| [docs/integration_notes.md](docs/integration_notes.md) | How the two code bases were merged: what was kept, replaced or removed, every behaviour change, and why |
-| [agents/orchestration/README.md](agents/orchestration/README.md) | The multi-agent graph: nodes, routes, gateway, hooks, extending it with an LLM |
-| [agents/toolkit/README.md](agents/toolkit/README.md) | The client for every MCP server: per-agent tools, signals, critic checks |
-| [servers/README.md](servers/README.md) | How the agents connect to the servers; each server's own README for its tools and errors |
-| [docs/member2_overview.md](docs/member2_overview.md) | Member 2's full guide: components, step-by-step runs, configuration, production backends |
-| [docs/member2_technical_handover.md](docs/member2_technical_handover.md) | Every tool with real inputs and outputs, hook points, memory, storage |
-| [docs/dataset_guide.md](docs/dataset_guide.md), [docs/memory_policy.md](docs/memory_policy.md) | The cases and answers; what memory keeps and for how long |
+| [docs/GUIDE_1_SETUP.md](../Code/docs/GUIDE_1_SETUP.md) ([Word](../Code/docs/guides/GUIDE_1_SETUP.docx), [PDF](../Code/docs/guides/GUIDE_1_SETUP.pdf)) | **Start here.** Step by step from the zip to a running system, tests and evaluation, with troubleshooting |
+| [docs/GUIDE_2_CODE_WALKTHROUGH.md](../Code/docs/GUIDE_2_CODE_WALKTHROUGH.md) ([Word](../Code/docs/guides/GUIDE_2_CODE_WALKTHROUGH.docx), [PDF](../Code/docs/guides/GUIDE_2_CODE_WALKTHROUGH.pdf)) | Code review of every part, then a simple (SET-02) and a complex (SET-01) case traced node by node |
+| [docs/architecture.md](../Code/docs/architecture.md) | The reference architecture, box by box, mapped to code; the graph, its state, the safety invariants |
+| [docs/integration_notes.md](../Code/docs/integration_notes.md) | How the two code bases were merged: what was kept, replaced or removed, every behaviour change, and why |
+| [agents/orchestration/orchestration_README.md](../Code/agents/orchestration/orchestration_README.md) | The multi-agent graph: nodes, routes, gateway, hooks, extending it with an LLM |
+| [agents/toolkit/toolkit_README.md](../Code/agents/toolkit/toolkit_README.md) | The client for every MCP server: per-agent tools, signals, critic checks |
+| [servers/servers_README.md](../Code/servers/servers_README.md) | How the agents connect to the servers; each server's own README for its tools and errors |
+| [docs/member2_overview.md](../Code/docs/member2_overview.md) | Member 2's full guide: components, step-by-step runs, configuration, production backends |
+| [docs/member2_technical_handover.md](../Code/docs/member2_technical_handover.md) | Every tool with real inputs and outputs, hook points, memory, storage |
+| [docs/dataset_guide.md](../Code/docs/dataset_guide.md), [docs/memory_policy.md](../Code/docs/memory_policy.md) | The cases and answers; what memory keeps and for how long |

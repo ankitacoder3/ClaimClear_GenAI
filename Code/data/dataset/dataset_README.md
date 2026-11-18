@@ -15,7 +15,7 @@ Every case the application is developed and evaluated on, from both sources, in 
 
 ```
 data/dataset/
-  README.md
+  dataset_README.md
   policy_rules.json                  simplified limits the settlement engine's dataset adapter uses (room, ICU, cataract,
                                      co-pay, waiting periods, 30/60-day cover window, ₹2,000 road ambulance)
   dev/        (heldout/ is the same)

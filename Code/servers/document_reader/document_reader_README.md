@@ -70,7 +70,7 @@ Start the server:
 
 ```
 servers/document_reader/
-├── README.md                  this file
+├── document_reader_README.md                  this file
 ├── pyproject.toml             dependencies and pytest settings
 ├── document_reader/
 │   ├── __init__.py            DocumentReader, OcrSettings, extract_document, ...

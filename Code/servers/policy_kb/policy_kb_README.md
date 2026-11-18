@@ -419,7 +419,7 @@ A citation from a wording with `synthetic: true` must **never** be shown to a us
 
 ```
 servers/policy_kb/
-├── README.md
+├── policy_kb_README.md
 ├── pyproject.toml              optional extras: pdf, embeddings, tools, mcp, dev
 ├── policy_kb/
 │   ├── __init__.py             PolicyKB, WordingInfo, load_default_kb, default_index_path

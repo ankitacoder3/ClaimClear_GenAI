@@ -21,6 +21,13 @@
   ``{"type": "resume", "thread_id"}``
   ==========================================  ================================================================
 
+**Memory (optional, with consent).** With ``CLAIMCLEAR_MEMORY_USER`` set (``start.py --memory-user ID``) and that user's
+consent recorded (``python -m claimclear_memory consent ID``), the graph remembers verified claims and grievances, and
+each finished conversation is stored as episodic memory (topics only, amounts scrubbed) and recalled by meaning in
+later chats. Without consent nothing is stored. A conversation is saved when a new case starts, on reset and when
+the page disconnects, as a **background task** (``spawn_background``): the optional model summary and the database
+write never delay the next case or a reset, and pending saves are finished before the app stops.
+
 **Lifetime.** The UI stays up as long as at least one page is open. When the last page disconnects and no page
 reconnects within ``CLAIMCLEAR_UI_GRACE`` seconds (default 15, enough for a reload), the UI stops, and
 ``start.py`` then stops the MCP servers. Before the first page connects it waits indefinitely.
@@ -30,6 +37,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 import os
 import re
 import shutil
@@ -49,7 +57,9 @@ from starlette.responses import FileResponse, JSONResponse
 from starlette.routing import Route, WebSocketRoute
 from starlette.websockets import WebSocket, WebSocketDisconnect
 
-from .. import chat
+from claimclear_memory import MemoryStore
+
+from .. import chat, episodic
 from ..extraction import llm_extractor
 from ..gateway import HumanApprovalGateway, issue_token, text_sha256
 from ..graph import build_claimclear_graph, initial_state
@@ -67,6 +77,7 @@ SAMPLES = [("syn-dev-005", "Gall-bladder surgery: a disputable deduction (SET-01
            ("syn-dev-017", "The engine asks you a question (SET-32)"),
            ("gen-dev-147e01", "Another insurer's letter, read from the PDF tables")]
 GRACE = float(os.environ.get("CLAIMCLEAR_UI_GRACE", "15"))
+MEMORY_USER_ENV = "CLAIMCLEAR_MEMORY_USER"     # the local user's opaque ID: turns memory on (with consent)
 ENV_FILE = REPO / ".env"                      # where model settings are saved (tests point it elsewhere)
 AGENT_OF = {"Supervisor": "supervisor", "DocumentReader": "document_reader", "PolicyAnalyst": "policy_analyst",
             "SettlementAuditor": "settlement_auditor", "AskUser": "ask_user", "Critic": "critic",
@@ -129,6 +140,52 @@ def write_env(values: dict[str, str], remove: tuple = ()) -> None:
         pass
 
 
+def make_graph(st) -> None:
+    """(Re)build the graph and the gate from the app state: toolkit, model, checkpointer, memory."""
+    st.graph = build_claimclear_graph(Services(toolkit=st.toolkit, extractor=llm_extractor(st.llm) if st.llm else None,
+                                               memory_store=st.memory_store), checkpointer=st.saver)
+    st.gate = HumanApprovalGateway(st.graph)
+
+
+BACKGROUND_DRAIN_SECONDS = 15.0                  # how long shutdown waits for pending memory writes
+log = logging.getLogger("claimclear.webapp")
+
+
+def spawn_background(st, coro) -> asyncio.Task:
+    """Run ``coro`` as a tracked background task: kept referenced until done, its errors logged (never raised
+    into a request), and awaited by ``drain_background`` before the app stops."""
+    task = asyncio.create_task(coro)
+    st.background.add(task)
+
+    def done(t: asyncio.Task) -> None:
+        st.background.discard(t)
+        if not t.cancelled() and t.exception() is not None:
+            log.warning("background task failed: %r", t.exception())
+    task.add_done_callback(done)
+    return task
+
+
+async def drain_background(st, timeout: float = BACKGROUND_DRAIN_SECONDS) -> int:
+    """Wait (up to ``timeout``) for pending background tasks; returns how many were still unfinished after it."""
+    pending = [t for t in list(getattr(st, "background", ())) if not t.done()]
+    if not pending:
+        return 0
+    _, still = await asyncio.wait(pending, timeout=timeout)
+    for t in still:
+        t.cancel()
+    return len(still)
+
+
+def user_memory(st):
+    """The local user's memory: ``UserMemory`` with consent, ``NoMemory`` without, ``None`` when memory is off."""
+    if st.memory_store is None or not st.memory_user:
+        return None
+    try:
+        return st.memory_store.session_memory(st.memory_user)
+    except Exception:                                    # a broken memory database must not break the UI
+        return None
+
+
 def same_origin(request: Request) -> bool:
     """Refuse state-changing requests from other web sites (the UI only serves this computer)."""
     origin = request.headers.get("origin")
@@ -142,12 +199,29 @@ class Session:
         self.lock = asyncio.Lock()               # one graph advance at a time; chat answers run alongside
         self.sent: set[str] = set()              # what this page has already been shown for the thread
         self.history: list[tuple[str, str]] = []  # (question, answer) turns of this conversation
+        self.unsaved: list[tuple[str, str]] = []  # turns not yet stored in episodic memory
         self.records: dict[str, chat.RecordIndex] = {}
         self.replying: asyncio.Task | None = None
 
     @property
     def cfg(self) -> dict:
         return {"configurable": {"thread_id": self.thread_id}}
+
+    async def save_episode(self) -> asyncio.Task | None:
+        """Hand the conversation so far to episodic memory (with consent) and start a new one.
+
+        Off the hot path: only the case and claim IDs are read here (a local checkpoint read); the optional model
+        summary and the database write run as a background task, so a new case or a reset never waits for them.
+        Pending saves are finished before the app stops (``drain_background``). Returns the task, or ``None``."""
+        turns, self.unsaved = self.unsaved, []
+        mem = user_memory(self.app.state)
+        if not turns or mem is None or not mem.enabled:
+            return None
+        st = (await self.app.state.graph.aget_state(self.cfg)).values if self.thread_id else {}
+        summariser = episodic.llm_summariser(self.app.state.llm) if self.app.state.llm is not None else None
+        return spawn_background(self.app.state, episodic.save_conversation(
+            mem, turns, case_id=st.get("case_id", ""), claim_id=str((st.get("claim") or {}).get("claim_id") or ""),
+            summariser=summariser))
 
     async def send(self, type_: str, **data) -> None:
         try:
@@ -224,7 +298,8 @@ class Session:
         await self.send("answer_start", id=reply_id)
         text = ""
         try:
-            async for ev in chat.stream_answer(question, state, app.state.toolkit, app.state.llm, records, self.history):
+            async for ev in chat.stream_answer(question, state, app.state.toolkit, app.state.llm, records, self.history,
+                                               memory=user_memory(app.state)):
                 if ev["type"] == "delta":
                     text += ev["text"]
                     await self.send("answer_delta", id=reply_id, text=ev["text"])
@@ -239,6 +314,7 @@ class Session:
         except Exception as exc:
             await self.send("answer_end", id=reply_id, sources=[], how=f"error: {type(exc).__name__}: {exc}")
         self.history = (self.history + [(question, text)])[-10:]
+        self.unsaved.append((question, text))
 
     # ---- messages from the page ----
     async def handle(self, msg: dict) -> None:
@@ -254,6 +330,7 @@ class Session:
                 self.replying.cancel()
             return
         if kind == "reset":
+            await self.save_episode()
             self.thread_id, self.sent, self.history = None, set(), []
             await self.send("session", thread_id=None, resumed=False)
             return
@@ -269,6 +346,7 @@ class Session:
             return
         async with self.lock:
             if kind == "analyse":
+                await self.save_episode()                    # the previous conversation ends here
                 up = msg.get("upload") or {}
                 self.thread_id, self.sent, self.history = f"web-{uuid.uuid4().hex[:12]}", set(), []
                 await self.send("session", thread_id=self.thread_id, resumed=False)
@@ -278,7 +356,8 @@ class Session:
                                                   "(OPENROUTER_API_KEY in .env) so the document reader's LLM can read them, "
                                                   "or try one of the sample cases.")
                     return
-                await self.advance(initial_state(up["case_id"], claim=ex.get("claim"), letter=ex.get("letter")))
+                await self.advance(initial_state(up["case_id"], claim=ex.get("claim"), letter=ex.get("letter"),
+                                                 user_id=self.app.state.memory_user))
             elif kind == "answers" and self.thread_id:
                 answers = {k: (v if v not in ("", None) else None) for k, v in (msg.get("answers") or {}).items()}
                 if "Q-ROOM-PRICING" in answers and isinstance(answers["Q-ROOM-PRICING"], str):
@@ -304,8 +383,19 @@ async def index(request: Request):
     return FileResponse(STATIC / "index.html", headers={"Cache-Control": "no-store"})
 
 
+def memory_status(st) -> dict:
+    mem = user_memory(st)
+    if mem is None:
+        return {"on": False, "consent": False, "episodes": 0}
+    try:
+        return {"on": True, "consent": bool(mem.enabled), "episodes": len(mem.episodes())}
+    except Exception:
+        return {"on": True, "consent": False, "episodes": 0}
+
+
 async def status(request: Request):
     return JSONResponse({"boot": request.app.state.boot_id, "servers": {n: port_open(p) for n, p in PORTS.items()},
+                         "memory": memory_status(request.app.state),
                          "chat_model": request.app.state.llm is not None,
                          "model": chat.describe_model(request.app.state.llm),
                          "samples": [{"name": n, "label": label} for n, label in SAMPLES
@@ -409,9 +499,7 @@ async def model_set(request: Request):
         write_env({**values, AUTO_LOCAL: "0"}, remove=MODEL_KEYS)
     st = request.app.state
     st.llm = llm
-    st.graph = build_claimclear_graph(Services(toolkit=st.toolkit, extractor=llm_extractor(llm) if llm else None),
-                                      checkpointer=st.saver)
-    st.gate = HumanApprovalGateway(st.graph)
+    make_graph(st)
     return JSONResponse({"ok": True, "model": chat.describe_model(llm), "configured": llm is not None})
 
 
@@ -427,11 +515,10 @@ async def clear(request: Request):
     from langgraph.checkpoint.memory import MemorySaver
     if isinstance(st.saver, MemorySaver):                # forget every chat and audit of this run
         st.saver = MemorySaver()
-        st.graph = build_claimclear_graph(Services(toolkit=st.toolkit, extractor=llm_extractor(st.llm) if st.llm else None),
-                                          checkpointer=st.saver)
-        st.gate = HumanApprovalGateway(st.graph)
-    for session in list(st.sessions):
+        make_graph(st)
+    for session in list(st.sessions):                    # this run's chats; consented long-term memory is kept
         session.thread_id, session.sent, session.history, session.records = None, set(), [], {}
+        session.unsaved = []
         await session.send("cleared")
     try:
         result = json.loads(out.decode("utf-8"))
@@ -464,6 +551,10 @@ async def ws_endpoint(ws: WebSocket):
     except (WebSocketDisconnect, RuntimeError, json.JSONDecodeError):
         pass
     finally:
+        try:
+            await session.save_episode()
+        except Exception:
+            pass
         app.state.connections -= 1
         app.state.sessions.discard(session)
         app.state.last_disconnect = time.monotonic()
@@ -487,21 +578,36 @@ async def lifespan(app):
     st = app.state
     st.connections, st.ever_connected, st.last_disconnect = 0, False, time.monotonic()
     st.grace = st.grace if st.grace is not None else GRACE
-    st.boot_id, st.sessions = uuid.uuid4().hex[:12], set()
+    st.boot_id, st.sessions, st.background = uuid.uuid4().hex[:12], set(), set()
     st.llm = chat.chat_model_from_env()
+    st.memory_user = os.environ.get(MEMORY_USER_ENV) or None
+    st.memory_store = None
+    if st.memory_user:
+        try:
+            st.memory_store = st.memory_store_factory()
+        except Exception as exc:                         # memory is optional: the UI runs without it
+            print(f"memory off: {exc}", flush=True)
     async with st.toolkit_factory() as tk, open_checkpointer() as saver:
         st.toolkit, st.saver = tk, saver
-        st.graph = build_claimclear_graph(Services(toolkit=tk, extractor=llm_extractor(st.llm) if st.llm else None),
-                                          checkpointer=saver)
-        st.gate = HumanApprovalGateway(st.graph)
+        make_graph(st)
         dog = asyncio.create_task(watchdog(app))
         yield
         dog.cancel()
+        for session in list(st.sessions):                # pages still open at shutdown: keep their conversation
+            try:
+                await session.save_episode()
+            except Exception:
+                pass
+        unfinished = await drain_background(st)          # finish memory writes before the toolkit closes
+        if unfinished:
+            log.warning("%d background memory write(s) did not finish in time", unfinished)
 
 
-def create_app(stop=lambda reason: None, toolkit_factory=ClaimClearToolkit, grace: float | None = None) -> Starlette:
+def create_app(stop=lambda reason: None, toolkit_factory=ClaimClearToolkit, grace: float | None = None,
+               memory_store_factory=MemoryStore) -> Starlette:
     """The web app. ``toolkit_factory`` returns an async context manager giving the toolkit (tests pass a replay);
-    ``grace`` overrides ``CLAIMCLEAR_UI_GRACE``."""
+    ``grace`` overrides ``CLAIMCLEAR_UI_GRACE``; ``memory_store_factory`` builds the memory store when
+    ``CLAIMCLEAR_MEMORY_USER`` is set (tests pass one on a temporary file)."""
     app = Starlette(routes=[Route("/", index), Route("/api/status", status), Route("/api/upload", upload, methods=["POST"]),
                             Route("/api/sample", sample, methods=["POST"]),
                             Route("/api/model", model_get), Route("/api/model", model_set, methods=["POST"]),
@@ -510,5 +616,6 @@ def create_app(stop=lambda reason: None, toolkit_factory=ClaimClearToolkit, grac
                     lifespan=lifespan)
     app.state.stop = stop
     app.state.toolkit_factory = toolkit_factory
+    app.state.memory_store_factory = memory_store_factory
     app.state.grace = grace
     return app

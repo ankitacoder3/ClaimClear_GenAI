@@ -12,13 +12,17 @@ and the app's environments alike.
     state["memory"] = mem.context()                            # at the start of a session (expired data purged)
     history = merge_history(server_history, mem.claim_history(policy_no))
     mem.remember_claim(case, letter_audit, case_id=case_id, letter=letter)   # after the critic passes
+    mem.remember_conversation(chat_turns, case_id=case_id)    # episodic: topics only, amounts scrubbed
+    mem.recall("what did I ask about the co-pay?")             # hybrid search over earlier conversations
 
 Memory never computes money, is written only from tool results, and follows
 docs/memory_policy.md (``POLICY_VERSION``).
 """
 
 from .context import build_context, render
-from .models import ClaimRecord, GrievanceEvent, GrievanceRecord, GrievanceStatus, LimitBalance, PolicyProfile
+from .episodes import HashingEmbedder, UnsafeSummary, extractive_summary, render_episodes, scrub
+from .models import (ClaimRecord, EpisodeRecord, GrievanceEvent, GrievanceRecord, GrievanceStatus, LimitBalance,
+                     PolicyProfile)
 from .store import (
     DB_ENV,
     POLICY_VERSION,
@@ -32,6 +36,7 @@ from .store import (
     merge_history,
 )
 
-__all__ = ["ClaimRecord", "ConsentStatus", "DB_ENV", "GrievanceEvent", "GrievanceRecord", "GrievanceStatus",
-           "LimitBalance", "MemoryStore", "MemoryStoreError", "NoMemory", "POLICY_VERSION", "PolicyProfile",
-           "Retention", "UserMemory", "build_context", "default_db_path", "merge_history", "render"]
+__all__ = ["ClaimRecord", "ConsentStatus", "DB_ENV", "EpisodeRecord", "GrievanceEvent", "GrievanceRecord",
+           "GrievanceStatus", "HashingEmbedder", "LimitBalance", "MemoryStore", "MemoryStoreError", "NoMemory",
+           "POLICY_VERSION", "PolicyProfile", "Retention", "UnsafeSummary", "UserMemory", "build_context",
+           "default_db_path", "extractive_summary", "merge_history", "render", "render_episodes", "scrub"]

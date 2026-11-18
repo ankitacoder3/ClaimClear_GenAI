@@ -13,7 +13,7 @@ It never computes a rupee figure itself: every number comes from the servers.
 | Install into | The **agents'** environment (Python 3.14 recommended), not the servers' `.venv` |
 | Depends on | `langchain-mcp-adapters` (0.3.x), `langchain-core`. The helper modules (`results`, `signals`, `case`, `critic`, `agents`, `config`) need nothing else |
 | Tests | 45 passing, including live runs against the four servers the agents use and a memory round trip |
-| Related | [How the agents connect to the servers](../../servers/README.md) · [Settlement verification flow](../../docs/technology_and_app_flow.md#part-2-what-happens-when-a-user-asks-to-verify-a-settlement) |
+| Related | [How the agents connect to the servers](../../servers/servers_README.md) · [Settlement verification flow](../../docs/technology_and_app_flow.md#part-2-what-happens-when-a-user-asks-to-verify-a-settlement) |
 
 ---
 
@@ -173,7 +173,7 @@ Each function returns a route name you can use directly as a LangGraph condition
 | `allowed_figures(settlement, rows, letter_audit)` | Every amount the tools produced, including figures inside engine-written text ("₹2,000 a day") and the insurer's own row wording |
 | `unsupported_figures(draft, allowed)` | Rupee figures in the draft that no tool produced (±₹0.01). Empty means pass |
 | `rupee_figures(text)` | All `₹` / `Rs.` / `INR` amounts in a text |
-| `wording_for(row)` / `WORDING` | The phrase allowed for a row's verdict ("matches your policy", "may be disputable", …); the table is `claimclear_contracts.verdicts.VERDICT_WORDING` (see [contracts/](../../contracts/README.md)) |
+| `wording_for(row)` / `WORDING` | The phrase allowed for a row's verdict ("matches your policy", "may be disputable", …); the table is `claimclear_contracts.verdicts.VERDICT_WORDING` (see [contracts/](../../contracts/contracts_README.md)) |
 
 ### `config` and `stubs`
 
