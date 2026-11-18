@@ -1,0 +1,58 @@
+{
+ "base_id": "H16",
+ "tag": "Holdout",
+ "split": "heldout",
+ "story": "Eye injection for diabetic macular oedema; two earlier injections this year.",
+ "insured": {
+  "age": 59,
+  "gender": "F",
+  "city": "Madurai"
+ },
+ "sum_insured": 300000,
+ "first_inception": "2020-03-01",
+ "admit": "2026-09-25",
+ "procedure": "intravitreal",
+ "eye": "right",
+ "settlement": "reimbursement",
+ "stay": [],
+ "prior_claims": [
+  {
+   "date": "2026-05-10",
+   "diagnosis": "Diabetic macular oedema - intravitreal injection",
+   "kind": "modern",
+   "billed": 36000,
+   "admissible": 34000,
+   "paid": 32300,
+   "status": "settled"
+  },
+  {
+   "date": "2026-07-12",
+   "diagnosis": "Diabetic macular oedema - intravitreal injection",
+   "kind": "modern",
+   "billed": 36000,
+   "admissible": 34000,
+   "paid": 32300,
+   "status": "settled"
+  }
+ ],
+ "variants": [
+  {
+   "v": 1,
+   "type": "doc_inconsistency",
+   "insurer_error": {
+    "kind": "doc_line_after_discharge",
+    "line": "med1",
+    "days": 1
+   }
+  },
+  {
+   "v": 2,
+   "type": "non_payable",
+   "insurer_error": {
+    "kind": "disallow",
+    "line": "med1",
+    "reason": "Not a medicine - procedure material"
+   }
+  }
+ ]
+}

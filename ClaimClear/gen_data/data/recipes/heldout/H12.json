@@ -1,0 +1,93 @@
+{
+ "base_id": "H12",
+ "tag": "Holdout",
+ "split": "heldout",
+ "story": "Hernia repair, day-wise bill; post-discharge dressings and a late refill.",
+ "insured": {
+  "age": 52,
+  "gender": "M",
+  "city": "Coimbatore"
+ },
+ "sum_insured": 250000,
+ "cb_pct": 20,
+ "first_inception": "2022-01-15",
+ "admit": "2026-07-28",
+ "procedure": "hernia",
+ "settlement": "cashless",
+ "style": {
+  "bill": "daywise"
+ },
+ "stay": [
+  {
+   "ward": "room",
+   "rate": 5000,
+   "days": 2,
+   "label": "Single room"
+  }
+ ],
+ "extra_lines": [
+  {
+   "id": "abd",
+   "cat": "list1",
+   "desc": "Abdominal binder",
+   "amount": 900
+  },
+  {
+   "id": "dis",
+   "cat": "list2",
+   "desc": "Discharge procedure charges",
+   "amount": 350
+  },
+  {
+   "id": "pd1",
+   "cat": "consultant",
+   "where": "post",
+   "days": 6,
+   "desc": "Dressing and review visit",
+   "amount": 800
+  },
+  {
+   "id": "pd2",
+   "cat": "consultant",
+   "where": "post",
+   "days": 15,
+   "desc": "Dressing and review visit",
+   "amount": 800
+  },
+  {
+   "id": "pd3",
+   "cat": "medicines",
+   "where": "post",
+   "days": 70,
+   "desc": "Pharmacy refill",
+   "amount": 1450
+  }
+ ],
+ "variants": [
+  {
+   "v": 1,
+   "type": "none",
+   "insurer_error": null
+  },
+  {
+   "v": 2,
+   "type": "proportionate",
+   "set": {
+    "stay.0.rate": 6000
+   },
+   "insurer_error": {
+    "kind": "prop_wrong_cap",
+    "cap": 4000
+   }
+  },
+  {
+   "v": 3,
+   "type": "non_payable",
+   "insurer_error": {
+    "kind": "disallow",
+    "line": "imp3",
+    "reason": "Mesh - surgical consumable, not payable"
+   }
+  }
+ ]
+}

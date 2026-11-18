@@ -1,0 +1,8 @@
+# Build outputs: regenerate with `py -3 generator/build.py` (the imported copies live in ../data/dataset)
+data/cases/
+data/meta/
+data/gold/
+data/prose/
+generator/_build/
+generator/_wordings/
+generator/build_log.txt

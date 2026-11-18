@@ -1,0 +1,66 @@
+{
+ "base_id": "H1",
+ "tag": "Holdout",
+ "split": "heldout",
+ "story": "Student with appendicitis; twin-sharing room above limit; ambulance.",
+ "insured": {
+  "age": 19,
+  "gender": "M",
+  "city": "Kochi"
+ },
+ "sum_insured": 100000,
+ "first_inception": "2023-04-01",
+ "admit": "2026-08-18",
+ "procedure": "appendicectomy",
+ "settlement": "cashless",
+ "stay": [
+  {
+   "ward": "room",
+   "rate": 3000,
+   "days": 3,
+   "label": "Twin sharing"
+  }
+ ],
+ "extra_lines": [
+  {
+   "id": "amb",
+   "cat": "ambulance",
+   "desc": "Road ambulance",
+   "amount": 2600
+  },
+  {
+   "id": "crp",
+   "cat": "list1",
+   "desc": "Crepe bandage",
+   "amount": 350
+  },
+  {
+   "id": "doc",
+   "cat": "list2",
+   "desc": "Documentation charges",
+   "amount": 300
+  }
+ ],
+ "variants": [
+  {
+   "v": 1,
+   "type": "none",
+   "insurer_error": null
+  },
+  {
+   "v": 2,
+   "type": "proportionate",
+   "insurer_error": {
+    "kind": "prop_on_medicines"
+   }
+  },
+  {
+   "v": 3,
+   "type": "doc_inconsistency",
+   "insurer_error": {
+    "kind": "doc_total_mismatch",
+    "extra": 1500
+   }
+  }
+ ]
+}

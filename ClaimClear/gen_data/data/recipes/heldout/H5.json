@@ -1,0 +1,57 @@
+{
+ "base_id": "H5",
+ "tag": "Holdout",
+ "split": "heldout",
+ "story": "Child's tonsil surgery on a family floater; room above limit.",
+ "insured": {
+  "age": 8,
+  "gender": "F",
+  "city": "Mysuru",
+  "rel": "Daughter",
+  "cover": "floater",
+  "members": [
+   {
+    "rel": "father",
+    "age": 38,
+    "gender": "M"
+   },
+   {
+    "rel": "mother",
+    "age": 35,
+    "gender": "F"
+   }
+  ]
+ },
+ "sum_insured": 300000,
+ "first_inception": "2024-03-01",
+ "admit": "2026-09-10",
+ "procedure": "tonsillectomy",
+ "settlement": "reimbursement",
+ "stay": [
+  {
+   "ward": "room",
+   "rate": 6500,
+   "days": 1,
+   "label": "Single room"
+  }
+ ],
+ "variants": [
+  {
+   "v": 1,
+   "type": "proportionate",
+   "insurer_error": {
+    "kind": "prop_wrong_rate",
+    "rate": 7500
+   }
+  },
+  {
+   "v": 2,
+   "type": "waiting_period",
+   "insurer_error": {
+    "kind": "reject_waiting",
+    "clause": "6.3",
+    "basis": "Tonsillectomy: 24-month specific waiting period not completed"
+   }
+  }
+ ]
+}

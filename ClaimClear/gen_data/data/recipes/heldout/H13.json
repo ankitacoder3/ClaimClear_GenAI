@@ -1,0 +1,56 @@
+{
+ "base_id": "H13",
+ "tag": "Holdout",
+ "split": "heldout",
+ "story": "Toddler with pneumonia on a floater; room above limit.",
+ "insured": {
+  "age": 3,
+  "gender": "M",
+  "city": "Guwahati",
+  "rel": "Son",
+  "cover": "floater",
+  "members": [
+   {
+    "rel": "father",
+    "age": 33,
+    "gender": "M"
+   },
+   {
+    "rel": "mother",
+    "age": 30,
+    "gender": "F"
+   }
+  ]
+ },
+ "sum_insured": 200000,
+ "first_inception": "2023-06-01",
+ "admit": "2026-08-14",
+ "procedure": "pneumonia",
+ "settlement": "cashless",
+ "stay": [
+  {
+   "ward": "room",
+   "rate": 5000,
+   "days": 4,
+   "label": "Single room"
+  }
+ ],
+ "variants": [
+  {
+   "v": 1,
+   "type": "proportionate",
+   "insurer_error": {
+    "kind": "prop_on_medicines"
+   }
+  },
+  {
+   "v": 2,
+   "type": "doc_inconsistency",
+   "insurer_error": {
+    "kind": "doc_date_mismatch",
+    "where": "letter_admit",
+    "date": "2025-08-14"
+   }
+  }
+ ]
+}

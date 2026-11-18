@@ -1,0 +1,86 @@
+{
+ "base_id": "D5",
+ "tag": "SK",
+ "split": "dev",
+ "story": "Dengue: ICU at exactly the limit, ward; pre and post-hospital bills.",
+ "insured": {
+  "age": 29,
+  "gender": "M",
+  "city": "Hyderabad"
+ },
+ "sum_insured": 200000,
+ "cb_pct": 5,
+ "first_inception": "2024-08-10",
+ "admit": "2026-09-22",
+ "procedure": "dengue",
+ "settlement": "cashless",
+ "stay": [
+  {
+   "ward": "icu",
+   "rate": 10000,
+   "days": 2,
+   "label": "Medical ICU"
+  },
+  {
+   "ward": "room",
+   "rate": 3500,
+   "days": 3,
+   "label": "Semi-private"
+  }
+ ],
+ "extra_lines": [
+  {
+   "id": "att",
+   "cat": "list1",
+   "desc": "Attendant food and mineral water",
+   "amount": 700
+  },
+  {
+   "id": "pre1",
+   "cat": "diagnostics",
+   "where": "pre",
+   "days": 3,
+   "desc": "Fever panel (NS1, CBC)",
+   "amount": 1800
+  },
+  {
+   "id": "post1",
+   "cat": "diagnostics",
+   "where": "post",
+   "days": 20,
+   "desc": "Follow-up blood count",
+   "amount": 650
+  },
+  {
+   "id": "post2",
+   "cat": "medicines",
+   "where": "post",
+   "days": 75,
+   "desc": "Multivitamin tonic",
+   "amount": 480
+  }
+ ],
+ "variants": [
+  {
+   "v": 1,
+   "type": "none",
+   "insurer_error": null
+  },
+  {
+   "v": 2,
+   "type": "room_icu_cap",
+   "insurer_error": {
+    "kind": "icu_at_room_cap"
+   }
+  },
+  {
+   "v": 3,
+   "type": "non_payable",
+   "insurer_error": {
+    "kind": "disallow",
+    "line": "blo4",
+    "reason": "Blood products not payable"
+   }
+  }
+ ]
+}

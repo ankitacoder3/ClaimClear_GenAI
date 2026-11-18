@@ -1,0 +1,49 @@
+{
+ "base_id": "D7",
+ "tag": "SK",
+ "split": "dev",
+ "story": "Snakebite in a farmer: three ICU days, one ward day.",
+ "insured": {
+  "age": 41,
+  "gender": "M",
+  "city": "Nashik"
+ },
+ "sum_insured": 150000,
+ "first_inception": "2023-03-01",
+ "admit": "2026-07-12",
+ "procedure": "snakebite",
+ "cause": "accident",
+ "settlement": "cashless",
+ "stay": [
+  {
+   "ward": "icu",
+   "rate": 6500,
+   "days": 3,
+   "label": "ICU"
+  },
+  {
+   "ward": "room",
+   "rate": 2500,
+   "days": 1,
+   "label": "General ward"
+  }
+ ],
+ "variants": [
+  {
+   "v": 1,
+   "type": "room_icu_cap",
+   "insurer_error": {
+    "kind": "icu_days",
+    "days": 1
+   }
+  },
+  {
+   "v": 2,
+   "type": "not_verifiable",
+   "insurer_error": {
+    "kind": "nv_room_lumpsum",
+    "amount": 3000
+   }
+  }
+ ]
+}

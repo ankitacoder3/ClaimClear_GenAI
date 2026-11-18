@@ -1,0 +1,73 @@
+{
+ "base_id": "H4",
+ "tag": "Holdout",
+ "split": "heldout",
+ "story": "Typhoid soon after buying the policy (day 25 vs day 38).",
+ "insured": {
+  "age": 24,
+  "gender": "F",
+  "city": "Indore"
+ },
+ "sum_insured": 150000,
+ "first_inception": "2026-08-25",
+ "admit": "2026-10-02",
+ "procedure": "typhoid",
+ "settlement": "reimbursement",
+ "stay": [
+  {
+   "ward": "room",
+   "rate": 1800,
+   "days": 4,
+   "label": "General ward"
+  }
+ ],
+ "extra_lines": [
+  {
+   "id": "mw",
+   "cat": "list1",
+   "desc": "Mineral water",
+   "amount": 240
+  },
+  {
+   "id": "adm",
+   "cat": "list2",
+   "desc": "Administrative charges",
+   "amount": 500
+  },
+  {
+   "id": "reg",
+   "cat": "list4",
+   "desc": "Registration charges",
+   "amount": 300
+  }
+ ],
+ "variants": [
+  {
+   "v": 1,
+   "type": "none",
+   "set": {
+    "admit": "2026-09-19"
+   },
+   "insurer_error": null
+  },
+  {
+   "v": 2,
+   "type": "waiting_period",
+   "insurer_error": {
+    "kind": "reject_waiting",
+    "clause": "6.2",
+    "basis": "First 30 days waiting period"
+   }
+  },
+  {
+   "v": 3,
+   "type": "non_payable",
+   "insurer_error": {
+    "kind": "disallow",
+    "line": "dia1",
+    "reason": "Admission primarily for investigation and evaluation",
+    "clause": "7.1"
+   }
+  }
+ ]
+}

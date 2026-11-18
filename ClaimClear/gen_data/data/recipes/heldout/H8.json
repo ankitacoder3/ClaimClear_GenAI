@@ -1,0 +1,43 @@
+{
+ "base_id": "H8",
+ "tag": "Holdout",
+ "split": "heldout",
+ "story": "Kitchen burns three weeks into a new policy; room above limit.",
+ "insured": {
+  "age": 35,
+  "gender": "F",
+  "city": "Ranchi"
+ },
+ "sum_insured": 200000,
+ "first_inception": "2026-09-01",
+ "admit": "2026-09-22",
+ "procedure": "burns",
+ "cause": "accident",
+ "settlement": "reimbursement",
+ "stay": [
+  {
+   "ward": "room",
+   "rate": 5500,
+   "days": 4,
+   "label": "Single room"
+  }
+ ],
+ "variants": [
+  {
+   "v": 1,
+   "type": "proportionate",
+   "insurer_error": {
+    "kind": "prop_on_capped_room"
+   }
+  },
+  {
+   "v": 2,
+   "type": "non_payable",
+   "insurer_error": {
+    "kind": "disallow",
+    "line": "con2",
+    "reason": "Crepe bandage - List I (not payable)"
+   }
+  }
+ ]
+}

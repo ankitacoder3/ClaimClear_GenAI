@@ -1,0 +1,48 @@
+{
+ "base_id": "D3",
+ "tag": "MD",
+ "split": "dev",
+ "story": "Imran's hernia repair; twin-sharing room within limit.",
+ "insured": {
+  "age": 38,
+  "gender": "M",
+  "city": "Indore",
+  "name": "Imran S. Khan"
+ },
+ "sum_insured": 250000,
+ "first_inception": "2022-01-10",
+ "admit": "2026-08-20",
+ "procedure": "hernia",
+ "settlement": "cashless",
+ "stay": [
+  {
+   "ward": "room",
+   "rate": 4800,
+   "days": 2,
+   "label": "Deluxe twin sharing"
+  }
+ ],
+ "variants": [
+  {
+   "v": 1,
+   "type": "proportionate",
+   "insurer_error": {
+    "kind": "prop_wrong_rate",
+    "rate": 6000
+   }
+  },
+  {
+   "v": 2,
+   "type": "waiting_period",
+   "set": {
+    "first_inception": "2024-01-10"
+   },
+   "insurer_error": {
+    "kind": "reject_waiting",
+    "clause": "6.3",
+    "basis": "Hernia: 24-month specific waiting period not completed"
+   }
+  }
+ ],
+ "hospital": "Navjeevan Hospital & Research Centre"
+}

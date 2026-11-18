@@ -1,0 +1,47 @@
+{
+ "base_id": "H6",
+ "tag": "Holdout",
+ "split": "heldout",
+ "story": "Atrial fibrillation; cardiac ICU within limit.",
+ "insured": {
+  "age": 66,
+  "gender": "F",
+  "city": "Vadodara"
+ },
+ "sum_insured": 300000,
+ "first_inception": "2020-05-01",
+ "admit": "2026-10-11",
+ "procedure": "afib",
+ "settlement": "cashless",
+ "stay": [
+  {
+   "ward": "icu",
+   "rate": 9000,
+   "days": 2,
+   "label": "Cardiac ICU"
+  },
+  {
+   "ward": "room",
+   "rate": 4000,
+   "days": 2,
+   "label": "Single room"
+  }
+ ],
+ "variants": [
+  {
+   "v": 1,
+   "type": "room_icu_cap",
+   "insurer_error": {
+    "kind": "icu_at_room_cap"
+   }
+  },
+  {
+   "v": 2,
+   "type": "copay",
+   "insurer_error": {
+    "kind": "copay_pct",
+    "pct": 10
+   }
+  }
+ ]
+}

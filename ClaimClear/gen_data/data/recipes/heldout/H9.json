@@ -1,0 +1,74 @@
+{
+ "base_id": "H9",
+ "tag": "Holdout",
+ "split": "heldout",
+ "story": "Road accident 16 days into a new policy; plate fixation; ambulance.",
+ "insured": {
+  "age": 34,
+  "gender": "M",
+  "city": "Jaipur"
+ },
+ "sum_insured": 300000,
+ "first_inception": "2026-07-20",
+ "admit": "2026-08-05",
+ "procedure": "fracture_orif",
+ "diagnosis": "Closed fracture shaft of right tibia (road traffic accident)",
+ "cause": "accident",
+ "settlement": "reimbursement",
+ "stay": [
+  {
+   "ward": "room",
+   "rate": 4500,
+   "days": 4,
+   "label": "Semi-private"
+  }
+ ],
+ "extra_lines": [
+  {
+   "id": "amb",
+   "cat": "ambulance",
+   "desc": "Road ambulance",
+   "amount": 3500
+  },
+  {
+   "id": "crp",
+   "cat": "list1",
+   "desc": "Crepe bandage",
+   "amount": 450
+  },
+  {
+   "id": "spl",
+   "cat": "list1",
+   "desc": "Splint",
+   "amount": 1200
+  }
+ ],
+ "variants": [
+  {
+   "v": 1,
+   "type": "none",
+   "insurer_error": null
+  },
+  {
+   "v": 2,
+   "type": "room_icu_cap",
+   "set": {
+    "stay.0.rate": 6000,
+    "stay.0.label": "Single room"
+   },
+   "insurer_error": {
+    "kind": "room_days",
+    "days": 5
+   }
+  },
+  {
+   "v": 3,
+   "type": "waiting_period",
+   "insurer_error": {
+    "kind": "reject_waiting",
+    "clause": "6.2",
+    "basis": "First 30 days waiting period"
+   }
+  }
+ ]
+}

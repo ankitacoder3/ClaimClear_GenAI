@@ -1,0 +1,73 @@
+{
+ "base_id": "H10",
+ "tag": "Holdout",
+ "split": "heldout",
+ "story": "Angioplasty after an earlier angiography this year.",
+ "insured": {
+  "age": 58,
+  "gender": "M",
+  "city": "Kolkata"
+ },
+ "sum_insured": 400000,
+ "first_inception": "2020-01-10",
+ "admit": "2026-10-02",
+ "procedure": "ptca",
+ "settlement": "cashless",
+ "stay": [
+  {
+   "ward": "icu",
+   "rate": 9500,
+   "days": 2,
+   "label": "ICCU"
+  },
+  {
+   "ward": "room",
+   "rate": 4500,
+   "days": 2,
+   "label": "Single room"
+  }
+ ],
+ "extra_lines": [
+  {
+   "id": "ecg",
+   "cat": "list1",
+   "desc": "ECG electrodes",
+   "amount": 600
+  }
+ ],
+ "prior_claims": [
+  {
+   "date": "2026-03-15",
+   "diagnosis": "Unstable angina - coronary angiography",
+   "billed": 205000,
+   "admissible": 175000,
+   "paid": 166250,
+   "status": "settled"
+  }
+ ],
+ "variants": [
+  {
+   "v": 1,
+   "type": "none",
+   "insurer_error": null
+  },
+  {
+   "v": 2,
+   "type": "sublimit",
+   "insurer_error": {
+    "kind": "prior_at_billed"
+   }
+  },
+  {
+   "v": 3,
+   "type": "sublimit",
+   "set": {
+    "cb_pct": 10,
+    "bill_total": 235000
+   },
+   "insurer_error": {
+    "kind": "cb_ignored"
+   }
+  }
+ ]
+}
