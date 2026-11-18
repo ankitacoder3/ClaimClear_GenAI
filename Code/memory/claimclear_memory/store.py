@@ -9,7 +9,7 @@
     store.purge_expired()                         # daily retention job
 
 Nothing is stored without consent to the current memory policy
-(``POLICY_VERSION``, docs/memory_policy.md). There is no read that spans users:
+(``POLICY_VERSION``, docs/member2_knowledge_memory_tools/memory_policy.md). There is no read that spans users:
 the only way in is ``for_user``; the retention job is the only cross-user
 operation, and it only deletes. Which session belongs to which user is the
 app's job (Member 4).
@@ -46,7 +46,7 @@ from .models import (
 
 DB_ENV = "CLAIMCLEAR_MEMORY_DB"
 SCHEMA_VERSION = 3
-POLICY_VERSION = "memory-policy-v2"    # the version of docs/memory_policy.md a user consents to
+POLICY_VERSION = "memory-policy-v2"    # the version of docs/member2_knowledge_memory_tools/memory_policy.md a user consents to
 USER_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 FINAL_STATUSES = ("computed", "not_admissible")
@@ -58,7 +58,7 @@ EXPIRABLE_GRIEVANCES = (GrievanceStatus.CLOSED, GrievanceStatus.WITHDRAWN, Griev
 
 @dataclass(frozen=True)
 class Retention:
-    """How long memory keeps things (days). Stated to the user in docs/memory_policy.md."""
+    """How long memory keeps things (days). Stated to the user in docs/member2_knowledge_memory_tools/memory_policy.md."""
 
     claims_days: int = 730              # a claim, counted from when it was last verified
     closed_grievance_days: int = 365    # a closed, withdrawn, resolved or rejected grievance, from its last change

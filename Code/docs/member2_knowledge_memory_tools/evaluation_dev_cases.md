@@ -50,16 +50,19 @@ from `get_policy` and raises a guardrail flag, as the graph should.
 
 ## Results
 
-Written to [`results/dev_cases.md`](results/dev_cases.md) (one line per case) and `results/dev_cases.json`
+Written to [`results/dev_cases.md`](../../eval/dev_cases/results/dev_cases.md) (one line per case) and `results/dev_cases.json`
 (every step's output). The current run:
 
 | Source | Cases | Ran to the end | Overall verdict right | Row verdicts right | Payable right (±₹1) | Disputable right (±₹1) |
 |---|---|---|---|---|---|---|
-| synthetic | 22 | 21 | 16/22 | 19/20 | 12/13 | 19/19 |
-| gen-data | 20 | 20 | 18/20 | 69/74 | 14/17 | 15/19 |
+| synthetic | 22 | 22 | 21/22 | 20/20 | 13/14 | 21/21 |
+| gen-data | 20 | 20 | 19/20 | 69/74 | 14/17 | 16/19 |
+| all | 42 | 42 | 40/42 | 89/94 | 27/31 | 37/40 |
 
 The first run, before the engine fixes below, gave synthetic 12/22 overall and 17/20 rows, and gen-data
-8/20 overall, 18/74 rows, 3/14 payable and 3/15 disputable.
+8/20 overall, 18/74 rows, 3/14 payable and 3/15 disputable. The run before the 18 November fixes (integrity
+checks, rejection evidence, the condition the insurer accepted, co-pay order) gave 34/42 overall, 88/94 rows,
+26/30 payable and 34/38 disputable.
 
 Every case read its documents, its wording status and, where a policy is on record, its policy and
 history. policy-kb returned a clause for every rule a row cited except "GST follows the charge", which
@@ -84,13 +87,17 @@ the engine was narrow. Every fix has hand-worked tests in
 
 | Case | What differs | Why |
 |---|---|---|
-| gen-dev-50b4e6, 6a82b1, a0a2f1 | The proportionate deduction (₹15,046.15 vs the answer's ₹17,988 on 50b4e6), so the payable and disputable amounts | Decided: ClaimClear follows IRDAI's 2020 rule, the answer key doesn't (see below and `decisions.json`) |
-| gen-dev-b4331d | The engine finds ₹215.50 disputable; the answer says nothing is | See below: the answer's own note supports the engine |
+| gen-dev-50b4e6, 6a82b1, a0a2f1 | The proportionate deduction (₹15,046.15 vs the answer's ₹17,988 on 50b4e6), so the payable and disputable amounts; only 50b4e6's overall verdict differs | Decided: ClaimClear follows IRDAI's 2020 rule, the answer key doesn't (see below and `decisions.json`) |
 | gen-dev-0fa297 | Rows wait for an answer | The bill has fresh frozen plasma. IRDAI's circular doesn't say whether blood products may be cut, so the engine asks whether the hospital prices them by room type. The overall verdict (`not_verifiable`) is right |
-| syn-dev-006, 012, 015 | A fraud, a fake hospital, an altered date: rejection comes back `not_verifiable` | The engine doesn't judge fraud; the document checks (guardrail flags) and the user do |
-| syn-dev-004 | Impossible dates | The engine refuses the claim (`invalid_extraction`), by design |
-| syn-dev-017 | Asks which waiting-period list a meniscus tear is on | Neither list names it outright; the dataset treats knee conditions as listed |
-| syn-dev-021 | A pharmacy bill with no admission date asks for it | By design (`Q-ADMISSION`) |
+| syn-dev-021 | A pharmacy bill with no admission date asks for it (`not_verifiable`; the answer says `matches_policy`) | By design (`Q-ADMISSION`): settling it needs a judgement about the admission that the documents don't give |
+
+Fixed on 18 November (tests in `servers/settlement_engine/tests/test_integrity.py` and `test_letter_settles.py`):
+
+| Case | Was | Fix |
+|---|---|---|
+| syn-dev-004, 006, 012, 015 | A rejection for impossible dates, fraud, an invented hospital or an altered date came back `not_verifiable` or stopped | **Integrity checks** (`engine/integrity.py`) find the evidence in the documents: discharge before admission, room days beyond the stay, inpatient lines dated outside the stay, a malformed GSTIN. A definite finding confirms the letter's REJECTION row (hypotheses `not_genuine_documents`, `waiting_period_on_line_dates`), payable ₹0. The engine still never accuses: it reports what the documents show |
+| syn-dev-017 | Asked which waiting-period list a meniscus tear is on | A **paid** claim with no waiting-period row means the insurer accepted the condition; the engine takes it from the letter (fact `F-CONDITION-FROM-LETTER`, kind `assumption`), and the explanation says so |
+| gen-dev-b4331d | ₹215.50 disputable against the answer's nothing | The co-pay was computed before the row the engine can't verify, so that row no longer rescales the co-pay (keep factor 1); see below |
 
 ## Where the answer key may be wrong
 
@@ -133,7 +140,7 @@ An insurer following its printed wording could defend ₹17,988.
 
 **Decided: keep the 2020 rule.** The engine applies IRDAI's circular whatever an older copy of a wording
 says, and the policyholder can rely on it in a grievance. The three answers are left as they are (they
-are Member 1's). [`decisions.json`](decisions.json) records the decision, and the run labels these cases
+are Member 1's). [`decisions.json`](../../eval/dev_cases/decisions.json) records the decision, and the run labels these cases
 "answer key differs by decision" and still counts them as misses. The alternative was to follow each
 case's printed wording: its exempt categories and ICU trigger would go into its rules file, and the
 engine would apply the narrower rule for that wording.
@@ -145,8 +152,10 @@ The letter takes the 5% co-pay (₹3,818) before its own ₹4,300 pharmacy deduc
 * **If the ₹4,300 stands,** the co-pay should have been ₹3,603, so the insurer kept ₹215 too much.
 * **If it doesn't stand,** the insurer owes ₹4,300.50.
 
-So at least ₹215.50 is owed either way, which is what the engine reports. The answer's own note says
-"if that deduction stood, co-pay should be 3,603", yet it scores the case as nothing disputable.
+So at least ₹215.50 is owed either way, which is what the engine used to report. The answer's own note says
+"if that deduction stood, co-pay should be 3,603", yet it scores the case as nothing disputable. Since
+18 November the engine treats the pharmacy row as unverifiable and does not rescale a co-pay the letter worked
+out before it, which agrees with the answer (₹0.50 rounding).
 
 The checks use the standard Arogya Sanjeevani limits, because ClaimClear hasn't reviewed this insurer's
 wording (`get_policy_wording` returns `not_reviewed`). The main limits match the standard product

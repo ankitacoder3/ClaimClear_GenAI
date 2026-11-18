@@ -9,11 +9,11 @@ Callers: the **document reader** (`get_document_text`) and the **policy analyst*
 
 For why these technologies were chosen, the alternatives, and the full app flow when a user asks to verify a settlement, see [docs/technology_and_app_flow.md](../../docs/technology_and_app_flow.md).
 
-How these tools plug into Member 3's LangGraph agents (environments, connection, per-agent tool lists, CaseState, graph edges): see [servers/servers_README.md](../servers_README.md).
+How these tools plug into Member 3's LangGraph agents (environments, connection, per-agent tool lists, CaseState, graph edges): see [docs/member2_knowledge_memory_tools/servers_integration.md](servers_integration.md).
 
 | | |
 |---|---|
-| Status | Store, reference data and the MCP server done. Documents are read by the [document reader](../document_reader/document_reader_README.md) (extraction, hidden-content flags, OCR once Tesseract is installed). |
+| Status | Store, reference data and the MCP server done. Documents are read by the [document reader](document_reader.md) (extraction, hidden-content flags, OCR once Tesseract is installed). |
 | Tests | 59 passing, 3 of them on PostgreSQL + MinIO (the extraction and OCR tests are in `servers/document_reader`) |
 | Dependencies | Python 3.10+, `pymupdf`, `mcp==2.3.0`, and `servers/document_reader` (found automatically when run from the repository); `pytest` for tests. Optional: Tesseract OCR |
 
@@ -141,12 +141,12 @@ policyholder uploads ──► app (Member 4) ──► CaseStore.create_case / 
 
 ## Reading documents
 
-`get_document_text` reads the stored file with the **document reader** (`servers/document_reader`), the one service that does all OCR and document reading in ClaimClear. The app's upload pipeline calls the same reader, so the agents and the app see the same text. Everything about the output is described in the [document reader's README](../document_reader/document_reader_README.md):
+`get_document_text` reads the stored file with the **document reader** (`servers/document_reader`), the one service that does all OCR and document reading in ClaimClear. The app's upload pipeline calls the same reader, so the agents and the app see the same text. Everything about the output is described in the [document reader's README](document_reader.md):
 
-* [what comes back](../document_reader/document_reader_README.md#what-comes-back): visible `text`, `spans` with `span_id` and box, `hidden_text`, metadata, annotations, form fields, attachments, PDF flags;
-* [hidden-text rules](../document_reader/document_reader_README.md#hidden-text-rules): `invisible_render`, `transparent`, `tiny_font`, `white_on_white`, `covered`, `off_page`;
-* [OCR](../document_reader/document_reader_README.md#ocr): Tesseract for image-only pages, `ocr_status`, the false-text-layer check;
-* [input checks](../document_reader/document_reader_README.md#input-checks): a file whose content isn't its declared type is refused (`MEDIA_TYPE_MISMATCH`).
+* [what comes back](document_reader.md#what-comes-back): visible `text`, `spans` with `span_id` and box, `hidden_text`, metadata, annotations, form fields, attachments, PDF flags;
+* [hidden-text rules](document_reader.md#hidden-text-rules): `invisible_render`, `transparent`, `tiny_font`, `white_on_white`, `covered`, `off_page`;
+* [OCR](document_reader.md#ocr): Tesseract for image-only pages, `ocr_status`, the false-text-layer check;
+* [input checks](document_reader.md#input-checks): a file whose content isn't its declared type is refused (`MEDIA_TYPE_MISMATCH`).
 
 **Text cache.** Results are cached in `<case store>/text_cache`, keyed by the file's content, the pages and the OCR settings, so a scan is OCR'd once however often the agent reads it. The cache is part of the store and is deleted with it. `CLAIMCLEAR_DOCUMENT_CACHE` moves it; `off` turns it off.
 
@@ -239,13 +239,13 @@ Upload-path errors (raised by `CaseStore.add_document`, not by a tool): `UNSUPPO
 | `CLAIMCLEAR_CASE_INDEX` | unset: `index.json` | `postgresql://user:password@host:5432/db`: the index in PostgreSQL (tables `case_store_documents`, `case_store_cases`; `?table_prefix=` for a separate store) |
 | `CLAIMCLEAR_BLOB_STORE` | unset: `files/` | `s3://bucket?endpoint=host:9000&secure=0`: the files in MinIO or any S3 store, same neutral names |
 | `CLAIMCLEAR_S3_ACCESS_KEY`, `CLAIMCLEAR_S3_SECRET_KEY` | — | MinIO credentials (never in the URL; keep them in `.env`) |
-| `CLAIMCLEAR_OCR`, `CLAIMCLEAR_OCR_LANGUAGE`, `CLAIMCLEAR_OCR_DPI` | `auto`, `eng`, `300` | OCR settings, passed to the document reader ([details](../document_reader/document_reader_README.md#configuration)) |
+| `CLAIMCLEAR_OCR`, `CLAIMCLEAR_OCR_LANGUAGE`, `CLAIMCLEAR_OCR_DPI` | `auto`, `eng`, `300` | OCR settings, passed to the document reader ([details](document_reader.md#configuration)) |
 
 ---
 
 ## Results on the synthetic dataset
 
-What the reader reports for each dataset document (hidden text in ADV-02, the painted-over total in MAL-01, POI-07's false layer, POI-08's extra channels, the three image-only files) is listed in the [document reader's README](../document_reader/document_reader_README.md#results-on-the-synthetic-dataset).
+What the reader reports for each dataset document (hidden text in ADV-02, the painted-over total in MAL-01, POI-07's false layer, POI-08's extra channels, the three image-only files) is listed in the [document reader's README](document_reader.md#results-on-the-synthetic-dataset).
 
 ---
 
@@ -271,7 +271,7 @@ Total: **59 tests** (3 need the storage services: `docker compose -f deploy/stor
 
 | Decision | Where | Current choice |
 |---|---|---|
-| Extraction and OCR choices | `servers/document_reader` | See [its decisions](../document_reader/document_reader_README.md#decisions-that-need-sign-off) |
+| Extraction and OCR choices | `servers/document_reader` | See [its decisions](document_reader.md#decisions-that-need-sign-off) |
 | Text cache location | `app.py` | Inside the case store, so it is deleted with it |
 | Claim history default | `reference.py` | Current policy period |
 | Upload limits | `store.py` | PDF, JPG, PNG; 25 MB |

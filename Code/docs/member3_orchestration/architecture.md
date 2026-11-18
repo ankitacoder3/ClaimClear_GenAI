@@ -2,7 +2,7 @@
 
 This is the reference architecture (Implementation II, *Agents and orchestration*) and, for every box in it, the code that implements it in this repository.
 
-![ClaimClear architecture: agents and orchestration](diagrams/architecture_agents_orchestration.png)
+![ClaimClear architecture: agents and orchestration](../shared/diagrams/architecture_agents_orchestration.png)
 
 ---
 

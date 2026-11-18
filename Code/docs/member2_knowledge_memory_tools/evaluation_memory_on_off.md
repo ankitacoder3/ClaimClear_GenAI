@@ -1,6 +1,6 @@
 # Memory on vs off
 
-The plan's memory deliverable: a **memory-on vs memory-off comparison** next to the one-page memory policy (`docs/memory_policy.md`). `run.py` runs the development cases twice, with and without ClaimClear's long-term memory (`claimclear_memory`), and scores both runs against the dataset's hand-checked answer key.
+The plan's memory deliverable: a **memory-on vs memory-off comparison** next to the one-page memory policy (`docs/member2_knowledge_memory_tools/memory_policy.md`). `run.py` runs the development cases twice, with and without ClaimClear's long-term memory (`claimclear_memory`), and scores both runs against the dataset's hand-checked answer key.
 
 ## Run it
 
@@ -25,7 +25,7 @@ It prints the comparison and writes `results/memory_on_off_<date>.md` and `.json
 
 ## Result on the development set
 
-[results/memory_on_off_2026-11-13.md](results/memory_on_off_2026-11-13.md):
+[results/memory_on_off_2026-11-13.md](../../eval/memory_on_off/results/memory_on_off_2026-11-13.md):
 
 | Insurer history | Memory | Verdicts right | Disputable within ₹1 | Questions asked |
 |---|---|---|---|---|

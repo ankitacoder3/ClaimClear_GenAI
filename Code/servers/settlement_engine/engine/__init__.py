@@ -2,7 +2,7 @@
 
 Computes, in plain tested Python, what an Arogya Sanjeevani policy says should
 be paid on a reimbursement claim. No LLM is involved: the model proposes, this
-code decides. See ``settlement_engine_README.md`` in the parent folder.
+code decides. See ``docs/member2_knowledge_memory_tools/settlement_engine.md``.
 """
 
 from .engine import compute_settlement, read_lines

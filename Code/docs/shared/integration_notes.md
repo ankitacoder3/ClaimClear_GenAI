@@ -4,7 +4,7 @@ ClaimClear was built in two halves that had never run together. This page record
 
 | Source | What it was | Became |
 |---|---|---|
-| `ClaimClear_GenAI-Deepshikha.zip` (Member 2: knowledge, memory and tools) | Five real MCP servers, contracts, memory, the agents' toolkit, 42 dev cases with answers, a C0 fixed-workflow evaluation, CI | The base of this repository, unchanged except for the CI file name and the root README (moved to [member2_overview.md](member2_overview.md)) |
+| `ClaimClear_GenAI-Deepshikha.zip` (Member 2: knowledge, memory and tools) | Five real MCP servers, contracts, memory, the agents' toolkit, 42 dev cases with answers, a C0 fixed-workflow evaluation, CI | The base of this repository, unchanged except for the CI file name and the root README (moved to [member2_overview.md](../member2_knowledge_memory_tools/overview.md)) |
 | `ClaimClear_2.zip` (Member 3: agents and orchestration) | A LangGraph graph (supervisor, 7 nodes, critic loop, approval gateway) running on **its own copies** of the toolkit and contracts, backed by local stubs | Rebuilt as `agents/orchestration` (`claimclear_graph`) on Member 2's real toolkit, contracts and memory |
 
 ## 1. What each side contributed
@@ -60,14 +60,14 @@ Running the merged system on real cases exposed a few issues, all fixed and cove
 | Multi-agent graph, offline (recorded real outputs) | 54 passed |
 | Multi-agent graph, live against the servers | 8 passed (SET-01 filed with an HMAC token; wrong token refused by the real portal; clean, question, impossible-dates and look-alike cases; memory; hook 1 on real tools) |
 | Member 2's toolkit, live | 45 passed |
-| Member 2's server, memory and contract suites | all green, as in the [root README](../README.md#5-tests); the 48 tests that need the held-out split (absent from the upload) are skipped with that reason |
-| All 42 dev cases through the graph vs the C0 fixed workflow | same overall verdict on 42/42; same scores (34/42 overall, 88/94 rows, 26/30 payable, 34/38 disputable); 19 grievances stopped at the gate, none filed without approval |
+| Member 2's server, memory and contract suites | all green, as in the [root README](../../README.md#5-tests); the 48 tests that need the held-out split (absent from the upload) are skipped with that reason |
+| All 42 dev cases through the graph vs the C0 fixed workflow | same overall verdict on 42/42; same scores (40/42 overall, 89/94 rows, 27/31 payable, 37/40 disputable); 19 grievances stopped at the gate, none filed without approval |
 
 Member 3's original 28 tests map onto the new suite as follows: state initialisation, clean case → END, disputable → pause, approve and resume, edit → re-hash, unapproved submission blocked, tampered draft blocked, rejection, thread isolation, time travel, critic retry loop, max-revision guard, low-confidence replan, fact-bound explanation, no false disputes, hook 1, hook 2, the portal gate, routing signals, critic figure and wording checks, and SET-01 end to end each have a counterpart in `test_graph_offline.py`, `test_units.py` or `test_graph_live.py`.
 
 ## 6. Fixes after the code review
 
-[Guide 2, Part E](GUIDE_2_CODE_WALKTHROUGH.md) reviewed every part of the merged code. Every finding was then addressed:
+[Guide 2, Part E](code_walkthrough.md) reviewed every part of the merged code. Every finding was then addressed:
 
 | # | Fix | Where |
 |---|---|---|
@@ -90,6 +90,6 @@ All 42 dev cases still give the same verdicts as the fixed workflow after these 
 ## 7. Known gaps
 
 * **Held-out split absent.** `data/dataset/heldout/` was not in the upload; the 48 server tests that read it are skipped (with that reason) until it is restored.
-* **Missing documents referenced by Member 2's guide.** `docs/member2_overview.md` links to `.claude/skills/claimclear-member2/…`, `docs/setup_fedora.md`, `docs/technology_and_app_flow.md` and `docs/member2_work.md`, which were not in the upload.
+* **Missing documents referenced by Member 2's guide.** `docs/member2_knowledge_memory_tools/overview.md` links to `.claude/skills/claimclear-member2/…`, `docs/setup_fedora.md`, `docs/technology_and_app_flow.md` and `docs/member2_work.md`, which were not in the upload.
 * **LLM extraction not yet measured.** `eval/graph_dev_cases/run.py --llm-extract` is ready and tested offline, but needs an API key to run.
 * **Portal is a dry run** until Member 4's mock portal replaces `DryRunPortal`; the tool interface stays the same.

@@ -10,7 +10,7 @@ The memory part of Member 2's role. It remembers, **per user**, what ClaimClear 
 
 | | |
 |---|---|
-| Status | v1 (week 4) and the controls (week 6) done: consent, expiry, trimming and summarising, and the [memory policy page](../docs/memory_policy.md). Memory on vs off is week 8 |
+| Status | v1 (week 4) and the controls (week 6) done: consent, expiry, trimming and summarising, and the [memory policy page](memory_policy.md). Memory on vs off is week 8 |
 | Storage | `$CLAIMCLEAR_MEMORY_DB`: a SQLite file (default `<repo>/var/memory/memory.db`, git-ignored), or `postgresql://user:password@host:5432/db[?schema=memory]` for production (`claimclear_memory/db.py`; needs `pg8000`). Same tables and API on both |
 | Dependencies | None (standard library). Runs in the agents' and the app's environments, Python 3.10+ |
 | Tests | 72 on SQLite (23 for episodic memory in `tests/test_episodes.py`); `tests/test_postgres.py` runs 42 on PostgreSQL when `CLAIMCLEAR_TEST_POSTGRES` is set (36 of the same tests plus PostgreSQL-only ones); a live round trip through the settlement engine in `agents/toolkit` |
@@ -42,7 +42,7 @@ The memory part of Member 2's role. It remembers, **per user**, what ClaimClear 
 4. **Keep as little as possible.** The policy holder's name is dropped. Grievance text stays with the approval gate; memory keeps only its SHA-256. Diagnosis and procedure are kept because the engine needs them for sub-limits (for example cataract per eye); the memory policy page (week 6) will say so to the user.
 5. **Remembered text is data, not instructions.** The context note says so, and `render()` repeats it in the prompt.
 6. **Only final audits.** An audit still waiting for the policyholder's answers (`needs_information`) is refused.
-7. **Only with consent, and not forever.** Nothing is stored until the user agrees to the [memory policy](../docs/memory_policy.md); data expires on its own (see [Controls](#controls-consent-expiry-trimming)).
+7. **Only with consent, and not forever.** Nothing is stored until the user agrees to the [memory policy](memory_policy.md); data expires on its own (see [Controls](#controls-consent-expiry-trimming)).
 
 ---
 
@@ -165,7 +165,7 @@ async def remember(state):                     # after the critic passes
 
 ## Controls: consent, expiry, trimming
 
-The user-facing promises are in [docs/memory_policy.md](../docs/memory_policy.md) (version `memory-policy-v1` = `POLICY_VERSION`); a test checks the page and the code agree.
+The user-facing promises are in [docs/member2_knowledge_memory_tools/memory_policy.md](memory_policy.md) (version `memory-policy-v1` = `POLICY_VERSION`); a test checks the page and the code agree.
 
 ### Consent
 
@@ -320,7 +320,7 @@ memory/
     ├── test_memory.py            49 tests
     └── test_postgres.py          42 tests on PostgreSQL (when CLAIMCLEAR_TEST_POSTGRES is set)
 
-The user-facing page is docs/memory_policy.md.
+The user-facing page is docs/member2_knowledge_memory_tools/memory_policy.md.
 ```
 
 | Area | Tests |

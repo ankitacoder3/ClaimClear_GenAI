@@ -17,7 +17,7 @@ from claimclear_memory import MemoryStore
 from claimclear_graph.gateway import issue_token
 from claimclear_graph.testing import tool_error
 
-from conftest import Case, load, run
+from conftest import Case, condition_question_open, load, run
 
 SET01_DISPUTABLE = 8522.86
 
@@ -146,7 +146,7 @@ def test_clean_case_ends_with_no_grievance():
 
 
 def test_engine_question_pauses_and_answer_resumes():
-    c = Case("SET-32")
+    c = Case("SET-32", overrides={"reproduce_deduction": condition_question_open()})
     state = run(c.start())
     qs = run(c.gate.pending_questions(c.cfg))
     assert [q["question_id"] for q in qs] == ["Q-CONDITION-TYPE"]

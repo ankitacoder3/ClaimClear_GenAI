@@ -22,6 +22,30 @@ def run(coro):
     return asyncio.run(coro)
 
 
+def condition_question_open(calls=None):
+    """A ``reproduce_deduction`` override that keeps SET-32's Q-CONDITION-TYPE open until it is answered.
+
+    Since 18 Nov the engine settles SET-32's waiting-period question from the letter (the insurer paid it), so the
+    auditor's probe no longer asks; tests of the question flow model an engine that can't settle it. The probe's
+    call is not in the recording, so it is answered here too."""
+    fx = load("SET-32")
+    plain = ReplayToolkit(calls or fx["calls"])
+    claim_id = fx["claim"]["claim_id"]
+    open_q = [q for c in fx["calls"] if c["key"].startswith('["expected_settlement"')
+              for q in (c["result"].get("questions") or [])][:1]
+
+    async def rows(case, letter, row_id, *a, **k):
+        asking = bool(open_q) and case["claim"].get("claim_id") == claim_id and not case["claim"].get("condition_type")
+        try:
+            r = await plain.reproduce_deduction(case, letter, row_id, *a, **k)
+        except KeyError:
+            if not asking:
+                raise
+            r = {"row_id": row_id}
+        return {**r, "verdict": "not_verifiable", "questions": open_q} if asking else r
+    return rows
+
+
 class Case:
     """One recorded case wired into a fresh graph: ``start()``, then drive it through ``gate``."""
 

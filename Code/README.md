@@ -11,9 +11,9 @@ This repository combines two code bases into one working system:
 | Knowledge, memory and tools | Member 2 | `servers/`, `contracts/`, `memory/`, `agents/toolkit/`, `data/`, `eval/dev_cases/` | Five MCP servers (settlement engine, case records, policy KB, insurer portal, document reader), the shared contracts, long-term memory and the agents' toolkit |
 | Agents and orchestration | Member 3 | `agents/orchestration/`, `eval/graph_dev_cases/` | The LangGraph multi-agent graph: supervisor, six specialists, critic loop with replanning, memory, and the human approval gate |
 
-The architecture below is the reference for both; [docs/architecture.md](docs/architecture.md) maps every box to the code that implements it.
+The architecture below is the reference for both; [docs/member3_orchestration/architecture.md](docs/member3_orchestration/architecture.md) maps every box to the code that implements it.
 
-![ClaimClear architecture: agents and orchestration](docs/diagrams/architecture_agents_orchestration.png)
+![ClaimClear architecture: agents and orchestration](docs/shared/diagrams/architecture_agents_orchestration.png)
 
 ---
 
@@ -48,7 +48,7 @@ It then opens **ClaimClear in your browser**: a chat assistant, much like Claude
 * **Ask anything** about your medical records, the settlement or the policy: "What was my diagnosis?", "Why was R3 deducted?", "Is cataract surgery covered?". Answers stream in as they are written and remember the conversation. Every rupee amount is checked as it streams: if a model writes an amount that isn't in your documents, the audit or the policy, the answer is withdrawn and replaced by a checked one.
 * **Everything keeps running in the background until you close the page** (or press *Close ClaimClear*, or Ctrl+C in the terminal). Then the web UI and the five servers stop by themselves. Reloading the page keeps your session.
 
-![ClaimClear in the browser: the agents' audit, then streamed answers about the medical records and the claim](docs/screenshots/3_chat.png)
+![ClaimClear in the browser: the agents' audit, then streamed answers about the medical records and the claim](docs/member3_orchestration/screenshots/3_chat.png)
 
 **Choosing the model.** Two kinds of model are supported: a **local LLM** on this computer, or **OpenRouter**.
 
@@ -149,7 +149,6 @@ ClaimClear/
 │   │   ├── claimclear_graph/   agents/ (one module per agent), state, services, router, checks, plan, gateway,
 │   │   │                       hooks, extraction, language, checkpoints, graph
 │   │   ├── examples/           console.py (terminal console, --auto self-check), record_fixtures.py
-│   │   ├── TESTING.md          what the 480 tests cover and how to run them
 │   │   └── tests/              offline (recorded real tool outputs) + live against the servers
 │   └── toolkit/                Member 2: claimclear_tools — one client for every MCP server
 ├── servers/                    Member 2: the five MCP servers (ports 8101–8105)
@@ -167,7 +166,7 @@ ClaimClear/
 │   └── memory_on_off/          memory on vs off
 ├── scripts/                    dev_servers.py (all five over HTTP), dataset tools
 ├── deploy/                     PostgreSQL + pgvector + MinIO for the production backends
-└── docs/                       architecture, integration notes, handover, dataset guide, memory policy
+└── docs/                       all documentation: setup/, member2_knowledge_memory_tools/, member3_orchestration/, shared/
 ```
 
 ## Two Python environments
@@ -228,7 +227,7 @@ async with ClaimClearToolkit() as tk:                                  # keep it
 
 | Suite | Command (from its folder) | Result here (Linux, Python 3.12/3.13, Tesseract 5.3) |
 |---|---|---|
-| multi-agent graph, every agent, the web UI | `cd agents/orchestration && ../../.venv-agents/bin/python -m pytest --cov=claimclear_graph --cov-branch` | **479 passed, 1 skipped (PostgreSQL)**, 96 % line+branch coverage, random order; see [agents/orchestration/TESTING.md](agents/orchestration/TESTING.md) |
+| multi-agent graph, every agent, the web UI | `cd agents/orchestration && ../../.venv-agents/bin/python -m pytest --cov=claimclear_graph --cov-branch` | **479 passed, 1 skipped (PostgreSQL)**, 96 % line+branch coverage, random order; see [docs/member3_orchestration/testing.md](docs/member3_orchestration/testing.md) |
 | agents' toolkit | `cd agents/toolkit && ../../.venv-agents/bin/python -m pytest` | 45 passed (live against the servers) |
 | policy-kb | `cd servers/policy_kb && ../../.venv/bin/python -m pytest` | 110 passed, 5 skipped |
 | insurer-portal | `cd servers/insurer_portal && ../../.venv/bin/python -m pytest` | 13 passed |
@@ -245,10 +244,10 @@ async with ClaimClearToolkit() as tk:                                  # keep it
 
 | Run | Cases | Ran to the end (audit produced) | Overall verdict right | Row verdicts right | Payable right (±₹1) | Disputable right (±₹1) |
 |---|---|---|---|---|---|---|
-| C0 fixed workflow (`eval/dev_cases`) | 42 | 41 | 34/42 | 88/94 | 26/30 | 34/38 |
-| Multi-agent graph (`eval/graph_dev_cases`) | 42 | 41 | 34/42 | 88/94 | 26/30 | 34/38 |
+| C0 fixed workflow (`eval/dev_cases`) | 42 | 42 | 40/42 | 89/94 | 27/31 | 37/40 |
+| Multi-agent graph (`eval/graph_dev_cases`) | 42 | 42 | 40/42 | 89/94 | 27/31 | 37/40 |
 
-Every case reaches a defined outcome (the one without an audit, syn-dev-004, is an impossible extraction sent back to the document reader). The graph agrees with the fixed workflow on every case's overall verdict (42/42): orchestration adds the plan, the critic's independent re-check and draft review, the questions, the explanation and the approval gate without changing a single figure. The eight misses are the engine's and the answer keys' (three are documented decisions in `eval/dev_cases/decisions.json`). 19 cases stopped at the approval gate; none was filed without approval. Details: [`eval/graph_dev_cases/results/graph_dev_cases.md`](eval/graph_dev_cases/results/graph_dev_cases.md).
+Every case reaches a defined outcome and produces an audit. The graph agrees with the fixed workflow on every case's overall verdict (42/42): orchestration adds the plan, the critic's independent re-check and draft review, the questions, the explanation and the approval gate without changing a single figure. The two misses: gen-dev-50b4e6, where the answer key differs by a documented decision (IRDAI's 2020 proportionate-deduction rule, `eval/dev_cases/decisions.json`), and syn-dev-021, a pharmacy bill with no admission date, where the engine asks for the date rather than assume it. 19 cases stopped at the approval gate; none was filed without approval. Details: [`eval/graph_dev_cases/results/graph_dev_cases.md`](eval/graph_dev_cases/results/graph_dev_cases.md).
 
 ## 7. Configuration
 
@@ -265,7 +264,7 @@ Environment variables, with safe defaults under `var/` (git-ignored). Secrets go
 | `CLAIMCLEAR_EXTRACTION_MODEL` | the chat model | Model override for `eval/graph_dev_cases/run.py --llm-extract` |
 | `CLAIMCLEAR_EXTRACTION_MAX_TOKENS` | `4000` | The document reader's extraction reply limit (at least 500). Lower it for a key with little credit: OpenRouter reserves the whole limit and refuses with HTTP 402 when it can't afford it |
 | `CLAIMCLEAR_MAX_TOKENS` | `1500` | The longest reply the chat model may write. Always sent to the provider, so keys with a small credit limit work; the settings test uses 16, document extraction 4,000 |
-| `CLAIMCLEAR_MEMORY_USER` | unset | The local user whose long-term memory the web UI uses (with consent); unset = memory off. See [memory/memory_README.md](memory/memory_README.md#episodic-memory-earlier-conversations) |
+| `CLAIMCLEAR_MEMORY_USER` | unset | The local user whose long-term memory the web UI uses (with consent); unset = memory off. See [docs/member2_knowledge_memory_tools/memory.md](docs/member2_knowledge_memory_tools/memory.md#episodic-memory-earlier-conversations) |
 | `CLAIMCLEAR_GATE_SECRET` | unset | Approval-gate HMAC secret. Set it for **both** the gateway and the insurer-portal server: the portal then accepts only `HMAC-SHA256(secret, text_sha256)` tokens. Unset, the portal checks only that a token is present (development) |
 | `CLAIMCLEAR_CASE_STORE`, `CLAIMCLEAR_REFERENCE_DIR` | `var/case_store`, `data/dataset/dev/reference` | Case store and reference data |
 | `CLAIMCLEAR_POLICY_KB_INDEX` | `var/policy_kb/index.json` | Policy index (build it: `python -m policy_kb build --wording ...`) |
@@ -273,20 +272,17 @@ Environment variables, with safe defaults under `var/` (git-ignored). Secrets go
 | `CLAIMCLEAR_PORTAL_STORE` | `var/insurer_portal/dry_run.json` | The dry-run portal's record of filings |
 | `CLAIMCLEAR_*_URL` | `http://127.0.0.1:810x/mcp` | Server URLs in HTTP mode |
 
-Every server-side variable is listed in [docs/member2_overview.md](docs/member2_overview.md#6-configuration).
+Every server-side variable is listed in [docs/member2_knowledge_memory_tools/overview.md](docs/member2_knowledge_memory_tools/overview.md#6-configuration).
 
 ## 8. Documents
 
-| Document | What it covers |
+All documentation is in [`docs/`](docs/README.md), one document per topic, grouped by who needs it:
+
+| Folder | For |
 |---|---|
-| [docs/GUIDE_1_SETUP.md](docs/GUIDE_1_SETUP.md) ([Word](docs/guides/GUIDE_1_SETUP.docx), [PDF](docs/guides/GUIDE_1_SETUP.pdf)) | **Start here.** Step by step from the zip to a running system, tests and evaluation, with troubleshooting |
-| [docs/GUIDE_2_CODE_WALKTHROUGH.md](docs/GUIDE_2_CODE_WALKTHROUGH.md) ([Word](docs/guides/GUIDE_2_CODE_WALKTHROUGH.docx), [PDF](docs/guides/GUIDE_2_CODE_WALKTHROUGH.pdf)) | Code review of every part, then a simple (SET-02) and a complex (SET-01) case traced node by node |
-| [docs/GUIDE_3_LLAMA_ON_WINDOWS.md](docs/GUIDE_3_LLAMA_ON_WINDOWS.md) ([Word](docs/guides/GUIDE_3_LLAMA_ON_WINDOWS.docx), [PDF](docs/guides/GUIDE_3_LLAMA_ON_WINDOWS.pdf)) | Step by step: run Llama locally on Windows with ClaimClear |
-| [docs/architecture.md](docs/architecture.md) | The reference architecture, box by box, mapped to code; the graph, its state, the safety invariants |
-| [docs/integration_notes.md](docs/integration_notes.md) | How the two code bases were merged: what was kept, replaced or removed, every behaviour change, and why |
-| [agents/orchestration/orchestration_README.md](agents/orchestration/orchestration_README.md) | The multi-agent graph: nodes, routes, gateway, hooks, extending it with an LLM |
-| [agents/toolkit/toolkit_README.md](agents/toolkit/toolkit_README.md) | The client for every MCP server: per-agent tools, signals, critic checks |
-| [servers/servers_README.md](servers/servers_README.md) | How the agents connect to the servers; each server's own README for its tools and errors |
-| [docs/member2_overview.md](docs/member2_overview.md) | Member 2's full guide: components, step-by-step runs, configuration, production backends |
-| [docs/member2_technical_handover.md](docs/member2_technical_handover.md) | Every tool with real inputs and outputs, hook points, memory, storage |
-| [docs/dataset_guide.md](docs/dataset_guide.md), [docs/memory_policy.md](docs/memory_policy.md) | The cases and answers; what memory keeps and for how long |
+| [`docs/setup/`](docs/setup/setup_guide.md) | Running ClaimClear. **Start with [setup_guide.md](docs/setup/setup_guide.md)** |
+| [`docs/member2_knowledge_memory_tools/`](docs/member2_knowledge_memory_tools/overview.md) | The MCP servers, retrieval, memory, contracts, toolkit, the dataset and its case book |
+| [`docs/member3_orchestration/`](docs/member3_orchestration/architecture.md) | The multi-agent graph, the web UI, the tests |
+| [`docs/shared/`](docs/shared/code_walkthrough.md) | The code walkthrough, the integration notes, the architecture diagram |
+
+The [docs index](docs/README.md) lists every document and what to read it for.

@@ -266,7 +266,7 @@ The browser opens ClaimClear. Click a sample case or attach your own documents, 
 
 ## Step 8: run the tests
 
-**The multi-agent graph, every agent and the web UI** (480 tests, about 85 seconds; details in `agents/orchestration/TESTING.md`):
+**The multi-agent graph, every agent and the web UI** (480 tests, about 85 seconds; details in `docs/member3_orchestration/testing.md`):
 
 ```bash
 cd agents/orchestration
@@ -352,7 +352,7 @@ This runs all 42 development cases through the multi-agent graph against the liv
 
 | Cases | Ran to the end (audit produced) | Overall verdict right | Row verdicts right | Payable right (±₹1) | Disputable right (±₹1) | Same overall verdict as C0 |
 |---|---|---|---|---|---|---|
-| 42 | 41 | 34/42 | 88/94 | 26/30 | 34/38 | 42/42 |
+| 42 | 42 | 40/42 | 89/94 | 27/31 | 37/40 | 42/42 |
 
 No person is present during this run, so the engine's questions are left unanswered and every grievance is **rejected** at the gate. Nothing is filed.
 
@@ -513,4 +513,4 @@ The critic checks the rewritten text. If the model changes, rounds or invents a 
 | `pytest` prints only dots and no totals | The project sets `addopts = -q` | Add `-o addopts=""`, as in this guide |
 | Offline demo: `no recorded result for …` | The code now makes a call the recording doesn't have | Re-record: `.venv-agents/bin/python agents/orchestration/examples/record_fixtures.py` |
 
-**Where next:** [Guide 2](GUIDE_2_CODE_WALKTHROUGH.md) explains what every part of the code does and walks through a simple and a complex case step by step.
+**Where next:** [Guide 2](../shared/code_walkthrough.md) explains what every part of the code does and walks through a simple and a complex case step by step.

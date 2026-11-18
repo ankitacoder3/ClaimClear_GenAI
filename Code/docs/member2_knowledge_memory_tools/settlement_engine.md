@@ -8,7 +8,7 @@ This is part of the `settlement-engine` MCP server (owner: **Member 2**). The se
 
 For why these technologies were chosen, the alternatives, and the full app flow when a user asks to verify a settlement, see [docs/technology_and_app_flow.md](../../docs/technology_and_app_flow.md).
 
-How these tools plug into Member 3's LangGraph agents (environments, connection, per-agent tool lists, CaseState, graph edges): see [servers/servers_README.md](../servers_README.md).
+How these tools plug into Member 3's LangGraph agents (environments, connection, per-agent tool lists, CaseState, graph edges): see [docs/member2_knowledge_memory_tools/servers_integration.md](servers_integration.md).
 
 | | |
 |---|---|

@@ -17,7 +17,7 @@ from claimclear_graph import chat
 from claimclear_graph.testing import ReplayToolkit
 from claimclear_graph.webapp import server
 
-from conftest import load
+from conftest import condition_question_open, load
 
 REPO = Path(server.REPO)
 CASES = REPO / "data" / "dataset" / "dev" / "cases"
@@ -27,7 +27,8 @@ pytestmark = pytest.mark.skipif(not (REPO / ".venv").exists(), reason="needs the
 def replay():
     calls = load("SET-01")["calls"] + load("SET-02")["calls"] + load("SET-32")["calls"]
     hit = {"clause_id": "C.3", "title": "Cataract", "text": "Cataract is covered up to Rs.40,000 per eye.", "citation": "C.3"}
-    return ReplayToolkit(calls, overrides={"search_clauses": lambda *a, **k: {"hits": [hit]}})
+    return ReplayToolkit(calls, overrides={"search_clauses": lambda *a, **k: {"hits": [hit]},
+                                           "reproduce_deduction": condition_question_open(calls)})
 
 
 @pytest.fixture
@@ -76,6 +77,11 @@ def until(ws, *kinds, limit=400):
         seen.append(m)
         if m["type"] in kinds:
             return m, seen
+        if m == {"type": "busy", "value": False} and {"type": "busy", "value": True} in seen and set(kinds) & {"questions", "explanation", "grievance", "outcome",
+                                                                   "error", "step"}:
+            # the graph finished its run without sending it: fail now instead of waiting forever for a message
+            raise AssertionError(f"the run ended without {kinds}: {[x['type'] for x in seen]} "
+                                 f"{[x.get('text') for x in seen if x['type'] == 'error']}")
     raise AssertionError(f"never got {kinds}: {[m['type'] for m in seen]}")
 
 
@@ -97,7 +103,7 @@ def test_status(client):
     s = client.get("/api/status").json()
     assert set(s["servers"]) == {"settlement-engine", "case-records", "policy-kb", "insurer-portal", "document-reader"}
     assert len(s["boot"]) == 12 and s["chat_model"] is False and s["model"].startswith("no model")
-    assert [x["name"] for x in s["samples"]] == ["syn-dev-005", "syn-dev-019", "syn-dev-017", "gen-dev-147e01"]
+    assert [x["name"] for x in s["samples"]] == ["syn-dev-005", "syn-dev-019", "gen-dev-0fa297", "gen-dev-147e01"]
 
 
 def test_upload_creates_a_case_with_the_users_file_names(client):

@@ -75,7 +75,7 @@ ClaimClear checks a health-insurance settlement letter against the policy: it wo
 
 All five servers answered over HTTP (`scripts/dev_servers.py --check`).
 
-**Whole-application run over the 42 dev cases** (`eval/dev_cases/run.py`, details in `eval/dev_cases/dev_cases_README.md`): 41 ran to the end; 34/42 overall verdicts, 88/94 row verdicts, 26/30 payables and 34/38 disputable amounts right. Synthetic cases: 16/22 overall, 19/20 rows, 19/19 disputable amounts. gen-data cases, which use another insurer's wording and phrasing: 18/20 overall, 69/74 rows, 15/19 disputable amounts. Section 16.1 has the full result. The README lists what the gen-data cases showed, what was fixed in the engine, what still differs, and where the answer key may be wrong. Decided: the proportionate deduction keeps IRDAI's 2020 rule, so three gen-data answers that cut consumables and diagnostics are labelled as decided disagreements (`eval/dev_cases/decisions.json`). The dataset itself is explained in `docs/dataset_guide.md`.
+**Whole-application run over the 42 dev cases** (`eval/dev_cases/run.py`, details in `docs/member2_knowledge_memory_tools/evaluation_dev_cases.md`): all 42 ran to the end; 40/42 overall verdicts, 89/94 row verdicts, 27/31 payables and 37/40 disputable amounts right. Synthetic cases: 21/22 overall, 20/20 rows, 21/21 disputable amounts. gen-data cases, which use another insurer's wording and phrasing: 19/20 overall, 69/74 rows, 16/19 disputable amounts. Section 16.1 has the full result. The README lists what the gen-data cases showed, what was fixed in the engine, what still differs, and where the answer key may be wrong. Decided: the proportionate deduction keeps IRDAI's 2020 rule, so three gen-data answers that cut consumables and diagnostics are labelled as decided disagreements (`eval/dev_cases/decisions.json`). The dataset itself is explained in `docs/member2_knowledge_memory_tools/dataset_guide.md`.
 
 ## 2. System architecture
 
@@ -2471,7 +2471,7 @@ When it needs a fact it does not have (an unknown line the proportionate cut wou
 **Partial:** rows still `not_verifiable`: OT unbundling and lab totals above the itemised rate (SET-16 rows 2 and 5), surgical consumables (SET-33 row 2), a letter on an invented policy (SET-08).
 
 
-The dev-case results and the reasoning behind each fix are in `eval/dev_cases/dev_cases_README.md`. **Decided:** the proportionate deduction keeps IRDAI's 2020 rule; three gen-data answers that follow an older wording are labelled from `eval/dev_cases/decisions.json`.
+The dev-case results and the reasoning behind each fix are in `docs/member2_knowledge_memory_tools/evaluation_dev_cases.md`. **Decided:** the proportionate deduction keeps IRDAI's 2020 rule; three gen-data answers that follow an older wording are labelled from `eval/dev_cases/decisions.json`.
 
 ## 8. Document processing and OCR
 
@@ -2958,12 +2958,11 @@ Every case read its documents (163 documents, 1,157 pages) and its wording statu
 |---|---|---|
 | gen-dev-50b4e6 (and the amounts of 6a82b1, a0a2f1) | the proportionate deduction | the answer key cuts consumables and diagnostics; ClaimClear keeps IRDAI's 2020 rule (decided, labelled from `eval/dev_cases/decisions.json`) |
 | gen-dev-b4331d | ₹215.50 disputable, the answer says none | the letter takes co-pay before its own ₹4,300 cut, so ₹215.50 is owed either way; the answer's own note agrees |
-| syn-dev-006, 012, 015 | a rejection for fraud, an invented hospital, an altered date comes back `not_verifiable` | the engine doesn't judge fraud; the document checks and the user do |
-| syn-dev-004 | stops | discharge before admission: the engine refuses an impossible claim |
-| syn-dev-017 | asks which waiting-period list a meniscus tear is on | neither list names it outright |
+| syn-dev-004, 006, 012, 015 | rejections (impossible dates, fraud, an invented hospital, an altered date) are confirmed: `matches_policy`, payable ₹0 | the integrity checks find the evidence in the documents (discharge before admission, room days beyond the stay, dated lines outside the stay, a malformed GSTIN) |
+| syn-dev-017 | the insurer paid a meniscus repair, so the condition it accepted is taken from the letter | no waiting-period row on a paid claim means the letter accepted the condition (fact `F-CONDITION-FROM-LETTER`) |
 | syn-dev-021 | asks for the admission date | a pharmacy bill with no admission date, by design |
 
-Results per case: `eval/dev_cases/results/dev_cases.md` (and `.json` with every step's output). The fixes these cases led to, and the reasoning on the answer key, are in `eval/dev_cases/dev_cases_README.md`.
+Results per case: `eval/dev_cases/results/dev_cases.md` (and `.json` with every step's output). The fixes these cases led to, and the reasoning on the answer key, are in `docs/member2_knowledge_memory_tools/evaluation_dev_cases.md`.
 
 ## 17. Files and modules walkthrough
 
@@ -3110,7 +3109,7 @@ Other files:
 
 | Path | What |
 |---|---|
-| `data/dataset/` | every case in one standard format: `dev/` (42) and `heldout/` (53), each with `cases.json`, `cases/<case_id>/` (documents only), `reference/` and `answers/`; explained in `docs/dataset_guide.md` |
+| `data/dataset/` | every case in one standard format: `dev/` (42) and `heldout/` (53), each with `cases.json`, `cases/<case_id>/` (documents only), `reference/` and `answers/`; explained in `docs/member2_knowledge_memory_tools/dataset_guide.md` |
 | `eval/dev_cases/` | the whole-application run over the dev cases (`run.py`), the extraction stand-in for the LLM document reader (`extract.py`), results and findings |
 | `data/wordings/` | Go Digit Arogya Sanjeevani wording, its source record, the catalogue, checked limits |
 | `servers/*/tests/snapshots/*.json` | pinned tool schemas |

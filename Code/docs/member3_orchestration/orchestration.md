@@ -6,8 +6,8 @@
 |---|---|
 | Install into | The agents' environment: `pip install -e agents/orchestration` (already in `requirements-agents.txt`) |
 | Depends on | `claimclear-tools` (toolkit), `claimclear-contracts`, `claimclear-memory`, `langgraph` |
-| Tests | 480 (96 % line+branch coverage), per agent and per layer: see [TESTING.md](TESTING.md) |
-| Reference | [Architecture, box by box](../../docs/architecture.md) · [How the two code bases were merged](../../docs/integration_notes.md) |
+| Tests | 480 (96 % line+branch coverage), per agent and per layer: see [TESTING.md](testing.md) |
+| Reference | [Architecture, box by box](architecture.md) · [How the two code bases were merged](../shared/integration_notes.md) |
 
 ---
 
