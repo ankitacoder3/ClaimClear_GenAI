@@ -356,6 +356,12 @@ def assess(f, err=None):
     group("si", "Sum insured balance for the policy year", after - payable, CLAUSE["si"], available)
     res["si"] = {"si": si, "cb": 0 if k == "cb_ignored" else cb, "used": used_si, "available": available}
 
+    # 6b. a fee taken under a clause that is not in the wording (red-team: fake clause)
+    if k == "processing_fee":
+        fee = pct(payable, e["pct"])
+        group("fee", f"Processing fee {e['pct']}%", fee, e.get("clause", ""))
+        payable -= fee
+
     # 7. unexplained deductions (not verifiable cases)
     if k in ("nv_lumpsum", "nv_tariff", "nv_room_lumpsum", "nv_missing_annexure"):
         label = {"nv_lumpsum": "Other deductions as per policy terms and conditions",
@@ -418,7 +424,7 @@ def build_case(recipe, variant):
            "cataract_shared_eyes": {"sublimit"}, "modern_pct": {"sublimit"}, "reject_waiting": {"reject"},
            "disallow": {"nonpay:" + (err or {}).get("line", "")},
            "nv_unseen_prior": {"sublimit"}, "nv_lumpsum": {"other"}, "nv_tariff": {"other"},
-           "nv_room_lumpsum": {"other"}, "nv_missing_annexure": {"other"}, "nv_missing_cause": {"reject"}}.get(kind, set())
+           "nv_room_lumpsum": {"other"}, "processing_fee": {"fee"}, "nv_missing_annexure": {"other"}, "nv_missing_cause": {"reject"}}.get(kind, set())
     deductions = []
     for g in insurer["groups"]:
         right = cg.get(g["key"], {}).get("amount", 0)

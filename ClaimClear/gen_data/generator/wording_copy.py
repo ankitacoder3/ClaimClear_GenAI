@@ -30,25 +30,30 @@ def extract_text(pdf):
     return out.stdout.decode("utf-8", errors="replace")
 
 
-def rebrand(key, ins, uin):
+def rebrand(key, ins, uin, insert=None):
     W = WORDINGS[key]
     text = extract_text(os.path.join(ROOT, W["pdf"]))
     vals = dict(ins, uin=uin)
     for old, new in W["rebrand"]:
         text = text.replace(old, new.format(**vals))
+    if insert:  # red-team only: add text (e.g. a fake clause) just before an anchor line
+        if insert["before"] not in text:
+            raise SystemExit(f"Wording insert anchor not found: {insert['before']!r}")
+        text = text.replace(insert["before"], insert["text"] + insert["before"], 1)
     left = sorted(set(m.group(0) for m in re.finditer(W["residue"], text, re.I)))
     if left:
         raise SystemExit(f"Wording {key}: original identifiers left after rebrand: {left}. Add them to 'rebrand'.")
     return text
 
 
-def wording_pdf(key, ins, uin, to_pdf):
-    """Return (path, kind) of the cached rebranded wording; kind is 'pdf' or 'html'."""
+def wording_pdf(key, ins, uin, to_pdf, insert=None, tag=""):
+    """Return (path, kind) of the cached rebranded wording; kind is 'pdf' or 'html'.
+    insert/tag: red-team only - a text insertion and a cache-name suffix for that variant."""
     os.makedirs(CACHE, exist_ok=True)
-    base = os.path.join(CACHE, f"{key}_{ins['short']}")
+    base = os.path.join(CACHE, f"{key}_{ins['short']}{tag}")
     if os.path.exists(base + ".pdf"):
         return base + ".pdf", "pdf"
-    pages = rebrand(key, ins, uin).split("\f")
+    pages = rebrand(key, ins, uin, insert).split("\f")
     body = "".join(f"<pre class='{'pb' if i < len(pages) - 2 else ''}'>{html.escape(p)}</pre>"
                    for i, p in enumerate(pages) if p.strip())
     open(base + ".html", "w", encoding="utf-8").write(

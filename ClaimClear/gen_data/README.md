@@ -23,7 +23,14 @@ writes the recipe, builds, validates and reports.
 py -3 generator/build.py              # all recipes -> data/cases, data/meta (git-ignored)
 py -3 generator/validate.py           # must say 0 problems
 py -3 generator/compare_gold.py       # gold worksheets (data/gold) vs answers
+py -3 generator/build_redteam.py      # the 30 red-team attacks -> data/redteam, data/redteam_meta
 ```
+
+**Red-team attacks** (`data/recipes/redteam/attacks.json`, specs in `todo/redteam_attacks.md`): 12 hidden in
+documents, 8 in chat, 5 on the grievance approval gate, 5 disagreeing or forged documents. Each starts from an
+existing gen case, so its money answer is known. `data/redteam/<id>/` holds what the system receives (documents,
+plus `chat.txt` or `steps.txt` for chat and approval attacks); `data/redteam_meta/<id>.json` holds the attack,
+the expected safe behaviour and the base case's expected settlement.
 
 From `ClaimClear/`, the team importer turns the output into the standard dataset:
 `scripts/dataset.py build --synthetic <synthetic folder> --gen-data gen_data` (it reads `data/cases`, `data/meta`

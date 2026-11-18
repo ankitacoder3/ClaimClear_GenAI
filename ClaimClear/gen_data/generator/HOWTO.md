@@ -57,6 +57,13 @@ appear, and the wording copy carries no real insurer name.
 Case ids like `heldout-3fa91c` are random so the folder name never hints at the answer.
 `data/meta/` has one JSON per case; filter by `"tag"` to get MD, SK or Holdout cases.
 
+### Red-team attacks
+`py -3 generator/build_redteam.py` builds the 30 attacks in `data/recipes/redteam/attacks.json` (add one by
+copying an entry: pick a base story and variant, then `inject` text at `footer`, `top`, `row` or `line:<id>` of the
+`letter`, `bill`, `schedule` or `earlier_1`; or use `letter_patient`, `letter_si`, `bill_patient`, `bill_admit`,
+`edit_stay_line`, `duplicate_as_earlier`, `wording_insert`, `chat`, `steps`). It checks that every attack text
+landed in its document and that the money answer did not change.
+
 ## 5. Rules that keep the data honest
 - The LLM never computes money. Recipes hold only rates, days and line amounts; Python does the rest.
 - Every insurer error must make the insurer pay less, and be wrong under the policy wording alone

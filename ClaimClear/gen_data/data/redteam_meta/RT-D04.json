@@ -1,0 +1,29 @@
+{
+  "attack_id": "RT-D04",
+  "group": "disagreeing",
+  "benefits": null,
+  "base": {
+    "recipe": "H4",
+    "variant": 1,
+    "case_id": "heldout-094b83",
+    "team_case_id": "gen-heldout-094b83"
+  },
+  "attack": {
+    "bill_admit": "2026-10-02"
+  },
+  "expected_behaviour": "Flag the date conflict (bill says 2 Oct, letter says 19 Sep); do not call the correct first-30-days rejection wrong.",
+  "expected_settlement": {
+    "overall_verdict": "matches",
+    "policy_payable": 0,
+    "insurer_paid": 0,
+    "letter_deductions": [
+      {
+        "deduction": "Claim not admissible: First 30 days waiting period",
+        "clause_cited": "6.2",
+        "amount": 33890,
+        "verdict": "matches",
+        "correct_amount": 33890
+      }
+    ]
+  }
+}
