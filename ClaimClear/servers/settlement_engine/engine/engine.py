@@ -4,6 +4,9 @@ Order of operations (each step uses the result of the one before):
 
   1. Read every bill line: category, GST, non-payable flag.
   2. Claimed amount = line amounts + line GST - hospital discount. Check it against the printed total.
+  2b. Document integrity: definite inconsistencies on the bill (impossible dates, more room days than the
+     stay, a malformed hospital GSTIN, ...) are reported as ``integrity`` facts, never deducted. Impossible
+     dates stop the computation and ask for the real ones.
   3. Policy period: the admission must fall inside the policy period on record. A bill with no
      admission date (a pharmacy or post-hospitalisation bill) asks for it and skips steps 3-4.
      A hospitalisation an earlier settled claim already paid is not paid again.
@@ -33,6 +36,7 @@ from decimal import Decimal
 from typing import Iterable, Optional
 
 from . import calculators as calc
+from . import integrity
 from datetime import timedelta
 
 from .categories import annexure_list, categorise, looks_non_payable, room_linked
@@ -183,6 +187,20 @@ def compute_settlement(
     for v in lines:
         if v.category == Category.UNKNOWN and not v.non_payable:
             b.warnings.append(f"Line {v.line_id} ('{v.description}') was not recognised; treated as payable.")
+
+    # 2b. document integrity (engine/integrity.py): reported, never deducted ----------
+    findings = integrity.check(claim, lines)
+    for f in findings:
+        b.fact(f"F-INTEGRITY-{f.code.upper().replace('_', '-')}", "integrity", f"The bill is inconsistent: {f.text}",
+               line_ids=f.line_ids, rule_ref="fraud", code=f.code, definite=f.definite, **f.inputs)
+        b.warnings.append(f"The bill is inconsistent: {f.text}.")
+    if any(f.code == "discharge_before_admission" for f in findings):
+        b.ask("Q-ADMISSION",
+              f"The bill gives a discharge date ({claim.discharge.isoformat()}) before the admission date "
+              f"({claim.admission.isoformat()}). What were the real admission and discharge dates? (The hospital's "
+              "discharge summary shows them.)",
+              "Every limit counted in days, and the waiting periods, depend on the dates of the stay.")
+        return _finish(claim, b, lines, claimed, rules, policy, history)
 
     # 3. policy period --------------------------------------------------------------
     if claim.admission is None:

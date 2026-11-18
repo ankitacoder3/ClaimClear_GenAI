@@ -4,7 +4,7 @@
     .venv/Scripts/python.exe scripts/dataset.py pack                  # var/claimclear_dataset.zip, one file to share
     .venv/Scripts/python.exe scripts/dataset.py build --synthetic <synthetic_dataset folder> --gen-data <gen-data folder>
 
-The standard format (see ``data/dataset/README.md``) is the same for every case, whatever made it:
+The standard format (see ``docs/member2_knowledge_memory_tools/dataset_guide.md``) is the same for every case, whatever made it:
 
     data/dataset/
       policy_rules.json                 the simplified limits the settlement engine's dataset adapter uses
@@ -31,6 +31,9 @@ import re
 import shutil
 import sys
 import zipfile
+
+README = "dataset_README.md"   # a format note at the top of data/dataset, kept if present when the dataset is rebuilt
+                               # (the format reference itself is docs/member2_knowledge_memory_tools/dataset_guide.md)
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
@@ -242,7 +245,7 @@ def synthetic_cases(syn: Path, split: str):
 
 
 def build(syn: Path, gen: Path, out: Path) -> None:
-    readme = (out / "README.md").read_text(encoding="utf-8") if (out / "README.md").exists() else ""   # kept
+    readme = (out / README).read_text(encoding="utf-8") if (out / README).exists() else ""   # kept
     if out.exists():
         shutil.rmtree(out)
     out.mkdir(parents=True)
@@ -296,7 +299,7 @@ def build(syn: Path, gen: Path, out: Path) -> None:
         write_json(root / "reference" / "claim_history.json", history)
         print(f"{split}: {len(index)} cases, {len(policies)} policy records, {len(history)} earlier claims")
     if readme:
-        (out / "README.md").write_text(readme, encoding="utf-8")
+        (out / README).write_text(readme, encoding="utf-8")
 
 
 # --------------------------------------------------------------------------- check
@@ -305,7 +308,7 @@ def build(syn: Path, gen: Path, out: Path) -> None:
 def check(root: Path) -> list[str]:
     """Problems with ``root`` as a standard dataset ([] = none)."""
     problems = []
-    allowed_top = {"README.md", "policy_rules.json", *SPLITS}
+    allowed_top = {README, "policy_rules.json", *SPLITS}
     problems += [f"unexpected {p.name} in {root}" for p in root.iterdir() if p.name not in allowed_top]
     for split in SPLITS:
         sroot = root / split

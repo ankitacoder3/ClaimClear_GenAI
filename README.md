@@ -14,5 +14,5 @@
 
 ## Documentation
 
-* [Code/README.md](Code/README.md): what ClaimClear is, how to run it, results and configuration
-* [Code/docs/](Code/docs/README.md): every document, grouped into setup, Member 2 (knowledge, memory, tools), Member 3 (orchestration) and shared
+* [ClaimClear/README.md](ClaimClear/README.md): what ClaimClear is, how to run it, results and configuration
+* [ClaimClear/docs/](ClaimClear/docs/README.md): every document, grouped into setup, Member 2 (knowledge, memory, tools), Member 3 (orchestration) and shared

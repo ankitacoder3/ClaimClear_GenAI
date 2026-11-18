@@ -21,12 +21,15 @@ def amounts(hid, ctx):
 
 
 def test_one_correct_hypothesis_per_kind():
-    """One policy-correct method for the whole row; a kind may add one for the items a row names."""
+    """One policy-correct method for the whole row; a kind may add one for the items a row names, and the two
+    rejection-evidence hypotheses (engine/integrity.py) confirm a whole-claim rejection. ``not_genuine`` rows have no
+    policy figure of their own: only the evidence can confirm them."""
+    from engine.hypotheses import REJECTION_EVIDENCE
     for kind in RowKind:
         correct = [h.hypothesis_id for h in list_hypotheses(kind) if h.correct]
         whole = [i for i in correct if i == f"{kind.value}_policy"]
-        assert len(whole) == (0 if kind == RowKind.UNSPECIFIED else 1), kind
-        assert all(i.endswith("_named_items") for i in set(correct) - set(whole)), kind
+        assert len(whole) == (0 if kind in (RowKind.UNSPECIFIED, RowKind.NOT_GENUINE) else 1), kind
+        assert all(i.endswith("_named_items") or i in REJECTION_EVIDENCE for i in set(correct) - set(whole)), kind
 
 
 def test_every_hypothesis_is_documented():

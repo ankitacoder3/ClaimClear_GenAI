@@ -133,7 +133,7 @@ def test_audit_settlement_letter(doc_id, dataset_dir):
 
 def test_list_hypotheses():
     everything = call("list_hypotheses", {}).structured_content["hypotheses"]
-    assert len(everything) == 49
+    assert len(everything) == 51                 # 49 + the two that confirm a rejection from the bill (18 Nov 2026)
     prop = call("list_hypotheses", {"kind": "proportionate"}).structured_content["hypotheses"]
     assert {h["kind"] for h in prop} == {"proportionate"} and prop[0]["correct"] is True
 
@@ -164,9 +164,17 @@ def test_unknown_hypothesis(dataset_dir):
     assert error_of(call("reproduce_deduction", args))["code"] == "UNKNOWN_HYPOTHESIS"
 
 
+def test_a_discharge_before_the_admission_is_accepted_reported_and_asked_about(dataset_dir):
+    # Since 18 Nov 2026 impossible dates are a finding about the bill (engine/integrity.py), not invalid input.
+    args = {"case": case_payload(load_case("SET-01", dataset_dir))}
+    args["case"]["claim"].update(discharge="2026-01-01")
+    out = call("expected_settlement", args).structured_content
+    assert out["status"] == "needs_information" and [q["question_id"] for q in out["questions"]] == ["Q-ADMISSION"]
+    assert any(f["kind"] == "integrity" and f["inputs"]["code"] == "discharge_before_admission" for f in out["facts"])
+
+
 @pytest.mark.parametrize("mutate", [
     lambda a: a["case"]["claim"]["lines"][0].update(amount="-5"),                   # negative amount
-    lambda a: a["case"]["claim"].update(discharge="2026-01-01"),                     # discharge before admission
     lambda a: a["case"]["claim"]["lines"].append(dict(a["case"]["claim"]["lines"][0])),  # duplicate line_id
     lambda a: a["case"].update(rules={"copay_pct": 0}),                              # rules are not an input
     lambda a: a["case"]["claim"].update(lines=[]),                                   # no lines

@@ -61,6 +61,7 @@ ROW_DEDUCTIONS: dict[RowKind, frozenset[DeductionKind]] = {
     RowKind.POLICY_PERIOD: frozenset(),
     RowKind.ALREADY_PAID: frozenset({DeductionKind.ALREADY_SETTLED}),
     RowKind.UNITEMISED: frozenset(),
+    RowKind.NOT_GENUINE: frozenset(),
     RowKind.COPAY: frozenset(),
     RowKind.UNSPECIFIED: frozenset(),
 }
@@ -83,8 +84,12 @@ ROW_RULE_REF: dict[RowKind, str] = {
     RowKind.POLICY_PERIOD: "policy_period",
     RowKind.ALREADY_PAID: "expenses_actually_incurred",
     RowKind.UNITEMISED: "expenses_actually_incurred",
+    RowKind.NOT_GENUINE: "fraud",
     RowKind.UNSPECIFIED: "",
 }
+
+# Hypotheses that confirm a whole-claim rejection from definite inconsistencies on the bill (engine/integrity.py).
+REJECTION_EVIDENCE = ("not_genuine_documents", "waiting_period_on_line_dates")
 
 
 # --------------------------------------------------------------------------- context
@@ -725,3 +730,65 @@ def _si_mixes_policy_years(ctx):
     left = max(ZERO, ctx.si - used)
     excess = max(ZERO, before_cap - left)
     return [Candidate(excess, f"{_n(before_cap)} - sum insured left across all years {_n(left)}")] if excess else []
+
+
+# --------------------------------------------------------------------------- rejections confirmed by the bill itself
+#
+# A whole-claim rejection is a REJECTION row for the letter's claimed amount. These two hypotheses confirm one only
+# from definite inconsistencies on the bill (engine/integrity.py); without them they produce nothing, so they can
+# never make a payable claim look rejected.
+
+
+def _definite_integrity(ctx: CaseContext) -> list:
+    """Definite integrity facts, and only when testing the whole-claim REJECTION row: these hypotheses must never
+    explain an ordinary deduction row."""
+    if ctx.row is None or ctx.row.row_id != "REJECTION":
+        return []
+    return [f for f in ctx.result.facts if f.kind == "integrity" and f.inputs.get("definite")]
+
+
+def _rejected_amount(ctx: CaseContext) -> Decimal:
+    return D(ctx.row.amount) if ctx.row is not None else ctx.claimed
+
+
+@hypothesis("not_genuine_documents", RowKind.NOT_GENUINE, "Rejection supported by the bill's own inconsistencies",
+            "The insurer rejected the claim as not genuine, and the bill itself contains facts that cannot all be "
+            "true (for example a discharge before the admission, more room days than the stay, or a malformed "
+            "hospital GSTIN). The engine does not decide fraud; it shows that the documents do not support the claim.",
+            correct=True)
+def _not_genuine_documents(ctx):
+    found = _definite_integrity(ctx)
+    if not found:
+        return []
+    return [Candidate(_rejected_amount(ctx), "; ".join(f.text.removeprefix("The bill is inconsistent: ") for f in found),
+                      tuple(i for f in found for i in f.line_ids))]
+
+
+@hypothesis("waiting_period_on_line_dates", RowKind.WAITING_PERIOD, "Waiting period on the hospital's own line dates",
+            "The bill's header dates disagree with every one of its room, nursing, surgeon and theatre lines. On "
+            "the stay those lines describe, the admission falls inside a waiting period, so the rejection matches "
+            "the policy.", correct=True)
+def _waiting_period_on_line_dates(ctx):
+    from dataclasses import replace as _replace
+    from .engine import compute_settlement
+    from .integrity import Finding, line_dated_stay
+    facts = [f for f in _definite_integrity(ctx) if f.inputs.get("code") == "inpatient_lines_outside_stay"]
+    stay = line_dated_stay(Finding(f.inputs["code"], f.text, inputs=f.inputs) for f in facts)
+    if stay is None:
+        return []
+    alt_claim = _replace(ctx.claim, admission=stay[0], discharge=stay[1])
+    alt = compute_settlement(alt_claim, ctx.policy, ctx.rules, ctx.history)
+    reason = (ctx.letter.rejection_reason if ctx.letter else "").lower()
+    if (alt.status.value == "needs_information" and ctx.claim.condition_type is None
+            and any(q.question_id == "Q-CONDITION-TYPE" for q in alt.questions)
+            and "illness" in reason and "accident" not in reason):
+        # The engine asks "illness or accident?"; the insurer's letter says illness (ClaimIn allows condition_type
+        # from the insurer's letter). An accident would be a different rejection, so nothing else is assumed.
+        alt = compute_settlement(_replace(alt_claim, condition_type=ConditionType.ILLNESS), ctx.policy, ctx.rules,
+                                 ctx.history)
+    waiting = alt.deduction(DeductionKind.WAITING_PERIOD)
+    if waiting is None:
+        return []
+    return [Candidate(_rejected_amount(ctx), f"the bill's lines date the stay {stay[0].strftime('%d-%b-%Y')} to "
+                                             f"{stay[1].strftime('%d-%b-%Y')}; then {waiting.description[0].lower()}"
+                                             f"{waiting.description[1:]}", waiting.line_ids)]

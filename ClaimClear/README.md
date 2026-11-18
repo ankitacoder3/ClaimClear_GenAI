@@ -1,222 +1,288 @@
-# ClaimClear v2: Member 2's work (knowledge, memory and tools)
+# ClaimClear
 
-This branch holds **only Member 2's part** of ClaimClear, the post-settlement assistant for health-insurance policyholders. Its history has one commit per part: the dataset first, then each server, the libraries, the evaluation, CI and the docs.
+**A post-settlement assistant for health-insurance policyholders.** Upload the hospital bill, the insurer's settlement letter and the policy; ClaimClear checks every deduction against the policy wording, explains the result in plain language with the clause behind each line, and — only when something may be disputable and only after you approve the exact text — drafts and files a grievance.
 
-In one sentence: Member 2 builds the parts that **know things and compute things**, so the agents never have to. That means:
+> **The rule behind every line:** the model proposes, code decides. No LLM computes or checks a rupee figure; document text is data, never instructions; every tool is reached through a `case_id`; a person approves anything that changes the outside world.
 
-* the policy wording search;
-* the settlement engine, which works out every rupee;
-* document reading and OCR;
-* the long-term memory.
+This repository combines two code bases into one working system:
 
-All of it is exposed through MCP tools and small Python APIs that Member 3's agents and Member 4's app call.
+| Part | Owner | Folder | What it is |
+|---|---|---|---|
+| Knowledge, memory and tools | Member 2 | `servers/`, `contracts/`, `memory/`, `agents/toolkit/`, `data/`, `eval/dev_cases/` | Five MCP servers (settlement engine, case records, policy KB, insurer portal, document reader), the shared contracts, long-term memory and the agents' toolkit |
+| Agents and orchestration | Member 3 | `agents/orchestration/`, `eval/graph_dev_cases/` | The LangGraph multi-agent graph: supervisor, six specialists, critic loop with replanning, memory, and the human approval gate |
 
-> **The rule behind every line:** the model proposes, code decides. No LLM computes a rupee figure; document text is data, never instructions; every tool is reached through a `case_id`; a person approves anything that changes the outside world.
+The architecture below is the reference for both; [docs/member3_orchestration/architecture.md](docs/member3_orchestration/architecture.md) maps every box to the code that implements it.
+
+![ClaimClear architecture: agents and orchestration](docs/shared/diagrams/architecture_agents_orchestration.png)
 
 ---
 
 ## Contents
 
-1. [What is here](#1-what-is-here)
-2. [Find your way around](#2-find-your-way-around)
-3. [Set up once](#3-set-up-once)
-4. [Run it step by step](#4-run-it-step-by-step)
-5. [Each component: what it does, how to run it](#5-each-component-what-it-does-how-to-run-it)
-6. [Configuration](#6-configuration)
-7. [Tests](#7-tests)
-8. [How the other members use it](#8-how-the-other-members-use-it)
-9. [Production](#9-production)
-10. [What changed on this branch](#10-what-changed-on-this-branch)
-11. [Not in this branch](#11-not-in-this-branch)
+1. [How a case flows](#1-how-a-case-flows)
+2. [Repository layout](#2-repository-layout)
+3. [Two Python environments](#two-python-environments)
+4. [Run it](#4-run-it)
+5. [Tests](#5-tests)
+6. [Results on the development cases](#6-results-on-the-development-cases)
+7. [Configuration](#7-configuration)
+8. [Documents](#8-documents)
 
 ---
 
-## 1. What is here
+## Quick start: one command
 
-| Part | Folder | Port | What it does | Used by |
-|---|---|---|---|---|
-| **settlement-engine** MCP server | [`servers/settlement_engine`](servers/settlement_engine/README.md) | 8101 | The policy-correct settlement in tested `Decimal` code, a library of 41 documented calculation methods, and a matcher that finds which one the insurer used for each letter row | Settlement auditor, critic |
-| **case-records** MCP server | [`servers/case_records`](servers/case_records/README.md) | 8102 | One claim's uploaded documents under neutral IDs, their text (through the document reader), the policy schedule and claim history | Document reader, policy analyst |
-| **policy-kb** MCP server | [`servers/policy_kb`](servers/policy_kb/README.md) | 8103 | The policy wording split one chunk per clause; hybrid search (BM25 + vectors + RRF), query rewriting, optional reranker, Recall@k evaluation; clause lookup by engine rule | Policy analyst, critic, explainer |
-| **insurer-portal** MCP interface | [`servers/insurer_portal`](servers/insurer_portal) | 8104 | `file_grievance` (write, behind the approval gate) and `grievance_status`, with a dry-run store; Member 4 builds the mock portal behind it | Grievance agent only |
-| **document-reader** service | [`servers/document_reader`](servers/document_reader/README.md) | 8105 | All document reading: PDF/JPG/PNG to text with source spans, hidden text kept apart, Tesseract OCR, input checks, a content cache | case-records, the app's upload pipeline |
-| **Memory** | [`memory`](memory/README.md) | none (a library) | Per-user policy profile, verified claims, sub-limit balances, grievance status; consent, expiry, "forget my data"; context trimming; SQLite or PostgreSQL | Member 3's graph, Member 4's app |
-| **Contracts** | [`contracts`](contracts/README.md) | none (a library) | `CaseState`, the hand-off messages between agents, every tool's schema, error codes and verdict wording, shared by both sides | Member 3, Member 4 |
-| **Agents' toolkit** | [`agents/toolkit`](agents/toolkit/README.md) | none (a library) | One object that connects Member 3's LangGraph agents to every server, gives each agent only its tools, and turns results into graph routes | Member 3 |
-| Storage services | [`deploy/storage.compose.yml`](deploy/storage.compose.yml) | 5432, 9000 | PostgreSQL + pgvector and MinIO, for the production backends and their tests | Development, CI |
-| Whole-application run | [`eval/dev_cases`](eval/dev_cases/README.md) | — | Every dev case through the toolkit and all five servers, scored against its answer | Everyone; Member 1's report |
-| Memory on vs off | [`eval/memory_on_off`](eval/memory_on_off/README.md) | — | The plan's memory-on vs memory-off comparison on the development cases | Member 1's report |
-| Dataset | [`data/dataset`](data/README.md), guide: [`docs/dataset_guide.md`](docs/dataset_guide.md) | — | 95 synthetic cases in one standard format (42 dev, 53 held-out) from two sources, with answers; the Arogya Sanjeevani wording | Every test and run |
-| CI | [`.github/workflows/member2.yml`](.github/workflows/member2.yml) | — | Every suite on every push, with Tesseract, PostgreSQL and MinIO | Everyone |
-
-## 2. Find your way around
-
-Every server has the same four layers, so once you know one you know them all:
-
-```
-servers/<name>/
-├── README.md            what it does, tools, errors, configuration, tests: start here
-├── <package>/
-│   ├── <core>.py        pure logic, no MCP (engine/, store.py, reader.py, kb.py, ...)
-│   ├── schemas.py       pydantic inputs and outputs: the contract
-│   ├── app.py           create_server(): each tool = validate -> call the core -> structured error
-│   └── __main__.py      python -m <package> [--transport streamable-http --port N] [--dump-schemas]
-└── tests/
-    ├── test_<core>.py   unit tests (most of them)
-    ├── test_mcp_server.py   one test per tool, errors, scoping, schema snapshot, stdio
-    └── snapshots/<name>_tools.json   pinned tool schemas
-```
-
-Where to look for what:
-
-| Question | Open |
+| System | Command (from the `ClaimClear` folder) |
 |---|---|
-| How is a deduction worked out? | `servers/settlement_engine/engine/engine.py` (the 12 steps), `calculators.py`, `hypotheses.py`, `matcher.py` |
-| How is a document read? | `servers/document_reader/document_reader/extract.py` (spans, hidden text, OCR), `reader.py` (checks, cache) |
-| How is the wording searched? | `servers/policy_kb/policy_kb/ingest.py` (clauses), `kb.py` (hybrid search), `vectorstore.py` (pgvector) |
-| What does memory keep and for how long? | `memory/claimclear_memory/store.py`, `docs/memory_policy.md` |
-| What do the agents put in their state? | `contracts/claimclear_contracts/state.py` |
-| How do the agents connect? | [`servers/README.md`](servers/README.md) (integration guide), `agents/toolkit/README.md` |
-| The cases: what is in a case, the format, dev vs held-out, the answers, how the app uses them | [`docs/dataset_guide.md`](docs/dataset_guide.md), format reference [`data/dataset/`](data/dataset/README.md); `scripts/dataset.py check` checks it, `pack` zips it to share |
-| How well does the whole app do on the dev cases? | [`eval/dev_cases/`](eval/dev_cases/README.md) and its `results/dev_cases.md` |
-| Setting up on Fedora Linux | [`docs/setup_fedora.md`](docs/setup_fedora.md) |
-| Why these technologies? | [`docs/technology_and_app_flow.md`](docs/technology_and_app_flow.md), `docs/ClaimClear_Member2_Tech_Stack.docx` |
-| Everything in one document: every tool with real input/output examples, how Member 3 connects and calls them, where hooks attach, memory, storage, workflow, tests | [`docs/member2_technical_handover.md`](docs/member2_technical_handover.md) |
-| The whole picture | `docs/diagrams/ClaimClear_Architecture.pdf`, [`docs/member2_work.md`](docs/member2_work.md) |
-| Rules and plan, for Claude and teammates | [`.claude/skills/claimclear-member2/`](.claude/skills/claimclear-member2/SKILL.md) |
+| Windows (CMD) | `start.bat` |
+| macOS / Linux | `./start.sh` |
+| Any | `python start.py` |
+| Local LLM first (optional) | `start_llm.bat` / `./start_llm.sh`: start a model on this computer and choose which; ClaimClear then uses it by default |
 
-## 3. Set up once
+It starts with **any Python 3.8 or newer, including 3.15**. The libraries ClaimClear depends on are published for Python 3.12–3.14 only, so the launcher builds the environments with one of those: your Python if it is one of them, otherwise another one it finds on the machine, otherwise a private copy of Python 3.13 that it downloads into the project's `.python` folder (nothing is installed system-wide). The first run takes a few minutes: it creates both Python environments, installs everything, tries to install Tesseract OCR, loads the development cases and builds the policy index. Later runs skip all that and start in a few seconds. It then starts the five MCP servers in the background.
 
+It then opens **ClaimClear in your browser**: a chat assistant, much like Claude's chat window, for your hospital records and your claim.
 
+* **Attach documents** with the 📎 button or by dropping them on the page: the hospital bill, discharge summary, settlement letter and policy schedule. Or click a sample case.
+* **Watch the agents work live** in a collapsible "Checking your claim…" block. Then you get what was found (insurer paid, policy allows, may be disputable, row by row with policy clauses), any question the engine needs answered, and a grievance letter you can edit, approve or decline.
+* **Ask anything** about your medical records, the settlement or the policy: "What was my diagnosis?", "Why was R3 deducted?", "Is cataract surgery covered?". Answers stream in as they are written and remember the conversation. Every rupee amount is checked as it streams: if a model writes an amount that isn't in your documents, the audit or the policy, the answer is withdrawn and replaced by a checked one.
+* **Everything keeps running in the background until you close the page** (or press *Close ClaimClear*, or Ctrl+C in the terminal). Then the web UI and the five servers stop by themselves. Reloading the page keeps your session.
 
-Two Python environments, because `langchain-mcp-adapters` needs mcp 1.x while the servers use mcp 2.3. They never share packages; the servers run as separate processes.
+![ClaimClear in the browser: the agents' audit, then streamed answers about the medical records and the claim](docs/member3_orchestration/screenshots/3_chat.png)
 
-| Environment | Python | For | Install |
-|---|---|---|---|
-| `.venv` | 3.12+ (3.15 used) | Servers, document reader, memory, contracts, tests | `python -m venv .venv` then `.venv/Scripts/python.exe -m pip install -r requirements-servers.txt` |
-| `.venv-agents` | 3.14 | The toolkit and Member 3's agents | `py -3.14 -m venv .venv-agents` then `.venv-agents/Scripts/python.exe -m pip install -r requirements-agents.txt` |
+**Choosing the model.** Two kinds of model are supported: a **local LLM** on this computer, or **OpenRouter**.
 
-On macOS / Linux use `.venv/bin/python`. Then:
+**A local LLM is chosen by default.** At every start, `start.py` checks whether one is running: Ollama (port 11434), LM Studio (port 1234) or a llama.cpp server (port 8080). If it finds one, the chat and the document reader use it, so your medical records never leave this computer. The start-up window says which model it picked. Otherwise OpenRouter is used if a key is saved, or no model at all. `--no-local-llm` turns this off for one run.
 
-1. **Tesseract OCR** (to read scans and photos): Windows `winget install --id UB-Mannheim.TesseractOCR -e`; Debian `sudo apt-get install tesseract-ocr tesseract-ocr-eng`; macOS `brew install tesseract`. The reader finds it by itself.
-2. **OpenRouter key** (only for OpenRouter embeddings or LLM rewriting): copy `.env.example` to `.env` and fill `OPENROUTER_API_KEY`. Never commit `.env`. Everything works offline without it (hashing embeddings, glossary rewriting).
-3. **Docker** (only for the production backends and their tests): Docker Desktop running.
-
-## 4. Run it step by step
-
-From the repository root, in this order. `var/` is git-ignored: every machine builds its own.
-
-| Step | Command | Result |
-|---|---|---|
-| 1. Check everything works | see [Tests](#7-tests) | all suites green |
-| 2. Build the policy index | `cd servers/policy_kb && ../../.venv/Scripts/python.exe -m policy_kb build --wording ../../data/wordings/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf` | `var/policy_kb/index.json` (add `--embedder openrouter` for bge-m3 vectors) |
-| 3. Load the development cases | `cd servers/case_records && ../../.venv/Scripts/python.exe -m case_records.register_dataset --split dev` | `var/case_store/` (never load the held-out split for development) |
-| 4. Try one case end to end | `.venv/Scripts/python.exe scripts/try_case_records.py data/dataset/dev/cases/syn-dev-001 --ocr` | upload, every case-records tool, both safety checks (any folder in `data/dataset/dev/cases`, e.g. `gen-dev-147e01`) |
-| 5. Audit a settlement letter | `cd servers/settlement_engine && ../../.venv/Scripts/python.exe -m engine.cli SET-01 --audit` | the plan's worked example: ₹8,522.86 may be disputable |
-| 6. Search the wording | `cd servers/policy_kb && ../../.venv/Scripts/python.exe -m policy_kb search "they cut my medicine bill"` | clause IDs with scores |
-| 7. Start all five servers | `.venv/Scripts/python.exe scripts/dev_servers.py` (`--check` to start, confirm and stop) | HTTP on 8101–8105; agents use `CLAIMCLEAR_MCP_MODE=http` |
-| 8. Connect the agents | `.venv-agents/Scripts/python.exe agents/toolkit/examples/verify_settlement_demo.py` | the whole chain through the toolkit |
-| 9. Every dev case through the whole app | `.venv-agents/Scripts/python.exe eval/dev_cases/run.py` (`--http` against step 7) | `eval/dev_cases/results/dev_cases.md`: each case's route, verdicts and amounts against its answer |
-| 9b. Memory on vs off | `.venv/Scripts/python.exe eval/memory_on_off/run.py` | `eval/memory_on_off/results/memory_on_off_<date>.md` |
-| 10. (Production backends) | `docker compose -f deploy/storage.compose.yml up -d`, then set the variables in [Configuration](#6-configuration) | the same servers on PostgreSQL, pgvector and MinIO |
-
-## 5. Each component: what it does, how to run it
-
-Every server runs the same way, from its folder with `.venv`:
+**Starting a local LLM, with a choice of model.** Run the second launcher:
 
 ```bash
-python -m <module>                                                  # stdio (development; the toolkit starts it)
-python -m <module> --transport streamable-http --host 0.0.0.0 --port <port>   # HTTP (Docker)
-python -m <module> --dump-schemas                                   # every tool's schemas as JSON
+start_llm.bat                      # Windows
+./start_llm.sh                     # macOS / Linux
 ```
 
-| Server | `<module>` | Tools |
+It finds Ollama, or offers to install it (with `winget` on Windows or `brew` on a Mac; elsewhere it gives the download link). It then starts Ollama in the background and shows a numbered menu: the models you already have, then recommended ones to download:
+
+| Model | Good for | Download |
 |---|---|---|
-| settlement-engine | `mcp_server` | `expected_settlement`, `reproduce_deduction`, `audit_settlement_letter`, `list_hypotheses` |
-| case-records | `case_records` | `list_case_documents`, `get_document_text`, `get_policy`, `get_claim_history` |
-| policy-kb | `policy_kb.mcp_server` | `list_policies`, `search_clauses`, `get_clause`, `clauses_for_rule`, `register_uploaded_wording` (app only, write) |
-| insurer-portal | `insurer_portal` | `file_grievance` (write, gate), `grievance_status` |
-| document-reader | `document_reader` | `read_document`, `reader_status` (app only); also `--read FILE` |
+| `llama3.1:8b` | a good all-rounder (about 8 GB of RAM) | 4.9 GB |
+| `qwen2.5:7b` | tables and figures (about 8 GB of RAM) | 4.7 GB |
+| `mistral:7b` | fast, plain English (about 8 GB of RAM) | 4.1 GB |
+| `gemma2:9b` | careful answers, a little slower (about 10 GB of RAM) | 5.4 GB |
+| `llama3.2:3b` | older computers (about 4 GB of RAM) | 2.0 GB |
 
-Every tool is marked read or write (`read_only_hint`, `_meta.access`). Errors come back as `{"code", "message", "retryable"}`, with every code listed in `contracts/claimclear_contracts/errors.py`.
+Type a number, or any model name from ollama.com/library. It downloads the model if needed, loads it into memory and saves the choice in `.env`. Then start ClaimClear as usual. Other options:
 
-Libraries:
+| Option | What it does |
+|---|---|
+| `--model qwen2.5:7b` | Use this model without asking (downloaded if needed) |
+| `--list` | Show installed and recommended models; change nothing |
+| `--start` | Start ClaimClear afterwards (other options are passed on, e.g. `--start --no-browser`) |
+
+If LM Studio or a llama.cpp server is already running and Ollama isn't installed, the menu shows the models loaded there instead.
+
+**Changing the model in the page.** Click the model name at the top right of the page (**⚙ No model configured · set up** when there is none), choose **Local model**, **OpenRouter** (paste your key from openrouter.ai; model names look like `openai/gpt-4.1-mini`) or **No model**, then press **Save and test**. ClaimClear sends the model a one-word test message, and only if it answers does it save the choice and switch to it, with no restart. The key is kept only on this computer, in the `.env` file next to `start.py`, and is never shown again. Choosing OpenRouter or No model here is remembered: later starts no longer switch to a local LLM by themselves (they do again once you run `start_llm` or choose Local model).
+
+| Choice | What you need | Where your records go |
+|---|---|---|
+| **Local model** (default when running) | `start_llm.bat` / `./start_llm.sh`, or any running Ollama / LM Studio / llama.cpp | **Never leave this computer** |
+| **OpenRouter** | An API key from openrouter.ai → Keys | Sent to OpenRouter and the model you chose |
+| **No model** | Nothing | Nowhere: answers come from your records, the audit and the policy (rows, amounts, clauses, diagnosis, dates, bill items), but not free-form questions |
+
+If the test fails, the dialog says why (for example *Is the local model running?* or *too little credit*), and nothing is saved. The test asks for a one-word reply, and every answer has a length limit (`CLAIMCLEAR_MAX_TOKENS`, default 1,500 tokens), so a key with a small credit limit works. You can also write the settings into `.env` by hand; see `.env.example`.
+
+**Your data is not kept.** Uploaded documents, chats and dry-run filings exist only while ClaimClear runs. They are deleted when you close the page, and at the next start if ClaimClear was stopped abruptly. A new launch never shows a previous conversation. **🗑 Clear my data** in the sidebar deletes everything at once. To keep data between runs, start with `--keep-data`. The sample cases are synthetic test data that ships with the project.
+
+| Option | What it does |
+|---|---|
+| `--console` | The terminal console instead of the web page |
+| `--no-browser` | Doesn't open the browser; open the printed address yourself |
+| `--keep-data` | Keeps uploaded documents, chats and filings after closing (default: deleted) |
+| `--no-local-llm` | Doesn't switch to a running local LLM for this run (uses the saved setting) |
+| `--set-openrouter-key` | Paste your OpenRouter key at a hidden prompt (or pipe it in); it is checked with OpenRouter (no cost), your credit is shown, and it is saved to `.env`. Nothing is saved if OpenRouter refuses it |
+| `--check-openrouter` | Is the saved key accepted, free tier or paid, and how much credit is left |
+| `--memory-user ID` | Long-term memory for this local user: verified claims, grievances and the topics of earlier conversations (amounts never kept), recalled in later chats. Used only after `python -m claimclear_memory consent ID` |
+| `--auto SET-01` | Runs one case with no prompts, approves, and exits: a self-check |
+| `--servers-only` | Just keeps the five servers running (Ctrl+C stops them) |
+| `--reinstall` | Rebuilds both environments |
+| `--download-python` | Always builds the environments with the private downloaded Python 3.13 |
+
+## 1. How a case flows
+
+```mermaid
+flowchart LR
+    U([Policyholder uploads<br/>bill, letter, policy]) --> S[Supervisor<br/>plan · memory]
+    S --> DR[Document Reader] --> PA[Policy Analyst] --> SA[Settlement Auditor]
+    SA -- engine needs an answer --> Q{{ask_user<br/>interrupt}} --> SA
+    SA --> C[Critic<br/>independent review]
+    C -- disagrees: retry --> SA
+    C -- still disagrees: replan --> S
+    C -- audit verified --> E[Explainer] --> C
+    C -- draft fails: plain table --> E
+    C -- nothing disputable --> END1([Explanation + audit table])
+    C -- may be disputable --> G[Grievance Agent] --> H{{approval_gate node<br/>interrupt · SHA-256 + HMAC token}}
+    H -- approve / edit --> P[Portal submit] --> END2([Filed: reference + status])
+    H -- reject --> END3([Declined, nothing filed])
+```
+
+Each specialist calls **only its own tools** on the MCP servers (`claimclear_tools.agents.AGENT_TOOLS`), and every rupee figure comes from the settlement engine:
+
+| Agent | MCP tools | Server |
+|---|---|---|
+| Document Reader | `list_case_documents`, `get_document_text` | case-records (reads through document-reader: PDF/OCR, hidden text kept apart) |
+| Policy Analyst | `get_policy`, `get_policy_wording`, `get_claim_history`, `search_clauses` | case-records, policy-kb |
+| Settlement Auditor | `expected_settlement`, `reproduce_deduction` | settlement-engine |
+| Critic | `audit_settlement_letter` (+ figure / wording / clause checks) | settlement-engine |
+| Explainer | `clauses_for_rule` | policy-kb |
+| Grievance Agent | `file_grievance`, `grievance_status` (only after approval) | insurer-portal |
+
+On SET-01 (the handover's worked example) the run reproduces the insurer's error on row R3 (a proportionate cut applied to every non-room line: ₹30,371.43 instead of the policy's ₹21,400), finds **₹8,522.86 may be disputable**, explains every row with its clause, drafts a grievance for R3 only, pauses for approval, and files it (dry run) with the approved text's SHA-256.
+
+## 2. Repository layout
+
+```
+ClaimClear/
+├── start.bat / start.sh / start.py              one command: install, start the servers, open the web UI
+├── start_llm.bat / start_llm.sh / start_llm.py  start a local LLM and choose its model
+├── agents/
+│   ├── orchestration/          Member 3: claimclear_graph — the LangGraph multi-agent system
+│   │   ├── claimclear_graph/   agents/ (one module per agent), state, services, router, checks, plan, gateway,
+│   │   │                       hooks, extraction, language, checkpoints, graph
+│   │   ├── examples/           console.py (terminal console, --auto self-check), record_fixtures.py
+│   │   └── tests/              offline (recorded real tool outputs) + live against the servers
+│   └── toolkit/                Member 2: claimclear_tools — one client for every MCP server
+├── servers/                    Member 2: the five MCP servers (ports 8101–8105)
+│   ├── settlement_engine/      every rupee: expected settlement, 41 calculation methods, matcher
+│   ├── case_records/           a case's documents, policy schedule, claim history
+│   ├── policy_kb/              clause search: BM25 + vectors + RRF, reranker, clause IDs, rule maps
+│   ├── insurer_portal/         file_grievance (gated write) and grievance_status, dry-run backend
+│   └── document_reader/        PDF/JPG/PNG to text with spans, Tesseract OCR, hidden-text channels
+├── contracts/                  CaseState, hand-offs (Plan, CriticReport, ExplainerDraft, GrievanceDraft), tool schemas
+├── memory/                     claimclear_memory: per-user policy profile, claims, balances, grievance status
+├── data/                       42 dev cases with answers, the Arogya Sanjeevani wording, policy rules
+├── eval/
+│   ├── dev_cases/              C0 fixed workflow over every dev case (Member 2)
+│   ├── graph_dev_cases/        the same cases through the multi-agent graph (Member 3)
+│   └── memory_on_off/          memory on vs off
+├── scripts/                    dev_servers.py (all five over HTTP), dataset tools
+├── deploy/                     PostgreSQL + pgvector + MinIO for the production backends
+└── docs/                       all documentation: setup/, member2_knowledge_memory_tools/, member3_orchestration/, shared/
+```
+
+## Two Python environments
+
+`langchain-mcp-adapters` needs `mcp` 1.x while the servers use `mcp` 2.3, so the servers and the agents never share an environment; the agents start (stdio) or connect to (HTTP) the servers as separate processes.
+
+| Environment | For | Install (macOS / Linux; on Windows use `Scripts\python.exe`) |
+|---|---|---|
+| `.venv` | the five servers, memory, contracts and their tests | `python -m venv .venv` then `.venv/bin/python -m pip install -r requirements-servers.txt` and `-e` each of `servers/*`, `contracts`, `memory` |
+| `.venv-agents` | the toolkit and the multi-agent graph | `python -m venv .venv-agents` then `.venv-agents/bin/python -m pip install -r requirements-agents.txt` |
+
+Python 3.12 or newer for both. **Tesseract OCR** reads scans and photos (`sudo apt-get install tesseract-ocr tesseract-ocr-eng`, `brew install tesseract`, or `winget install UB-Mannheim.TesseractOCR`); without it a scanned page is reported unreadable and the graph asks for a better copy instead of guessing.
+
+## 4. Run it
+
+From the repository root, after installing both environments:
+
+```bash
+python start.py --auto SET-01
+```
+
+A self-check without prompts: the servers start, SET-01 runs through every agent, the grievance is approved and filed (dry run), and everything stops. `--auto SET-02` is a clean settlement, `--auto SET-22` meets an engine question (a pharmacy receipt's admission dates; the self-check skips it). SET-32 no longer asks: the insurer paid that claim, so the engine audits it on the insurer's own acceptance. Without `--auto`, `python start.py` opens the web UI.
+
+```bash
+.venv-agents/bin/python eval/graph_dev_cases/run.py
+```
+
+All 42 development cases through the graph, scored against their answers and compared with the C0 run.
+
+```bash
+.venv/bin/python scripts/dev_servers.py
+```
+
+The five servers over HTTP on ports 8101–8105; then set `CLAIMCLEAR_MCP_MODE=http` for the agents (or pass `--http` to the eval runs).
+
+Using the graph from the app:
 
 ```python
-from claimclear_memory import MemoryStore, merge_history, render          # memory
-from claimclear_contracts import CaseState, Plan, GrievanceDraft, tools    # contracts
-from claimclear_tools import ClaimClearToolkit                             # agents' toolkit (.venv-agents)
-from document_reader import DocumentReader                                 # document reading in Python
+from claimclear_tools import ClaimClearToolkit
+from claimclear_memory import MemoryStore
+from claimclear_graph import Services, build_claimclear_graph, initial_state, HumanApprovalGateway
+
+async with ClaimClearToolkit() as tk:                                  # keep it open while graphs run
+    graph = build_claimclear_graph(Services(toolkit=tk, memory_store=MemoryStore()))
+    cfg = {"configurable": {"thread_id": case_id}}
+    state = await graph.ainvoke(initial_state(case_id, user_id=user_id, claim=claim, letter=letter), cfg)
+    gate = HumanApprovalGateway(graph)
+    if questions := await gate.pending_questions(cfg):                # e.g. Q-CONDITION-TYPE
+        state = await gate.answer_questions(cfg, {"Q-CONDITION-TYPE": "illness"})
+    if await gate.is_paused_for_approval(cfg):                         # show state["grievance"]["text"]
+        state = await gate.approve_and_resume(cfg)                     # or edited_text=..., or gate.reject(cfg)
+    print(state["outcome"], state["explanation"])
 ```
 
-## 6. Configuration
+`claim` and `letter` are the settlement engine's `ClaimIn` / `LetterIn`; pass `Services(extractor=llm_extractor(chat_model))` (`claimclear_graph.extraction`) to have the document reader extract them from the uploaded documents instead.
 
-Everything is an environment variable with a safe default under `var/`. Secrets go in `.env` only.
+## 5. Tests
+
+| Suite | Command (from its folder) | Result here (Linux, Python 3.12/3.13, Tesseract 5.3) |
+|---|---|---|
+| multi-agent graph, every agent, the web UI | `cd agents/orchestration && ../../.venv-agents/bin/python -m pytest --cov=claimclear_graph --cov-branch` | **479 passed, 1 skipped (PostgreSQL)**, 96 % line+branch coverage, random order; see [docs/member3_orchestration/testing.md](docs/member3_orchestration/testing.md) |
+| agents' toolkit | `cd agents/toolkit && ../../.venv-agents/bin/python -m pytest` | 45 passed (live against the servers) |
+| policy-kb | `cd servers/policy_kb && ../../.venv/bin/python -m pytest` | 110 passed, 5 skipped |
+| insurer-portal | `cd servers/insurer_portal && ../../.venv/bin/python -m pytest` | 13 passed |
+| memory | `cd memory && ../.venv/bin/python -m pytest` | 49 passed, 42 skipped (PostgreSQL not running) |
+| contracts | `cd contracts && ../.venv/bin/python -m pytest` | 22 passed; `python -m claimclear_contracts.export --check` up to date |
+| eval helpers | `cd eval/dev_cases` / `eval/memory_on_off` | 3 + 3 passed |
+| settlement-engine | `cd servers/settlement_engine && ../../.venv/bin/python -m pytest` | 315 passed, 6 skipped ¹ |
+| document-reader | `cd servers/document_reader && ../../.venv/bin/python -m pytest` | 69 passed, 11 skipped ¹ |
+| case-records | `cd servers/case_records && ../../.venv/bin/python -m pytest` | 25 passed, 34 skipped ¹ |
+
+¹ The skipped tests read the **held-out split** (`data/dataset/heldout/`, documents such as SET-06, FMT-04, POI-08), which is not part of this upload; each suite's `conftest.py` lists them and skips them with that reason while the folder is missing (three case-records skips need PostgreSQL). Restore `data/dataset/heldout` and they run as in Member 2's CI. `pytest` hides the summary line (`addopts = -q`); add `-o addopts=""` to see the counts. CI (`.github/workflows/ci.yml`) runs every suite on each push.
+
+## 6. Results on the development cases
+
+| Run | Cases | Ran to the end (audit produced) | Overall verdict right | Row verdicts right | Payable right (±₹1) | Disputable right (±₹1) |
+|---|---|---|---|---|---|---|
+| C0 fixed workflow (`eval/dev_cases`) | 42 | 42 | 40/42 | 89/94 | 27/31 | 37/40 |
+| Multi-agent graph (`eval/graph_dev_cases`) | 42 | 42 | 40/42 | 89/94 | 27/31 | 37/40 |
+
+Every case reaches a defined outcome and produces an audit. The graph agrees with the fixed workflow on every case's overall verdict (42/42): orchestration adds the plan, the critic's independent re-check and draft review, the questions, the explanation and the approval gate without changing a single figure. The two misses: gen-dev-50b4e6, where the answer key differs by a documented decision (IRDAI's 2020 proportionate-deduction rule, `eval/dev_cases/decisions.json`), and syn-dev-021, a pharmacy bill with no admission date, where the engine asks for the date rather than assume it. 19 cases stopped at the approval gate; none was filed without approval. Details: [`eval/graph_dev_cases/results/graph_dev_cases.md`](eval/graph_dev_cases/results/graph_dev_cases.md).
+
+## 7. Configuration
+
+Environment variables, with safe defaults under `var/` (git-ignored). Secrets go in `.env` only (see `.env.example`).
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `CLAIMCLEAR_CASE_STORE` | `var/case_store` | Case store root (local index and files) |
-| `CLAIMCLEAR_REFERENCE_DIR` | `data/dataset/dev/reference` | Policies and claim history (`data/dataset/heldout/reference` for an evaluation run) |
-| `CLAIMCLEAR_CASE_INDEX` | unset: `index.json` | `postgresql://...`: case index in PostgreSQL |
-| `CLAIMCLEAR_BLOB_STORE` | unset: `files/` | `s3://bucket?endpoint=host:9000&secure=0`: documents in MinIO |
-| `CLAIMCLEAR_S3_ACCESS_KEY`, `CLAIMCLEAR_S3_SECRET_KEY` | — | MinIO credentials |
-| `CLAIMCLEAR_DOCUMENT_CACHE` | `<case store>/text_cache` | Extracted-text cache; `off` turns it off |
-| `CLAIMCLEAR_OCR` / `_LANGUAGE` / `_DPI` | `auto` / `eng` / `300` | OCR on/off, Tesseract languages (`eng+hin`), resolution |
-| `CLAIMCLEAR_POLICY_KB_INDEX` | `var/policy_kb/index.json` | Policy index file |
-| `CLAIMCLEAR_POLICY_KB_VECTORS` | unset: in memory | `postgresql://...`: clause vectors in pgvector |
-| `CLAIMCLEAR_POLICY_KB_REWRITER` / `_RERANKER` | `glossary` / `none` | Query rewriting and reranking |
-| `CLAIMCLEAR_EMBEDDING_MODEL` | `baai/bge-m3` | OpenRouter embeddings (with `OPENROUTER_API_KEY`) |
-| `CLAIMCLEAR_MEMORY_DB` | `var/memory/memory.db` | SQLite file, or `postgresql://...[?schema=memory]` |
-| `CLAIMCLEAR_MCP_MODE` | `stdio` | Toolkit: `http` to use running servers (`CLAIMCLEAR_*_URL` per server) |
-| `CLAIMCLEAR_SERVER_PYTHON` | `.venv` | Python the toolkit and launcher start the servers with |
+| `CLAIMCLEAR_MCP_MODE` | `stdio` | Agents start the servers as child processes (`stdio`) or connect to running ones (`http`) |
+| `CLAIMCLEAR_SERVER_PYTHON` | `<repo>/.venv` | The Python the agents start the servers with |
+| `CLAIMCLEAR_CHECKPOINTS` | unset (in memory) | Where paused cases are kept: `sqlite:///var/graph/checkpoints.db` or `postgresql://...`, so a case waiting at a question or the gate survives a restart (`claimclear_graph.open_checkpointer`) |
+| `CLAIMCLEAR_LLM_BASE_URL`, `CLAIMCLEAR_LOCAL_MODEL` | unset | The local LLM (written by `start_llm`); used first |
+| `OPENROUTER_API_KEY`, `CLAIMCLEAR_CHAT_MODEL` | unset, `openai/gpt-4.1-mini` | OpenRouter, used when no local LLM is set |
+| `CLAIMCLEAR_AUTO_LOCAL` | unset | `0`: `start.py` doesn't switch to a running local LLM by itself (written when you choose OpenRouter in the page) |
+| `CLAIMCLEAR_EXTRACTION_MODEL` | the chat model | Model override for `eval/graph_dev_cases/run.py --llm-extract` |
+| `CLAIMCLEAR_EXTRACTION_MAX_TOKENS` | `4000` | The document reader's extraction reply limit (at least 500). Lower it for a key with little credit: OpenRouter reserves the whole limit and refuses with HTTP 402 when it can't afford it |
+| `CLAIMCLEAR_MAX_TOKENS` | `1500` | The longest reply the chat model may write. Always sent to the provider, so keys with a small credit limit work; the settings test uses 16, document extraction 4,000 |
+| `CLAIMCLEAR_MEMORY_USER` | unset | The local user whose long-term memory the web UI uses (with consent); unset = memory off. See [docs/member2_knowledge_memory_tools/memory.md](docs/member2_knowledge_memory_tools/memory.md#episodic-memory-earlier-conversations) |
+| `CLAIMCLEAR_GATE_SECRET` | unset | Approval-gate HMAC secret. Set it for **both** the gateway and the insurer-portal server: the portal then accepts only `HMAC-SHA256(secret, text_sha256)` tokens. Unset, the portal checks only that a token is present (development) |
+| `CLAIMCLEAR_CASE_STORE`, `CLAIMCLEAR_REFERENCE_DIR` | `var/case_store`, `data/dataset/dev/reference` | Case store and reference data |
+| `CLAIMCLEAR_POLICY_KB_INDEX` | `var/policy_kb/index.json` | Policy index (build it: `python -m policy_kb build --wording ...`) |
+| `CLAIMCLEAR_MEMORY_DB` | `var/memory/memory.db` | SQLite file or `postgresql://...` |
+| `CLAIMCLEAR_PORTAL_STORE` | `var/insurer_portal/dry_run.json` | The dry-run portal's record of filings |
+| `CLAIMCLEAR_*_URL` | `http://127.0.0.1:810x/mcp` | Server URLs in HTTP mode |
 
-## 7. Tests
+Every server-side variable is listed in [docs/member2_knowledge_memory_tools/overview.md](docs/member2_knowledge_memory_tools/overview.md#6-configuration).
 
-Run each suite from its folder. Results (Windows, Python 3.15 / 3.14, with Tesseract and the storage services running):
+## 8. Documents
 
-| Suite | Command | Result |
-|---|---|---|
-| settlement-engine | `cd servers/settlement_engine && ../../.venv/Scripts/python.exe -m pytest` | 321 passed |
-| document-reader | `cd servers/document_reader && ../../.venv/Scripts/python.exe -m pytest` | 80 passed (2 OCR tests skip without Tesseract) |
-| case-records | `cd servers/case_records && ../../.venv/Scripts/python.exe -m pytest` | 59 passed (3 need PostgreSQL + MinIO) |
-| policy-kb | `cd servers/policy_kb && ../../.venv/Scripts/python.exe -m pytest` | 114 passed, 1 skipped (the LangChain test runs in `.venv-agents`) |
-| insurer-portal | `cd servers/insurer_portal && ../../.venv/Scripts/python.exe -m pytest` | 13 passed |
-| memory | `cd memory && ../.venv/Scripts/python.exe -m pytest` | 91 passed (42 of them on PostgreSQL) |
-| contracts | `cd contracts && ../.venv/Scripts/python.exe -m pytest` | 20 passed |
-| memory on vs off | `cd eval/memory_on_off && ../../.venv/Scripts/python.exe -m pytest` | 3 passed |
-| agents' toolkit | `cd agents/toolkit && ../../.venv-agents/Scripts/python.exe -m pytest` | 45 passed (live against the four servers the agents use) |
-| all servers over HTTP | `.venv/Scripts/python.exe scripts/dev_servers.py --check` | 5 up |
-| whole app, every dev case | `.venv-agents/Scripts/python.exe eval/dev_cases/run.py` | 42 cases, 41 to the end; scores in `eval/dev_cases/results/dev_cases.md` |
+All documentation is in [`docs/`](docs/README.md), one document per topic, grouped by who needs it:
 
-Tests that need the storage services read these variables and skip without them:
+| Folder | For |
+|---|---|
+| [`docs/setup/`](docs/setup/setup_guide.md) | Running ClaimClear. **Start with [setup_guide.md](docs/setup/setup_guide.md)** |
+| [`docs/member2_knowledge_memory_tools/`](docs/member2_knowledge_memory_tools/overview.md) | The MCP servers, retrieval, memory, contracts, toolkit, the dataset and its case book |
+| [`docs/member3_orchestration/`](docs/member3_orchestration/architecture.md) | The multi-agent graph, the web UI, the tests |
+| [`docs/shared/`](docs/shared/code_walkthrough.md) | The code walkthrough, the integration notes, the architecture diagram |
 
-```bash
-docker compose -f deploy/storage.compose.yml up -d
-export CLAIMCLEAR_TEST_POSTGRES=postgresql://claimclear:claimclear@127.0.0.1:5432/claimclear
-export CLAIMCLEAR_TEST_S3="s3://claimclear-test?endpoint=127.0.0.1:9000&secure=0"
-export CLAIMCLEAR_S3_ACCESS_KEY=claimclear CLAIMCLEAR_S3_SECRET_KEY=claimclear-secret
-```
-
-`pytest` hides the summary line (`addopts = -q`); add `-o addopts=""` to see the counts. CI runs all of it on every push.
-
-## 8. How the other members use it
-
-* **Member 3 (agents):** import `claimclear_tools.ClaimClearToolkit` (one session per server, `tk.for_agent("settlement_auditor")`, typed calls, `signals` for graph routes, `critic` checks) and `claimclear_contracts` (`CaseState`, hand-offs, `tools.schema("ClaimIn")` for structured extraction). Read [`servers/README.md`](servers/README.md) first. Wire Member 4's hooks in: the toolkit's `tool_interceptors` and each agent's `ToolNode(awrap_tool_call=...)`. Never read `var/dataset_map.json` or held-out cases.
-* **Member 4 (app, security, deployment):** uploads go through `CaseStore.create_case` / `add_document`; read an upload with document-reader `read_document`; hooks attach at LangGraph's `ToolNode(awrap_tool_call=...)` (knows the agent: permission, budget) and the toolkit's `tool_interceptors` (around every MCP call: logging, scrubbing); the permission hook uses `claimclear_tools.agents.may_use` and `claimclear_contracts.tools.access/app_only`; memory controls are `grant_consent`, `withdraw_consent`, `export`, `forget` and a daily `purge_expired()`; Compose adds the five servers (8101–8105) and the two storage services.
-* **Member 1 (evaluation):** golden answers are computed by hand, never by the engine; `python -m policy_kb evaluate <queries.jsonl>` gives Recall@5 before and after rewriting; `eval/memory_on_off/run.py` gives the memory comparison. Add same-policy claim sequences to the golden set to make it meaningful.
-
-Copy-ready instructions per member: [`.claude/skills/claimclear-member2/references/for-other-members.md`](.claude/skills/claimclear-member2/references/for-other-members.md).
-
-## 9. Production
-
-Each piece has its production backend built and tested, switched on by one variable, with the same API:
-
-| Data | Development | Production (built on this branch) |
-|---|---|---|
-| Uploaded documents | `var/case_store/files/` | MinIO / S3 (`CLAIMCLEAR_BLOB_STORE`) |
-| Case index | `var/case_store/index.json` | PostgreSQL (`CLAIMCLEAR_CASE_INDEX`) |
-| Clause vectors | in memory, from the index file | PostgreSQL + pgvector (`CLAIMCLEAR_POLICY_KB_VECTORS`) |
-| Memory | SQLite file | PostgreSQL (`CLAIMCLEAR_MEMORY_DB`) |
-| OCR | Tesseract if installed | Tesseract in the image (`apt-get install tesseract-ocr tesseract-ocr-eng`) |
-
-Order of work and the release checklist: [`.claude/skills/claimclear-member2/references/production.md`](.claude/skills/claimclear-member2/references/production.md). Still for Member 4: the app's Compose file and Dockerfiles, secrets management, the evaluation gate threshold in CI, Prometheus and Grafana.
+The [docs index](docs/README.md) lists every document and what to read it for.

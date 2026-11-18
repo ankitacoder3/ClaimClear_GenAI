@@ -9,7 +9,7 @@
     store.purge_expired()                         # daily retention job
 
 Nothing is stored without consent to the current memory policy
-(``POLICY_VERSION``, docs/memory_policy.md). There is no read that spans users:
+(``POLICY_VERSION``, docs/member2_knowledge_memory_tools/memory_policy.md). There is no read that spans users:
 the only way in is ``for_user``; the retention job is the only cross-user
 operation, and it only deletes. Which session belongs to which user is the
 app's job (Member 4).
@@ -32,8 +32,10 @@ from pathlib import Path
 from typing import Any, Callable, Iterable, Optional
 
 from .db import Database, is_postgres
+from . import episodes as ep
 from .models import (
     ClaimRecord,
+    EpisodeRecord,
     GrievanceEvent,
     GrievanceRecord,
     GrievanceStatus,
@@ -43,8 +45,8 @@ from .models import (
 )
 
 DB_ENV = "CLAIMCLEAR_MEMORY_DB"
-SCHEMA_VERSION = 2
-POLICY_VERSION = "memory-policy-v1"    # the version of docs/memory_policy.md a user consents to
+SCHEMA_VERSION = 3
+POLICY_VERSION = "memory-policy-v2"    # the version of docs/member2_knowledge_memory_tools/memory_policy.md a user consents to
 USER_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 FINAL_STATUSES = ("computed", "not_admissible")
@@ -56,14 +58,15 @@ EXPIRABLE_GRIEVANCES = (GrievanceStatus.CLOSED, GrievanceStatus.WITHDRAWN, Griev
 
 @dataclass(frozen=True)
 class Retention:
-    """How long memory keeps things (days). Stated to the user in docs/memory_policy.md."""
+    """How long memory keeps things (days). Stated to the user in docs/member2_knowledge_memory_tools/memory_policy.md."""
 
     claims_days: int = 730              # a claim, counted from when it was last verified
     closed_grievance_days: int = 365    # a closed, withdrawn, resolved or rejected grievance, from its last change
     inactive_days: int = 365            # everything, once the user hasn't used ClaimClear for this long
+    episode_days: int = 180             # an earlier conversation (topics only), from when it was last updated
 
     def __post_init__(self):
-        if min(self.claims_days, self.closed_grievance_days, self.inactive_days) < 1:
+        if min(self.claims_days, self.closed_grievance_days, self.inactive_days, self.episode_days) < 1:
             raise ValueError("retention periods must be at least one day")
 
 
@@ -117,9 +120,16 @@ CREATE TABLE IF NOT EXISTS consent_events (
     user_id TEXT NOT NULL, seq INTEGER NOT NULL, at TEXT NOT NULL, action TEXT NOT NULL,
     policy_version TEXT NOT NULL, source TEXT NOT NULL,
     PRIMARY KEY (user_id, seq));
+CREATE TABLE IF NOT EXISTS episodes (
+    user_id TEXT NOT NULL, episode_id TEXT NOT NULL, case_id TEXT NOT NULL, claim_id TEXT NOT NULL,
+    summary TEXT NOT NULL, topics TEXT NOT NULL, turns INTEGER NOT NULL, source TEXT NOT NULL,
+    embedder TEXT NOT NULL, vector TEXT NOT NULL, created_at TEXT NOT NULL, updated_at TEXT NOT NULL,
+    recalled_at TEXT NOT NULL, recall_count INTEGER NOT NULL,
+    PRIMARY KEY (user_id, episode_id));
 """
 
-USER_TABLES = ("policies", "claims", "balances", "grievances", "grievance_events", "users", "consent_events")
+USER_TABLES = ("policies", "claims", "balances", "grievances", "grievance_events", "episodes", "users",
+               "consent_events")
 
 
 def _columns(table: str) -> list[str]:
@@ -192,7 +202,7 @@ class MemoryStore:
                 row = con.execute("SELECT value FROM meta WHERE key = 'schema_version'").fetchone()
             if row is not None and int(row[0]) > SCHEMA_VERSION:
                 raise MemoryStoreError("SCHEMA_VERSION", f"database schema {row[0]}, code expects {SCHEMA_VERSION}")
-            con.executescript(_SCHEMA)              # v1 -> v2 only adds tables (users, consent_events)
+            con.executescript(_SCHEMA)              # v1 -> v2 -> v3 only add tables (users, consent_events; episodes)
             if row is not None and int(row[0]) == 1:
                 # v1 had no consent: existing rows can't be used until the user consents, so mark them
                 # with an empty consent version (inactive) and today's date as last seen.
@@ -321,6 +331,8 @@ class UserMemory:
         grievance_cut = self._store.cutoff(r.closed_grievance_days)
         uid = self.user_id
         with self._store.connect() as con:
+            counts["episodes"] = con.execute("DELETE FROM episodes WHERE user_id=? AND updated_at < ?",
+                                             (uid, self._store.cutoff(r.episode_days))).rowcount
             done = ",".join("?" * len(EXPIRABLE_GRIEVANCES))
             old = [g[0] for g in con.execute(
                 f"SELECT grievance_id FROM grievances WHERE user_id=? AND status IN ({done}) AND updated_at < ?",
@@ -569,6 +581,101 @@ class UserMemory:
             self._touch(con)
         return build_context(self, max_claims, policy_no)
 
+    # ------------------------------------------------------------------ episodic memory (conversations, topics only)
+
+    def remember_conversation(self, turns: Iterable[tuple[str, str]], *, case_id: str = "", claim_id: str = "",
+                              summary: Optional[str] = None, source: str = "chat",
+                              embedder: Optional[ep.Embedder] = None) -> Optional[EpisodeRecord]:
+        """Remember what a finished conversation was about (``episodes.py``).
+
+        ``turns`` are ``(question, answer)`` pairs; only the questions are used when no ``summary`` is given.
+        A ``summary`` written by a model is accepted but always scrubbed: amounts, numbers, contacts and long
+        identifiers are removed (``UnsafeSummary`` if an amount survives). A near-duplicate of an earlier
+        conversation about the same case is merged into it. Returns ``None`` when there is nothing to keep.
+        """
+        self._check_consent()
+        turns = [(str(q or ""), str(a or "")) for q, a in turns]
+        questions = [q for q, _ in turns if q.strip()]
+        if not questions:
+            return None
+        raw = summary if summary and summary.strip() else ep.extractive_summary(turns)
+        text = ep.scrub(raw)
+        if not text:
+            return None
+        topics = ep.topics_of(" ".join(questions) + " " + text)
+        emb = embedder or ep.HashingEmbedder()
+        vector = emb.embed([text + " " + " ".join(topics)])[0]
+        now = self._store.now()
+        case_id, claim_id = _text(case_id, 64), _text(claim_id, 64)
+        with self._store.connect() as con:
+            same = con.execute("SELECT * FROM episodes WHERE user_id=? AND case_id=? AND embedder=?",
+                               (self.user_id, case_id, emb.name)).fetchall()
+            best = max(same, key=lambda r: ep.cosine(vector, json.loads(r["vector"])), default=None)
+            if best is not None and ep.cosine(vector, json.loads(best["vector"])) >= ep.MERGE_SIMILARITY:
+                gid = best["episode_id"]
+                merged = list(dict.fromkeys(json.loads(best["topics"]) + topics))
+                con.execute("UPDATE episodes SET summary=?, topics=?, turns=?, source=?, vector=?, claim_id=?, "
+                            "updated_at=? WHERE user_id=? AND episode_id=?",
+                            (text, json.dumps(merged), int(best["turns"]) + len(questions), _text(source, 32),
+                             json.dumps(vector), claim_id or best["claim_id"], now, self.user_id, gid))
+            else:
+                gid = f"eps_{uuid.uuid4().hex[:12]}"
+                con.execute(_upsert("episodes", ("user_id", "episode_id")),
+                            (self.user_id, gid, case_id, claim_id, text, json.dumps(topics), len(questions),
+                             _text(source, 32), emb.name, json.dumps(vector), now, now, "", 0))
+            # keep at most MAX_EPISODES: the least recalled, then the oldest, go first
+            total = con.execute("SELECT COUNT(*) FROM episodes WHERE user_id=?", (self.user_id,)).fetchone()[0]
+            extra = total - ep.MAX_EPISODES
+            if extra > 0:
+                old = con.execute("SELECT episode_id FROM episodes WHERE user_id=? AND episode_id<>? "
+                                  "ORDER BY recall_count, updated_at LIMIT ?", (self.user_id, gid, extra)).fetchall()
+                for (oid,) in old:
+                    con.execute("DELETE FROM episodes WHERE user_id=? AND episode_id=?", (self.user_id, oid))
+            self._touch(con)
+        return self.episode(gid)
+
+    def recall(self, query: str, k: int = ep.DEFAULT_K, embedder: Optional[ep.Embedder] = None,
+               case_id: Optional[str] = None) -> list[EpisodeRecord]:
+        """Earlier conversations relevant to ``query``: hybrid (vectors + BM25, fused with RRF) and weighted by
+        recency. Empty without consent. Expired episodes are purged first; recalled ones are marked as used."""
+        if not (query or "").strip() or not self.consent().active:
+            return []
+        self.purge_expired()
+        if not self.consent().active:
+            return []
+        emb = embedder or ep.HashingEmbedder()
+        sql, args = "SELECT * FROM episodes WHERE user_id=?", ()
+        if case_id is not None:
+            sql, args = sql + " AND case_id=?", (case_id,)
+        items = []
+        for r in self._rows(sql, args):
+            topics = json.loads(r["topics"])
+            vec = json.loads(r["vector"]) if r["embedder"] == emb.name else \
+                emb.embed([r["summary"] + " " + " ".join(topics)])[0]          # another embedder: re-embed
+            items.append({"row": r, "summary": r["summary"], "topics": topics, "vector": vec,
+                          "updated_at": r["updated_at"]})
+        found = ep.rank(query, items, emb.embed([query])[0], self._store._clock().astimezone(timezone.utc), k)
+        if not found:
+            return []
+        now = self._store.now()
+        with self._store.connect() as con:
+            for _, it in found:
+                con.execute("UPDATE episodes SET recalled_at=?, recall_count=recall_count+1 WHERE user_id=? AND "
+                            "episode_id=?", (now, self.user_id, it["row"]["episode_id"]))
+            self._touch(con)
+        return [_episode(it["row"], score) for score, it in found]
+
+    def episodes(self, limit: Optional[int] = None) -> list[EpisodeRecord]:
+        """Every remembered conversation, newest first."""
+        sql, args = "SELECT * FROM episodes WHERE user_id=? ORDER BY updated_at DESC, episode_id", ()
+        if limit:
+            sql, args = sql + " LIMIT ?", (int(limit),)
+        return [_episode(r) for r in self._rows(sql, args)]
+
+    def episode(self, episode_id: str) -> Optional[EpisodeRecord]:
+        rows = self._rows("SELECT * FROM episodes WHERE user_id=? AND episode_id=?", (episode_id,))
+        return _episode(rows[0]) if rows else None
+
     # ------------------------------------------------------------------ the user's own data
 
     def export(self) -> dict:
@@ -578,7 +685,8 @@ class UserMemory:
                 "policies": [p.to_dict() for p in self.profiles()],
                 "claims": [c.to_dict() for c in self.claims()],
                 "balances": [b.to_dict() for b in self.balances()],
-                "grievances": [g.to_dict() for g in self.grievances()]}
+                "grievances": [g.to_dict() for g in self.grievances()],
+                "episodes": [e.to_dict() for e in self.episodes()]}
 
     def forget(self) -> dict[str, int]:
         """Delete everything stored for this user ("forget my data"), consent record included, so memory
@@ -619,6 +727,18 @@ class NoMemory:
     def open_grievance(self, claim_id: str, row_ids: Optional[Iterable[str]] = None, note: str = "") -> None:
         return None
 
+    def remember_conversation(self, turns, **kwargs) -> None:
+        return None
+
+    def recall(self, query: str, k: int = ep.DEFAULT_K, embedder=None, case_id=None) -> list:
+        return []
+
+    def episodes(self, limit: Optional[int] = None) -> list:
+        return []
+
+    def episode(self, episode_id: str) -> None:
+        return None
+
     def update_grievance(self, grievance_id: str, status: str, **kwargs) -> None:
         return None
 
@@ -652,7 +772,7 @@ class NoMemory:
 
     def export(self) -> dict:
         return {"user_id": self.user_id, "consent": self.consent().to_dict(), "consent_log": [], "policies": [],
-                "claims": [], "balances": [], "grievances": []}
+                "claims": [], "balances": [], "grievances": [], "episodes": []}
 
     def forget(self) -> dict[str, int]:
         return {t: 0 for t in USER_TABLES}
@@ -693,3 +813,8 @@ def _grievance(r, events: list[GrievanceEvent]) -> GrievanceRecord:
     return GrievanceRecord(r["grievance_id"], r["claim_id"], r["policy_no"], r["status"],
                            tuple(json.loads(r["row_ids"])), _dec(r["disputable_amount"]), r["text_sha256"],
                            r["reference_no"], r["created_at"], r["updated_at"], tuple(events))
+
+
+def _episode(r, score: Optional[float] = None) -> EpisodeRecord:
+    return EpisodeRecord(r["episode_id"], r["case_id"], r["claim_id"], r["summary"], tuple(json.loads(r["topics"])),
+                         int(r["turns"]), r["source"], r["created_at"], r["updated_at"], int(r["recall_count"]), score)

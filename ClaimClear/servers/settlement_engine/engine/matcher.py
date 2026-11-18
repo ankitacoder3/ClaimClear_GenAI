@@ -38,6 +38,7 @@ from .engine import _inr, compute_settlement
 from .hypotheses import (
     HYPOTHESES,
     NAMED_LINE_KINDS,
+    REJECTION_EVIDENCE,
     ROW_DEDUCTIONS,
     ROW_RULE_REF,
     CaseContext,
@@ -49,6 +50,8 @@ from .hypotheses import (
 from .models import (
     Category,
     Claim,
+    ConditionType,
+    Fact,
     HypothesisMatch,
     LetterAudit,
     LetterRow,
@@ -69,6 +72,10 @@ TOLERANCE = D(1)  # ₹1, for rounding at a different step
 # First match wins. GST before room/ICU; proportionate before room ("room category ... proportion").
 ROW_PATTERNS: list[tuple[RowKind, re.Pattern[str]]] = [
     (RowKind.COPAY, re.compile(r"\b(co-?pay\w*|co-?payment)\b", re.I)),
+    # A rejection because the claim is not genuine (before the kinds its reason may also mention: "9 room days").
+    (RowKind.NOT_GENUINE, re.compile(r"\bnot genuine\b|\bfraud\w*|\bfabricat\w*|\bforged\b|\btamper\w*|"
+                                     r"\bnot (?:been )?provided\b|\bcould not (?:be )?(?:verified|traced|confirmed|confirm)\b|"
+                                     r"\bnot registered\b|\bdoes not exist\b", re.I)),
     (RowKind.ALREADY_PAID, re.compile(r"\balready (been )?(settled|paid)\b|\bpaid twice\b|\bduplicate claim\b|"
                                       r"\bcannot be paid (again|twice)\b", re.I)),
     (RowKind.UNITEMISED, re.compile(r"\bnot supported by (the )?itemi[sz]ed\b|\bnot itemi[sz]ed\b|\bunitemi[sz]ed\b|"
@@ -175,6 +182,19 @@ def reproduce_row(
     base = dict(row_id=row.row_id, particulars=row.particulars, kind=kind, kind_source=kind_source,
                 insurer_amount=amount, tested=tested, exhaustive=exhaustive, rule_ref=rule_ref,
                 policy_fact_ids=fact_ids)
+
+    # A whole-claim rejection the bill's own inconsistencies confirm (engine/integrity.py). Checked before the
+    # questions: a bill whose dates are impossible can still support a "not genuine" rejection.
+    if row.row_id == "REJECTION":
+        evidence_ctx = replace(ctx, row=row)
+        for h in (HYPOTHESES[i] for i in REJECTION_EVIDENCE if HYPOTHESES[i].kind == kind):
+            for c in h.run(evidence_ctx):
+                if _within(c.amount, amount):
+                    m = HypothesisMatch(h.hypothesis_id, True, h.title, c.amount, c.detail, c.line_ids)
+                    return RowAudit(**base, policy_amount=round_paise(amount), difference=ZERO,
+                                    verdict=Verdict.MATCHES_POLICY, method=h.hypothesis_id,
+                                    explanation=f"The insurer's rejection matches the policy: {c.detail.rstrip('.')}.",
+                                    matches=[m], questions=[])
 
     # The engine needs an answer first: no verdict on any row until it has one.
     if ctx.result.status == Status.NEEDS_INFORMATION:
@@ -330,22 +350,67 @@ def letter_rows(letter: SettlementLetter) -> list[LetterRow]:
     if letter.copay_amount is not None and letter.letter_type != "rejection":
         rows.append(LetterRow("COPAY", "Co-pay", D(letter.copay_amount), kind=RowKind.COPAY))
     if letter.letter_type == "rejection":
-        kind = classify_row(letter.rejection_reason)
-        if kind not in (RowKind.WAITING_PERIOD, RowKind.POLICY_PERIOD, RowKind.ALREADY_PAID):
-            kind = RowKind.UNSPECIFIED
         rows.append(LetterRow("REJECTION", letter.rejection_reason or "Claim rejected", D(letter.claimed_amount),
-                              kind=kind))
+                              kind=classify_rejection(letter.rejection_reason)))
     return rows
+
+
+REJECTION_KINDS = (RowKind.ALREADY_PAID, RowKind.POLICY_PERIOD, RowKind.WAITING_PERIOD, RowKind.NOT_GENUINE)
+
+
+def classify_rejection(reason: str) -> RowKind:
+    """What a whole-claim rejection is about. Only the rejection kinds count, in this order: a reason that ends
+    "... so the claim is not payable" is still a waiting-period rejection (the generic phrase used to win)."""
+    for kind in REJECTION_KINDS:
+        if any(k == kind and p.search(reason or "") for k, p in ROW_PATTERNS):
+            return kind
+    return RowKind.UNSPECIFIED
 
 
 def _prepare(letter: SettlementLetter, claim: Claim, policy: Policy, rules: PolicyRules,
              history: Iterable[PastClaim]) -> tuple[CaseContext, list[LetterRow], list[RowKind]]:
     history = list(history)
     result = compute_settlement(claim, policy, rules, history)
-    ctx = CaseContext(claim, policy, rules, history, result, letter)
     rows = letter_rows(letter)
     kinds = [r.kind or classify_row(r.particulars, r.reason) for r in rows]
+    accepted = _condition_the_insurer_accepted(letter, claim, policy, rules, history, result, kinds)
+    if accepted is not None:
+        claim, result = accepted
+    ctx = CaseContext(claim, policy, rules, history, result, letter)
     return ctx, rows, kinds
+
+
+# Waiting-period classifications tried, in order, when the insurer's payment settles the question: the 24-month list
+# first (what a listed illness between 24 and 36 months of cover needs), then an ordinary illness, then an accident
+# (the only way an admission in the first 30 days is covered).
+_ACCEPTED_CONDITIONS = (ConditionType.LISTED_ILLNESS_SHORT, ConditionType.ILLNESS, ConditionType.ACCIDENT)
+
+
+def _condition_the_insurer_accepted(letter, claim, policy, rules, history, result, kinds):
+    """``(claim, result)`` with the condition the insurer's own letter accepted, or ``None``.
+
+    When the only open question is ``Q-CONDITION-TYPE`` (which waiting-period list, or "was it an accident?") and the
+    insurer **paid** the claim without any waiting-period row, its letter has treated the waiting period as served.
+    ``ClaimIn.condition_type`` may come from the insurer's letter, so the deductions are checked on that basis, and
+    the fact says so. If the condition were really on the longer list, the insurer paid more than the policy requires:
+    nothing in that can cost the policyholder, so no answer is needed to audit the letter.
+    """
+    if (result.status != Status.NEEDS_INFORMATION or claim.condition_type is not None
+            or letter.letter_type == "rejection" or D(letter.paid_amount) <= 0
+            or RowKind.WAITING_PERIOD in kinds
+            or {q.question_id for q in result.questions} != {"Q-CONDITION-TYPE"}):
+        return None
+    for condition in _ACCEPTED_CONDITIONS:
+        c = replace(claim, condition_type=condition)
+        r = compute_settlement(c, policy, rules, history)
+        if r.status == Status.COMPUTED:
+            r.facts.append(Fact("F-CONDITION-FROM-LETTER", "assumption",
+                                f"The insurer paid this claim with no waiting-period deduction, so its letter treats "
+                                f"the condition as covered ({condition.value.replace('_', ' ')}); the deductions are "
+                                "checked on that basis", rule_ref="listed_illness_waiting_period",
+                                inputs={"condition_type": condition.value}))
+            return c, r
+    return None
 
 
 def _others(kinds: list[RowKind], i: int) -> list[RowKind]:
@@ -417,6 +482,17 @@ def audit_letter(
             if all(q.question_id != x.question_id for x in questions):
                 questions.append(q)
 
+    confirmed = letter.letter_type == "rejection" and any(
+        a.row_id == "REJECTION" and a.verdict == Verdict.MATCHES_POLICY and a.method in REJECTION_EVIDENCE
+        for a in audits)
+    if confirmed:
+        # The bill's own inconsistencies confirm the rejection: nothing is payable on these documents, and the
+        # question about impossible dates is moot for this letter.
+        gap = round_paise(-paid)
+        return LetterAudit(letter.letter_id, result, audits, ZERO, paid, gap, ZERO, ZERO,
+                           round_paise(max(ZERO, -gap)), arithmetic, not_on_letter,
+                           [q for q in questions if q.question_id != "Q-ADMISSION"], warnings)
+
     if result.status == Status.NEEDS_INFORMATION:
         return LetterAudit(letter.letter_id, result, audits, None, paid, None, None, None, None,
                            arithmetic, not_on_letter, questions, warnings)
@@ -424,6 +500,15 @@ def audit_letter(
     payable = result.payable_amount
     gap = round_paise(payable - paid)
     keep = (D(100) - rules.copay_pct) / D(100)
+    unchecked_ids = {a.row_id for a in audits if a.verdict == Verdict.NOT_VERIFIABLE and a.difference is not None
+                     and a.difference > 0}
+    if copay and unchecked_ids:
+        # Did the letter take its co-pay before the rows that can't be checked? Then each of those rupees cost the
+        # policyholder a full rupee, not (100 - co-pay)%: counting only 95% would leave a few rupees looking
+        # "disputable" that are really unverifiable (gen-dev-b4331d: co-pay on 76,350, before a 4,300 pharmacy cut).
+        base = D(letter.claimed_amount) - sum((D(r.amount) for r in letter.rows if r.row_id not in unchecked_ids), ZERO)
+        if abs(round_paise(base * rules.copay_pct / D(100)) - copay) <= TOLERANCE:
+            keep = D(1)
     unverified_raw = sum((max(ZERO, a.difference) for a in audits
                           if a.verdict == Verdict.NOT_VERIFIABLE and a.difference is not None), ZERO)
     unverified = round_paise(min(max(ZERO, gap), unverified_raw * keep))

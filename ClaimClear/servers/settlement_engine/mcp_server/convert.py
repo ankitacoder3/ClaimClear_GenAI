@@ -52,6 +52,7 @@ def to_claim(c: ClaimIn) -> Claim:
         printed_total=c.printed_total,
         condition_type=c.condition_type,
         room_priced_by_category=dict(c.room_priced_by_category),
+        hospital_gstin=c.hospital_gstin,
     )
 
 
@@ -135,6 +136,7 @@ def claim_payload(c: Claim) -> dict:
         "printed_total": _money(c.printed_total),
         "condition_type": _opt(c.condition_type),
         "room_priced_by_category": {k.value: v for k, v in c.room_priced_by_category.items()},
+        "hospital_gstin": c.hospital_gstin,
     }
 
 

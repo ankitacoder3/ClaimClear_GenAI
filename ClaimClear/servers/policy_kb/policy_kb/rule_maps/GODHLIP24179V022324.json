@@ -28,7 +28,8 @@
     "pre_hospitalisation": {"clauses": ["C.4", "B.35"], "where": "C.4: pre-hospitalisation expenses for a fixed period of 30 days before the admission"},
     "post_hospitalisation": {"clauses": ["C.5", "B.36"], "where": "C.5: post-hospitalisation expenses for a fixed period of 60 days from the discharge"},
     "ambulance_limit": {"clauses": ["C.1.1"], "where": "C.1.1 item v: road ambulance up to Rs. 2,000 per hospitalisation (Annexure A List I item 67 points to this sub-limit)"},
-    "policy_period": {"clauses": ["A"], "where": "A (operative clause): the company pays when an insured person is hospitalised during the policy period"}
+    "policy_period": {"clauses": ["A"], "where": "A (operative clause): the company pays when an insured person is hospitalised during the policy period"},
+    "fraud": {"clauses": ["E.5", "B.18"], "where": "E.5 Fraud: if a claim is in any respect fraudulent, or a false statement or fraudulent means are used in support of it, all benefits are forfeited; B.18: a Hospital must be registered with the local authorities. Cited when the bill's own inconsistencies (engine/integrity.py) confirm an insurer's 'not genuine' rejection. Read against the downloaded PDF on 2026-11-18."}
   },
   "other_useful_clauses": {
     "claim_settlement_timeline": ["E.16"],

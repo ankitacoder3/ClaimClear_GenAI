@@ -153,7 +153,9 @@ async def run_case(tk: ClaimClearToolkit, case_id: str, extracted: dict) -> dict
         out["route"] = "invalid_extraction" if exc.info.code == "INVALID_ARGUMENTS" else "tool_error"
         out["steps"]["audit"] = {"error": exc.info.code, "message": exc.info.message[:300]}
         return out
-    questions = signals.questions_to_ask(settlement, rows.values())
+    # Questions the letter's audit still needs: the engine settles some from the letter itself (a rejection the bill
+    # confirms, a claim the insurer paid with no waiting-period row), and then the settlement's own question is moot.
+    questions = signals.questions_to_ask(None if audit.get("policy_payable") is not None else settlement, rows.values())
     out["steps"]["settlement"] = {"status": settlement["status"], "payable": settlement["payable_amount"],
                                   "questions": [q["question_id"] for q in questions],
                                   "warnings": settlement["warnings"]}

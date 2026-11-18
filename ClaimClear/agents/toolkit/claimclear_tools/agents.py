@@ -41,6 +41,7 @@ EXPLAINER = "explainer"
 GRIEVANCE_AGENT = "grievance_agent"
 SUPERVISOR = "supervisor"
 SINGLE_AGENT = "single_agent"    # the C1 baseline: every read tool, same budget
+QA_AGENT = "qa_agent"            # the chat window's question answering (claimclear_graph.qa): read only
 
 AGENT_TOOLS: dict[str, tuple[str, ...]] = {
     DOCUMENT_READER: ("list_case_documents", "get_document_text"),
@@ -51,6 +52,8 @@ AGENT_TOOLS: dict[str, tuple[str, ...]] = {
     EXPLAINER: ("get_clause", "clauses_for_rule"),
     GRIEVANCE_AGENT: ("grievance_status", "file_grievance"),
     SUPERVISOR: (),
+    QA_AGENT: ("list_case_documents", "get_document_text", "search_clauses", "get_clause", "clauses_for_rule",
+               "grievance_status"),
     SINGLE_AGENT: ("list_case_documents", "get_document_text", "get_policy", "get_policy_wording", "get_claim_history",
                    "expected_settlement", "list_hypotheses", "reproduce_deduction", "audit_settlement_letter",
                    "list_policies", "search_clauses", "get_clause", "clauses_for_rule"),

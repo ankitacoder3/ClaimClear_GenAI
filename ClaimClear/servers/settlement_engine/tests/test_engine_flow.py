@@ -50,7 +50,8 @@ def test_discount_reduces_the_claim(rules):
 
 
 def test_admission_outside_policy_period_asks_for_the_right_schedule(rules):
-    r = compute_settlement(claim([line("L01", "Surgeon fee", 10000)], admission="2026-08-01"), policy(), rules)
+    r = compute_settlement(claim([line("L01", "Surgeon fee", 10000)], admission="2026-08-01", discharge="2026-08-03"),
+                           policy(), rules)       # consistent dates: a discharge before admission asks Q-ADMISSION
     assert r.status == Status.NEEDS_INFORMATION
     assert r.questions[0].question_id == "Q-POLICY-PERIOD"
 

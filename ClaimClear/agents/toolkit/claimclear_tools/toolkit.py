@@ -15,6 +15,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import uuid
 from contextlib import AsyncExitStack
 from pathlib import Path
@@ -145,10 +146,13 @@ class ClaimClearToolkit:
 
     async def read_case(self, case_id: str) -> dict:
         """Everything case-records has for a case: ``{"documents": {document_id: text}, "policy", "wording", "history"}``."""
-        docs = await self.list_case_documents(case_id)
-        texts = {d["document_id"]: await self.get_document_text(case_id, d["document_id"]) for d in docs["documents"]}
-        return {"documents": texts, "policy": await self.get_policy(case_id),
-                "wording": await self.get_policy_wording(case_id), "history": await self.get_claim_history(case_id)}
+        docs = (await self.list_case_documents(case_id))["documents"]
+        # independent reads, sent concurrently over the open sessions (one MCP session serves many requests)
+        *texts, policy, wording, history = await asyncio.gather(
+            *(self.get_document_text(case_id, d["document_id"]) for d in docs),
+            self.get_policy(case_id), self.get_policy_wording(case_id), self.get_claim_history(case_id))
+        return {"documents": {d["document_id"]: t for d, t in zip(docs, texts)}, "policy": policy,
+                "wording": wording, "history": history}
 
     # settlement-engine
     async def expected_settlement(self, case: dict) -> dict:

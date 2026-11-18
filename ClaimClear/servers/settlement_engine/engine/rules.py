@@ -88,6 +88,12 @@ RULE_REFS: dict[str, dict[str, str]] = {
         "summary": "Only expenses actually incurred are paid: a charge billed twice for the same day is paid once.",
         "clause": "",
     },
+    "fraud": {
+        "summary": ("A claim supported by false or fraudulent documents is not payable, and treatment must be in a "
+                    "hospital as the policy defines it. The engine never decides fraud: it reports definite "
+                    "inconsistencies on the bill, which can support an insurer's rejection."),
+        "clause": "",
+    },
 }
 
 
