@@ -125,7 +125,6 @@ ClaimClear_GenAI/
 ```bash
 git clone https://github.com/ankitacoder3/ClaimClear_GenAI.git
 cd ClaimClear_GenAI
-git checkout Deepu
 cd ClaimClear
 ```
 
