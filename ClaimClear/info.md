@@ -1,4 +1,4 @@
-# ClaimClear
+# ClaimClear Development
 
 **A post-settlement assistant for health-insurance policyholders.** Upload the hospital bill, the insurer's settlement letter and the policy; ClaimClear checks every deduction against the policy wording, explains the result in plain language with the clause behind each line, and — only when something may be disputable and only after you approve the exact text — drafts and files a grievance.
 
