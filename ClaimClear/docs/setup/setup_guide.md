@@ -148,7 +148,7 @@ Unzip `ClaimClear_combined.zip` anywhere, then open a terminal in the `ClaimClea
 cd ClaimClear
 ```
 
-You should see these folders: `agents`, `servers`, `contracts`, `memory`, `data`, `eval`, `docs`, `scripts`, `deploy`. **Run every command in this guide from this folder** unless the step says otherwise.
+You should see these folders: `agents`, `servers`, `contracts`, `memory`, `dev_data`, `dev_eval`, `docs`, `scripts`, `deploy`. **Run every command in this guide from this folder** unless the step says otherwise.
 
 ---
 
@@ -338,17 +338,17 @@ cd ..
 | servers/document_reader | 69 passed, 11 skipped |
 | servers/case_records | 25 passed, 34 skipped |
 
-The skipped tests in the last three rows read the **held-out split** (`data/dataset/heldout/`), which is not in this zip; pytest shows the reason "needs the held-out split". Three of the case-records skips need PostgreSQL. Copy `data/dataset/heldout` in from the original repository and the held-out tests run again.
+The skipped tests in the last three rows read the **held-out split** (`dev_data/dataset/heldout/`), which is not in this zip; pytest shows the reason "needs the held-out split". Three of the case-records skips need PostgreSQL. Copy `dev_data/dataset/heldout` in from the original repository and the held-out tests run again.
 
 ---
 
 ## Step 9: run every development case through the graph
 
 ```bash
-.venv-agents/bin/python eval/graph_dev_cases/run.py
+.venv-agents/bin/python dev_eval/graph_dev_cases/run.py
 ```
 
-This runs all 42 development cases through the multi-agent graph against the live servers (about 30 seconds) and scores them against their answer files. It writes `eval/graph_dev_cases/results/graph_dev_cases.md`, which should begin:
+This runs all 42 development cases through the multi-agent graph against the live servers (about 30 seconds) and scores them against their answer files. It writes `dev_eval/graph_dev_cases/results/graph_dev_cases.md`, which should begin:
 
 | Cases | Ran to the end (audit produced) | Overall verdict right | Row verdicts right | Payable right (±₹1) | Disputable right (±₹1) | Same overall verdict as C0 |
 |---|---|---|---|---|---|---|
@@ -359,7 +359,7 @@ No person is present during this run, so the engine's questions are left unanswe
 To compare, run Member 2's fixed (non-agent) workflow on the same cases:
 
 ```bash
-.venv-agents/bin/python eval/dev_cases/run.py
+.venv-agents/bin/python dev_eval/dev_cases/run.py
 ```
 
 ---
@@ -383,7 +383,7 @@ export CLAIMCLEAR_MCP_MODE=http
 On Windows PowerShell: `$env:CLAIMCLEAR_MCP_MODE="http"`. Then run any agent command, for example:
 
 ```bash
-.venv-agents/bin/python eval/graph_dev_cases/run.py --http
+.venv-agents/bin/python dev_eval/graph_dev_cases/run.py --http
 ```
 
 In HTTP mode the servers use their default data locations under `var/`. Fill them once (Member 2's steps):
@@ -401,7 +401,7 @@ cd ../policy_kb
 ```
 
 ```bash
-../../.venv/bin/python -m policy_kb build --wording ../../data/wordings/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf
+../../.venv/bin/python -m policy_kb build --wording ../../dev_data/wordings/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf
 ```
 
 ```bash
@@ -477,10 +477,10 @@ export OPENROUTER_API_KEY="your-key"
 **Measure how well the LLM reads the documents.** Every dev case goes through the graph with the LLM extracting the bill and the letter (the stand-in values are withheld). Each extraction is then compared with the stand-in:
 
 ```bash
-.venv-agents/bin/python eval/graph_dev_cases/run.py --llm-extract
+.venv-agents/bin/python dev_eval/graph_dev_cases/run.py --llm-extract
 ```
 
-The results go to `eval/graph_dev_cases/results/graph_dev_cases_llm.md`. The model is the chat model; change it with `CLAIMCLEAR_EXTRACTION_MODEL`.
+The results go to `dev_eval/graph_dev_cases/results/graph_dev_cases_llm.md`. The model is the chat model; change it with `CLAIMCLEAR_EXTRACTION_MODEL`.
 
 **Explain in plain language or another language.** In your code:
 

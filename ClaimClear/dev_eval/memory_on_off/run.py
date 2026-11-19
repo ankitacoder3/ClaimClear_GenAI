@@ -1,11 +1,11 @@
 """Memory on vs off: run the development cases with and without ClaimClear's long-term memory.
 
-    .venv/Scripts/python.exe eval/memory_on_off/run.py                       # all dev letters, 4 conditions
-    .venv/Scripts/python.exe eval/memory_on_off/run.py --pipeline my_graph:run   # Member 3's graph instead
+    .venv/Scripts/python.exe dev_eval/memory_on_off/run.py                       # all dev letters, 4 conditions
+    .venv/Scripts/python.exe dev_eval/memory_on_off/run.py --pipeline my_graph:run   # Member 3's graph instead
 
 What it does, per condition:
 
-1. Takes every development case of ``data/dataset/dev`` that has a settlement letter and the
+1. Takes every development case of ``dev_data/dataset/dev`` that has a settlement letter and the
    extracted bill and letter fields the engine needs (the synthetic cases; gen-data cases carry
    only PDFs, so they need the document reader first). The held-out split is never read. Cases are
    grouped by policyholder (one user per policy) and each user's sessions run in admission order,
@@ -23,7 +23,7 @@ available, as in development) and ``none`` (no insurer history: what ClaimClear 
 from the documents and, with memory on, from earlier sessions; this is the realistic case, since
 ClaimClear has no access to an insurer's records).
 
-Results go to ``eval/memory_on_off/results/memory_on_off_<date>.md`` and ``.json``.
+Results go to ``dev_eval/memory_on_off/results/memory_on_off_<date>.md`` and ``.json``.
 
 A pipeline is ``async def run(case: dict, letter: dict, memory_context: dict) -> dict`` returning a
 ``LetterAuditOut``-shaped dict (``rows``, ``disputable_amount``, ``questions``, ``settlement``).
@@ -273,9 +273,9 @@ async def main_async(args) -> int:
 def main(argv: Optional[list[str]] = None) -> int:
     p = argparse.ArgumentParser(description="Memory on vs off on the development cases.")
     p.add_argument("--pipeline", help="module:function of an async pipeline (default: the settlement-engine tool)")
-    p.add_argument("--dataset", help="data/dataset (default)")
+    p.add_argument("--dataset", help="dev_data/dataset (default)")
     p.add_argument("--limit", type=int, help="only the first N sessions (smoke test)")
-    p.add_argument("--out", help="results folder (default eval/memory_on_off/results)")
+    p.add_argument("--out", help="results folder (default dev_eval/memory_on_off/results)")
     p.add_argument("--no-write", action="store_true", help="print only")
     sys.stdout.reconfigure(encoding="utf-8")
     return asyncio.run(main_async(p.parse_args(argv)))

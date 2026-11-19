@@ -1,6 +1,6 @@
 """Policy limits and rule references.
 
-``load_rules`` reads ``data/dataset/policy_rules.json``. That file
+``load_rules`` reads ``dev_data/dataset/policy_rules.json``. That file
 is a simplified summary of the public Arogya Sanjeevani wording. Before the
 engine is used for evaluation, check every number against the wording Member 2
 ingests, and fill in ``clause`` for every entry in ``RULE_REFS``.

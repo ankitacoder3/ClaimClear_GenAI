@@ -1,4 +1,4 @@
-"""Load cases from the standard dataset (``data/dataset/``) into engine inputs.
+"""Load cases from the standard dataset (``dev_data/dataset/``) into engine inputs.
 
 The engine itself never reads files. This adapter turns the dataset's JSON into ``Claim``, ``Policy``,
 ``PastClaim`` and ``PolicyRules`` objects. In the full system the same objects come from the document
@@ -30,12 +30,12 @@ SPLITS = ("dev", "heldout")
 
 
 def default_dataset_dir() -> Path:
-    """``$CLAIMCLEAR_DATASET_DIR``, else ``<repo>/data/dataset``."""
+    """``$CLAIMCLEAR_DATASET_DIR``, else ``<repo>/dev_data/dataset``."""
     env = os.environ.get(ENV_VAR)
     if env:
         return Path(env)
     # engine/ -> settlement_engine/ -> servers/ -> repo root
-    return Path(__file__).resolve().parents[3] / "data" / "dataset"
+    return Path(__file__).resolve().parents[3] / "dev_data" / "dataset"
 
 
 @dataclass(frozen=True)

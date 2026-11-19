@@ -72,8 +72,8 @@ ClaimClear_GenAI/
     │   └── document_reader/        PDF/JPG/PNG to text with spans, Tesseract OCR, hidden-text channels
     ├── contracts/                  shared state, hand-offs, tool schemas
     ├── memory/                     long-term and episodic memory (with consent)
-    ├── data/                       42 dev cases with answers, the Arogya Sanjeevani wording, policy rules
-    ├── eval/                       dev cases (fixed workflow), the same cases through the graph, memory on/off, retrieval
+    ├── dev_data/                   42 dev cases with answers, the Arogya Sanjeevani wording, policy rules
+    ├── dev_eval/                   dev cases (fixed workflow), the same cases through the graph, memory on/off, retrieval
     ├── scripts/ and deploy/        helper scripts; PostgreSQL + pgvector + MinIO for production backends
     ├── Golden_Dataset/             the golden dataset (info.txt: Dev 20, Eval 40, RedTeam 30 = 90 cases)
     └── docs/                       all documentation: setup/, member2_knowledge_memory_tools/, member3_orchestration/, shared/
@@ -155,7 +155,7 @@ python start.py --auto SET-01
 5. **Run the tests and the evaluation** (details in `ClaimClear/docs/setup/setup_guide.md`)
 
 ```bash
-.venv-agents/bin/python eval/graph_dev_cases/run.py     # all 42 dev cases through the graph (Scripts\python.exe on Windows)
+.venv-agents/bin/python dev_eval/graph_dev_cases/run.py     # all 42 dev cases through the graph (Scripts\python.exe on Windows)
 ```
 
 Full instructions, options and troubleshooting: [ClaimClear/README.md](ClaimClear/README.md) and [ClaimClear/docs/setup/setup_guide.md](ClaimClear/docs/setup/setup_guide.md).

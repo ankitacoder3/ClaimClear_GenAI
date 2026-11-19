@@ -86,11 +86,11 @@ jobs:
         run: python -m pytest -q -o addopts= -rs
 
       - name: memory on vs off runner
-        working-directory: eval/memory_on_off
+        working-directory: dev_eval/memory_on_off
         run: python -m pytest -q -o addopts= -rs
 
       - name: dev-case extraction stand-in
-        working-directory: eval/dev_cases
+        working-directory: dev_eval/dev_cases
         run: python -m pytest -q -o addopts= -rs
 
       - name: all five servers answer over HTTP

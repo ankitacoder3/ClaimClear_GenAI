@@ -1,5 +1,5 @@
 {
- "note": "SYNTHETIC: SET-01 from data/dataset (syn-dev-005), captured from the real servers",
+ "note": "SYNTHETIC: SET-01 from dev_data/dataset (syn-dev-005), captured from the real servers",
  "case": {
   "claim": {
    "claim_id": "AGI/HC/2526/004512",

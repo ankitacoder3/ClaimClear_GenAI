@@ -86,8 +86,8 @@ def dataset_match(document_id: str) -> str:
 
 
 def gen_layout_payload(files: dict[Path, str]) -> dict | None:
-    """The gen-data PDF table parser (``eval/dev_cases/extract.py``) on the uploaded bill(s) and letter."""
-    sys.path.insert(0, str(REPO / "eval" / "dev_cases"))
+    """The gen-data PDF table parser (``dev_eval/dev_cases/extract.py``) on the uploaded bill(s) and letter."""
+    sys.path.insert(0, str(REPO / "dev_eval" / "dev_cases"))
     import extract  # noqa: E402  (the evaluation's parser: rebuilds table rows from word positions)
     bills = [p for p, r in files.items() if r == "bill" and p.suffix.lower() == ".pdf"]
     letters = sorted((p for p, r in files.items() if r == "settlement_letter" and p.suffix.lower() == ".pdf"),

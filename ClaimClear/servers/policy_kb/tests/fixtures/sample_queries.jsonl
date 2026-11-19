@@ -1,6 +1,6 @@
 # DRAFT queries for the SYNTHETIC sample wording (tests/fixtures/sample_wording.txt). Written by Member 2 to
 # exercise the pipeline; NOT the evaluation set. Member 1 writes and labels the real set against the downloaded
-# wording (eval/retrieval/queries.jsonl), keeping the same format. Labels name every clause a correct answer should cite.
+# wording (dev_eval/retrieval/queries.jsonl), keeping the same format. Labels name every clause a correct answer should cite.
 {"id": "q01", "query": "why did they cut my medicine bill", "relevant": ["5.2"], "note": "pharmacy must not be cut proportionately"}
 {"id": "q02", "query": "my room was more expensive so they reduced the surgeon and nursing charges", "relevant": ["5.1", "3.9"]}
 {"id": "q03", "query": "can the insurer reduce lab tests and scans because of my room", "relevant": ["5.2"]}

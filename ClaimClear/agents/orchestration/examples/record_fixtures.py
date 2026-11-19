@@ -40,7 +40,7 @@ def prepare(work: Path) -> dict:
                    cwd=REPO / "servers" / "case_records", check=True, capture_output=True)
     index = work / "policy_kb.json"
     subprocess.run([py, "-m", "policy_kb", "--index", str(index), "build", "--wording",
-                    str(REPO / "data" / "wordings" / "policy-wordings-arogya-sanjeevani-policy-go-digit.pdf")],
+                    str(REPO / "dev_data" / "wordings" / "policy-wordings-arogya-sanjeevani-policy-go-digit.pdf")],
                    cwd=REPO / "servers" / "policy_kb", check=True, capture_output=True)
     os.environ.update(CLAIMCLEAR_CASE_STORE=str(store), CLAIMCLEAR_POLICY_KB_INDEX=str(index),
                       CLAIMCLEAR_PORTAL_STORE=str(work / "portal.json"), CLAIMCLEAR_MCP_MODE="stdio")

@@ -154,7 +154,7 @@ policyholder uploads ──► app (Member 4) ──► CaseStore.create_case / 
 
 ## Policy and claim history
 
-`case_records/reference.py`, read once from `$CLAIMCLEAR_REFERENCE_DIR` (default `data/dataset/dev/reference`). A record tagged with a `case_id` belongs to that case only (a dataset that reuses a policy number); dataset registration sets the case's `reference_key`.
+`case_records/reference.py`, read once from `$CLAIMCLEAR_REFERENCE_DIR` (default `dev_data/dataset/dev/reference`). A record tagged with a `case_id` belongs to that case only (a dataset that reuses a policy number); dataset registration sets the case's `reference_key`.
 
 * `policy(policy_no)` returns `policy_no`, `sum_insured`, `period_start`, `period_end`, `first_inception`, `holder`, `insurer`, `product`. These are **exactly** the fields of the settlement-engine's `PolicyIn`.
 * `claim_history(policy_no, scope)` returns `claim_id`, `policy_no`, `admission`, `status`, `settled_amount`, `diagnosis`, `procedure`. These are **exactly** the fields of `PastClaimIn`. Only claims on that policy are returned. `current_period` (default) keeps claims admitted inside the policy period on record; `all` returns every year. Bill line items are left out.
@@ -182,7 +182,7 @@ Users don't upload their policy wording when ClaimClear already has it. `case_re
 |---|---|---|---|
 | `uploaded` | the app indexed the user's own wording and set `upload:doc_...` on the case | that upload | no |
 | `selected` | the app set a catalogue UIN the user picked (a different UIN on the schedule is mentioned in `note`) | that UIN | no |
-| `from_schedule` | the schedule's UIN is in `data/wordings/catalogue.json` | the schedule's UIN | no |
+| `from_schedule` | the schedule's UIN is in `dev_data/wordings/catalogue.json` | the schedule's UIN | no |
 | `not_reviewed` | the schedule names a wording ClaimClear hasn't reviewed | the default (standard Arogya Sanjeevani) | **yes**: ask the user to upload their wording, or index `wording_document_id` if the case already has one |
 | `not_printed` | no schedule, or no UIN on it | the default | no |
 
@@ -234,7 +234,7 @@ Upload-path errors (raised by `CaseStore.add_document`, not by a tool): `UNSUPPO
 | Variable | Default | Meaning |
 |---|---|---|
 | `CLAIMCLEAR_CASE_STORE` | `<repo>/var/case_store` | Store root (`index.json`, `files/`) |
-| `CLAIMCLEAR_REFERENCE_DIR` | `<repo>/data/dataset/dev/reference` | `policies.json`, `claim_history.json` |
+| `CLAIMCLEAR_REFERENCE_DIR` | `<repo>/dev_data/dataset/dev/reference` | `policies.json`, `claim_history.json` |
 | `CLAIMCLEAR_DOCUMENT_CACHE` | `<case store>/text_cache` | Where extracted text is cached; `off` turns it off |
 | `CLAIMCLEAR_CASE_INDEX` | unset: `index.json` | `postgresql://user:password@host:5432/db`: the index in PostgreSQL (tables `case_store_documents`, `case_store_cases`; `?table_prefix=` for a separate store) |
 | `CLAIMCLEAR_BLOB_STORE` | unset: `files/` | `s3://bucket?endpoint=host:9000&secure=0`: the files in MinIO or any S3 store, same neutral names |

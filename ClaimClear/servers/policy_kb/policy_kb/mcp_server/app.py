@@ -125,7 +125,7 @@ def create_server(kb: Optional[PolicyKB] = None, index_path: Optional[str | Path
     """Build the server.
 
     ``kb`` serves one index already in memory (tests); ``index_path`` serves one index file; otherwise the
-    catalogue (``$CLAIMCLEAR_POLICY_CATALOGUE`` or ``data/wordings/catalogue.json``) is used, falling back to
+    catalogue (``$CLAIMCLEAR_POLICY_CATALOGUE`` or ``dev_data/wordings/catalogue.json``) is used, falling back to
     the single default index (``$CLAIMCLEAR_POLICY_KB_INDEX`` or ``var/policy_kb/index.json``).
     """
     lib = library or build_library(kb, index_path, catalogue_path, rewriter, reranker)

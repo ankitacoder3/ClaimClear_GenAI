@@ -1,4 +1,4 @@
-"""Register the standard dataset (``data/dataset``) into a case store (development and evaluation only).
+"""Register the standard dataset (``dev_data/dataset``) into a case store (development and evaluation only).
 
     python -m case_records.register_dataset                 # the dev split, into var/case_store
     python -m case_records.register_dataset --store DIR
@@ -28,7 +28,7 @@ SPLITS = ("dev", "heldout")
 
 
 def _dataset_dir(path: Optional[str]) -> Path:
-    return Path(path) if path else Path(__file__).resolve().parents[3] / "data" / "dataset"
+    return Path(path) if path else Path(__file__).resolve().parents[3] / "dev_data" / "dataset"
 
 
 def _read(path: Path):
@@ -62,9 +62,9 @@ def register(store: CaseStore, dataset_dir: Path, split: str = "dev") -> dict[st
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Register one split of data/dataset into a case store.")
+    parser = argparse.ArgumentParser(description="Register one split of dev_data/dataset into a case store.")
     parser.add_argument("--store", help="store directory (default: $CLAIMCLEAR_CASE_STORE or var/case_store)")
-    parser.add_argument("--dataset", help="the standard dataset directory (default data/dataset)")
+    parser.add_argument("--dataset", help="the standard dataset directory (default dev_data/dataset)")
     parser.add_argument("--split", choices=SPLITS, default="dev", help="dev (default) or heldout")
     args = parser.parse_args(argv)
     store = CaseStore(args.store or default_store_dir())

@@ -1,5 +1,5 @@
 {
-  "note": "Reviewed policy wordings policy-kb serves. 'index' is relative to the index folder (var/policy_kb). Add a wording: download it (python -m policy_kb.fetch), build its index into <UIN>/index.json, review its rule map (policy_kb/rule_maps/<UIN>.json) and limits (data/wordings/rules/<UIN>.json), then list it here.",
+  "note": "Reviewed policy wordings policy-kb serves. 'index' is relative to the index folder (var/policy_kb). Add a wording: download it (python -m policy_kb.fetch), build its index into <UIN>/index.json, review its rule map (policy_kb/rule_maps/<UIN>.json) and limits (dev_data/wordings/rules/<UIN>.json), then list it here.",
   "default": "GODHLIP24179V022324",
   "wordings": [
     {

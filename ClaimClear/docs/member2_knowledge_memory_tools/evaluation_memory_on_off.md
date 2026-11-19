@@ -7,14 +7,14 @@ The plan's memory deliverable: a **memory-on vs memory-off comparison** next to 
 From the repository root, with the servers' environment:
 
 ```bash
-.venv/Scripts/python.exe eval/memory_on_off/run.py
+.venv/Scripts/python.exe dev_eval/memory_on_off/run.py
 ```
 
 It prints the comparison and writes `results/memory_on_off_<date>.md` and `.json`. Options: `--limit N` (smoke test), `--no-write`, `--out DIR`, `--pipeline module:function`.
 
 ## What it does
 
-1. Takes every **development** case that has a settlement letter (`data/dataset/dev`, the synthetic cases, which carry the extracted fields the engine needs). Held-out cases are never read.
+1. Takes every **development** case that has a settlement letter (`dev_data/dataset/dev`, the synthetic cases, which carry the extracted fields the engine needs). Held-out cases are never read.
 2. Groups the cases by policyholder (one user per policy) and runs each user's sessions in admission order, like the same person coming back.
 3. Builds the `case` argument the agents build (claim, policy from `get_policy`, history) and runs the pipeline. The default pipeline is the settlement-engine's `audit_settlement_letter` tool, in process, which is what the critic calls.
 4. **Memory on:** before a session, the user's remembered claims are merged into the history (`merge_history`) and the memory context is passed to the pipeline; after a final audit, the policy and claim are remembered (consent granted for the experiment). **Memory off:** nothing is remembered.
@@ -25,7 +25,7 @@ It prints the comparison and writes `results/memory_on_off_<date>.md` and `.json
 
 ## Result on the development set
 
-[results/memory_on_off_2026-11-13.md](../../eval/memory_on_off/results/memory_on_off_2026-11-13.md):
+[results/memory_on_off_2026-11-13.md](../../dev_eval/memory_on_off/results/memory_on_off_2026-11-13.md):
 
 | Insurer history | Memory | Verdicts right | Disputable within ₹1 | Questions asked |
 |---|---|---|---|---|
@@ -56,5 +56,5 @@ async def run(case: dict, letter: dict, memory_context: dict) -> dict:
 ## Test
 
 ```bash
-cd eval/memory_on_off && ../../.venv/Scripts/python.exe -m pytest -q
+cd dev_eval/memory_on_off && ../../.venv/Scripts/python.exe -m pytest -q
 ```

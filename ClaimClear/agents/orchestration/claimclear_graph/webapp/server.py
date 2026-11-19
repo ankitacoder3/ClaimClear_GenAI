@@ -399,7 +399,7 @@ async def status(request: Request):
                          "chat_model": request.app.state.llm is not None,
                          "model": chat.describe_model(request.app.state.llm),
                          "samples": [{"name": n, "label": label} for n, label in SAMPLES
-                                     if (REPO / "data" / "dataset" / "dev" / "cases" / n).is_dir()]})
+                                     if (REPO / "dev_data" / "dataset" / "dev" / "cases" / n).is_dir()]})
 
 
 def safe_name(name: str) -> str:
@@ -438,7 +438,7 @@ async def sample(request: Request):
     name = (await request.json()).get("name", "")
     if name not in {n for n, _ in SAMPLES}:
         return JSONResponse({"error": "unknown sample"}, status_code=400)
-    folder = REPO / "data" / "dataset" / "dev" / "cases" / name
+    folder = REPO / "dev_data" / "dataset" / "dev" / "cases" / name
     result = await upload_case([(p, "") for p in sorted(folder.iterdir()) if p.is_file()])
     return JSONResponse(result, status_code=400 if "error" in result else 200)
 

@@ -506,7 +506,7 @@ We ran an agent-side script in a **separate Python 3.14 environment** with `lang
 | 7 | `audit_settlement_letter` | disputable ₹8,522.86, unverifiable ₹0 |
 | 8 | `get_document_text` with a document ID that isn't in the case | error text with `DOCUMENT_NOT_IN_CASE` (no exception) |
 
-The toolkit's live tests (`agents/toolkit/tests/test_toolkit_live.py`) now repeat this run against all five servers, and `eval/dev_cases/run.py` does it for every dev case.
+The toolkit's live tests (`agents/toolkit/tests/test_toolkit_live.py`) now repeat this run against all five servers, and `dev_eval/dev_cases/run.py` does it for every dev case.
 
 We also confirmed:
 - one session per server makes 5 calls in 0.08 s;

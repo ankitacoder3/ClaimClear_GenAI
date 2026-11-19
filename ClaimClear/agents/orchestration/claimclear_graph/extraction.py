@@ -10,7 +10,7 @@ figure the user sees is computed by the engine. Only **visible** text is sent to
     services = Services(toolkit=tk, extractor=llm_extractor(ChatOpenAI(model=..., temperature=0)))
 
 Without an extractor the app (or a labelled development stand-in) puts ``claim`` and ``letter`` in
-the initial state, as Member 2's evaluation does (``eval/dev_cases/extract.py``).
+the initial state, as Member 2's evaluation does (``dev_eval/dev_cases/extract.py``).
 
 **Normalising the model's output** (``normalise``). A model asked for what is printed copies the print formatting:
 ``"₹87,094.64"``, ``"21,000.00"``, ``"19/01/2026"``, ``"08-Jan-2026"``, ``"5%"``, ``null`` for an optional field. The

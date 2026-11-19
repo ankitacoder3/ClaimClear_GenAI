@@ -6,7 +6,7 @@ prints the wording's IRDAI UIN; the wording is chosen in this order:
 1. ``selected`` / ``uploaded``: the app set one on the case (``CaseStore.set_wording``): a catalogue
    UIN the user picked, or ``upload:doc_...`` once their uploaded wording is indexed.
 2. ``from_schedule``: the UIN printed on the policy schedule is in the reviewed catalogue
-   (``data/wordings/catalogue.json``): that wording, nothing to ask.
+   (``dev_data/wordings/catalogue.json``): that wording, nothing to ask.
 3. ``not_reviewed``: the schedule names a wording ClaimClear doesn't have. The standard Arogya
    Sanjeevani wording (the default) is used for now, and ``wording_needed`` is true: ask the user to
    upload their policy wording. If the case already holds a document with the role
@@ -33,7 +33,7 @@ UIN_IN_TEXT = re.compile(r"\b[A-Z]{7}\d{5}V\d{6}\b")
 
 def default_catalogue_path() -> Path:
     env = os.environ.get(CATALOGUE_ENV)
-    return Path(env) if env else Path(__file__).resolve().parents[3] / "data" / "wordings" / "catalogue.json"
+    return Path(env) if env else Path(__file__).resolve().parents[3] / "dev_data" / "wordings" / "catalogue.json"
 
 
 def catalogue_uins(path: Optional[Path] = None) -> frozenset[str]:

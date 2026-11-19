@@ -27,7 +27,7 @@ It has two splits:
 ## 2. Where it is
 
 ```
-data/
+dev_data/
   dataset/                          every case, in one standard format
     dataset_README.md               the format reference
     policy_rules.json               simplified Arogya Sanjeevani limits (room rent, ICU, cataract, co-pay, waiting periods,
@@ -164,7 +164,7 @@ One vocabulary is used for both sources; `verdict_source` keeps each source's ow
 
 ```mermaid
 flowchart LR
-    subgraph Data["data/dataset/dev"]
+    subgraph Data["dev_data/dataset/dev"]
         CJ[cases.json]
         CF["cases/case_id/"]
         REF[reference/]
@@ -205,20 +205,20 @@ flowchart LR
 |---|---|
 | `.venv/Scripts/python.exe scripts/dataset.py check` | checks the standard format |
 | `.venv/Scripts/python.exe scripts/dataset.py pack` | zips the dataset (and the Go Digit wording) into `var/claimclear_dataset.zip`, one file to share |
-| `.venv/Scripts/python.exe scripts/dataset.py build --synthetic <folder> --gen-data <folder>` | rebuilds `data/dataset` from the two sources |
+| `.venv/Scripts/python.exe scripts/dataset.py build --synthetic <folder> --gen-data <folder>` | rebuilds `dev_data/dataset` from the two sources |
 | `cd servers/case_records && ../../.venv/Scripts/python.exe -m case_records.register_dataset` | registers the dev split for the servers and agents |
 | `... -m case_records.register_dataset --split heldout --store ../../var/heldout/case_store` | held-out, evaluation only, in its own store |
-| `.venv/Scripts/python.exe scripts/try_case_records.py data/dataset/dev/cases/<case_id>` | one case through every case-records tool |
-| `.venv-agents/Scripts/python.exe eval/dev_cases/run.py` | every dev case through the whole application, scored ([results](evaluation_dev_cases.md)) |
-| `.venv/Scripts/python.exe eval/memory_on_off/run.py` | the synthetic dev cases with memory on and off |
+| `.venv/Scripts/python.exe scripts/try_case_records.py dev_data/dataset/dev/cases/<case_id>` | one case through every case-records tool |
+| `.venv-agents/Scripts/python.exe dev_eval/dev_cases/run.py` | every dev case through the whole application, scored ([results](evaluation_dev_cases.md)) |
+| `.venv/Scripts/python.exe dev_eval/memory_on_off/run.py` | the synthetic dev cases with memory on and off |
 
-The servers read `data/dataset` by default (`CLAIMCLEAR_DATASET_DIR`). case-records reads
-`data/dataset/dev/reference` (`CLAIMCLEAR_REFERENCE_DIR`); point it at
-`data/dataset/heldout/reference` for an evaluation run.
+The servers read `dev_data/dataset` by default (`CLAIMCLEAR_DATASET_DIR`). case-records reads
+`dev_data/dataset/dev/reference` (`CLAIMCLEAR_REFERENCE_DIR`); point it at
+`dev_data/dataset/heldout/reference` for an evaluation run.
 
 ## 10. What the dev run shows
 
-`eval/dev_cases/run.py` runs every dev case through the toolkit and all five servers, the way Member 3's
+`dev_eval/dev_cases/run.py` runs every dev case through the toolkit and all five servers, the way Member 3's
 graph will call them, then scores it against the case's answer file. For each case it:
 
 1. registers the case and reads every document, with the guardrail signals;
@@ -230,7 +230,7 @@ graph will call them, then scores it against the case's answer file. For each ca
 6. scores the overall verdict, each row's verdict, the payable and the disputable amount.
 
 ```bash
-.venv-agents/Scripts/python.exe eval/dev_cases/run.py      # results in eval/dev_cases/results/dev_cases.md
+.venv-agents/Scripts/python.exe dev_eval/dev_cases/run.py      # results in dev_eval/dev_cases/results/dev_cases.md
 ```
 
 **Latest run:**
@@ -260,7 +260,7 @@ Where the cases ended:
 
 | Case | What differs | Why |
 |---|---|---|
-| gen-dev-50b4e6 (and the amounts of 6a82b1, a0a2f1) | the proportionate deduction | the answer key cuts consumables and diagnostics; ClaimClear keeps IRDAI's 2020 rule (decided, labelled from `eval/dev_cases/decisions.json`) |
+| gen-dev-50b4e6 (and the amounts of 6a82b1, a0a2f1) | the proportionate deduction | the answer key cuts consumables and diagnostics; ClaimClear keeps IRDAI's 2020 rule (decided, labelled from `dev_eval/dev_cases/decisions.json`) |
 | gen-dev-b4331d | ₹215.50 disputable, the answer says none | the letter takes co-pay before its own ₹4,300 cut, so ₹215.50 is owed either way; the answer's own note agrees |
 | syn-dev-004, 006, 012, 015 | rejections (impossible dates, fraud, an invented hospital, an altered date) are confirmed: `matches_policy`, payable ₹0 | the integrity checks find the evidence in the documents (discharge before admission, room days beyond the stay, dated lines outside the stay, a malformed GSTIN) |
 | syn-dev-017 | the insurer paid a meniscus repair, so the condition it accepted is taken from the letter | no waiting-period row on a paid claim means the letter accepted the condition (fact `F-CONDITION-FROM-LETTER`) |
@@ -293,9 +293,9 @@ Use the dev split to improve these. The held-out split measures the result once,
 
 ---
 
-## Appendix A. The data folder
+## Appendix A. The dev_data folder
 
-*(Formerly `data/data_README.md`.)*
+*(Formerly `data/data_README.md`, now this folder's README.)*
 
 Only what the application and its tests need:
 
@@ -311,7 +311,7 @@ Only what the application and its tests need:
 
 ## Appendix B. Format reference
 
-*(Formerly `data/dataset/dataset_README.md`.)*
+*(Formerly `dev_data/dataset/dataset_README.md`.)*
 
 Every case the application is developed and evaluated on, from both sources, in one format:
 
@@ -327,7 +327,7 @@ Every case the application is developed and evaluated on, from both sources, in 
 ### Layout
 
 ```
-data/dataset/
+dev_data/dataset/
   dataset_README.md
   policy_rules.json                  simplified limits the settlement engine's dataset adapter uses (room, ICU, cataract,
                                      co-pay, waiting periods, 30/60-day cover window, ₹2,000 road ambulance)
@@ -415,14 +415,14 @@ cd servers/case_records && ../../.venv/Scripts/python.exe -m case_records.regist
 ## held-out, evaluation only, into its own store
 cd servers/case_records && ../../.venv/Scripts/python.exe -m case_records.register_dataset --split heldout --store ../../var/heldout/case_store
 ## one case, every case-records tool
-.venv/Scripts/python.exe scripts/try_case_records.py data/dataset/dev/cases/gen-dev-147e01
+.venv/Scripts/python.exe scripts/try_case_records.py dev_data/dataset/dev/cases/gen-dev-147e01
 ## one file to share (with the Go Digit wording): var/claimclear_dataset.zip
 .venv/Scripts/python.exe scripts/dataset.py pack
 ```
 
-The servers read `data/dataset` by default (`CLAIMCLEAR_DATASET_DIR`) and case-records reads
-`data/dataset/dev/reference` (`CLAIMCLEAR_REFERENCE_DIR`; for held-out runs, point it at
-`data/dataset/heldout/reference`).
+The servers read `dev_data/dataset` by default (`CLAIMCLEAR_DATASET_DIR`) and case-records reads
+`dev_data/dataset/dev/reference` (`CLAIMCLEAR_REFERENCE_DIR`; for held-out runs, point it at
+`dev_data/dataset/heldout/reference`).
 
 The settlement engine's dataset adapter (`load_case("SET-01")`) works on the synthetic cases, which
 carry their documents' extracted fields. gen-data cases carry only PDFs, so the document reader

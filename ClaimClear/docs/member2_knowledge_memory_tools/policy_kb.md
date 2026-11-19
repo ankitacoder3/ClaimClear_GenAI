@@ -177,7 +177,7 @@ The key is read from the environment or `.env` only. It is never written to the 
 **Build and search:**
 
 ```bash
-python -m policy_kb build --wording ../../data/wordings/<file>.pdf --embedder openrouter
+python -m policy_kb build --wording ../../dev_data/wordings/<file>.pdf --embedder openrouter
 ```
 
 ```bash
@@ -185,7 +185,7 @@ python -m policy_kb search "why did they cut my medicine bill" --rewriter glossa
 ```
 
 ```bash
-python -m policy_kb evaluate ../../eval/retrieval/queries.jsonl --rewriter glossary+openrouter
+python -m policy_kb evaluate ../../dev_eval/retrieval/queries.jsonl --rewriter glossary+openrouter
 ```
 
 | Use | Default model | Price (checked 9 Nov 2026) | Override |
@@ -210,7 +210,7 @@ Other embedding models on OpenRouter (40 at the time of checking; for example `o
 ## Evaluation: Recall@5
 
 ```bash
-python -m policy_kb evaluate ../../eval/retrieval/queries.jsonl
+python -m policy_kb evaluate ../../dev_eval/retrieval/queries.jsonl
 ```
 
 Queries are JSON lines naming every clause a correct answer must cite:
@@ -238,7 +238,7 @@ Label errors (clause IDs not in the index) are reported before scoring.
 | vector, rewrite:glossary | 0.984 | 1.000 | 0.871 |
 | hybrid, rewrite:glossary | 0.984 | 1.000 | 0.896 |
 
-> ⚠ **These numbers are not evidence of real retrieval quality.** The sample wording, the queries and the glossary were all written by Member 2, so they suit each other. They show that the pipeline and the rewriting effect work. The reportable Recall@5 must come from **Member 1's queries, labelled against the real downloaded wording** (`eval/retrieval/queries.jsonl`), as the plan requires.
+> ⚠ **These numbers are not evidence of real retrieval quality.** The sample wording, the queries and the glossary were all written by Member 2, so they suit each other. They show that the pipeline and the rewriting effect work. The reportable Recall@5 must come from **Member 1's queries, labelled against the real downloaded wording** (`dev_eval/retrieval/queries.jsonl`), as the plan requires.
 
 ---
 
@@ -249,7 +249,7 @@ Label errors (clause IDs not in the index) are reported before scoring.
 | Insurer | Go Digit General Insurance Limited |
 | Product, UIN | Arogya Sanjeevani Policy, `GODHLIP24179V022324` (25 pages, text-based PDF) |
 | Source | [godigit.com policy wording PDF](https://www.godigit.com/content/dam/godigit/directportal/en/downloads/health/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf), downloaded 9 Nov 2026, 576,824 bytes, SHA-256 `70ec4e51cf03a49c06cd7b06fd2dae16ac4ab3a204591fb1e8568a50858ea75b` |
-| Stored | `data/wordings/`, with its `.source.json` (URL, download date, SHA-256) |
+| Stored | `dev_data/wordings/`, with its `.source.json` (URL, download date, SHA-256) |
 
 Get it and build the index on another machine:
 
@@ -258,7 +258,7 @@ python -m policy_kb.fetch --url "https://www.godigit.com/content/dam/godigit/dir
 ```
 
 ```bash
-python -m policy_kb build --wording ../../data/wordings/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf --embedder openrouter
+python -m policy_kb build --wording ../../dev_data/wordings/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf --embedder openrouter
 ```
 
 Check the SHA-256 in the `.source.json` matches the one above; if Go Digit has updated the file, the clause numbers may have moved.
@@ -303,7 +303,7 @@ kb.check_rule_map()               # [] when every mapped clause exists in the in
 
 ### Retrieval results (draft labels, `bge-m3` embeddings)
 
-35 draft queries in `eval/retrieval/queries_godigit_DRAFT.jsonl`, labelled by Member 2. Full tables, misses, costs and the commands to reproduce: [`eval/retrieval/results_DRAFT_2026-11-09.md`](../../eval/retrieval/results_DRAFT_2026-11-09.md).
+35 draft queries in `dev_eval/retrieval/queries_godigit_DRAFT.jsonl`, labelled by Member 2. Full tables, misses, costs and the commands to reproduce: [`dev_eval/retrieval/results_DRAFT_2026-11-09.md`](../../dev_eval/retrieval/results_DRAFT_2026-11-09.md).
 
 | Configuration | Offline embedder | `openrouter:baai/bge-m3` |
 |---|---|---|
@@ -322,7 +322,7 @@ kb.check_rule_map()               # [] when every mapped clause exists in the in
 * **Glossary rewriting helps on top**: hybrid 0.833 → 0.933 (the plan's before/after-rewriting measurement).
 * **LLM rewriting hurts as implemented.** Its free-text expansions pull keyword search off course, so it stays off by default.
 * **The one remaining miss (g10) looks like a labelling question.** The search returns E.9 Renewal of Policy for "does the waiting period start again when I renew"; Member 1 decides the label.
-* **Not reportable yet:** Member 1 reviews the labels into `eval/retrieval/queries.jsonl` and reruns.
+* **Not reportable yet:** Member 1 reviews the labels into `dev_eval/retrieval/queries.jsonl` and reruns.
 
 ---
 
@@ -358,7 +358,7 @@ Every tool except `register_uploaded_wording` is read-only (`read_only_hint`, `m
 
 ### The policy catalogue and uploaded wordings
 
-* **Catalogue.** `data/wordings/catalogue.json` lists the reviewed wordings (`wording_uin`, insurer, product, version, index path relative to `var/policy_kb`, `reviewed`) and the default. `PolicyLibrary` (`policy_kb/catalogue.py`) routes every call by `wording_uin`. Without a catalogue file, or with `CLAIMCLEAR_POLICY_KB_INDEX` set and no `CLAIMCLEAR_POLICY_CATALOGUE`, the server serves that single index.
+* **Catalogue.** `dev_data/wordings/catalogue.json` lists the reviewed wordings (`wording_uin`, insurer, product, version, index path relative to `var/policy_kb`, `reviewed`) and the default. `PolicyLibrary` (`policy_kb/catalogue.py`) routes every call by `wording_uin`. Without a catalogue file, or with `CLAIMCLEAR_POLICY_KB_INDEX` set and no `CLAIMCLEAR_POLICY_CATALOGUE`, the server serves that single index.
 * **Uploads.** When a user's policy isn't in the catalogue, the app stores it in case-records (role `policy_wording`), reads its **visible text** with `get_document_text`, and calls `register_uploaded_wording`. The index goes to `var/policy_kb/uploads/<case_id>/<doc_id>.json` as `upload:<doc_id>`. If fewer than 20 numbered clauses are recognised it is indexed page by page (`get_clause("Page 3")`). The result says whether it looks like an Arogya Sanjeevani policy (`in_scope`) and whether its UIN is in the catalogue (`catalogue_match`). Uploads have no rule map (`NO_RULE_MAP`: use `search_clauses`) and are served only to calls that pass the owning `case_id`. Embedder: `CLAIMCLEAR_UPLOAD_EMBEDDER` (`hashing` by default, `openrouter` with a key).
 
 ### Errors
@@ -411,7 +411,7 @@ A citation from a wording with `synthetic: true` must **never** be shown to a us
 | `clauses` | List every clause (marks headings without text) |
 | `evaluate QUERIES.jsonl [-k 5] [--rewriter ...] [--reranker ...] [--json]` | The Recall@k table |
 
-`python -m policy_kb.fetch --url URL --insurer NAME --uin UIN` downloads a wording PDF into `data/wordings/` and writes a `.source.json` beside it with the URL, date, size and SHA-256.
+`python -m policy_kb.fetch --url URL --insurer NAME --uin UIN` downloads a wording PDF into `dev_data/wordings/` and writes a `.source.json` beside it with the URL, date, size and SHA-256.
 
 ---
 
@@ -444,8 +444,8 @@ servers/policy_kb/
     ├── snapshots/policy_kb_tools.json  pinned MCP tool schemas
     └── test_*.py               115 tests
 
-Outside this folder: the downloaded wordings are in `<repo>/data/wordings/`, and the
-retrieval queries labelled against the real wording are in `<repo>/eval/retrieval/` (M1's evaluation data;
+Outside this folder: the downloaded wordings are in `<repo>/dev_data/wordings/`, and the
+retrieval queries labelled against the real wording are in `<repo>/dev_eval/retrieval/` (M1's evaluation data;
 `queries_godigit_DRAFT.jsonl` is Member 2's draft for Member 1 to review).
 ```
 
@@ -468,10 +468,10 @@ retrieval queries labelled against the real wording are in `<repo>/eval/retrieva
 |---|---|---|
 | ~~Choose, download and check the real wording~~ | Member 2 | ✅ Go Digit, 127 clauses, rule map reviewed |
 | ~~Set `OPENROUTER_API_KEY` and rebuild with `--embedder openrouter`~~ | Member 2 | ✅ `bge-m3`, 127 clauses |
-| **Review and relabel the 35 draft queries** | Member 1 | `eval/retrieval/queries_godigit_DRAFT.jsonl` → `eval/retrieval/queries.jsonl` |
-| ~~Decide the ICU-trigger difference~~ | Decided | The engine keeps IRDAI's 2020 rule (`eval/dev_cases/decisions.json`) |
-| ~~Run Recall@5 before and after rewriting on the draft labels~~ | Member 2 | ✅ [results_DRAFT_2026-11-09.md](../../eval/retrieval/results_DRAFT_2026-11-09.md) |
-| **Rerun on Member 1's labels for the report** | Member 1 | `python -m policy_kb evaluate ../../eval/retrieval/queries.jsonl` |
+| **Review and relabel the 35 draft queries** | Member 1 | `dev_eval/retrieval/queries_godigit_DRAFT.jsonl` → `dev_eval/retrieval/queries.jsonl` |
+| ~~Decide the ICU-trigger difference~~ | Decided | The engine keeps IRDAI's 2020 rule (`dev_eval/dev_cases/decisions.json`) |
+| ~~Run Recall@5 before and after rewriting on the draft labels~~ | Member 2 | ✅ [results_DRAFT_2026-11-09.md](../../dev_eval/retrieval/results_DRAFT_2026-11-09.md) |
+| **Rerun on Member 1's labels for the report** | Member 1 | `python -m policy_kb evaluate ../../dev_eval/retrieval/queries.jsonl` |
 | Try a tighter LLM rewriting prompt (policy terms only); add the cross-encoder reranker | Member 2 | Reranker needs a local model download |
 | ~~Clause IDs for the engine's rules~~ | Member 2 | ✅ `rule_maps/GODHLIP24179V022324.json` (kept per wording, so the engine stays wording-independent) |
 | ~~policy-kb MCP server~~ | Member 2 | ✅ `python -m policy_kb.mcp_server`, port 8103 |
@@ -488,5 +488,5 @@ retrieval queries labelled against the real wording are in `<repo>/eval/retrieva
 | Reranker | None for now; a local `fastembed` cross-encoder remains an option |
 | Fusion | Reciprocal rank fusion, k = 60, top 20 from each retriever |
 | Rewriting | Glossary appends policy terms and never removes the user's words; LLM rewriter optional |
-| Storing insurer documents | The Go Digit PDF is kept in `data/wordings/` with its source record; uploaded wordings and indexes stay in `var/` (git-ignored) |
+| Storing insurer documents | The Go Digit PDF is kept in `dev_data/wordings/` with its source record; uploaded wordings and indexes stay in `var/` (git-ignored) |
 | Recall@5 definition | Mean share of labelled clauses found in the top 5; Hit@5 and MRR reported alongside |

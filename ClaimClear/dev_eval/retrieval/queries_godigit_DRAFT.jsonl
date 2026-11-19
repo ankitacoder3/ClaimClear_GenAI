@@ -1,6 +1,6 @@
 # DRAFT queries for Go Digit's Arogya Sanjeevani wording (UIN GODHLIP24179V022324), labelled by Member 2 against
 # the downloaded PDF. For Member 1 to REVIEW AND RELABEL before any number is reported: the plan wants the evaluation
-# owner, not the retrieval builder, to own the labels. Save the reviewed set as eval/retrieval/queries.jsonl.
+# owner, not the retrieval builder, to own the labels. Save the reviewed set as dev_eval/retrieval/queries.jsonl.
 {"id": "g01", "query": "why did they cut my medicine bill", "relevant": ["C.1.1"], "note": "pharmacy is exempt from the proportionate deduction"}
 {"id": "g02", "query": "my room cost more than the limit so they reduced the surgeon and nursing charges", "relevant": ["C.1.1"]}
 {"id": "g03", "query": "can the insurer reduce lab tests and implants because of my room category", "relevant": ["C.1.1"]}

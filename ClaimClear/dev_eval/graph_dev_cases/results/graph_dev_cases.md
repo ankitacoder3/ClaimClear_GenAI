@@ -1,6 +1,6 @@
 # Multi-agent graph: development cases
 
-Every dev case through `claimclear_graph` and the real MCP servers, scored with `eval/dev_cases/run.py:score` (the same answers and rules as the fixed-workflow C0 run). Questions left unanswered; grievances rejected at the gate (nothing filed).
+Every dev case through `claimclear_graph` and the real MCP servers, scored with `dev_eval/dev_cases/run.py:score` (the same answers and rules as the fixed-workflow C0 run). Questions left unanswered; grievances rejected at the gate (nothing filed).
 
 | Cases | Ran to the end (audit produced) | Overall verdict right | Row verdicts right | Payable right (±₹1) | Disputable right (±₹1) | Same overall verdict as C0 |
 |---|---|---|---|---|---|---|

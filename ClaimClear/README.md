@@ -8,8 +8,8 @@ This repository combines two code bases into one working system:
 
 | Part | Owner | Folder | What it is |
 |---|---|---|---|
-| Knowledge, memory and tools | Member 2 | `servers/`, `contracts/`, `memory/`, `agents/toolkit/`, `data/`, `eval/dev_cases/` | Five MCP servers (settlement engine, case records, policy KB, insurer portal, document reader), the shared contracts, long-term memory and the agents' toolkit |
-| Agents and orchestration | Member 3 | `agents/orchestration/`, `eval/graph_dev_cases/` | The LangGraph multi-agent graph: supervisor, six specialists, critic loop with replanning, memory, and the human approval gate |
+| Knowledge, memory and tools | Member 2 | `servers/`, `contracts/`, `memory/`, `agents/toolkit/`, `dev_data/`, `dev_eval/dev_cases/` | Five MCP servers (settlement engine, case records, policy KB, insurer portal, document reader), the shared contracts, long-term memory and the agents' toolkit |
+| Agents and orchestration | Member 3 | `agents/orchestration/`, `dev_eval/graph_dev_cases/` | The LangGraph multi-agent graph: supervisor, six specialists, critic loop with replanning, memory, and the human approval gate |
 
 The architecture below is the reference for both; [docs/member3_orchestration/architecture.md](docs/member3_orchestration/architecture.md) maps every box to the code that implements it.
 
@@ -159,8 +159,8 @@ ClaimClear/
 │   └── document_reader/        PDF/JPG/PNG to text with spans, Tesseract OCR, hidden-text channels
 ├── contracts/                  CaseState, hand-offs (Plan, CriticReport, ExplainerDraft, GrievanceDraft), tool schemas
 ├── memory/                     claimclear_memory: per-user policy profile, claims, balances, grievance status
-├── data/                       42 dev cases with answers, the Arogya Sanjeevani wording, policy rules
-├── eval/
+├── dev_data/                       42 dev cases with answers, the Arogya Sanjeevani wording, policy rules
+├── dev_eval/
 │   ├── dev_cases/              C0 fixed workflow over every dev case (Member 2)
 │   ├── graph_dev_cases/        the same cases through the multi-agent graph (Member 3)
 │   └── memory_on_off/          memory on vs off
@@ -191,7 +191,7 @@ python start.py --auto SET-01
 A self-check without prompts: the servers start, SET-01 runs through every agent, the grievance is approved and filed (dry run), and everything stops. `--auto SET-02` is a clean settlement, `--auto SET-22` meets an engine question (a pharmacy receipt's admission dates; the self-check skips it). SET-32 no longer asks: the insurer paid that claim, so the engine audits it on the insurer's own acceptance. Without `--auto`, `python start.py` opens the web UI.
 
 ```bash
-.venv-agents/bin/python eval/graph_dev_cases/run.py
+.venv-agents/bin/python dev_eval/graph_dev_cases/run.py
 ```
 
 All 42 development cases through the graph, scored against their answers and compared with the C0 run.
@@ -233,21 +233,21 @@ async with ClaimClearToolkit() as tk:                                  # keep it
 | insurer-portal | `cd servers/insurer_portal && ../../.venv/bin/python -m pytest` | 13 passed |
 | memory | `cd memory && ../.venv/bin/python -m pytest` | 49 passed, 42 skipped (PostgreSQL not running) |
 | contracts | `cd contracts && ../.venv/bin/python -m pytest` | 22 passed; `python -m claimclear_contracts.export --check` up to date |
-| eval helpers | `cd eval/dev_cases` / `eval/memory_on_off` | 3 + 3 passed |
+| eval helpers | `cd dev_eval/dev_cases` / `dev_eval/memory_on_off` | 3 + 3 passed |
 | settlement-engine | `cd servers/settlement_engine && ../../.venv/bin/python -m pytest` | 315 passed, 6 skipped ¹ |
 | document-reader | `cd servers/document_reader && ../../.venv/bin/python -m pytest` | 69 passed, 11 skipped ¹ |
 | case-records | `cd servers/case_records && ../../.venv/bin/python -m pytest` | 25 passed, 34 skipped ¹ |
 
-¹ The skipped tests read the **held-out split** (`data/dataset/heldout/`, documents such as SET-06, FMT-04, POI-08), which is not part of this upload; each suite's `conftest.py` lists them and skips them with that reason while the folder is missing (three case-records skips need PostgreSQL). Restore `data/dataset/heldout` and they run as in Member 2's CI. `pytest` hides the summary line (`addopts = -q`); add `-o addopts=""` to see the counts. CI (`.github/workflows/ci.yml`) runs every suite on each push.
+¹ The skipped tests read the **held-out split** (`dev_data/dataset/heldout/`, documents such as SET-06, FMT-04, POI-08), which is not part of this upload; each suite's `conftest.py` lists them and skips them with that reason while the folder is missing (three case-records skips need PostgreSQL). Restore `dev_data/dataset/heldout` and they run as in Member 2's CI. `pytest` hides the summary line (`addopts = -q`); add `-o addopts=""` to see the counts. CI (`.github/workflows/ci.yml`) runs every suite on each push.
 
 ## 6. Results on the development cases
 
 | Run | Cases | Ran to the end (audit produced) | Overall verdict right | Row verdicts right | Payable right (±₹1) | Disputable right (±₹1) |
 |---|---|---|---|---|---|---|
-| C0 fixed workflow (`eval/dev_cases`) | 42 | 42 | 40/42 | 89/94 | 27/31 | 37/40 |
-| Multi-agent graph (`eval/graph_dev_cases`) | 42 | 42 | 40/42 | 89/94 | 27/31 | 37/40 |
+| C0 fixed workflow (`dev_eval/dev_cases`) | 42 | 42 | 40/42 | 89/94 | 27/31 | 37/40 |
+| Multi-agent graph (`dev_eval/graph_dev_cases`) | 42 | 42 | 40/42 | 89/94 | 27/31 | 37/40 |
 
-Every case reaches a defined outcome and produces an audit. The graph agrees with the fixed workflow on every case's overall verdict (42/42): orchestration adds the plan, the critic's independent re-check and draft review, the questions, the explanation and the approval gate without changing a single figure. The two misses: gen-dev-50b4e6, where the answer key differs by a documented decision (IRDAI's 2020 proportionate-deduction rule, `eval/dev_cases/decisions.json`), and syn-dev-021, a pharmacy bill with no admission date, where the engine asks for the date rather than assume it. 19 cases stopped at the approval gate; none was filed without approval. Details: [`eval/graph_dev_cases/results/graph_dev_cases.md`](eval/graph_dev_cases/results/graph_dev_cases.md).
+Every case reaches a defined outcome and produces an audit. The graph agrees with the fixed workflow on every case's overall verdict (42/42): orchestration adds the plan, the critic's independent re-check and draft review, the questions, the explanation and the approval gate without changing a single figure. The two misses: gen-dev-50b4e6, where the answer key differs by a documented decision (IRDAI's 2020 proportionate-deduction rule, `dev_eval/dev_cases/decisions.json`), and syn-dev-021, a pharmacy bill with no admission date, where the engine asks for the date rather than assume it. 19 cases stopped at the approval gate; none was filed without approval. Details: [`dev_eval/graph_dev_cases/results/graph_dev_cases.md`](dev_eval/graph_dev_cases/results/graph_dev_cases.md).
 
 ## 7. Configuration
 
@@ -261,12 +261,12 @@ Environment variables, with safe defaults under `var/` (git-ignored). Secrets go
 | `CLAIMCLEAR_LLM_BASE_URL`, `CLAIMCLEAR_LOCAL_MODEL` | unset | The local LLM (written by `start_llm`); used first |
 | `OPENROUTER_API_KEY`, `CLAIMCLEAR_CHAT_MODEL` | unset, `openai/gpt-4.1-mini` | OpenRouter, used when no local LLM is set |
 | `CLAIMCLEAR_AUTO_LOCAL` | unset | `0`: `start.py` doesn't switch to a running local LLM by itself (written when you choose OpenRouter in the page) |
-| `CLAIMCLEAR_EXTRACTION_MODEL` | the chat model | Model override for `eval/graph_dev_cases/run.py --llm-extract` |
+| `CLAIMCLEAR_EXTRACTION_MODEL` | the chat model | Model override for `dev_eval/graph_dev_cases/run.py --llm-extract` |
 | `CLAIMCLEAR_EXTRACTION_MAX_TOKENS` | `4000` | The document reader's extraction reply limit (at least 500). Lower it for a key with little credit: OpenRouter reserves the whole limit and refuses with HTTP 402 when it can't afford it |
 | `CLAIMCLEAR_MAX_TOKENS` | `1500` | The longest reply the chat model may write. Always sent to the provider, so keys with a small credit limit work; the settings test uses 16, document extraction 4,000 |
 | `CLAIMCLEAR_MEMORY_USER` | unset | The local user whose long-term memory the web UI uses (with consent); unset = memory off. See [docs/member2_knowledge_memory_tools/memory.md](docs/member2_knowledge_memory_tools/memory.md#episodic-memory-earlier-conversations) |
 | `CLAIMCLEAR_GATE_SECRET` | unset | Approval-gate HMAC secret. Set it for **both** the gateway and the insurer-portal server: the portal then accepts only `HMAC-SHA256(secret, text_sha256)` tokens. Unset, the portal checks only that a token is present (development) |
-| `CLAIMCLEAR_CASE_STORE`, `CLAIMCLEAR_REFERENCE_DIR` | `var/case_store`, `data/dataset/dev/reference` | Case store and reference data |
+| `CLAIMCLEAR_CASE_STORE`, `CLAIMCLEAR_REFERENCE_DIR` | `var/case_store`, `dev_data/dataset/dev/reference` | Case store and reference data |
 | `CLAIMCLEAR_POLICY_KB_INDEX` | `var/policy_kb/index.json` | Policy index (build it: `python -m policy_kb build --wording ...`) |
 | `CLAIMCLEAR_MEMORY_DB` | `var/memory/memory.db` | SQLite file or `postgresql://...` |
 | `CLAIMCLEAR_PORTAL_STORE` | `var/insurer_portal/dry_run.json` | The dry-run portal's record of filings |

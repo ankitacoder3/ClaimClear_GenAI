@@ -13,7 +13,7 @@ import pytest
 REPO = Path(__file__).resolve().parents[3]
 PY = REPO / (".venv/Scripts/python.exe" if os.name == "nt" else ".venv/bin/python")
 SCRIPT = REPO / "scripts" / "upload_case.py"
-CASE = REPO / "data" / "dataset" / "dev" / "cases" / "syn-dev-005"
+CASE = REPO / "dev_data" / "dataset" / "dev" / "cases" / "syn-dev-005"
 pytestmark = pytest.mark.skipif(not PY.exists(), reason="needs the servers' environment")
 
 
@@ -57,7 +57,7 @@ def test_input_errors(var, args, error):
 
 def test_no_policy_number_anywhere(var, tmp_path):
     letter = tmp_path / "settlement_letter.png"                          # an image: no text to read a number from
-    shutil.copy(REPO / "data" / "dataset" / "dev" / "cases" / "syn-dev-007" / "bill.png", letter)
+    shutil.copy(REPO / "dev_data" / "dataset" / "dev" / "cases" / "syn-dev-007" / "bill.png", letter)
     assert "no policy number" in run_script(var, letter)["error"]
 
 
@@ -74,7 +74,7 @@ def test_unknown_documents_are_left_for_the_llm(var, tmp_path):
 
 
 def test_several_letters_prefer_the_settlement_letter(var):
-    gen = REPO / "data" / "dataset" / "dev" / "cases" / "gen-dev-147e01"
+    gen = REPO / "dev_data" / "dataset" / "dev" / "cases" / "gen-dev-147e01"
     r = run_script(var, f"{gen / 'earlier_settlement_1.pdf'}=settlement_letter", gen / "settlement_letter.pdf",
                    gen / "bill.pdf", gen / "policy_schedule.pdf")
     assert any("checking settlement_letter.pdf" in w for w in r["warnings"])

@@ -12,7 +12,7 @@
     "proportionate_deduction": {
       "clauses": ["C.1.1"],
       "where": "C.1.1 Notes 2 and 3: proportionate deduction except pharmacy and consumables, implants and medical devices, diagnostics; not applied where the hospital does not follow differential billing",
-      "differs_from_engine": "Note 2 applies the proportionate deduction when the room OR ICU/ICCU rate exceeds its limit. The engine (IRDAI 2020 norm) never triggers it from an ICU excess. Decided: the engine keeps the IRDAI 2020 rule (eval/dev_cases/decisions.json)."
+      "differs_from_engine": "Note 2 applies the proportionate deduction when the room OR ICU/ICCU rate exceeds its limit. The engine (IRDAI 2020 norm) never triggers it from an ICU excess. Decided: the engine keeps the IRDAI 2020 rule (dev_eval/dev_cases/decisions.json)."
     },
     "non_payable_items": {
       "clauses": ["C.7", "Annexure A List I", "Annexure A List II", "Annexure A List III", "Annexure A List IV", "Annexure A List V"],
