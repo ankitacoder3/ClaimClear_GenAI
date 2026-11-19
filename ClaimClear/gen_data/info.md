@@ -1,4 +1,4 @@
-# gen_data: the case generator behind the `gen-` cases
+# generate_data: the case generator behind the `gen-` cases
 
 The 60 `gen-` cases (20 dev in `../data/dataset/dev`, 40 held-out) were made by this generator. This folder holds
 its code, all 24 recipes, and English specs for the datasets still to be generated, so the cases can be rebuilt
