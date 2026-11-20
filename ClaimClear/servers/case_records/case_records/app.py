@@ -2,7 +2,8 @@
 
 Five read-only tools, each scoped to one case:
 
-    list_case_documents  the documents uploaded for the case (neutral IDs only)
+    list_case_documents  the documents uploaded for the case (neutral IDs; the user's names and summaries
+                         only when the app recorded them)
     get_document_text    text with source spans, hidden content kept apart, metadata,
                          annotations, form fields and attachments
     get_policy           the policy schedule for the case's policy
@@ -129,7 +130,8 @@ def create_server(store_dir: Optional[str | Path] = None, reference_dir: Optiona
 
     @server.tool(
         title="List case documents",
-        description="List the documents uploaded for a case: neutral document IDs, media type, size and SHA-256.",
+        description=("List the documents uploaded for a case: neutral document IDs, role, media type, size, SHA-256 "
+                     "and page count, plus the user's file name and a one-line summary when the app recorded them."),
         annotations=READ_ONLY, meta=READ_META)
     def list_case_documents(case_id: CaseId) -> CaseDocumentsOut:
         def run():
@@ -137,7 +139,9 @@ def create_server(store_dir: Optional[str | Path] = None, reference_dir: Optiona
             case = s.case(case_id)
             return CaseDocumentsOut(case_id=case.case_id, policy_no=case.policy_no, documents=[
                 {"document_id": d.document_id, "role": s.role(case_id, d.document_id), "media_type": d.media_type,
-                 "size_bytes": d.size_bytes, "sha256": d.sha256} for d in s.documents(case_id)])
+                 "size_bytes": d.size_bytes, "sha256": d.sha256, "page_count": d.page_count,
+                 "name": case.document_names.get(d.document_id, ""),
+                 "summary": case.document_summaries.get(d.document_id, "")} for d in s.documents(case_id)])
         return guarded(run)
 
     @server.tool(

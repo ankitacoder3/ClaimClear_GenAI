@@ -7,9 +7,14 @@ leak a label through a file name or folder (the dataset's names such as
 claim and records the policy number it belongs to; tools only ever read within
 one case.
 
+Per case, the upload path may also record what the app learned about each document: the user's own file name
+(only when the caller passes one: the chat does, dataset registration never does, so dataset labels still can't
+leak), and a one-line summary with the document's role (``describe_document``). The page count is read once when
+the file is added.
+
 Layout under the store root (development)::
 
-    index.json                 cases and documents (no original file names)
+    index.json                 cases and documents (no dataset file names)
     files/<document_id>.<ext>  the stored copies
 
 In production the index lives in PostgreSQL and the files in MinIO, with the same
@@ -58,6 +63,7 @@ class DocumentRecord:
     sha256: str
     size_bytes: int
     stored_name: str  # neutral, e.g. doc_3fa2....pdf
+    page_count: Optional[int] = None  # read when added; None for records stored before it was kept
 
 
 @dataclass
@@ -68,6 +74,8 @@ class CaseRecord:
     wording_uin: str = ""                                          # "" = the default catalogue wording
     document_roles: dict[str, str] = field(default_factory=dict)  # document_id -> role in this case
     reference_key: str = ""         # picks this case's own reference record when a dataset reuses a policy number
+    document_names: dict[str, str] = field(default_factory=dict)      # document_id -> the user's file name
+    document_summaries: dict[str, str] = field(default_factory=dict)  # document_id -> one line on what it is
 
     def effective_wording_uin(self) -> str:
         return self.wording_uin or os.environ.get(DEFAULT_WORDING_ENV, DEFAULT_WORDING_UIN)
@@ -126,8 +134,9 @@ class CaseStore:
         self._save()
         return case
 
-    def add_document(self, case_id: str, path: str | Path, role: str = "other") -> DocumentRecord:
-        """Copy a PDF, JPG or PNG into the store and attach it to the case with its ``role``."""
+    def add_document(self, case_id: str, path: str | Path, role: str = "other", name: str = "") -> DocumentRecord:
+        """Copy a PDF, JPG or PNG into the store and attach it to the case with its ``role``. ``name``: the user's
+        own file name, kept for this case only (leave it empty for dataset files)."""
         if role not in ROLES:
             raise StoreError("INVALID_ROLE", f"role must be one of {', '.join(ROLES)}")
         path = Path(path)
@@ -144,12 +153,42 @@ class CaseStore:
         if document_id not in self._docs:
             stored = f"{document_id}{'.jpg' if ext == '.jpeg' else ext}"
             self.blobs.put(stored, data, MEDIA_TYPES[ext])
-            self._docs[document_id] = DocumentRecord(document_id, MEDIA_TYPES[ext], digest, size, stored)
+            self._docs[document_id] = DocumentRecord(document_id, MEDIA_TYPES[ext], digest, size, stored,
+                                                     _page_count(data, MEDIA_TYPES[ext]))
         if document_id not in case.document_ids:
             case.document_ids.append(document_id)
         case.document_roles[document_id] = role
+        if name:
+            case.document_names[document_id] = Path(name).name[:200]
         self._save()
         return self._docs[document_id]
+
+    def describe_document(self, case_id: str, document_id: str, role: Optional[str] = None,
+                          summary: Optional[str] = None) -> CaseRecord:
+        """Record what a document of the case is: its ``role`` and/or a one-line ``summary`` (what the app or its
+        agent read off the document). Only what is given changes."""
+        case = self.case(case_id)
+        if document_id not in case.document_ids:
+            raise StoreError("DOCUMENT_NOT_IN_CASE", f"document {document_id!r} is not part of case {case_id!r}")
+        if role is not None:
+            if role not in ROLES:
+                raise StoreError("INVALID_ROLE", f"role must be one of {', '.join(ROLES)}")
+            case.document_roles[document_id] = role
+        if summary is not None:
+            case.document_summaries[document_id] = " ".join(summary.split())[:500]
+        self._save()
+        return case
+
+    def set_policy(self, case_id: str, policy_no: str, reference_key: str = "") -> CaseRecord:
+        """Set the case's policy number once it is known (e.g. read off an uploaded schedule after the case was
+        created). ``reference_key``: as in ``create_case`` (dataset registration only)."""
+        case = self.case(case_id)
+        if not policy_no.strip():
+            raise StoreError("INVALID_POLICY", "the policy number is empty")
+        case.policy_no = policy_no.strip()
+        case.reference_key = reference_key
+        self._save()
+        return case
 
     # ------------------------------------------------------------------ reading (tools)
 
@@ -182,6 +221,18 @@ class CaseStore:
 
     def role(self, case_id: str, document_id: str) -> str:
         return self.case(case_id).document_roles.get(document_id, "other")
+
+
+def _page_count(data: bytes, media_type: str) -> Optional[int]:
+    """Pages of a PDF (an image is one page); None when the file can't be opened."""
+    if media_type != "application/pdf":
+        return 1
+    try:
+        import pymupdf
+        with pymupdf.open(stream=data, filetype="pdf") as pdf:
+            return pdf.page_count
+    except Exception:                       # unreadable or encrypted: the reader reports it on the first read
+        return None
 
 
 def _check_wording(wording_uin: str) -> None:

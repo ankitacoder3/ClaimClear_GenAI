@@ -9,7 +9,7 @@ and ``PastClaimIn``, so they can be passed straight through (a test checks it).
 from __future__ import annotations
 
 import datetime as dt
-from typing import Literal
+from typing import Literal, Optional
 
 from document_reader.schemas import (  # noqa: F401  the document text shape is the reader's, defined once
     AnnotationOut,
@@ -37,6 +37,9 @@ class DocumentInfoOut(_Out):
     media_type: str
     size_bytes: int
     sha256: str
+    page_count: Optional[int] = Field(None, description="Pages in the document; null if it couldn't be counted")
+    name: str = Field("", description="The user's own file name, when the app recorded it; empty otherwise")
+    summary: str = Field("", description="One line on what the document is, when the app recorded it")
 
 
 class CaseDocumentsOut(_Out):
