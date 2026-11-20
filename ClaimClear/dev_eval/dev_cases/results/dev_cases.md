@@ -4,9 +4,9 @@ Every dev case of `dev_data/dataset/dev` through the toolkit and all five server
 
 | Source | Cases | Ran to the end | Overall verdict right | Row verdicts right | Payable right (±₹1) | Disputable right (±₹1) |
 |---|---|---|---|---|---|---|
-| synthetic | 22 | 22 | 21/22 | 20/20 | 13/14 | 21/21 |
+| synthetic | 22 | 22 | 21/22 | 20/20 | 14/14 | 21/21 |
 | gen-data | 20 | 20 | 19/20 | 69/74 | 14/17 | 16/19 |
-| all | 42 | 42 | 40/42 | 89/94 | 27/31 | 37/40 |
+| all | 42 | 42 | 40/42 | 89/94 | 28/31 | 37/40 |
 
 Routes: {'ask_user': 3, 'offer_grievance': 21, 'no_grievance': 18}. Wording: {'not_reviewed': 20, 'not_printed': 22}. Cases with guardrail flags: 4.
 
@@ -47,7 +47,7 @@ Routes: {'ask_user': 3, 'offer_grievance': 21, 'no_grievance': 18}. Wording: {'n
 | syn-dev-011 | no_grievance | matches_policy | matches_policy ✓ | 0/0 | 24937.5 / 24937.5 | 0.0 / 0.0 |  |
 | syn-dev-012 | no_grievance | matches_policy | matches_policy ✓ | 0/0 | - / - | 0.0 / 0.0 |  |
 | syn-dev-013 | no_grievance | matches_policy | matches_policy ✓ | 2/2 | 100700.0 / 100700.0 | 0.0 / 0.0 |  |
-| syn-dev-014 | no_grievance | matches_policy | matches_policy ✓ | 0/0 | 324425.0 / 188955.0 | 0.0 / 0.0 |  |
+| syn-dev-014 | no_grievance | matches_policy | matches_policy ✓ | 0/0 | 324425.0 / 324425.0 | 0.0 / 0.0 |  |
 | syn-dev-015 | no_grievance | matches_policy | matches_policy ✓ | 0/0 | - / - | 0.0 / 0.0 |  |
 | syn-dev-016 | offer_grievance | disputable | disputable ✓ | 3/3 | 88591.16 / 88591.16 | 5721.93 / 5721.93 |  |
 | syn-dev-017 | no_grievance | matches_policy | matches_policy ✓ | 1/1 | 81985.0 / 81985.0 | 0.0 / 0.0 |  |

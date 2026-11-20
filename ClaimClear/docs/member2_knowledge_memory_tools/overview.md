@@ -1,6 +1,6 @@
 # ClaimClear v2: Member 2's work (knowledge, memory and tools)
 
-> Moved here from the repository root when Member 3's orchestration was merged in. Links are relative to `docs/`. The combined system's entry point is the [root README](../../README.md).
+> Moved here from the repository root when Member 3's orchestration was merged in. Links are relative to `docs/`. The combined system's entry point is the [main guide, `info.md`](../../info.md).
 
 
 This branch holds **only Member 2's part** of ClaimClear, the post-settlement assistant for health-insurance policyholders. Its history has one commit per part: the dataset first, then each server, the libraries, the evaluation, CI and the docs.

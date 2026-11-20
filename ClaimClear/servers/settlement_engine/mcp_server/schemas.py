@@ -81,6 +81,10 @@ class ClaimIn(_In):
     hospital_gstin: str = Field(
         default="", max_length=40,
         description="The hospital's GSTIN exactly as printed on the bill (empty if none). Only its format is checked.")
+    bill_numbers: list[str] = Field(
+        default_factory=list, max_length=20,
+        description="The hospital's invoice (bill) numbers this claim adds up, as printed. When one stay is billed on "
+                    "several invoices, put every invoice's lines in this claim and list each invoice number here.")
 
     @model_validator(mode="after")
     def _check(self) -> "ClaimIn":

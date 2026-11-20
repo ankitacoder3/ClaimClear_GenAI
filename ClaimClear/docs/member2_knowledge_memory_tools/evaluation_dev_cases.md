@@ -55,9 +55,9 @@ Written to [`results/dev_cases.md`](../../dev_eval/dev_cases/results/dev_cases.m
 
 | Source | Cases | Ran to the end | Overall verdict right | Row verdicts right | Payable right (±₹1) | Disputable right (±₹1) |
 |---|---|---|---|---|---|---|
-| synthetic | 22 | 22 | 21/22 | 20/20 | 13/14 | 21/21 |
+| synthetic | 22 | 22 | 21/22 | 20/20 | 14/14 | 21/21 |
 | gen-data | 20 | 20 | 19/20 | 69/74 | 14/17 | 16/19 |
-| all | 42 | 42 | 40/42 | 89/94 | 27/31 | 37/40 |
+| all | 42 | 42 | 40/42 | 89/94 | 28/31 | 37/40 |
 
 The first run, before the engine fixes below, gave synthetic 12/22 overall and 17/20 rows, and gen-data
 8/20 overall, 18/74 rows, 3/14 payable and 3/15 disputable. The run before the 18 November fixes (integrity
@@ -98,6 +98,12 @@ Fixed on 18 November (tests in `servers/settlement_engine/tests/test_integrity.p
 | syn-dev-004, 006, 012, 015 | A rejection for impossible dates, fraud, an invented hospital or an altered date came back `not_verifiable` or stopped | **Integrity checks** (`engine/integrity.py`) find the evidence in the documents: discharge before admission, room days beyond the stay, inpatient lines dated outside the stay, a malformed GSTIN. A definite finding confirms the letter's REJECTION row (hypotheses `not_genuine_documents`, `waiting_period_on_line_dates`), payable ₹0. The engine still never accuses: it reports what the documents show |
 | syn-dev-017 | Asked which waiting-period list a meniscus tear is on | A **paid** claim with no waiting-period row means the insurer accepted the condition; the engine takes it from the letter (fact `F-CONDITION-FROM-LETTER`, kind `assumption`), and the explanation says so |
 | gen-dev-b4331d | ₹215.50 disputable against the answer's nothing | The co-pay was computed before the row the engine can't verify, so that row no longer rescales the co-pay (keep factor 1); see below |
+
+Fixed on 20 November (tests in `test_integrity.py` and `test_letter_gaps.py`):
+
+| Case | Was | Fix |
+|---|---|---|
+| syn-dev-014 | One stay billed on two invoices: the development reader took only the first, so the payable was ₹1,88,955 instead of ₹3,24,425 (the verdict was right) | Invoices of the same stay (same IP number, or patient ID and dates) are one claim (`engine/dataset.py`, `claim_from_invoices`); the claim keeps every invoice number (`bill_numbers`) and the new integrity finding `split_invoices` names the split. Payable 27/31 → 28/31 |
 
 ## Where the answer key may be wrong
 

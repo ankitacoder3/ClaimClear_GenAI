@@ -233,38 +233,117 @@ graph will call them, then scores it against the case's answer file. For each ca
 .venv-agents/Scripts/python.exe dev_eval/dev_cases/run.py      # results in dev_eval/dev_cases/results/dev_cases.md
 ```
 
-**Latest run:**
+**Latest run (20 November 2026):**
 
 | | Synthetic | gen-data | All |
 |---|---|---|---|
 | cases | 22 | 20 | 42 |
-| ran to the end | 21 | 20 | 41 |
-| overall verdict right | 16 / 22 | 18 / 20 | 34 / 42 |
-| row verdicts right | 19 / 20 | 69 / 74 | 88 / 94 |
-| policy-correct payable right (within ₹1) | 12 / 13 | 14 / 17 | 26 / 30 |
-| disputable amount right (within ₹1) | 19 / 19 | 15 / 19 | 34 / 38 |
+| ran to the end | 22 | 20 | 42 |
+| overall verdict right | 21 / 22 | 19 / 20 | 40 / 42 |
+| row verdicts right | 20 / 20 | 69 / 74 | 89 / 94 |
+| policy-correct payable right (within ₹1) | 14 / 14 | 14 / 17 | 28 / 31 |
+| disputable amount right (within ₹1) | 21 / 21 | 16 / 19 | 37 / 40 |
 
-Every case read its documents (163 documents, 1,157 pages) and its wording status. policy-kb returned a clause for 110 of the 111 rules the rows cited; the other is "GST follows the charge", which has no clause in the wording by design. The critic found no unsupported figure in any draft. Four cases raised guardrail flags: hidden text in three (one of them also an edited PDF) and a look-alike policy number on the bill in one.
+Every case read its documents (163 documents, 1,157 pages) and its wording status. policy-kb returned a clause for every rule the rows cited except "GST follows the charge", which has no clause in the wording by design. The critic found no unsupported figure in any draft. Four cases raised guardrail flags: hidden text in three (one of them also an edited PDF) and a look-alike policy number on the bill in one.
 
 Where the cases ended:
 
 | Route | Synthetic | gen-data |
 |---|---|---|
 | `offer_grievance`: some rupees may be disputable | 5 | 16 |
-| `no_grievance`: nothing disputable | 14 | 2 |
-| `ask_user`: the engine needs an answer first | 2 | 2 |
-| `invalid_extraction`: the claim is impossible | 1 | 0 |
+| `no_grievance`: nothing disputable | 16 | 2 |
+| `ask_user`: the engine needs an answer first | 1 | 2 |
 
-**What still differs from the answer key** (the 8 overall misses; detail in
-[`docs/member2_knowledge_memory_tools/evaluation_dev_cases.md`](evaluation_dev_cases.md)):
+### 10.1 Why some dev cases are not identified correctly
 
-| Case | What differs | Why |
+Two overall verdicts are wrong (40/42), and three more cases have the right verdict but a wrong amount
+or row. None of them is a calculation bug. They have two causes (a third, fixed on 20 November, is
+kept below for the record):
+
+1. **ClaimClear deliberately follows a different rule from the answer key.**
+2. **The engine asks a question instead of guessing**, and the dev run has nobody to answer it.
+3. *(Fixed on 20 November.)* The development stand-in that reads the documents read only part of one bill.
+
+#### Cause 1: a different rule from the answer key (gen-dev-50b4e6, gen-dev-6a82b1, gen-dev-a0a2f1)
+
+**What happened.** In each case the patient's room cost more than the policy allows. The insurer then
+also cuts the other hospital charges in the same proportion (the **proportionate deduction**). The
+disagreement is about *which* charges that cut may touch:
+
+* **The answer key** follows the case's printed policy wording: only medicines are spared, so
+  consumables, implants and tests are cut as well; and an ICU above its limit also triggers the cut.
+* **ClaimClear** follows IRDAI's 2020 circular (IRDAI/HLT/REG/CIR/151/06/2020), which binds every insurer:
+  pharmacy and consumables, implants and medical devices, diagnostics and ICU charges are never cut, and
+  only a room above its limit triggers the cut.
+
+On gen-dev-50b4e6 the answer key cuts ₹17,988 and ClaimClear ₹15,046.15, so ClaimClear finds ₹2,794.66
+that may be disputable where the answer key says the letter matches the policy. That is the only one of
+the three whose **overall verdict** differs; on 6a82b1 and a0a2f1 both say "may be disputable" and only
+the **amounts** differ.
+
+**Why it stays.** A policyholder can rely on the regulator's circular in a grievance or before the
+Ombudsman, whatever an older copy of a wording says. This is a recorded team decision
+(`dev_eval/dev_cases/decisions.json`, `proportionate-2020`); the run labels these cases "answer key
+differs by decision" and still counts them as misses. The answer files are Member 1's and are left as
+they are.
+
+#### Cause 2: the engine asks instead of guessing (syn-dev-021, gen-dev-0fa297)
+
+* **syn-dev-021, a phone photo of a pharmacy receipt.** The medicines were bought after the hospital
+  stay. The policy pays those only within 60 days of discharge and only for the same illness. The
+  receipt has no admission or discharge date, so the engine cannot check that window and asks for the
+  admission date (`Q-ADMISSION`). The dev run has nobody to answer, so the case ends as "can't check yet"
+  (`not_verifiable`); the answer key says the insurer's refusal matches the policy. With a person
+  answering the question, the case is decided.
+* **gen-dev-0fa297, blood plasma on the bill.** The overall verdict ("can't check") is right, but three
+  rows (two non-payable items and the co-pay) wait as "can't check" where the answer key says they match.
+  The bill has fresh frozen plasma, and IRDAI's circular does not say whether blood products may be cut
+  when the room is above its limit: it depends on whether the hospital prices them by room type. The
+  engine asks (`Q-ROOM-PRICING`) and keeps the rows that depend on it open until someone answers.
+
+Asking costs points in an unattended run, but for a real policyholder a guess about money would be worse.
+
+#### Cause 3, fixed on 20 November: only the first invoice was read (syn-dev-014)
+
+**What happened.** This case is an adversarial bill: one hospital stay split into two invoices
+(₹1,98,900 + ₹1,42,600 = ₹3,41,500) so that each stays under a ₹2,00,000 approval threshold. The dev run
+does not use an LLM to read documents; it uses a development stand-in (`dev_eval/dev_cases/extract.py`),
+which took only the **first** invoice in a bill. So the engine worked out "the policy should pay
+₹1,88,955" (95% of ₹1,98,900) instead of ₹3,24,425 (95% of ₹3,41,500). The verdict was still right.
+
+**Fix.** Invoices that share the patient's IP number (or patient ID and dates) are one stay, so they are
+one claim: `engine/dataset.py` `claim_from_invoices` joins their lines and totals, and the claim keeps
+every invoice number (`bill_numbers`). A new integrity finding, `split_invoices` (not definite: reported,
+never deducted, never used to confirm a rejection), names the split: "one hospital stay is billed on 2
+separate invoices (KSH-BLR-26-058210, KSH-BLR-26-058297); ClaimClear adds them up (₹3,41,500 in all)…".
+syn-dev-014 now scores the payable right (₹3,24,425), so payable is 28/31. Tests:
+`servers/settlement_engine/tests/test_integrity.py` and `test_letter_gaps.py`.
+
+#### How the misses add up
+
+| Score | Misses | Cases and cause |
 |---|---|---|
-| gen-dev-50b4e6 (and the amounts of 6a82b1, a0a2f1) | the proportionate deduction | the answer key cuts consumables and diagnostics; ClaimClear keeps IRDAI's 2020 rule (decided, labelled from `dev_eval/dev_cases/decisions.json`) |
-| gen-dev-b4331d | ₹215.50 disputable, the answer says none | the letter takes co-pay before its own ₹4,300 cut, so ₹215.50 is owed either way; the answer's own note agrees |
-| syn-dev-004, 006, 012, 015 | rejections (impossible dates, fraud, an invented hospital, an altered date) are confirmed: `matches_policy`, payable ₹0 | the integrity checks find the evidence in the documents (discharge before admission, room days beyond the stay, dated lines outside the stay, a malformed GSTIN) |
-| syn-dev-017 | the insurer paid a meniscus repair, so the condition it accepted is taken from the letter | no waiting-period row on a paid claim means the letter accepted the condition (fact `F-CONDITION-FROM-LETTER`) |
-| syn-dev-021 | asks for the admission date | a pharmacy bill with no admission date, by design |
+| Overall verdict 40 / 42 | 2 | gen-dev-50b4e6 (cause 1), syn-dev-021 (cause 2) |
+| Row verdicts 89 / 94 | 5 | three rows of gen-dev-0fa297 (cause 2), R5 and the co-pay of gen-dev-50b4e6 (cause 1) |
+| Payable 28 / 31 | 3 | gen-dev-50b4e6, 6a82b1, a0a2f1 (cause 1) |
+| Disputable 37 / 40 | 3 | gen-dev-50b4e6, 6a82b1, a0a2f1 (cause 1) |
+
+**With an LLM reading the documents** instead of the stand-in, fewer cases are right (39 / 42 reach an
+audit, 30 / 42 overall verdicts) because the model sometimes misreads a date, an amount or a table row.
+That is a document-reading limit, not a calculation one.
+
+#### Fixed on 18 November (no longer misses)
+
+| Case | Was | Fix |
+|---|---|---|
+| syn-dev-004, 006, 012, 015 | rejections for impossible dates, fraud, an invented hospital or an altered date came back "can't check" or stopped | integrity checks find the evidence in the documents (discharge before admission, room days beyond the stay, dated lines outside the stay, a malformed GSTIN) and confirm the rejection, payable ₹0 |
+| syn-dev-017 | asked which waiting-period list a meniscus tear is on | the insurer paid it with no waiting-period row, so the condition it accepted is taken from the letter (`F-CONDITION-FROM-LETTER`) |
+| gen-dev-b4331d | ₹215.50 disputable against the answer's nothing | a co-pay the letter worked out before a row the engine can't verify is no longer rescaled |
+| syn-dev-014 (20 November) | payable ₹1,88,955 from the first invoice only | every invoice of the same stay is added up; the split is reported (`split_invoices`) |
+
+Detail, with the reasoning behind every engine fix:
+[evaluation_dev_cases.md](evaluation_dev_cases.md). Every case, one by one:
+[dev_dataset_case_book.md](dev_dataset_case_book.md).
 
 The gen-data cases were made independently, with another insurer's wording and phrasing, and showed
 gaps that are now fixed in the engine: the standard non-payable item lists (Annexure A, Lists I–IV),

@@ -221,6 +221,8 @@ Queries are JSON lines naming every clause a correct answer must cite:
 
 The report runs the plan's grid: BM25, vectors and hybrid (plus hybrid + reranker when a reranker is set), each **without and with rewriting**. Metrics:
 - **Recall@5:** the mean share of relevant clauses found in the top 5.
+- **Precision@5:** the share of the top 5 that is relevant. Each query has one or two relevant clauses, so its ceiling is 0.2–0.4; read it next to recall.
+- **MAP@5:** mean average precision: rewards ranking *every* relevant clause high, not only the first.
 - **Hit@5:** queries with at least one relevant clause in the top 5.
 - **MRR:** mean reciprocal rank of the first relevant clause.
 - **Missed:** the query IDs that found nothing relevant.
@@ -324,6 +326,19 @@ kb.check_rule_map()               # [] when every mapped clause exists in the in
 * **The one remaining miss (g10) looks like a labelling question.** The search returns E.9 Renewal of Policy for "does the waiting period start again when I renew"; Member 1 decides the label.
 * **Not reportable yet:** Member 1 reviews the labels into `dev_eval/retrieval/queries.jsonl` and reruns.
 
+### The cross-encoder reranker, Precision@5 and MAP@5 (20 November)
+
+Measured in [`dev_eval/retrieval/results_reranker_2026-11-20.md`](../../dev_eval/retrieval/results_reranker_2026-11-20.md) (same 35 draft queries; bge-m3 could not be rerun because the OpenRouter account's guardrail now blocks it, so a local semantic model, `bge-small-en-v1.5`, stands in):
+
+| Hybrid + glossary, K = 5 | Recall@5 | Precision@5 | MAP@5 | MRR | ms / query |
+|---|---|---|---|---|---|
+| offline hashing | 0.752 | 0.177 | 0.554 | 0.582 | 14 |
+| offline hashing + reranker | **0.890** | 0.211 | 0.715 | 0.760 | 2,825 |
+| bge-small (local semantic) | **0.933** | 0.223 | **0.787** | **0.814** | 16 |
+| bge-small + reranker | 0.862 | 0.200 | 0.706 | 0.755 | 2,848 |
+
+The general-purpose cross-encoder (MS MARCO) helps a weak first stage and hurts a strong one: it scores the user's original words, does not know policy vocabulary, and undoes the glossary's gain. It is also about 200 times slower on a CPU. **It stays off by default**; turn it on only for a fully offline deployment on the hashing embedder.
+
 ---
 
 ## MCP server and agent tools
@@ -409,7 +424,7 @@ A citation from a wording with `synthetic: true` must **never** be shown to a us
 | `search "QUERY" [-k 5] [--mode hybrid\|bm25\|vector] [--no-rewrite] [--rewriter glossary\|openrouter[:model]\|glossary+openrouter\|none] [--reranker none\|fastembed] [--json]` | Search |
 | `clause ID` | Show one clause |
 | `clauses` | List every clause (marks headings without text) |
-| `evaluate QUERIES.jsonl [-k 5] [--rewriter ...] [--reranker ...] [--json]` | The Recall@k table |
+| `evaluate QUERIES.jsonl [-k 5] [--rewriter ...] [--reranker ...] [--json]` | The Recall@k, Precision@k, MAP@k, Hit@k and MRR table |
 
 `python -m policy_kb.fetch --url URL --insurer NAME --uin UIN` downloads a wording PDF into `dev_data/wordings/` and writes a `.source.json` beside it with the URL, date, size and SHA-256.
 
@@ -432,7 +447,7 @@ servers/policy_kb/
 │   ├── rerankers.py            NoReranker, FastEmbedReranker
 │   ├── rewrite.py              GlossaryRewriter (GLOSSARY), LLMRewriter, openrouter_rewriter, make_rewriter
 │   ├── kb.py                   PolicyKB: build, save, load, search, get_clause
-│   ├── evaluate.py             Recall@k, Hit@k, MRR, compare grid, label checks
+│   ├── evaluate.py             Recall@k, Precision@k, MAP@k, Hit@k, MRR, compare grid, label checks
 │   ├── tools.py                tool results (one shape for MCP and LangChain), PolicyKBError, make_tools
 │   ├── mcp_server/             the policy-kb MCP server: app.py, schemas.py, __main__.py
 │   ├── fetch.py                download a wording with its source record
@@ -472,7 +487,8 @@ retrieval queries labelled against the real wording are in `<repo>/dev_eval/retr
 | ~~Decide the ICU-trigger difference~~ | Decided | The engine keeps IRDAI's 2020 rule (`dev_eval/dev_cases/decisions.json`) |
 | ~~Run Recall@5 before and after rewriting on the draft labels~~ | Member 2 | ✅ [results_DRAFT_2026-11-09.md](../../dev_eval/retrieval/results_DRAFT_2026-11-09.md) |
 | **Rerun on Member 1's labels for the report** | Member 1 | `python -m policy_kb evaluate ../../dev_eval/retrieval/queries.jsonl` |
-| Try a tighter LLM rewriting prompt (policy terms only); add the cross-encoder reranker | Member 2 | Reranker needs a local model download |
+| ~~Measure the cross-encoder reranker; add Precision@K and MAP@K to the harness~~ | Member 2 | ✅ [results_reranker_2026-11-20.md](../../dev_eval/retrieval/results_reranker_2026-11-20.md): off by default on the evidence |
+| Try a tighter LLM rewriting prompt (policy terms only); a domain-tuned reranker, or reranking with the rewritten query | Member 2 | |
 | ~~Clause IDs for the engine's rules~~ | Member 2 | ✅ `rule_maps/GODHLIP24179V022324.json` (kept per wording, so the engine stays wording-independent) |
 | ~~policy-kb MCP server~~ | Member 2 | ✅ `python -m policy_kb.mcp_server`, port 8103 |
 

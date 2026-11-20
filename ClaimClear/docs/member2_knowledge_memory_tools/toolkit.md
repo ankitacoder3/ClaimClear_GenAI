@@ -42,7 +42,7 @@ py -3.14 -m venv .venv-agents
 .venv-agents/Scripts/python.exe -m pip install -r requirements-agents.txt
 ```
 
-That installs this package in editable mode, with `langchain-mcp-adapters`, `langgraph` and `langchain-openai`. The servers keep their own `.venv` (see the [root README](../../README.md#two-python-environments)).
+That installs this package in editable mode, with `langchain-mcp-adapters`, `langgraph` and `langchain-openai`. The servers keep their own `.venv` (see the [main guide, `info.md`](../../info.md#two-python-environments)).
 
 ---
 

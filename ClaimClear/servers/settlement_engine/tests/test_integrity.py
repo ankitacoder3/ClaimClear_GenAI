@@ -75,6 +75,26 @@ def test_gstin_format():
     assert codes(replace(stay(), hospital_gstin="-")) == []                    # none printed
 
 
+def test_one_stay_on_two_invoices_is_reported_not_deducted():
+    c = replace(stay(), bill_numbers=("KSH-26-058210", "KSH-26-058297"))
+    found = integrity.check(c, read_lines(c))
+    assert [(f.code, f.definite) for f in found] == [("split_invoices", False)]
+    assert found[0].inputs == {"bill_numbers": ["KSH-26-058210", "KSH-26-058297"], "combined_total": "67200"}
+    r = compute_settlement(c, policy(), RULES)
+    assert r.status == Status.COMPUTED and r.payable_amount == compute_settlement(stay(), policy(), RULES).payable_amount
+    assert any(w.startswith("Check the bill: one hospital stay") for w in r.warnings)
+    # one invoice number, or the same number twice, is not a split
+    assert codes(replace(stay(), bill_numbers=("KSH-1",))) == []
+    assert codes(replace(stay(), bill_numbers=("KSH-1", "KSH-1 "))) == []
+
+
+def test_a_split_bill_never_confirms_a_rejection():
+    c = replace(stay(), bill_numbers=("A-1", "A-2"))
+    row = audit_letter(rejected("Under the fraud condition of the policy, the claim is repudiated.", "67200"), c,
+                       policy(), RULES).rows[0]
+    assert row.verdict != Verdict.MATCHES_POLICY          # not definite: no evidence that the documents are false
+
+
 def test_findings_are_facts_and_warnings_never_deductions():
     r = compute_settlement(replace(stay(), hospital_gstin="BAD"), policy(), RULES)
     facts = [f for f in r.facts if f.kind == "integrity"]

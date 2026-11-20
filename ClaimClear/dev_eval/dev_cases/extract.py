@@ -31,7 +31,7 @@ sys.path.insert(0, str(REPO / "servers" / "settlement_engine"))
 
 import pymupdf  # noqa: E402
 
-from engine.dataset import claim_from_invoice, load_letter  # noqa: E402
+from engine.dataset import claim_from_invoice, claim_from_invoices, load_letter  # noqa: E402
 from engine.models import BillLine, Claim, LetterRow, SettlementLetter  # noqa: E402
 from mcp_server.convert import claim_payload, letter_payload  # noqa: E402
 
@@ -199,7 +199,7 @@ def syn_payload(answer: dict) -> dict:
     bill = docs[ids[next(n for n in ids if n.startswith("bill"))]]
     letter_id = ids.get("settlement_letter.pdf")
     claim_id = docs[letter_id]["document"].get("claim_no") if letter_id else bill["doc_id"]
-    out = {"claim": claim_payload(claim_from_invoice(bill["invoices"][0], claim_id or bill["doc_id"]))}
+    out = {"claim": claim_payload(claim_from_invoices(bill["invoices"], claim_id or bill["doc_id"]))}
     if letter_id:
         out["letter"] = letter_payload(load_letter(letter_id))
     return out

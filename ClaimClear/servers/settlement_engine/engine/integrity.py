@@ -16,6 +16,9 @@ inpatient_lines_outside_stay   every dated room / ICU / nursing / theatre / surg
 some_inpatient_lines_outside   only some of them do (a typing slip is possible)             no
 gstin_malformed                the hospital's GSTIN is not 15 characters in the official    yes
                                pattern (2 digits, PAN, entity code, Z, check character)
+split_invoices                 one stay is billed on two or more invoice numbers; the       no
+                               claim adds them up, and the split is reported because it
+                               can keep each invoice under an insurer's approval limit
 =============================  ===========================================================  ==========
 
 The GSTIN check is structural only. The state code and check character are not tested: the synthetic dataset's
@@ -46,6 +49,7 @@ class Finding:
     definite: bool = True
     line_ids: tuple[str, ...] = ()
     inputs: dict[str, Any] = field(default_factory=dict)
+    heading: str = "The bill is inconsistent"     # how the fact and warning begin
 
 
 def _d(day: date) -> str:
@@ -95,6 +99,19 @@ def check(claim: Claim, lines: Iterable[LineView]) -> list[Finding]:
                            f"the hospital's GSTIN on the bill ({gstin}, {len(gstin)} characters) is not in the "
                            "15-character format every registered business has",
                            inputs={"gstin": gstin}))
+
+    numbers = list(dict.fromkeys(n.strip() for n in claim.bill_numbers if n and n.strip()))
+    if len(numbers) > 1:
+        from .engine import _inr            # at call time: engine.py imports this module
+        total = sum((Decimal(line.amount) for line in claim.lines), Decimal(0)) - Decimal(claim.discount or 0)
+        stay = f" ({_d(adm)} to {_d(dis)})" if adm and dis else ""
+        out.append(Finding("split_invoices",
+                           f"one hospital stay{stay} is billed on {len(numbers)} separate invoices "
+                           f"({', '.join(numbers)}); ClaimClear adds them up ({_inr(total)} in all). A stay split "
+                           "across invoices can keep each one under an insurer's approval limit, so the insurer may "
+                           "review the claim as one bill",
+                           definite=False, heading="Check the bill",
+                           inputs={"bill_numbers": numbers, "combined_total": str(total)}))
     return sorted(out, key=lambda f: not f.definite)
 
 

@@ -191,9 +191,9 @@ def compute_settlement(
     # 2b. document integrity (engine/integrity.py): reported, never deducted ----------
     findings = integrity.check(claim, lines)
     for f in findings:
-        b.fact(f"F-INTEGRITY-{f.code.upper().replace('_', '-')}", "integrity", f"The bill is inconsistent: {f.text}",
+        b.fact(f"F-INTEGRITY-{f.code.upper().replace('_', '-')}", "integrity", f"{f.heading}: {f.text}",
                line_ids=f.line_ids, rule_ref="fraud", code=f.code, definite=f.definite, **f.inputs)
-        b.warnings.append(f"The bill is inconsistent: {f.text}.")
+        b.warnings.append(f"{f.heading}: {f.text}.")
     if any(f.code == "discharge_before_admission" for f in findings):
         b.ask("Q-ADMISSION",
               f"The bill gives a discharge date ({claim.discharge.isoformat()}) before the admission date "

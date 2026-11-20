@@ -185,3 +185,33 @@ def test_the_mcp_tool_takes_only_plain_policy_numbers(dataset_dir):
     out = asyncio.run(go(payload))
     text = out.content[0].text
     assert out.is_error and json.loads(text[text.index("{"):])["code"] == "POLICY_MISMATCH"
+
+
+# --------------------------------------------------------------------------- one stay on two invoices (SET-20)
+
+
+def test_a_stay_billed_on_two_invoices_is_one_claim(dataset_dir):
+    """ADV-04 bills one knee replacement on two invoices (198,900 + 142,600). Both are the same stay (same IP
+    number and dates), so the claim adds them up; the answer key's policy payable is 95% of 341,500 = 324,425."""
+    case = load_case("SET-20", dataset_dir)
+    assert len(case.claim.bill_numbers) == 2 and case.claim.printed_total == Decimal("341500")
+    assert sum(line.amount for line in case.claim.lines) == Decimal("341500")
+    s = compute_settlement(case.claim, case.policy, case.rules, case.history)
+    assert s.payable_amount == Decimal(str(answer_key("SET-20", dataset_dir)["expected_payable"])) == Decimal("324425")
+    assert any(f.inputs.get("code") == "split_invoices" for f in s.facts if f.kind == "integrity")
+    a = audit("SET-20", dataset_dir)
+    assert a.policy_payable == a.insurer_paid == Decimal("324425") and a.gap == 0 and a.disputable_amount == 0
+
+
+def test_only_invoices_of_the_same_stay_are_added_up():
+    from engine.dataset import claim_from_invoices
+
+    def inv(no, ip, total, admission="2026-09-14"):
+        return {"invoice_no": no, "ip_no": ip, "policy_no": "P-TEST", "admission": admission, "discharge": "2026-09-19",
+                "printed_total": total, "line_items": [{"description": "Surgeon fee", "printed_amount": total}]}
+
+    one = claim_from_invoices([inv("A-1", "IP/7", 1000)], "C")
+    assert one.bill_numbers == ("A-1",) and len(one.lines) == 1
+    two = claim_from_invoices([inv("A-1", "IP/7", 1000), inv("A-2", "ip/7 ", 500), inv("B-1", "IP/9", 900)], "C")
+    assert two.bill_numbers == ("A-1", "A-2") and [l.line_id for l in two.lines] == ["L01", "L02"]
+    assert two.printed_total == Decimal("1500")               # B-1 is another stay: a separate claim

@@ -53,6 +53,7 @@ def to_claim(c: ClaimIn) -> Claim:
         condition_type=c.condition_type,
         room_priced_by_category=dict(c.room_priced_by_category),
         hospital_gstin=c.hospital_gstin,
+        bill_numbers=tuple(n[:60] for n in c.bill_numbers),
     )
 
 
@@ -137,6 +138,7 @@ def claim_payload(c: Claim) -> dict:
         "condition_type": _opt(c.condition_type),
         "room_priced_by_category": {k.value: v for k, v in c.room_priced_by_category.items()},
         "hospital_gstin": c.hospital_gstin,
+        "bill_numbers": list(c.bill_numbers),
     }
 
 

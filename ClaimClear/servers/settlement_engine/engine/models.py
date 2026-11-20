@@ -155,6 +155,7 @@ class Claim:
     condition_type: Optional[ConditionType] = None
     room_priced_by_category: dict[Category, bool] = field(default_factory=dict)
     hospital_gstin: str = ""    # as printed on the bill; only its format is checked (engine/integrity.py)
+    bill_numbers: tuple[str, ...] = ()   # the hospital's invoice numbers this claim adds up (one stay, one or more)
 
 
 @dataclass(frozen=True)

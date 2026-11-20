@@ -379,6 +379,7 @@ deducts anything because of them: each finding is an `integrity` fact (`rule_ref
 | `inpatient_lines_outside_stay` | Every dated room, nursing, surgeon and theatre line falls outside the header's stay | yes |
 | `some_inpatient_lines_outside` | Only some do (a typing slip is possible) | no |
 | `gstin_malformed` | The hospital's GSTIN (`ClaimIn.hospital_gstin`) is not 15 characters in the official pattern | yes |
+| `split_invoices` | One stay is billed on two or more invoice numbers (`ClaimIn.bill_numbers`). The claim adds them up; the split is reported because it can keep each invoice under an insurer's approval limit. Never deducted, never used to confirm a rejection | no |
 
 The GSTIN check is structural only: the synthetic dataset's genuine bills use placeholder GSTINs (state code 00, wrong
 check character), so testing those parts would flag every bill.

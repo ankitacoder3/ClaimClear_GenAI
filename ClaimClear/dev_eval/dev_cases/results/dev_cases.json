@@ -112,7 +112,7 @@
     "warnings": []
    },
    "grievance_rows": [],
-   "seconds": 2.87
+   "seconds": 1.28
   },
   "score": {
    "expected_overall": "not_verifiable",
@@ -231,7 +231,7 @@
    "grievance_rows": [
     "R2"
    ],
-   "seconds": 0.95
+   "seconds": 1.11
   },
   "score": {
    "expected_overall": "disputable",
@@ -355,7 +355,7 @@
    "grievance_rows": [
     "R1"
    ],
-   "seconds": 0.94
+   "seconds": 0.81
   },
   "score": {
    "expected_overall": "disputable",
@@ -492,7 +492,7 @@
     "R1",
     "R4"
    ],
-   "seconds": 1.37
+   "seconds": 0.92
   },
   "score": {
    "expected_overall": "disputable",
@@ -639,7 +639,7 @@
    "grievance_rows": [
     "R5"
    ],
-   "seconds": 1.8
+   "seconds": 1.0
   },
   "score": {
    "expected_overall": "matches_policy",
@@ -758,7 +758,7 @@
     "warnings": []
    },
    "grievance_rows": [],
-   "seconds": 0.95
+   "seconds": 0.77
   },
   "score": {
    "expected_overall": "matches_policy",
@@ -858,7 +858,7 @@
     "warnings": []
    },
    "grievance_rows": [],
-   "seconds": 0.92
+   "seconds": 0.67
   },
   "score": {
    "expected_overall": "inconsistent_documents",
@@ -1005,7 +1005,7 @@
    "grievance_rows": [
     "R5"
    ],
-   "seconds": 1.16
+   "seconds": 0.89
   },
   "score": {
    "expected_overall": "disputable",
@@ -1128,7 +1128,7 @@
    "grievance_rows": [
     "R1"
    ],
-   "seconds": 1.02
+   "seconds": 1.01
   },
   "score": {
    "expected_overall": "disputable",
@@ -1263,7 +1263,7 @@
    "grievance_rows": [
     "R4"
    ],
-   "seconds": 0.93
+   "seconds": 1.04
   },
   "score": {
    "expected_overall": "disputable",
@@ -1373,7 +1373,7 @@
     "warnings": []
    },
    "grievance_rows": [],
-   "seconds": 0.85
+   "seconds": 0.76
   },
   "score": {
    "expected_overall": "matches_policy",
@@ -1464,7 +1464,7 @@
    "grievance_rows": [
     "REJECTION"
    ],
-   "seconds": 0.73
+   "seconds": 0.62
   },
   "score": {
    "expected_overall": "disputable",
@@ -1608,7 +1608,7 @@
    "grievance_rows": [
     "R5"
    ],
-   "seconds": 1.09
+   "seconds": 0.96
   },
   "score": {
    "expected_overall": "disputable",
@@ -1734,7 +1734,7 @@
    "grievance_rows": [
     "R3"
    ],
-   "seconds": 1.06
+   "seconds": 0.87
   },
   "score": {
    "expected_overall": "disputable",
@@ -1872,7 +1872,7 @@
     ]
    },
    "grievance_rows": [],
-   "seconds": 1.05
+   "seconds": 0.98
   },
   "score": {
    "expected_overall": "not_verifiable",
@@ -1983,7 +1983,7 @@
    "grievance_rows": [
     "COPAY"
    ],
-   "seconds": 0.83
+   "seconds": 0.79
   },
   "score": {
    "expected_overall": "disputable",
@@ -2096,7 +2096,7 @@
    "grievance_rows": [
     "R1"
    ],
-   "seconds": 0.92
+   "seconds": 0.67
   },
   "score": {
    "expected_overall": "disputable",
@@ -2221,7 +2221,7 @@
     ]
    },
    "grievance_rows": [],
-   "seconds": 1.01
+   "seconds": 0.9
   },
   "score": {
    "expected_overall": "matches_policy",
@@ -2314,7 +2314,7 @@
    "grievance_rows": [
     "REJECTION"
    ],
-   "seconds": 0.69
+   "seconds": 0.75
   },
   "score": {
    "expected_overall": "disputable",
@@ -2438,7 +2438,7 @@
    "grievance_rows": [
     "COPAY"
    ],
-   "seconds": 0.81
+   "seconds": 1.15
   },
   "score": {
    "expected_overall": "disputable",
@@ -2526,7 +2526,7 @@
    "grievance_rows": [
     "REJECTION"
    ],
-   "seconds": 2.02
+   "seconds": 2.67
   },
   "score": {
    "expected_overall": "disputable",
@@ -2622,7 +2622,7 @@
    "grievance_rows": [
     "R1"
    ],
-   "seconds": 0.43
+   "seconds": 0.58
   },
   "score": {
    "expected_overall": "disputable",
@@ -2741,7 +2741,7 @@
     "warnings": []
    },
    "grievance_rows": [],
-   "seconds": 0.81
+   "seconds": 0.68
   },
   "score": {
    "expected_overall": "matches_policy",
@@ -2831,7 +2831,7 @@
     ]
    },
    "grievance_rows": [],
-   "seconds": 0.43
+   "seconds": 0.41
   },
   "score": {
    "expected_overall": "matches_policy",
@@ -3041,7 +3041,7 @@
     ]
    },
    "grievance_rows": [],
-   "seconds": 0.66
+   "seconds": 0.47
   },
   "score": {
    "expected_overall": "matches_policy",
@@ -3126,7 +3126,7 @@
    "grievance_rows": [
     "COPAY"
    ],
-   "seconds": 2.36
+   "seconds": 2.32
   },
   "score": {
    "expected_overall": "disputable",
@@ -3243,7 +3243,7 @@
     ]
    },
    "grievance_rows": [],
-   "seconds": 0.51
+   "seconds": 0.53
   },
   "score": {
    "expected_overall": "matches_policy",
@@ -3354,7 +3354,7 @@
     "warnings": []
    },
    "grievance_rows": [],
-   "seconds": 0.57
+   "seconds": 0.56
   },
   "score": {
    "expected_overall": "not_verifiable",
@@ -3539,7 +3539,7 @@
     "warnings": []
    },
    "grievance_rows": [],
-   "seconds": 0.52
+   "seconds": 0.49
   },
   "score": {
    "expected_overall": "matches_policy",
@@ -3636,7 +3636,7 @@
     ]
    },
    "grievance_rows": [],
-   "seconds": 0.4
+   "seconds": 0.48
   },
   "score": {
    "expected_overall": "matches_policy",
@@ -3748,7 +3748,7 @@
     ]
    },
    "grievance_rows": [],
-   "seconds": 0.5
+   "seconds": 0.64
   },
   "score": {
    "expected_overall": "matches_policy",
@@ -3794,15 +3794,18 @@
     },
     "extraction": {
      "how": "dataset records (printed fields only)",
-     "lines": 4,
+     "lines": 11,
      "letter_rows": 0,
      "letter_type": "settlement"
     },
     "settlement": {
      "status": "computed",
-     "payable": 188955.0,
+     "payable": 324425.0,
      "questions": [],
-     "warnings": []
+     "warnings": [
+      "Line L08 ('Physiotherapy sessions') was not recognised; treated as payable.",
+      "Check the bill: one hospital stay (14-Sep-2026 to 19-Sep-2026) is billed on 2 separate invoices (KSH-BLR-26-058210, KSH-BLR-26-058297); ClaimClear adds them up (₹3,41,500 in all). A stay split across invoices can keep each one under an insurer's approval limit, so the insurer may review the claim as one bill."
+     ]
     },
     "explain": {
      "rules_cited": 1,
@@ -3812,31 +3815,32 @@
    },
    "route": "no_grievance",
    "audit": {
-    "policy_payable": 188955.0,
+    "policy_payable": 324425.0,
     "insurer_paid": 324425.0,
     "disputable": 0.0,
     "unverified": 0.0,
     "rows": {
      "COPAY": {
-      "verdict": "method_matches",
+      "verdict": "matches_policy",
       "insurer_amount": 17075.0,
-      "policy_amount": 9945.0,
+      "policy_amount": 17075.0,
       "particulars": "Co-pay",
       "kind": "copay",
       "kind_source": "input",
-      "method": "copay_on_insurer_base",
-      "explanation": "The co-pay is worked out the right way (5% of the insurer's admissible 341,500), but on the insurer's admissible amount. The policy-correct co-pay is ₹9,945; the difference comes from the insurer's other deductions and is counted there.",
+      "method": "copay_policy",
+      "explanation": "₹17,075 is what the policy requires for this row (₹17,075).",
       "questions": []
      }
     },
     "letter_type": "settlement",
     "bill_inconsistencies": [],
     "warnings": [
-     "The letter's claimed amount ₹3,41,500 differs from the bill's ₹1,98,900."
+     "Line L08 ('Physiotherapy sessions') was not recognised; treated as payable.",
+     "Check the bill: one hospital stay (14-Sep-2026 to 19-Sep-2026) is billed on 2 separate invoices (KSH-BLR-26-058210, KSH-BLR-26-058297); ClaimClear adds them up (₹3,41,500 in all). A stay split across invoices can keep each one under an insurer's approval limit, so the insurer may review the claim as one bill."
     ]
    },
    "grievance_rows": [],
-   "seconds": 0.47
+   "seconds": 0.51
   },
   "score": {
    "expected_overall": "matches_policy",
@@ -3846,8 +3850,8 @@
    "rows_right": 0,
    "row_misses": {},
    "payable_expected": 324425.0,
-   "payable_engine": 188955.0,
-   "payable_right": false,
+   "payable_engine": 324425.0,
+   "payable_right": true,
    "disputable_expected": 0.0,
    "disputable_engine": 0.0,
    "disputable_right": true
@@ -3926,7 +3930,7 @@
     ]
    },
    "grievance_rows": [],
-   "seconds": 0.53
+   "seconds": 0.46
   },
   "score": {
    "expected_overall": "matches_policy",
@@ -4044,7 +4048,7 @@
    "grievance_rows": [
     "R2"
    ],
-   "seconds": 0.53
+   "seconds": 0.64
   },
   "score": {
    "expected_overall": "disputable",
@@ -4143,7 +4147,7 @@
     "warnings": []
    },
    "grievance_rows": [],
-   "seconds": 2.68
+   "seconds": 3.27
   },
   "score": {
    "expected_overall": "matches_policy",
@@ -4229,7 +4233,7 @@
     "warnings": []
    },
    "grievance_rows": [],
-   "seconds": 0.44
+   "seconds": 0.41
   },
   "score": {
    "expected_overall": "matches_policy",
@@ -4324,7 +4328,7 @@
     "warnings": []
    },
    "grievance_rows": [],
-   "seconds": 0.67
+   "seconds": 0.55
   },
   "score": {
    "expected_overall": "matches_policy",
@@ -4410,7 +4414,7 @@
     "warnings": []
    },
    "grievance_rows": [],
-   "seconds": 0.4
+   "seconds": 0.37
   },
   "score": {
    "expected_overall": "matches_policy",
@@ -4497,7 +4501,7 @@
     "warnings": []
    },
    "grievance_rows": [],
-   "seconds": 1.41
+   "seconds": 1.87
   },
   "score": {
    "expected_overall": "matches_policy",
@@ -4588,7 +4592,7 @@
     "warnings": []
    },
    "grievance_rows": [],
-   "seconds": 0.54
+   "seconds": 0.51
   },
   "score": {
    "expected_overall": "matches_policy",

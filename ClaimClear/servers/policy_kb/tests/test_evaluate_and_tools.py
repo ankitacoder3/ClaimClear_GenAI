@@ -3,7 +3,7 @@ import json
 import pytest
 
 from policy_kb.__main__ import main
-from policy_kb.evaluate import Query, check_labels, compare, evaluate, format_table, load_queries
+from policy_kb.evaluate import Query, average_precision, check_labels, compare, evaluate, format_table, load_queries
 from policy_kb.tools import PolicyKBError, clauses_for_rule_result, get_clause_result, search_clauses_result
 
 from conftest import SAMPLE, SAMPLE_QUERIES
@@ -22,6 +22,25 @@ def test_metrics_on_a_tiny_set(kb):
     qs = [Query("a", "cataract limit per eye", ("4.3",)), Query("b", "zzz qqq", ("9.4",))]
     r = evaluate(kb, qs, k=5, config="t")
     assert r.queries == 2 and r.hit == 0.5 and r.misses == ["b"] and 0 < r.mrr <= 0.5
+
+
+def test_average_precision_worked_example():
+    # relevant {5.2, 5.1}; returned [5.2, 4.3, 5.1, 7.1, 2.0]: AP@5 = (1/1 + 2/3) / 2 = 0.8333
+    assert average_precision(["5.2", "4.3", "5.1", "7.1", "2.0"], {"5.2", "5.1"}, 5) == pytest.approx(5 / 6)
+    assert average_precision(["5.1", "5.2"], {"5.2", "5.1"}, 5) == 1.0                 # both at the top
+    assert average_precision(["x", "y"], {"5.2"}, 5) == 0.0                            # nothing relevant found
+    # more relevant clauses than k: divided by k, so a perfect top-2 still scores 1.0
+    assert average_precision(["a", "b", "c"], {"a", "b", "c"}, 2) == 1.0
+
+
+def test_precision_and_map_in_the_report(kb):
+    qs = [Query("a", "cataract limit per eye", ("4.3",)), Query("b", "zzz qqq", ("9.4",))]
+    r = evaluate(kb, qs, k=5, config="t")
+    # one relevant clause found in the top 5 of one query out of two: precision@5 = (1/5 + 0) / 2
+    assert r.precision == pytest.approx(0.1) and r.map == pytest.approx(r.mrr)       # one relevant: AP = 1/rank
+    assert {"precision", "map"} <= set(r.to_dict())
+    table = format_table([r])
+    assert "| Configuration | Recall@5 | Precision@5 | MAP@5 | Hit@5 | MRR | Missed |" in table
 
 
 def test_label_errors_are_reported(kb):

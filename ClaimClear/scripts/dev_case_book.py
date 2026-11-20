@@ -31,6 +31,24 @@ ROLE = {"bill": "hospital bill", "settlement_letter": "settlement letter", "poli
         "policy_wording": "policy wording", "discharge_summary": "discharge summary", "other_bills": "other bills",
         "earlier_settlement_1": "earlier settlement letter", "earlier_settlement_2": "second earlier settlement letter"}
 
+# Why a case differs from its answer key, in plain language (kept in step with dataset_guide.md, section 10.1).
+_PROPORTIONATE = ("ClaimClear follows IRDAI's 2020 circular for the proportionate deduction: medicines, consumables, "
+                  "implants, tests and ICU charges are never cut, and only a room above its limit triggers the cut. The "
+                  "answer key follows the case's older printed wording, which spares only medicines. This is a recorded "
+                  "team decision (`dev_eval/dev_cases/decisions.json`, `proportionate-2020`); it still counts as a miss.")
+DIFFERS = {
+    "gen-dev-50b4e6": _PROPORTIONATE + " Here it changes the overall verdict: ClaimClear finds ₹2,794.66 that may be "
+                                       "disputable where the answer key says the letter matches the policy.",
+    "gen-dev-6a82b1": _PROPORTIONATE + " Both say \"may be disputable\"; only the amounts differ.",
+    "gen-dev-a0a2f1": _PROPORTIONATE + " Both say \"may be disputable\"; only the amounts differ.",
+    "syn-dev-021": ("The receipt has no admission or discharge date, so the engine can't check the 60-day "
+                    "post-hospitalisation window and asks for the admission date instead of guessing. The dev run has "
+                    "nobody to answer, so the case ends as \"can't be checked yet\"; with an answer it is decided."),
+    "gen-dev-0fa297": ("The overall verdict is right. Three rows wait as \"can't be checked\" because the bill has blood "
+                       "plasma, and the rules don't say whether blood products may be cut when the room is above its "
+                       "limit: the engine asks how the hospital prices them, and the dev run has nobody to answer."),
+}
+
 
 def inr(v) -> str:
     if v is None or v == "":
@@ -201,7 +219,8 @@ after the evaluations. See `docs/member2_knowledge_memory_tools/dataset_guide.md
 def md(cases: list[dict]) -> str:
     n_right = sum(1 for c in cases if c["system"]["right"])
     lines = ["# Development dataset: the case book", "", INTRO, "",
-             f"**Overall verdict right on {n_right} of {len(cases)} cases** in the latest run.", "",
+             f"**Overall verdict right on {n_right} of {len(cases)} cases** in the latest run. Why the others differ, "
+             "in plain language: [dataset guide, section 10.1](dataset_guide.md#101-why-some-dev-cases-are-not-identified-correctly).", "",
              "## All cases at a glance", "",
              "| Case | What it tests | Insurer paid | Policy should pay | Expected verdict | ClaimClear |",
              "|---|---|---|---|---|---|"]
@@ -252,6 +271,8 @@ def case_md(c: dict) -> list[str]:
         out.append(f"* Grievance offered for rows {', '.join(s['grievance_rows'])} (never filed without approval)")
     if s["questions"]:
         out.append(f"* Asked: {', '.join(s['questions'])}")
+    if c["id"] in DIFFERS:
+        out.append(f"* **Why it differs from the answer key:** {DIFFERS[c['id']]}")
     if s["flags"]:
         out.append(f"* Guardrail flags: {'; '.join(s['flags'])}")
     methods = [f"{k}: {m}" for k, (m, v) in s["methods"].items() if m]
@@ -270,7 +291,9 @@ def to_html(markdown: str) -> str:
         t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", t)
         t = re.sub(r"(?<!\*)\*(?!\s)(.+?)(?<!\s)\*(?!\*)", r"<i>\1</i>", t)
         t = re.sub(r"`(.+?)`", r"<code>\1</code>", t)
-        return re.sub(r"\[(.+?)\]\((#[^)]+)\)", r'<a href="\2">\1</a>', t)
+        t = re.sub(r"\[(.+?)\]\((#[^)]+)\)", r'<a href="\2">\1</a>', t)
+        # a link to another document can't be followed from the PDF: show its name and path instead
+        return re.sub(r"\[(.+?)\]\(([^)#]+)(?:#[^)]*)?\)", r"\1 (<code>docs/member2_knowledge_memory_tools/\2</code>)", t)
 
     def flush_table():
         if table:

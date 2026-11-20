@@ -352,7 +352,7 @@ This runs all 42 development cases through the multi-agent graph against the liv
 
 | Cases | Ran to the end (audit produced) | Overall verdict right | Row verdicts right | Payable right (±₹1) | Disputable right (±₹1) | Same overall verdict as C0 |
 |---|---|---|---|---|---|---|
-| 42 | 42 | 40/42 | 89/94 | 27/31 | 37/40 | 42/42 |
+| 42 | 42 | 40/42 | 89/94 | 28/31 | 37/40 | 42/42 |
 
 No person is present during this run, so the engine's questions are left unanswered and every grievance is **rejected** at the gate. Nothing is filed.
 

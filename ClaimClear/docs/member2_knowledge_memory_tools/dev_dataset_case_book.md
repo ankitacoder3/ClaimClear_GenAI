@@ -15,7 +15,7 @@ after the evaluations. See `docs/member2_knowledge_memory_tools/dataset_guide.md
 * **What ClaimClear did** is the fixed workflow (C0) and the multi-agent graph over all five MCP servers, with the
   development stand-in extraction (no LLM). The graph and C0 give the same verdict on every case.
 
-**Overall verdict right on 40 of 42 cases** in the latest run.
+**Overall verdict right on 40 of 42 cases** in the latest run. Why the others differ, in plain language: [dataset guide, section 10.1](dataset_guide.md#101-why-some-dev-cases-are-not-identified-correctly).
 
 ## All cases at a glance
 
@@ -105,6 +105,7 @@ Case types: poisoned 6, none 4, genuine 4, proportionate 3, formats 3, synthetic
 * Verdict: Can't be checked yet ✓ · rows right 1/4 · route `ask_user` · graph outcome `needs_information`
 * Policy payable - · insurer paid ₹63,025 · may be disputable - · can't be checked -
 * Asked: Q-ROOM-PRICING
+* **Why it differs from the answer key:** The overall verdict is right. Three rows wait as "can't be checked" because the bill has blood plasma, and the rules don't say whether blood products may be cut when the room is above its limit: the engine asks how the hospital prices them, and the dev run has nobody to answer.
 
 ---
 
@@ -269,6 +270,7 @@ Case types: poisoned 6, none 4, genuine 4, proportionate 3, formats 3, synthetic
 * Verdict: May be disputable ✗ · rows right 4/6 · route `offer_grievance` · graph outcome `grievance_declined`
 * Policy payable ₹93,673.66 · insurer paid ₹90,879 · may be disputable ₹2,794.66 · can't be checked ₹0
 * Grievance offered for rows R5 (never filed without approval)
+* **Why it differs from the answer key:** ClaimClear follows IRDAI's 2020 circular for the proportionate deduction: medicines, consumables, implants, tests and ICU charges are never cut, and only a room above its limit triggers the cut. The answer key follows the case's older printed wording, which spares only medicines. This is a recorded team decision (`dev_eval/dev_cases/decisions.json`, `proportionate-2020`); it still counts as a miss. Here it changes the overall verdict: ClaimClear finds ₹2,794.66 that may be disputable where the answer key says the letter matches the policy.
 * Methods found: R1: room_and_icu_policy; R2: non_payable_named_items; R3: non_payable_named_items; R4: non_payable_named_items; COPAY: copay_on_insurer_base
 
 ---
@@ -388,6 +390,7 @@ Case types: poisoned 6, none 4, genuine 4, proportionate 3, formats 3, synthetic
 * Verdict: May be disputable ✓ · rows right 6/6 · route `offer_grievance` · graph outcome `grievance_declined`
 * Policy payable ₹93,673.66 · insurer paid ₹88,928 · may be disputable ₹4,745.66 · can't be checked ₹0
 * Grievance offered for rows R5 (never filed without approval)
+* **Why it differs from the answer key:** ClaimClear follows IRDAI's 2020 circular for the proportionate deduction: medicines, consumables, implants, tests and ICU charges are never cut, and only a room above its limit triggers the cut. The answer key follows the case's older printed wording, which spares only medicines. This is a recorded team decision (`dev_eval/dev_cases/decisions.json`, `proportionate-2020`); it still counts as a miss. Both say "may be disputable"; only the amounts differ.
 * Methods found: R1: room_and_icu_policy; R2: non_payable_named_items; R3: non_payable_named_items; R4: non_payable_named_items; COPAY: copay_on_insurer_base
 
 ---
@@ -589,6 +592,7 @@ Case types: poisoned 6, none 4, genuine 4, proportionate 3, formats 3, synthetic
 * Verdict: May be disputable ✓ · rows right 6/6 · route `offer_grievance` · graph outcome `grievance_declined`
 * Policy payable ₹84,740 · insurer paid ₹70,941 · may be disputable ₹13,799 · can't be checked ₹0
 * Grievance offered for rows R5 (never filed without approval)
+* **Why it differs from the answer key:** ClaimClear follows IRDAI's 2020 circular for the proportionate deduction: medicines, consumables, implants, tests and ICU charges are never cut, and only a room above its limit triggers the cut. The answer key follows the case's older printed wording, which spares only medicines. This is a recorded team decision (`dev_eval/dev_cases/decisions.json`, `proportionate-2020`); it still counts as a miss. Both say "may be disputable"; only the amounts differ.
 * Methods found: R1: room_and_icu_policy; R2: non_payable_named_items; R3: non_payable_named_items; R4: non_payable_named_items; COPAY: copay_on_insurer_base
 
 ---
@@ -1399,8 +1403,8 @@ Case types: poisoned 6, none 4, genuine 4, proportionate 3, formats 3, synthetic
 **What ClaimClear did**
 
 * Verdict: Matches the policy ✓ · rows right - · route `no_grievance` · graph outcome `no_grievance`
-* Policy payable ₹1,88,955 · insurer paid ₹3,24,425 · may be disputable ₹0 · can't be checked ₹0
-* Methods found: COPAY: copay_on_insurer_base
+* Policy payable ₹3,24,425 · insurer paid ₹3,24,425 · may be disputable ₹0 · can't be checked ₹0
+* Methods found: COPAY: copay_policy
 
 ---
 
@@ -1669,6 +1673,7 @@ Case types: poisoned 6, none 4, genuine 4, proportionate 3, formats 3, synthetic
 * Verdict: Can't be checked yet ✗ · rows right - · route `ask_user` · graph outcome `needs_information`
 * Policy payable - · insurer paid ₹0 · may be disputable - · can't be checked -
 * Asked: Q-ADMISSION
+* **Why it differs from the answer key:** The receipt has no admission or discharge date, so the engine can't check the 60-day post-hospitalisation window and asks for the admission date instead of guessing. The dev run has nobody to answer, so the case ends as "can't be checked yet"; with an answer it is decided.
 
 ---
 

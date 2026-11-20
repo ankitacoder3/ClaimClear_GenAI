@@ -60,8 +60,8 @@ Running the merged system on real cases exposed a few issues, all fixed and cove
 | Multi-agent graph, offline (recorded real outputs) | 54 passed |
 | Multi-agent graph, live against the servers | 8 passed (SET-01 filed with an HMAC token; wrong token refused by the real portal; clean, question, impossible-dates and look-alike cases; memory; hook 1 on real tools) |
 | Member 2's toolkit, live | 45 passed |
-| Member 2's server, memory and contract suites | all green, as in the [root README](../../README.md#5-tests); the 48 tests that need the held-out split (absent from the upload) are skipped with that reason |
-| All 42 dev cases through the graph vs the C0 fixed workflow | same overall verdict on 42/42; same scores (40/42 overall, 89/94 rows, 27/31 payable, 37/40 disputable); 19 grievances stopped at the gate, none filed without approval |
+| Member 2's server, memory and contract suites | all green, as in the [main guide, `info.md`](../../info.md#5-tests); the 48 tests that need the held-out split (absent from the upload) are skipped with that reason |
+| All 42 dev cases through the graph vs the C0 fixed workflow | same overall verdict on 42/42; same scores (40/42 overall, 89/94 rows, 28/31 payable, 37/40 disputable); 19 grievances stopped at the gate, none filed without approval |
 
 Member 3's original 28 tests map onto the new suite as follows: state initialisation, clean case → END, disputable → pause, approve and resume, edit → re-hash, unapproved submission blocked, tampered draft blocked, rejection, thread isolation, time travel, critic retry loop, max-revision guard, low-confidence replan, fact-bound explanation, no false disputes, hook 1, hook 2, the portal gate, routing signals, critic figure and wording checks, and SET-01 end to end each have a counterpart in `test_graph_offline.py`, `test_units.py` or `test_graph_live.py`.
 

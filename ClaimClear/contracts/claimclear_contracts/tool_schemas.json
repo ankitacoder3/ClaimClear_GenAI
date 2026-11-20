@@ -2806,6 +2806,15 @@
          "description": "Null when the bill gives no admission date (pharmacy or post-hospitalisation bill): the engine asks Q-ADMISSION.",
          "title": "Admission"
         },
+        "bill_numbers": {
+         "description": "The hospital's invoice (bill) numbers this claim adds up, as printed. When one stay is billed on several invoices, put every invoice's lines in this claim and list each invoice number here.",
+         "items": {
+          "type": "string"
+         },
+         "maxItems": 20,
+         "title": "Bill Numbers",
+         "type": "array"
+        },
         "claim_id": {
          "maxLength": 64,
          "minLength": 1,
@@ -4171,6 +4180,15 @@
          "description": "Null when the bill gives no admission date (pharmacy or post-hospitalisation bill): the engine asks Q-ADMISSION.",
          "title": "Admission"
         },
+        "bill_numbers": {
+         "description": "The hospital's invoice (bill) numbers this claim adds up, as printed. When one stay is billed on several invoices, put every invoice's lines in this claim and list each invoice number here.",
+         "items": {
+          "type": "string"
+         },
+         "maxItems": 20,
+         "title": "Bill Numbers",
+         "type": "array"
+        },
         "claim_id": {
          "maxLength": 64,
          "minLength": 1,
@@ -5167,6 +5185,15 @@
          "default": null,
          "description": "Null when the bill gives no admission date (pharmacy or post-hospitalisation bill): the engine asks Q-ADMISSION.",
          "title": "Admission"
+        },
+        "bill_numbers": {
+         "description": "The hospital's invoice (bill) numbers this claim adds up, as printed. When one stay is billed on several invoices, put every invoice's lines in this claim and list each invoice number here.",
+         "items": {
+          "type": "string"
+         },
+         "maxItems": 20,
+         "title": "Bill Numbers",
+         "type": "array"
         },
         "claim_id": {
          "maxLength": 64,

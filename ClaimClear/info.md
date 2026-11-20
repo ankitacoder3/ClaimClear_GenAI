@@ -244,8 +244,8 @@ async with ClaimClearToolkit() as tk:                                  # keep it
 
 | Run | Cases | Ran to the end (audit produced) | Overall verdict right | Row verdicts right | Payable right (±₹1) | Disputable right (±₹1) |
 |---|---|---|---|---|---|---|
-| C0 fixed workflow (`dev_eval/dev_cases`) | 42 | 42 | 40/42 | 89/94 | 27/31 | 37/40 |
-| Multi-agent graph (`dev_eval/graph_dev_cases`) | 42 | 42 | 40/42 | 89/94 | 27/31 | 37/40 |
+| C0 fixed workflow (`dev_eval/dev_cases`) | 42 | 42 | 40/42 | 89/94 | 28/31 | 37/40 |
+| Multi-agent graph (`dev_eval/graph_dev_cases`) | 42 | 42 | 40/42 | 89/94 | 28/31 | 37/40 |
 
 Every case reaches a defined outcome and produces an audit. The graph agrees with the fixed workflow on every case's overall verdict (42/42): orchestration adds the plan, the critic's independent re-check and draft review, the questions, the explanation and the approval gate without changing a single figure. The two misses: gen-dev-50b4e6, where the answer key differs by a documented decision (IRDAI's 2020 proportionate-deduction rule, `dev_eval/dev_cases/decisions.json`), and syn-dev-021, a pharmacy bill with no admission date, where the engine asks for the date rather than assume it. 19 cases stopped at the approval gate; none was filed without approval. Details: [`dev_eval/graph_dev_cases/results/graph_dev_cases.md`](dev_eval/graph_dev_cases/results/graph_dev_cases.md).
 

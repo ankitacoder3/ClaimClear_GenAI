@@ -158,7 +158,7 @@ python start.py --auto SET-01
 .venv-agents/bin/python dev_eval/graph_dev_cases/run.py     # all 42 dev cases through the graph (Scripts\python.exe on Windows)
 ```
 
-Full instructions, options and troubleshooting: [ClaimClear/README.md](ClaimClear/README.md) and [ClaimClear/docs/setup/setup_guide.md](ClaimClear/docs/setup/setup_guide.md).
+Full instructions, options and troubleshooting: [ClaimClear/info.md](ClaimClear/info.md) and [ClaimClear/docs/setup/setup_guide.md](ClaimClear/docs/setup/setup_guide.md).
 
 <br>
 <a href="#top">Back to top</a>
@@ -197,7 +197,7 @@ Full instructions, options and troubleshooting: [ClaimClear/README.md](ClaimClea
 5. **Ask anything** about your records, the settlement or the policy ("Why was R3 deducted?", "Is cataract surgery covered?"). Answers stream in, and every rupee amount is checked as it streams.
 6. **Close the page** when you are done: the web UI and the servers stop, and your uploaded documents and chats are deleted (use `--keep-data` to keep them; the sample cases are synthetic).
 
-Results on the 42 development cases: 40/42 overall verdicts right, 89/94 row verdicts, 27/31 payable and 37/40 disputable amounts; the multi-agent graph agrees with the fixed workflow on every case. Every document is listed in [ClaimClear/docs/README.md](ClaimClear/docs/README.md).
+Results on the 42 development cases: 40/42 overall verdicts right, 89/94 row verdicts, 28/31 payable and 37/40 disputable amounts; the multi-agent graph agrees with the fixed workflow on every case. Every document is listed in [ClaimClear/docs/README.md](ClaimClear/docs/README.md).
 
 <br>
 <a href="#top">Back to top</a>

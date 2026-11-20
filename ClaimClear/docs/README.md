@@ -1,7 +1,7 @@
 # ClaimClear documentation
 
 All of ClaimClear's documentation is here, one document per topic: the code folders hold code only. The project's entry
-point is the [main README](../README.md) (what ClaimClear is, how to run it, results, configuration).
+point is the [main guide, `info.md`](../info.md) (what ClaimClear is, how to run it, results, configuration).
 
 ## Setup: running ClaimClear
 

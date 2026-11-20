@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import json
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from functools import lru_cache
 from pathlib import Path
 from typing import Optional
@@ -128,6 +128,41 @@ def claim_from_invoice(inv: dict, claim_id: str) -> Claim:
         discount=D(inv.get("discount") or 0),
         printed_total=D(inv["printed_total"]) if inv.get("printed_total") is not None else None,
         hospital_gstin=inv.get("provider_gstin") or "",
+        bill_numbers=(inv["invoice_no"],) if inv.get("invoice_no") else (),
+    )
+
+
+def _stay_key(inv: dict) -> tuple:
+    """Which hospital stay an invoice belongs to: its IP (in-patient) number, else patient ID and dates."""
+    ip = (inv.get("ip_no") or "").strip().upper()
+    return ("ip", ip) if ip else ("stay", (inv.get("uhid") or "").strip().upper(), inv.get("admission"),
+                                  inv.get("discharge"))
+
+
+def claim_from_invoices(invoices: list[dict], claim_id: str) -> Claim:
+    """One ``Claim`` for the stay of the bill's first invoice, adding up every invoice of that same stay.
+
+    A hospital may bill one stay on several invoices (each under an approval limit, or rooms and procedures
+    apart). They are one claim: the lines are joined and renumbered, discounts and printed totals added, and
+    every invoice number kept in ``bill_numbers`` so the integrity check can report the split. Invoices of a
+    different stay are left out (a separate claim).
+    """
+    if not invoices:
+        raise ValueError("a bill needs at least one invoice")
+    key = _stay_key(invoices[0])
+    same = [inv for inv in invoices if _stay_key(inv) == key]
+    if len(same) == 1:
+        return claim_from_invoice(same[0], claim_id)
+    first = claim_from_invoice(same[0], claim_id)
+    items = [li for inv in same for li in inv["line_items"]]
+    lines = claim_from_invoice({**same[0], "line_items": items}, claim_id).lines
+    totals = [inv.get("printed_total") for inv in same]
+    return replace(
+        first,
+        lines=lines,
+        discount=sum((D(inv.get("discount") or 0) for inv in same), D(0)),
+        printed_total=sum((D(t) for t in totals), D(0)) if all(t is not None for t in totals) else None,
+        bill_numbers=tuple(inv["invoice_no"] for inv in same if inv.get("invoice_no")),
     )
 
 
@@ -146,7 +181,7 @@ def load_case(doc_id: str, dataset_dir: Optional[str | Path] = None) -> Case:
     bill = docs[bill_id]
     if not bill.get("invoices"):
         raise ValueError(f"{bill_id} has no invoice to settle")
-    claim = claim_from_invoice(bill["invoices"][0], claim_id)
+    claim = claim_from_invoices(bill["invoices"], claim_id)
 
     split, case_id = bill["split"], bill["case_id"]
     policies = {canonical_policy_no(p["policy_no"]): p for p in _for_case(_json(root, split, "policies.json"), case_id)}
