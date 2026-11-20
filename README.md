@@ -138,6 +138,8 @@ cd ClaimClear
 
 The first run takes a few minutes: it creates both Python environments, installs everything, tries to install Tesseract OCR, loads the development cases and builds the policy index. Later runs start in a few seconds. It then starts the five MCP servers and opens ClaimClear in your browser.
 
+**UI2 (the new Chainlit chat UI):** run `python start.py --servers-only`, then from `ui_chainlit` `../.venv-agents/Scripts/chainlit run app.py --port 8001 -h` and open http://localhost:8001 (details in step 6).
+
 3. **Choose a model (optional)**
 
 ```bash
@@ -157,6 +159,24 @@ python start.py --auto SET-01
 ```bash
 .venv-agents/bin/python dev_eval/graph_dev_cases/run.py     # all 42 dev cases through the graph (Scripts\python.exe on Windows)
 ```
+
+6. **Run UI2, the Chainlit chat UI** (from the `ClaimClear` folder, after step 2 has set up the environments once)
+
+```bash
+# once: install Chainlit into the agents' environment
+.venv-agents/Scripts/python -m pip install -r requirements-ui.txt        # Windows
+.venv-agents/bin/python -m pip install -r requirements-ui.txt            # macOS / Linux
+
+# terminal 1: the five MCP servers (Ctrl+C stops them)
+python start.py --servers-only
+
+# terminal 2: the chat, then open http://localhost:8001
+cd ui_chainlit
+../.venv-agents/Scripts/chainlit run app.py --port 8001 -h               # Windows
+../.venv-agents/bin/chainlit run app.py --port 8001 -h                   # macOS / Linux
+```
+
+The chat uses the same model setting as step 3 (`ClaimClear/.env`). Upload a case's PDFs (bill, settlement letter, policy schedule, policy wording); the review starts by itself once they are in. Log: `ClaimClear/var/logs/chat.log`. Tests: `../.venv-agents/Scripts/python -m pytest tests` from `ui_chainlit` (`bin/python` on macOS / Linux).
 
 Full instructions, options and troubleshooting: [ClaimClear/info.md](ClaimClear/info.md) and [ClaimClear/docs/setup/setup_guide.md](ClaimClear/docs/setup/setup_guide.md).
 
