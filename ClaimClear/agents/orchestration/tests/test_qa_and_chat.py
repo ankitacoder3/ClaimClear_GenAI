@@ -265,3 +265,19 @@ def test_property_an_invented_amount_never_reaches_the_user(cuts, amount, sign):
     else:
         out += g.finish()
     assert g.failed and f"{amount:,}" not in out and str(amount) not in out.replace(",", "")
+
+
+def test_uploaded_documents_go_into_the_prompt(st):
+    class Spy:
+        seen = None
+
+        async def astream(self, messages):
+            Spy.seen = messages[0].content
+            yield AIMessageChunk(content="Please upload the settlement letter.")
+    docs = "bill.pdf: bill: City Eye Hospital, total ₹55,600.00\nStill needed for a settlement check: the settlement letter"
+    text = streamed(collect(chat.stream_answer("What else do you need?", st, tk(), Spy(), documents=docs)))
+    assert "<uploaded_documents>\nbill.pdf: bill: City Eye Hospital" in Spy.seen
+    assert "Still needed for a settlement check: the settlement letter" in Spy.seen
+    assert text == "Please upload the settlement letter."
+    collect(chat.stream_answer("And now?", st, tk(), Spy()))
+    assert "<uploaded_documents>\n(not given)\n</uploaded_documents>" in Spy.seen       # old callers unchanged
