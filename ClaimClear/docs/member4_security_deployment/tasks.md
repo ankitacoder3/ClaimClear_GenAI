@@ -90,6 +90,12 @@ Status: [ ] to do · [~] partly done by someone else · [x] done
 - [ ] **10. FastAPI with streaming**: the UI runs on Starlette; FastAPI sits on Starlette, so add a FastAPI app with a
   streaming endpoint rather than rewrite.
 - [ ] **11. One versioned config** for prompts and model IDs (now hard-coded, e.g. `openai/gpt-4.1-mini` in `chat.py`).
+- [x] **19. One brain for the chat** (20 Nov; an earlier tool-calling chat agent was tried and dropped): the chat UI only
+  stores and identifies uploads; Member 3's review graph runs once a bill, a settlement letter and the policy number
+  are there, and every question goes to his answerer (`chat.stream_answer`, with a new `documents` block: what is
+  uploaded and what is still missing). Open: answer quality before a review (his answerer finds keyword-matched
+  snippets, not whole pages); the policy and history from the uploads instead of the reference data (deferred); a
+  later "partial review" (`expected_settlement` without a letter); one orchestrator holding the review's data.
 
 ### P3. Operations
 

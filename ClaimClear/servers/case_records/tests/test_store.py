@@ -74,3 +74,44 @@ def test_changed_stored_copy_is_detected(tmp_path, doc):
     with pytest.raises(StoreError) as e:
         store.document(case.case_id, rec.document_id)
     assert e.value.code == "DOCUMENT_INTEGRITY"
+
+
+def test_user_names_summaries_and_page_counts(tmp_path, doc):
+    store = CaseStore(tmp_path)
+    case = store.create_case("unknown", salt="t")
+    rec = store.add_document(case.case_id, doc("GEN-01"), name=r"C:\uploads\my bill.pdf")
+    assert rec.page_count and rec.page_count >= 1
+    store.describe_document(case.case_id, rec.document_id, role="bill", summary="  City Eye Hospital,\n final bill ")
+    again = CaseStore(tmp_path).case(case.case_id)
+    assert again.document_roles[rec.document_id] == "bill"
+    assert again.document_names[rec.document_id] == "my bill.pdf"
+    assert again.document_summaries[rec.document_id] == "City Eye Hospital, final bill"
+
+
+def test_dataset_files_keep_no_name(tmp_path, doc):
+    store = CaseStore(tmp_path)
+    case = store.create_case("P1", salt="t")
+    store.add_document(case.case_id, doc("MAL-01"))
+    assert "MAL-01" not in (tmp_path / "index.json").read_text(encoding="utf-8")
+
+
+def test_describe_document_checks_case_and_role(tmp_path, doc):
+    store = CaseStore(tmp_path)
+    case, other = store.create_case("P1", salt="a"), store.create_case("P2", salt="b")
+    rec = store.add_document(case.case_id, doc("GEN-01"))
+    with pytest.raises(StoreError) as e:
+        store.describe_document(other.case_id, rec.document_id, role="bill")
+    assert e.value.code == "DOCUMENT_NOT_IN_CASE"
+    with pytest.raises(StoreError) as e:
+        store.describe_document(case.case_id, rec.document_id, role="invoice")
+    assert e.value.code == "INVALID_ROLE"
+
+
+def test_set_policy_after_the_case_exists(tmp_path):
+    store = CaseStore(tmp_path)
+    case = store.create_case("unknown", salt="t")
+    store.set_policy(case.case_id, " AS-2025-100478 ", reference_key="gen-dev-147e01")
+    again = CaseStore(tmp_path).case(case.case_id)
+    assert (again.policy_no, again.reference_key, again.case_id) == ("AS-2025-100478", "gen-dev-147e01", case.case_id)
+    with pytest.raises(StoreError):
+        store.set_policy(case.case_id, "  ")

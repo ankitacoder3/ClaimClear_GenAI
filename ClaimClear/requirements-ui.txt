@@ -1,0 +1,4 @@
+# The Chainlit chat UI (claimclear_ui), installed into .venv-agents on top of requirements-agents.txt:
+#   .venv-agents/Scripts/python -m pip install -r requirements-ui.txt
+chainlit>=2.12,<3
+fastapi>=0.115
