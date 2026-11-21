@@ -57,7 +57,7 @@ PORTS = {"settlement-engine": 8101, "case-records": 8102, "policy-kb": 8103, "in
          "document-reader": 8105}
 SERVER_PACKAGES = ["servers/settlement_engine", "servers/case_records", "servers/policy_kb", "servers/insurer_portal",
                    "servers/document_reader", "contracts", "memory"]
-WORDING = "dev_data/wordings/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf"
+WORDING = "development/dev_data/wordings/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf"
 
 
 def say(text: str) -> None:

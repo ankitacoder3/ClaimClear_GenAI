@@ -1,7 +1,7 @@
 """Policy schedules and claim history (read-only reference data).
 
 Loaded once from ``$CLAIMCLEAR_REFERENCE_DIR`` (default
-``dev_data/dataset/dev/reference``): ``policies.json`` and ``claim_history.json``.
+``development/dev_data/dataset/dev/reference``): ``policies.json`` and ``claim_history.json``.
 The tools never write here, so nothing in an uploaded document (for example a
 claim that "was reversed", POI-03) can change a policy or the history.
 
@@ -35,7 +35,7 @@ def default_reference_dir() -> Path:
     env = os.environ.get(REFERENCE_ENV)
     if env:
         return Path(env)
-    return Path(__file__).resolve().parents[3] / "dev_data" / "dataset" / "dev" / "reference"
+    return Path(__file__).resolve().parents[3] / "development" / "dev_data" / "dataset" / "dev" / "reference"
 
 
 class ReferenceData:

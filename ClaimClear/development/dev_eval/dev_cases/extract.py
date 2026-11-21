@@ -1,6 +1,6 @@
 """DEV STAND-IN for the document reader agent's extraction: the claim and the letter of every case in a split.
 
-    .venv/Scripts/python.exe dev_eval/dev_cases/extract.py dev var/dev_cases/extracted_dev.json
+    .venv/Scripts/python.exe development/dev_eval/dev_cases/extract.py dev var/dev_cases/extracted_dev.json
 
 The real graph extracts the bill and the settlement letter with an LLM (Member 3's document reader).
 For a whole-application run without an LLM this script gives the same ``{"claim", "letter"}`` tool
@@ -26,7 +26,7 @@ import sys
 from decimal import Decimal
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parents[2]
+REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO / "servers" / "settlement_engine"))
 
 import pymupdf  # noqa: E402
@@ -35,7 +35,7 @@ from engine.dataset import claim_from_invoice, claim_from_invoices, load_letter 
 from engine.models import BillLine, Claim, LetterRow, SettlementLetter  # noqa: E402
 from mcp_server.convert import claim_payload, letter_payload  # noqa: E402
 
-DATASET = REPO / "dev_data" / "dataset"
+DATASET = REPO / "development" / "dev_data" / "dataset"
 MONEY = re.compile(r"^-?\s*(?:₹|Rs\.?|INR)\s*([\d,]+(?:\.\d{1,2})?)\s*(?:/-)?$")
 DATE = re.compile(r"(\d{1,2}-[A-Z][a-z]{2}-\d{4}|\d{2}/\d{2}/\d{4}|\d{1,2} [A-Z][a-z]+ \d{4})")
 
