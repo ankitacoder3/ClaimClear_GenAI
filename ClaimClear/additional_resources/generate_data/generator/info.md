@@ -16,7 +16,8 @@ py -3 generator/validate.py                                # run after every bui
 | `compute.py` | all money: rules from the case's wording, correct settlement, insurer settlement with the planted error, label |
 | `profiles.py` | procedures: diagnosis, waiting-period class, sub-limit class, typical bill shares |
 | `render.py` | HTML for schedule, bill (3 layouts), letter (3 styles), earlier settlement letters |
-| `build.py` | one command: recipes → `data/cases/<split>/<case_id>/` + `data/meta/<case_id>.json` |
+| `build.py` | one command: recipes → `data/cases/<split>/<case_id>/` (PDFs + `answer/`) + `data/meta/<case_id>.json` |
+| `story.py` | writes each case's `answer/`: `story.md` (readable), `recipe.json`, `meta.json`, gold when present |
 | `validate.py` | totals, letter arithmetic, error has effect and underpays, no label leak, synthetic footer, no real-looking IDs, gold vs generator |
 | `.claude/skills/claimclear-prose` | optional LLM step: rewrites letter and bill wording only |
 

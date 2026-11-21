@@ -51,6 +51,8 @@ appear, and the wording copy carries no real insurer name.
 | Where | What | Who may see it |
 |---|---|---|
 | `data/cases/dev/<case_id>/`, `data/cases/heldout/<case_id>/` | `00_policy_wording.pdf`, `01_policy_schedule.pdf`, `02_itemised_bill.pdf`, `03_settlement_letter.pdf`, sometimes `04_earlier_settlement_*.pdf` and `05_other_bills.pdf` | the system under test (held-out only at final evaluation) |
+| `data/cases/<split>/<case_id>/answer/` | for people, never uploaded: `story.md` (what the case tests, each deduction's expected verdict and why), `recipe.json`, `meta.json` (= `data/meta/<case_id>.json`), and `gold.json` + `worksheet.md` when `data/gold/<case_id>/` has them |
+| `data/redteam/<id>/answer/` | the same for red-team attacks and the negative cases `RT-N-001`..`RT-N-010` (`build_redteam.py`) |
 | `data/meta/<case_id>.json` | the answer: tag, planted error, correct and insurer payouts, a verdict for every deduction in the letter (matches / disputable / consequential / not_verifiable) | evaluation only |
 | `generator/_build/`, `generator/_wordings/` | working files | nobody; ignore |
 
