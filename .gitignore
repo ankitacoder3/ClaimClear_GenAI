@@ -19,3 +19,7 @@ Thumbs.db
 # Local runtime data: case store, text cache, policy-kb index, memory database, dataset map.
 # Every machine builds its own (see README.md, "Run it step by step").
 var/
+
+# Chainlit writes these wherever it is started (config, translations, uploads)
+.chainlit/
+.files/
