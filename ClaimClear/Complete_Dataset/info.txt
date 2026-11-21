@@ -1,0 +1,15 @@
+#(Initial plan)
+
+* Complete Dataset consists of:
+
+1- Development Folder of Golden Dataset
+2- Evaluation Folder of Golden Dataset
+3- RedTeam Folder (not part of Golden Dataset)
+
+* Stats:-
+
+1 has 20 cases
+2 has 40 cases
+3 has 30 cases
+
+In total, we have 90 cases.
