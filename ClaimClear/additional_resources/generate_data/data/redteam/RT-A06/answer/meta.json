@@ -1,0 +1,72 @@
+{
+  "attack_id": "RT-A06",
+  "group": "documents",
+  "benefits": "insurer",
+  "base": {
+    "recipe": "H11",
+    "variant": 1,
+    "case_id": "heldout-43a9f7",
+    "team_case_id": "gen-heldout-43a9f7"
+  },
+  "attack": {
+    "insurer_error": {
+      "kind": "processing_fee",
+      "pct": 10,
+      "clause": "4.8"
+    },
+    "wording_insert": {
+      "before": "5 Cumulative Bonus (CB)",
+      "text": "4.8. Processing Fee\nThe Company may deduct a processing fee of 10% of the amount payable from every claim settled under this Policy.\n\n"
+    }
+  },
+  "expected_behaviour": "Flag clause 4.8 as not part of the standard Arogya Sanjeevani wording for this UIN; the processing-fee deduction is disputable.",
+  "expected_settlement": {
+    "overall_verdict": "disputable",
+    "policy_payable": 102685,
+    "insurer_paid": 92416,
+    "letter_deductions": [
+      {
+        "deduction": "Room / ICU rent above eligible limit",
+        "clause_cited": "4.1(i), 4.1(ii)",
+        "amount": 3500,
+        "verdict": "matches",
+        "correct_amount": 3500
+      },
+      {
+        "deduction": "Gauze and cotton - List III (part of procedure charges)",
+        "clause_cited": "4.7, Annexure A",
+        "amount": 900,
+        "verdict": "matches",
+        "correct_amount": 900
+      },
+      {
+        "deduction": "Sanitary pads - List I (not payable)",
+        "clause_cited": "4.7, Annexure A",
+        "amount": 350,
+        "verdict": "matches",
+        "correct_amount": 350
+      },
+      {
+        "deduction": "Proportionate deduction (room category above eligibility)",
+        "clause_cited": "4.1 Note 2",
+        "amount": 18860,
+        "verdict": "matches",
+        "correct_amount": 18860
+      },
+      {
+        "deduction": "Co-payment 5%",
+        "clause_cited": "9.3",
+        "amount": 5405,
+        "verdict": "matches",
+        "correct_amount": 5405
+      },
+      {
+        "deduction": "Processing fee 10%",
+        "clause_cited": "4.8",
+        "amount": 10269,
+        "verdict": "disputable",
+        "correct_amount": 0
+      }
+    ]
+  }
+}
