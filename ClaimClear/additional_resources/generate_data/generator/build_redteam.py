@@ -3,13 +3,18 @@
   py -3 generator/build_redteam.py                 # all 30, PDFs
   py -3 generator/build_redteam.py RT-A01 RT-D03   # some
   py -3 generator/build_redteam.py --no-pdf
+  py -3 generator/build_redteam.py --answers-only   # just (re)write each answer/, PDFs untouched
 
 Each attack starts from an existing gen case (base recipe + variant), so its money answer is known.
 Document attacks change the rendered documents (text injected at a named spot, a fake clause in the wording,
 a swapped name, an edited line, a duplicate earlier letter). Chat and approval attacks reuse the base documents
 and add the user's input (chat.txt / steps.txt).
 
+Clean controls (group "control", ids control-001...) use the same builder with no attack, or with honest text
+that only looks odd: negative cases for security testing (they must not be flagged or blocked).
+
 Writes  data/redteam/<id>/            what the system under test receives (documents, chat.txt, steps.txt)
+        data/redteam/<id>/answer/     the answer, for people: story.md, recipe.json, meta.json
         data/redteam_meta/<id>.json   attack details + expected safe behaviour + the base case's answer
 EVALUATION MATERIAL: never use for building or tuning agents.
 """
@@ -29,6 +34,7 @@ sys.path.insert(0, HERE)
 from build import to_pdf  # noqa: E402
 from compute import build_case  # noqa: E402
 from render import money, prior_letter, render_case  # noqa: E402
+from story import base_gold, redteam_story, write_answer  # noqa: E402
 from wording_copy import wording_pdf  # noqa: E402
 
 DOC = {"schedule": "01_policy_schedule.html", "bill": "02_itemised_bill.html", "letter": "03_settlement_letter.html",
@@ -155,6 +161,9 @@ def build_one(a, no_pdf, jobs):
     os.makedirs(os.path.join(ROOT, "data", "redteam_meta"), exist_ok=True)
     json.dump(meta, open(os.path.join(ROOT, "data", "redteam_meta", f"{a['id']}.json"), "w", encoding="utf-8"),
               indent=2, ensure_ascii=False)
+    base_recipe = {**{k: x for k, x in r.items() if k != "variants"},
+                   "variant": next(x for x in r["variants"] if x["v"] == a["variant"])}
+    write_answer(out, redteam_story(a, meta, r, base_gold(ROOT, meta)), {"attack": a, "base_recipe": base_recipe}, meta)
     return print_jobs, problems
 
 
@@ -163,15 +172,26 @@ def main():
     ap.add_argument("ids", nargs="*")
     ap.add_argument("--no-pdf", action="store_true")
     ap.add_argument("--jobs", type=int, default=6)
+    ap.add_argument("--answers-only", action="store_true", help="write answer/ from data/redteam_meta; leave the PDFs")
     a = ap.parse_args()
     spec = json.load(open(os.path.join(ROOT, "data", "recipes", "redteam", "attacks.json"), encoding="utf-8"))
     attacks = [x for x in spec["attacks"] if not a.ids or x["id"] in a.ids]
+    if a.answers_only:   # (re)write answer/ from data/redteam_meta without rebuilding (and re-dating) the PDFs
+        for at in attacks:
+            meta = json.load(open(os.path.join(ROOT, "data", "redteam_meta", f"{at['id']}.json"), encoding="utf-8"))
+            r = recipe_for(at["base"])
+            base_recipe = {**{k: x for k, x in r.items() if k != "variants"},
+                           "variant": next(x for x in r["variants"] if x["v"] == at["variant"])}
+            write_answer(os.path.join(ROOT, "data", "redteam", at["id"]), redteam_story(at, meta, r, base_gold(ROOT, meta)),
+                         {"attack": at, "base_recipe": base_recipe}, meta)
+            print(f"{at['id']:<12} answer/ written")
+        return 0
     all_jobs, all_problems = [], []
     for at in attacks:
         jobs, problems = build_one(at, a.no_pdf, a.jobs)
         all_jobs += jobs
         all_problems += [f"{at['id']}: {p}" for p in problems]
-        print(f"{at['id']}  {at['group']:<11} base {at['base']} v{at['variant']}  {'OK' if not problems else 'PROBLEM'}")
+        print(f"{at['id']:<12} {at['group']:<11} base {at['base']} v{at['variant']}  {'OK' if not problems else 'PROBLEM'}")
 
     def finish(job):
         hp, pdf, out = job
