@@ -27,12 +27,12 @@ LangGraph graph (agents/orchestration/claimclear_graph)            Member 3
           ▼
 Five MCP servers (servers/)                                         Member 2
   8101 settlement_engine  every rupee: policy-correct settlement, 51 methods, letter-row matcher, integrity checks
-  8102 case_records       a case's documents, policy, claim history (from dev_data/dataset/*/reference)
+  8102 case_records       a case's documents, policy, claim history (from development/dev_data/dataset/*/reference)
   8103 policy_kb          clause search: BM25 + vectors + RRF, clause IDs (Go Digit wording indexed)
   8104 insurer_portal     file_grievance (gated write) - DRY RUN backend today
   8105 document_reader    PDF/JPG/PNG to text with spans, Tesseract OCR, hidden-text channels
-contracts/ (shared state and hand-offs)   memory/ (long-term, with consent)   dev_eval/ (dev runs)
-dev_data/dataset (42 dev cases: 22 syn- + 20 gen-; held-out kept out)   docs/member4_security_deployment/misc/gen_data/ (case generator, red team)
+contracts/ (shared state and hand-offs)   memory/ (long-term, with consent)   development/dev_eval/ (dev runs)
+development/dev_data/dataset (42 dev cases: 22 syn- + 20 gen-; held-out kept out)   additional_resources/generate_data/ (case generator, red team)
 ```
 
 | Part | Owner | Size | State |
@@ -41,15 +41,15 @@ dev_data/dataset (42 dev cases: 22 syn- + 20 gen-; held-out kept out)   docs/mem
 | Toolkit, contracts, memory | Member 2 | ~5k lines, 7 test files | built |
 | Agent graph, critic loop, approval gate, web UI | Member 3 | ~8k lines, 21 test files | built; approval tied to the exact text (SHA-256 + HMAC token, edits invalidate it) |
 | Basic hooks (`hooks.py`) | Member 3 | small | permission check (`may_use`) and an audit log; **no budget, case access or PII scrubbing** |
-| Dev evaluation (`dev_eval/dev_cases`) | Member 2 | | 34/42 overall verdicts right; 3 gen- misses from the proportionate-rule disagreement |
-| Dataset, generator, gold, red-team suite | Member 1 / MD | | 60 gen- cases, 60 gold, 30 attacks (`misc/gen_data/`) |
+| Dev evaluation (`development/dev_eval/dev_cases`) | Member 2 | | 34/42 overall verdicts right; 3 gen- misses from the proportionate-rule disagreement |
+| Dataset, generator, gold, red-team suite | Member 1 / MD | | 60 gen- cases, 60 gold, 30 attacks (`additional_resources/generate_data/`) |
 | One-command start (`start.bat` / `start.py`) | Member 2 | | installs, starts servers, opens the UI; local LLM or OpenRouter key |
 | CI | Member 2 | 1 workflow | **not running**: it lives in `ClaimClear/.github/`, but GitHub only reads the repo-root `.github/` |
 | Docker | Member 2 | storage only | `deploy/storage.compose.yml` (Postgres + pgvector, MinIO); **no app images** |
 | Threat model, guardrails, tracing, metrics, FastAPI, mock portal | **Member 4** | none | **not started** |
 
-Start reading here: `README.md` (run steps), `docs/member3_orchestration/architecture.md` (graph, gate, safety
-invariants), `docs/member2_knowledge_memory_tools/technical_handover.md` §3 (where your hooks attach) and §19
+Start reading here: `README.md` (run steps), `additional_resources/member3_orchestration/architecture.md` (graph, gate, safety
+invariants), `additional_resources/member2_knowledge_memory_tools/technical_handover.md` §3 (where your hooks attach) and §19
 (open items, several marked "Member 4").
 
 ---
@@ -60,7 +60,7 @@ Status: [ ] to do · [~] partly done by someone else · [x] done
 
 ### P1. Security (core of the role)
 
-- [ ] **1. Threat model (one page)**: `docs/member4_security_deployment/threat_model.md`. Assets: health and claim
+- [ ] **1. Threat model (one page)**: `additional_resources/member4_security_deployment/threat_model.md`. Assets: health and claim
   data, the grievance write, API keys. Attackers: insurer-side text in letters, the user, third parties (phishing).
   Entry points: uploaded documents (visible and hidden text), chat, tool results, the approval step. For each threat:
   the defence and its test.
@@ -76,7 +76,7 @@ Status: [ ] to do · [~] partly done by someone else · [x] done
   in the audit log and traces (the audit log says "Member 4 replaces sink with the scrubbed tracer").
 - [x] **5. Approval gate**: built by Member 3 (interrupt, exact-text SHA-256, HMAC token, edit invalidates). Review
   it against the threat model and add the red-team approval cases (RT-C01..C05) as tests.
-- [ ] **6. Red-team runner + experiment E2**: run `misc/gen_data/data/redteam` (30 attacks) and the clean controls with
+- [ ] **6. Red-team runner + experiment E2**: run `additional_resources/generate_data/data/redteam` (30 attacks) and the clean controls with
   defences off and on; report attack success and false blocks.
 - [ ] **7. Mock insurer portal**: replace `DryRunPortal` behind the existing `Portal` interface
   (`servers/insurer_portal`), with a status endpoint for `grievance_status`.
@@ -84,7 +84,7 @@ Status: [ ] to do · [~] partly done by someone else · [x] done
 ### P2. Deployment
 
 - [ ] **8. Fix CI**: move the workflow to the repo-root `.github/workflows/`, run every member's test suites, and add
-  the **evaluation gate** (run `dev_eval/dev_cases`, fail below a threshold).
+  the **evaluation gate** (run `development/dev_eval/dev_cases`, fail below a threshold).
 - [ ] **9. Docker Compose for the whole app**: `docker compose up` starts the app, the five MCP servers, the vector
   store, Prometheus and Grafana (the storage compose exists to build on).
 - [ ] **10. FastAPI with streaming**: the UI runs on Starlette; FastAPI sits on Starlette, so add a FastAPI app with a
@@ -106,15 +106,15 @@ Status: [ ] to do · [~] partly done by someone else · [x] done
 
 ### P4. Data items on MD's name
 
-- [ ] **15. 5 clean controls**: specs in `misc/gen_data/todo/clean_controls.md`; needed for E2 false blocks.
+- [ ] **15. 5 clean controls**: specs in `additional_resources/generate_data/todo/clean_controls.md`; needed for E2 false blocks.
 - [ ] **16. 10 retrieval queries**: relabel for the **Go Digit** wording the knowledge base indexes; Member 2's 38
-  drafts in `dev_eval/retrieval/queries_godigit_DRAFT.jsonl` are waiting for review.
+  drafts in `development/dev_eval/retrieval/queries_godigit_DRAFT.jsonl` are waiting for review.
 - [ ] **17. 5 judge labels**: once there is system output; label before seeing the judge's score.
 - [ ] **18. Held-out check**: check the held-out cases against the written policy (role 4's job in the guide).
 
 ### P5. Decisions to raise with the team
 
-- [ ] **Proportionate deduction**: the engine follows the IRDAI 2020 circular (`dev_eval/dev_cases/decisions.json`);
+- [ ] **Proportionate deduction**: the engine follows the IRDAI 2020 circular (`development/dev_eval/dev_cases/decisions.json`);
   the gold follows the policy wording. Affects gen-dev-50b4e6, 6a82b1, a0a2f1.
 - [ ] **Red-team authorship**: the guide says the defence builder must not write the attacks; MD wrote the suite.
   Agree with Ankita who signs it off, and say so in the report.
