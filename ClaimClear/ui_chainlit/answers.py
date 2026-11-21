@@ -47,6 +47,18 @@ class Expected:
     behaviour: Optional[str] = None      # red-team: what the system must do
     reference_key: str = ""              # which reference policy record (generated cases share policy numbers)
     story: str = ""                      # readable expected result, for the judge
+    tags: list[str] = field(default_factory=list)    # auto_tags + any listed in eval_bundles.json
+
+
+def auto_tags(e: Expected) -> list[str]:
+    """Tags that follow from where a case comes from: kind, source, split, group (e.g. attack redteam RT-A chat)."""
+    if e.case_id.startswith("RT-"):
+        out = [e.kind, "redteam"] + ([] if e.kind == "negative" else [e.case_id[:4]])
+    elif e.source == "team dataset":
+        out = [e.kind, "team-dataset", e.inputs.parent.parent.name]          # dataset/<split>/cases/<case>
+    else:
+        out = [e.kind, "generated", e.inputs.parent.name]                    # cases/<split>/<case>
+    return list(dict.fromkeys(t for t in out + [e.group or ""] if t))
 
 
 # --------------------------------------------------------------------------- the lookups
@@ -87,6 +99,7 @@ def find(name: str) -> Expected:
     for lookup in LOOKUPS:
         found = lookup(name)
         if found is not None:
+            found.tags = auto_tags(found)
             return found
     raise LookupError(f"no case {name!r} with an answer in: generator answer folders, {TEAM}, {GEN / 'meta'}")
 

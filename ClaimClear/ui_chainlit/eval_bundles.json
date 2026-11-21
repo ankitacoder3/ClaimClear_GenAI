@@ -1,0 +1,11 @@
+{
+  "_about": "Named case sets for ui_judge_eval.py --bundle NAME. An entry is a case name, group:<negatives|attacks|generated|team-dev>, or tag:<tag>. Runs of the same bundle line up in eval_history.csv and LangSmith. 'tags' adds your own tags to cases, next to the automatic ones (kind, source, split, group).",
+  "bundles": {
+    "smoke3": ["RT-N-004", "RT-A01", "RT-B01"],
+    "dev": ["group:team-dev"],
+    "redteam": ["group:negatives", "group:attacks"]
+  },
+  "tags": {
+    "RT-B01": ["known-bug"]
+  }
+}

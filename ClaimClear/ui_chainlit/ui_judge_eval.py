@@ -13,6 +13,7 @@ Independent of the other evaluations: it shares only their input documents and e
     cd ClaimClear/ui_chainlit          (servers up first: python start.py --servers-only)
     ../.venv-agents/Scripts/python ui_judge_eval.py RT-N-004 gen-dev-c1c12e dev-c1c12e
     ../.venv-agents/Scripts/python ui_judge_eval.py --negatives | --attacks | --generated | --team-dev
+    ../.venv-agents/Scripts/python ui_judge_eval.py --bundle dev --track       # a named set (eval_bundles.json), tracked
 
 Writes var/eval/ui_judge/<time>/results.json and report.md, and prints one row per case. Uses the model on every
 case (identification, the review's reading of the claim and letter, the explanation, the judge).
@@ -39,6 +40,7 @@ from langgraph.types import Command  # noqa: E402
 from pydantic import BaseModel, Field  # noqa: E402
 
 import answers  # noqa: E402
+import bundles  # noqa: E402
 import app as chat_app  # noqa: E402  (its ready(): toolkit, model, review graph, gate; no UI is started)
 import findings  # noqa: E402
 import store_docs  # noqa: E402
@@ -199,13 +201,13 @@ async def run_case(app: dict, exp: Expected) -> dict:
 
 # --------------------------------------------------------------------------- the run and its report
 
-HEADER = ["| Case | Source | Kind | Payable got / expected | Verdict got / expected | Security | Judge | Judge's summary |",
-          "|---|---|---|---|---|---|---|---|"]
+HEADER = ["| Case | Tags | Payable got / expected | Verdict got / expected | Security | Judge | Judge's summary |",
+          "|---|---|---|---|---|---|---|"]
 
 
 def report_row(exp: Expected, r: dict) -> str:
     c, j, g = r.get("checks") or {}, r.get("judge") or {}, r.get("got") or {}
-    head = f"| {exp.case_id} | {exp.source} | {exp.kind} |"
+    head = f"| {exp.case_id} | {' '.join(exp.tags)} |"
     if not c:
         return f"{head} - | - | - | - | error: {(r.get('error') or g.get('error') or '')[:100]} |"
     ok = lambda b: "ok" if b else "WRONG"  # noqa: E731
@@ -230,43 +232,64 @@ async def evaluate(app: dict, exp: Expected, use_judge: bool) -> dict:
     return r
 
 
-def case_names(a: argparse.Namespace) -> list[str]:
-    out = list(a.cases)
+def chosen_cases(a: argparse.Namespace) -> tuple[list[Expected], str]:
+    """The cases to run, with their tags, and the run's label (the bundle name, or the groups chosen)."""
+    names = list(a.cases)
     for group in ("negatives", "attacks", "generated", "team_dev"):
         if getattr(a, group):
-            out += answers.names(group.replace("_", "-"))
-    return out
+            names += answers.names(group.replace("_", "-"))
+    found = [bundles.with_tags(answers.find(n)) for n in dict.fromkeys(names)]
+    if a.bundle:
+        return list({e.case_id: e for e in bundles.cases(a.bundle) + found}.values()), a.bundle
+    label = "+".join(g for g in ("negatives", "attacks", "generated", "team_dev") if getattr(a, g)) or "cases"
+    return found, label.replace("_", "-")
 
 
 async def main(argv: Optional[list[str]] = None) -> int:
     ap = argparse.ArgumentParser(description="UI judge evals (UI path + LLM judge)")
     ap.add_argument("cases", nargs="*", help="case names (RT-N-004, RT-A01, gen-dev-c1c12e, dev-c1c12e) or folders")
+    ap.add_argument("--bundle", choices=bundles.names(), help="a named case set from eval_bundles.json (smoke3, dev, redteam)")
     ap.add_argument("--negatives", action="store_true", help="red-team negative cases RT-N-* (no attack)")
     ap.add_argument("--attacks", action="store_true", help="red-team attacks (RT-* except RT-N-*)")
     ap.add_argument("--generated", action="store_true", help="generator dev cases built locally (data/cases/dev)")
     ap.add_argument("--team-dev", action="store_true", help="the team dataset's dev cases (gen-dev-*, syn-dev-*)")
     ap.add_argument("--no-judge", action="store_true", help="fixed checks only (no judge call)")
+    ap.add_argument("--jobs", type=int, default=4, help="cases run at the same time (default 4; same cost, less time)")
+    ap.add_argument("--track", action="store_true", help="when done: a line in eval_history.csv, and LangSmith if "
+                                                         "LANGSMITH_API_KEY is set (eval_track.py)")
     a = ap.parse_args(argv)
-    cases = [answers.find(n) for n in case_names(a)]
+    cases, label = chosen_cases(a)
     if not cases:
-        ap.error("name some cases, or use --negatives / --attacks / --generated / --team-dev")
+        ap.error("name some cases, or use --bundle / --negatives / --attacks / --generated / --team-dev")
 
     app = await chat_app.ready()
     if not app["llm"]:
         raise SystemExit("no model configured (OPENROUTER_API_KEY in ClaimClear/.env)")
     out = OUT / time.strftime("%Y%m%d-%H%M%S")
     out.mkdir(parents=True, exist_ok=True)
-    results, lines = {}, list(HEADER)
-    try:
-        for exp in cases:
+    results: dict = {}
+    slots = asyncio.Semaphore(max(1, a.jobs))
+
+    async def one(exp: Expected) -> None:
+        async with slots:
             results[exp.case_id] = await evaluate(app, exp, not a.no_judge)
-            lines.append(report_row(exp, results[exp.case_id]))
-            print(lines[-1], flush=True)
-            (out / "results.json").write_text(json.dumps(results, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
+        print(f"[{len(results)}/{len(cases)}] " + report_row(exp, results[exp.case_id]), flush=True)
+        (out / "results.json").write_text(json.dumps(results, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
+
+    try:
+        await asyncio.gather(*(one(e) for e in cases))
     finally:
         await app["cm"].__aexit__(None, None, None)
-    (out / "report.md").write_text("# UI judge evals\n\n" + "\n".join(lines) + "\n", encoding="utf-8")
-    print(f"\nreport: {out / 'report.md'}\nresults: {out / 'results.json'}")
+    results = {e.case_id: results[e.case_id] for e in cases if e.case_id in results}      # case order, not finish order
+    (out / "results.json").write_text(json.dumps(results, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
+    import eval_track
+    lines = HEADER + [report_row(e, results[e.case_id]) for e in cases if e.case_id in results]
+    tag_table = eval_track.by_tag_table(results)
+    (out / "report.md").write_text(f"# UI judge evals: {label}\n\n" + "\n".join(lines) + f"\n\n## By tag\n\n{tag_table}\n",
+                                   encoding="utf-8")
+    print(f"\n{tag_table}\n\nreport: {out / 'report.md'}\nresults: {out / 'results.json'}")
+    if a.track:
+        eval_track.track(out, label, getattr(app["llm"], "model_name", "") or "")
     return 0
 
 
