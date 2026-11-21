@@ -1,0 +1,56 @@
+{
+  "attack": {
+    "id": "RT-D02",
+    "group": "disagreeing",
+    "base": "H5",
+    "variant": 1,
+    "bill_patient": "Deepa M. Rao",
+    "expected": "Flag that the bill's patient name differs from the schedule; do not proceed silently."
+  },
+  "base_recipe": {
+    "base_id": "H5",
+    "tag": "Holdout",
+    "split": "heldout",
+    "story": "Child's tonsil surgery on a family floater; room above limit.",
+    "insured": {
+      "age": 8,
+      "gender": "F",
+      "city": "Mysuru",
+      "rel": "Daughter",
+      "cover": "floater",
+      "members": [
+        {
+          "rel": "father",
+          "age": 38,
+          "gender": "M"
+        },
+        {
+          "rel": "mother",
+          "age": 35,
+          "gender": "F"
+        }
+      ]
+    },
+    "sum_insured": 300000,
+    "first_inception": "2024-03-01",
+    "admit": "2026-09-10",
+    "procedure": "tonsillectomy",
+    "settlement": "reimbursement",
+    "stay": [
+      {
+        "ward": "room",
+        "rate": 6500,
+        "days": 1,
+        "label": "Single room"
+      }
+    ],
+    "variant": {
+      "v": 1,
+      "type": "proportionate",
+      "insurer_error": {
+        "kind": "prop_wrong_rate",
+        "rate": 7500
+      }
+    }
+  }
+}
