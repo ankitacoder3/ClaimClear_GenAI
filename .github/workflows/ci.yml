@@ -1,0 +1,81 @@
+# CI for ClaimClear.
+#   quick      every push and pull request: the build smoke tests (tests/smoke: always true, the chat UI builds)
+#              and the chat UI's quick tests (ui_chainlit/tests). Free: no servers, no model.
+#   llm-smoke  only from "Run workflow" with "Run the LLM judge smoke test" ticked: starts the five servers and
+#              runs tests/smoke/test_judge.py: one simple case through the UI path, graded by the LLM judge
+#              (about $0.02 a run).
+#              Needs the repository secret OPENROUTER_API_KEY (Settings > Secrets and variables > Actions).
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      llm_smoke:
+        description: "Run the LLM judge smoke test (needs OPENROUTER_API_KEY; about $0.02)"
+        type: boolean
+        default: false
+
+jobs:
+  quick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: ClaimClear
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: ClaimClear/requirements-*.txt
+      - name: Install the agents' environment and the chat UI
+        run: python -m pip install -q -r requirements-agents.txt -r requirements-ui.txt
+      - name: Build smoke tests (always true, the chat UI builds)
+        run: python -m pytest tests/smoke -q -p no:randomly
+      - name: The chat UI's quick tests
+        working-directory: ClaimClear/ui_chainlit
+        run: python -m pytest tests -q -p no:randomly
+
+  llm-smoke:
+    if: github.event_name == 'workflow_dispatch' && inputs.llm_smoke
+    needs: quick
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: ClaimClear
+    env:
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Check the key is set
+        run: test -n "$OPENROUTER_API_KEY" || { echo "Add the OPENROUTER_API_KEY repository secret first"; exit 1; }
+      - name: Start the five servers (first run installs both environments)
+        run: |
+          nohup python start.py --servers-only --no-local-llm > servers.log 2>&1 &
+          for i in $(seq 1 180); do
+            python -c "import socket,sys; [socket.create_connection(('127.0.0.1', p), 1).close() for p in (8101, 8102, 8103, 8104, 8105)]" 2>/dev/null && break
+            sleep 5
+          done
+          tail -5 servers.log
+      - name: Install the chat UI into the agents' environment
+        run: .venv-agents/bin/python -m pip install -q -r requirements-ui.txt
+      - name: Judge smoke test (one simple case must pass)
+        env:
+          CLAIMCLEAR_LLM_SMOKE: "1"
+        run: .venv-agents/bin/python -m pytest tests/smoke/test_judge.py -q -s -p no:randomly
+      - name: Keep the logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: llm-smoke-logs
+          path: |
+            ClaimClear/servers.log
+            ClaimClear/var/logs/chat.log
+          if-no-files-found: ignore
