@@ -178,6 +178,22 @@ cd ui_chainlit
 
 The chat uses the same model setting as step 3 (`ClaimClear/.env`). Upload a case's PDFs (bill, settlement letter, policy schedule, policy wording); the review starts by itself once they are in. Log: `ClaimClear/var/logs/chat.log`. Tests: `../.venv-agents/Scripts/python -m pytest tests` from `ui_chainlit` (`bin/python` on macOS / Linux).
 
+7. **Smoke tests and UI judge evals** (from the `ClaimClear` folder; `bin/python` on macOS / Linux)
+
+```bash
+# all smoke tests in one command (CI runs the same on every push); free
+.venv-agents/Scripts/python tests/run_smoke.py
+.venv-agents/Scripts/python tests/run_smoke.py --llm      # also one case through the LLM judge (servers up; ~$0.02)
+
+# UI judge evals: a bundle of cases through the chat's path, graded by an LLM judge (servers up)
+cd ui_chainlit
+../.venv-agents/Scripts/python ui_judge_eval.py --bundle smoke3 --track   # 3 cases, ~$0.06
+../.venv-agents/Scripts/python ui_judge_eval.py --bundle dev --track      # 42 team dev cases, ~$0.85
+../.venv-agents/Scripts/python ui_judge_eval.py --bundle redteam --track  # 40 red-team cases, ~$0.80
+```
+
+Bundles and extra tags are in `ClaimClear/ui_chainlit/eval_bundles.json`. `--track` adds a line to `ClaimClear/ui_chainlit/eval_history.csv` (in git, to follow results over time) and, with `LANGSMITH_API_KEY` in `ClaimClear/.env`, sends the run to LangSmith as an experiment with per-case scores and tags. Accounts outside the US region also need `LANGSMITH_ENDPOINT` (for example `https://apac.api.smith.langchain.com`). Reports: `ClaimClear/var/eval/ui_judge/<time>/report.md`.
+
 Full instructions, options and troubleshooting: [ClaimClear/info.md](ClaimClear/info.md) and [ClaimClear/docs/setup/setup_guide.md](ClaimClear/docs/setup/setup_guide.md).
 
 <br>
