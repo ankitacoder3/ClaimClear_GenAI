@@ -1,4 +1,4 @@
-"""ClaimClear in Chainlit: the chat UI (see docs/member4_security_deployment/ui_options.md).
+"""ClaimClear in Chainlit: the chat UI (see additional_resources/member4_security_deployment/ui_options.md).
 
 Run (with the five MCP servers already up, e.g. `python start.py --servers-only`):
 
@@ -47,7 +47,7 @@ from case_status import documents_block, review_readiness
 from identify import identify_documents
 from store_docs import store_files
 
-SAMPLE_DIR = REPO / "dev_data" / "dataset" / "dev" / "cases"
+SAMPLE_DIR = REPO / "development" / "dev_data" / "dataset" / "dev" / "cases"
 APP: dict = {}  # shared by every chat: toolkit, model, graph, gate (built once)
 LOG = logging.getLogger("claimclear.chat")
 LOG_PATH = Path(os.environ.get("CLAIMCLEAR_CHAT_LOG") or REPO / "var" / "logs" / "chat.log")
