@@ -96,9 +96,9 @@ def load_server_rules() -> tuple[PolicyRules, str]:
 
 
 def default_rules_dir() -> Path:
-    """``$CLAIMCLEAR_RULES_DIR``, else ``<repo>/dev_data/wordings/rules``."""
+    """``$CLAIMCLEAR_RULES_DIR``, else ``<repo>/development/dev_data/wordings/rules``."""
     env = os.environ.get(RULES_DIR_ENV)
-    return Path(env) if env else Path(__file__).resolve().parents[3] / "dev_data" / "wordings" / "rules"
+    return Path(env) if env else Path(__file__).resolve().parents[3] / "development" / "dev_data" / "wordings" / "rules"
 
 
 class RulesProvider:
@@ -163,7 +163,7 @@ def _hypothesis_ids(ids: Optional[list[str]]) -> Optional[list[str]]:
 
 def create_server(rules: Optional[PolicyRules] = None, rules_dir: Optional[str | Path] = None) -> MCPServer:
     """Build the server. ``rules`` fixes the policy rules for every case (tests); otherwise each case's
-    ``policy.wording_uin`` picks its wording's limits from ``rules_dir`` (default ``dev_data/wordings/rules``)."""
+    ``policy.wording_uin`` picks its wording's limits from ``rules_dir`` (default ``development/dev_data/wordings/rules``)."""
     if rules is None:
         default, source = load_server_rules()
         provider = RulesProvider(default, Path(rules_dir) if rules_dir else default_rules_dir())

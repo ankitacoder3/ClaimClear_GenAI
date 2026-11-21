@@ -2,7 +2,7 @@
 
     python -m policy_kb.fetch --url URL --insurer "Go Digit General Insurance" --uin GODHLIP24179V022324
 
-Saves the PDF under ``<repo>/dev_data/wordings/`` (git-ignored: insurers'
+Saves the PDF under ``<repo>/development/dev_data/wordings/`` (git-ignored: insurers'
 documents are not redistributed in this repository) and writes a ``.source.json``
 next to it with the URL, download date, size and SHA-256. ``python -m policy_kb
 build`` reads that file, so every clause in the index can name its exact source.
@@ -25,7 +25,7 @@ MAX_BYTES = 30 * 1024 * 1024
 
 
 def wordings_dir() -> Path:
-    return Path(__file__).resolve().parents[3] / "dev_data" / "wordings"
+    return Path(__file__).resolve().parents[3] / "development" / "dev_data" / "wordings"
 
 
 def fetch(url: str, insurer: str, product: str, uin: str, out_dir: Path | None = None) -> Path:
@@ -57,7 +57,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--insurer", required=True)
     p.add_argument("--product", default="Arogya Sanjeevani Policy")
     p.add_argument("--uin", required=True, help="the product UIN printed on the wording")
-    p.add_argument("--out", help="output folder (default dev_data/wordings)")
+    p.add_argument("--out", help="output folder (default development/dev_data/wordings)")
     a = p.parse_args(argv)
     path = fetch(a.url, a.insurer, a.product, a.uin, Path(a.out) if a.out else None)
     print(f"saved {path} and {path.with_suffix('.source.json').name}")

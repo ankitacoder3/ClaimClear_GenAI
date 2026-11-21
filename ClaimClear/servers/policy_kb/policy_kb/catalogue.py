@@ -2,7 +2,7 @@
 
 Two sources, one way in (``PolicyLibrary.resolve``):
 
-* **Catalogue** wordings, reviewed and pre-indexed, listed in ``dev_data/wordings/catalogue.json``::
+* **Catalogue** wordings, reviewed and pre-indexed, listed in ``development/dev_data/wordings/catalogue.json``::
 
       {"default": "GODHLIP24179V022324",
        "wordings": [{"wording_uin": "GODHLIP24179V022324", "insurer": "...", "product": "...",
@@ -45,7 +45,7 @@ MAX_PAGE_CHARS = 20_000
 
 def default_catalogue_path() -> Path:
     env = os.environ.get(CATALOGUE_ENV)
-    return Path(env) if env else Path(__file__).resolve().parents[3] / "dev_data" / "wordings" / "catalogue.json"
+    return Path(env) if env else Path(__file__).resolve().parents[3] / "development" / "dev_data" / "wordings" / "catalogue.json"
 
 
 @dataclass(frozen=True)
