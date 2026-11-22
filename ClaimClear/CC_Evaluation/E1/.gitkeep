@@ -1,0 +1,9 @@
+
+E1 — Does the Agent Justify Its Cost?
+
+Compare:
+C0 — Fixed workflow / single retrieval prompt with no agent decisions
+C1 — One agent with all tools
+C2 — Team of agents
+
+The model, tools, and budget are the same across all configurations.

@@ -1,0 +1,7 @@
+
+E2 — Do the Defences Work?
+
+* Evaluate defences OFF vs. ON using the RedTeam suite to measure attack success.
+* Use clean cases to measure legitimate-work blocking.
+
+The model, tools, and budget are the same across all configurations.
