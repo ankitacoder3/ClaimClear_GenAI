@@ -26,6 +26,7 @@
 <li> <a href="#a4"> Steps for recreating </a></li>
 <li>  <a href="#a5">Screenshots</a></li>
 <li>  <a href="#a4">Usage</a></li>
+<li>  <a href="#a6">Design documents</a></li>
 <a href="#end"><u><i>Skip to END...</i></u></a>
 </details>
 </br>
@@ -260,6 +261,20 @@ Full instructions, options and troubleshooting: [ClaimClear/info.md](ClaimClear/
 6. **Close the page** when you are done: the web UI and the servers stop, and your uploaded documents and chats are deleted (use `--keep-data` to keep them; the sample cases are synthetic).
 
 Results on the 42 development cases: 40/42 overall verdicts right, 89/94 row verdicts, 28/31 payable and 37/40 disputable amounts; the multi-agent graph agrees with the fixed workflow on every case. Every document is listed in [ClaimClear/additional_resources/README.md](ClaimClear/additional_resources/README.md).
+
+<br>
+<a href="#top">Back to top</a>
+
+---
+
+<a id="a6"></a>
+
+## Design documents :-
+
+| Document | What it covers |
+|---|---|
+| [Threat model](ClaimClear/additional_resources/member4_security_deployment/threat_model.md) | Security deliverable: assets, attackers, lethal trifecta, threats with defences and tests, security eval (E2) |
+| [Chat UI options](ClaimClear/additional_resources/member4_security_deployment/ui_options.md) | Why the chat UI is built on Chainlit, and the options compared |
 
 <br>
 <a href="#top">Back to top</a>
