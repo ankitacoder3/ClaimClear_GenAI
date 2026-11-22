@@ -107,10 +107,13 @@ ClaimClear_GenAI/
 | Documents | PyMuPDF, Tesseract OCR |
 | Memory | Long-term and episodic memory (SQLite or PostgreSQL), consent-gated, scrubbed summaries |
 | Storage | SQLite by default; PostgreSQL + pgvector + MinIO optional |
-| Models | Any local LLM (Ollama / LM Studio / llama.cpp) or OpenRouter |
-| Web UI | Starlette + a single-page chat app with streaming answers |
-| Safety | Critic with figure checks, streaming guard, human approval gate (SHA-256 + HMAC) |
-| Tests | pytest, hypothesis, record/replay of real tool outputs |
+| Models | OpenRouter (default `openai/gpt-4.1-mini`) or any local LLM (Ollama / LM Studio / llama.cpp) |
+| Web UI | **Chainlit** chat UI (selected: [why](ClaimClear/additional_resources/member4_security_deployment/ui_options.md)): uploads, streaming answers, review steps; the original Starlette single-page app still opens from `start.py` |
+| Safety | Critic with figure checks, streaming guard, human approval gate (SHA-256 + HMAC), per-agent tool permissions; input guardrails planned ([threat model](ClaimClear/additional_resources/member4_security_deployment/threat_model.md)) |
+| Tests | pytest, hypothesis, record/replay of real tool outputs; smoke tests in one command (`tests/run_smoke.py`), run by GitHub Actions CI on every push |
+| Evals | [UI judge evals](ClaimClear/ui_chainlit/ui_judge_eval.py): cases through the chat's path, graded by an LLM judge + fixed checks; [security eval](ClaimClear/additional_resources/member4_security_deployment/threat_model.md#security-eval-e2) (E2) on 30 attacks + 10 clean cases |
+| Tracing | LangSmith: traces of every chat and review, and each eval run as an experiment; `eval_history.csv` in git |
+| Deployment | GitHub Actions CI; Docker Compose planned |
 
 <br>
 <a href="#top">Back to top</a>
@@ -179,7 +182,7 @@ cd ui_chainlit
 
 The chat uses the same model setting as step 3 (`ClaimClear/.env`). Upload a case's PDFs (bill, settlement letter, policy schedule, policy wording); the review starts by itself once they are in. Log: `ClaimClear/var/logs/chat.log`. Tests: `../.venv-agents/Scripts/python -m pytest tests` from `ui_chainlit` (`bin/python` on macOS / Linux).
 
-7. **Smoke tests and UI judge evals** (from the `ClaimClear` folder; `bin/python` on macOS / Linux)
+7. **Smoke tests, UI judge evals and the security eval** (from the `ClaimClear` folder; `bin/python` on macOS / Linux; code: [`ui_judge_eval.py`](ClaimClear/ui_chainlit/ui_judge_eval.py))
 
 ```bash
 # all smoke tests in one command (CI runs the same on every push); free
@@ -190,10 +193,10 @@ The chat uses the same model setting as step 3 (`ClaimClear/.env`). Upload a cas
 cd ui_chainlit
 ../.venv-agents/Scripts/python ui_judge_eval.py --bundle smoke3 --track   # 3 cases, ~$0.06
 ../.venv-agents/Scripts/python ui_judge_eval.py --bundle dev --track      # 42 team dev cases, ~$0.85
-../.venv-agents/Scripts/python ui_judge_eval.py --bundle redteam --track  # 40 red-team cases, ~$0.80
+../.venv-agents/Scripts/python ui_judge_eval.py --bundle redteam --track  # security eval: 30 attacks + 10 clean cases, ~$0.80
 ```
 
-Bundles and extra tags are in `ClaimClear/ui_chainlit/eval_bundles.json`. `--track` adds a line to `ClaimClear/ui_chainlit/eval_history.csv` (in git, to follow results over time) and, with `LANGSMITH_API_KEY` in `ClaimClear/.env`, sends the run to LangSmith as an experiment with per-case scores and tags. Accounts outside the US region also need `LANGSMITH_ENDPOINT` (for example `https://apac.api.smith.langchain.com`). Reports: `ClaimClear/var/eval/ui_judge/<time>/report.md`.
+Bundles and extra tags are in `ClaimClear/ui_chainlit/eval_bundles.json`. `--track` adds a line to `ClaimClear/ui_chainlit/eval_history.csv` (in git, to follow results over time) and, with `LANGSMITH_API_KEY` in `ClaimClear/.env`, sends the run to LangSmith as an experiment with per-case scores and tags. Accounts outside the US region also need `LANGSMITH_ENDPOINT` (for example `https://apac.api.smith.langchain.com`). Reports: `ClaimClear/var/eval/ui_judge/<time>/report.md`. Security eval results: [threat model](ClaimClear/additional_resources/member4_security_deployment/threat_model.md#security-eval-e2).
 
 Full instructions, options and troubleshooting: [ClaimClear/info.md](ClaimClear/info.md) and [ClaimClear/docs/setup/setup_guide.md](ClaimClear/docs/setup/setup_guide.md).
 
