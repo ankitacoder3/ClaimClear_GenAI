@@ -9,6 +9,11 @@
 
 <img width="155" height="145" alt="image" src="https://github.com/user-attachments/assets/d41090c8-6e3d-4ba6-9d6f-91cad10438ef" />
 
+<br>
+
+## To start the ClaimClear application with one command, please click here:
+<li> <a href="#a3"> LAUNCH CLAIMCLEAR APPLICATION </a></li>
+
 
 <br>
 
@@ -17,12 +22,18 @@
   <summary style="color: red;">Table of Contents</summary>
 <li> <a href="#a1">Introduction</a></li>
 <li> <a href="#a2"> Prerequisites and Techstack</a></li>
-<li> <a href="#a3"> Steps for Execution </a></li>
+<li> <a href="#a3"> RUN THE APPLICATION </a></li>
+<li> <a href="#a4"> Steps for recreating </a></li>
 <li>  <a href="#a5">Screenshots</a></li>
 <li>  <a href="#a4">Usage</a></li>
 <a href="#end"><u><i>Skip to END...</i></u></a>
 </details>
 </br>
+<br>
+
+## Note: The README is currently quite verbose. We will make it more concise and update the details upon project completion. Moreover, outdated details like new files and repo structure can be added only, post completion.
+
+<br>
 
 <a id="a1"></a>
 
@@ -42,6 +53,10 @@
 ##### * It is mainly designed for health-insurance policyholders who may or maynot understand insurance domain terms.
 ##### * In critical situations of health policyholders or their relatives may not be able to cross verify the settlement or what other documents or bills are needed from their end.
 ##### * Moreover, policyholders usually maynot have the time and patience to go through a long document or pdf, of say 40 pages, while trying to figure out due to which points or situations are these deductions applicable or not.
+
+<br>
+
+## Note: The README is currently quite verbose. We will make it more concise and update the details upon project completion. Moreover, outdated details like new files and repo structure can be added only, post completion. ALL POINTS, SENTENCES, RESOURCES, SHOULD BE VERIFIED AGAIN AND CONCISED, POST COMPLETION.
 
 <br>
 
@@ -118,7 +133,18 @@ ClaimClear_GenAI/
 
 <a id="a3"></a>
 
-## Steps for Execution :-
+## RUN THE CLAIM CLEAR APPLICATION:-
+
+## To LAUNCH OR RUN the ClaimClear application with one command, please follow this:
+
+<p> NOTE-> TO BE ADDED POST DEPLOYMENT </p>
+
+
+<br>
+<a href="#top">Back to top</a>
+
+<a id="a4"></a>
+### Steps for repcreating ClaimClear :-
 
 1. **Clone the repository and open the application folder**
 
