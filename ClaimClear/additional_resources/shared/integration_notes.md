@@ -23,7 +23,7 @@ ClaimClear was built in two halves that had never run together. This page record
 | `src/contracts/*` | **Replaced** by `contracts/claimclear_contracts` | One contract for both sides; Member 3's `CaseState` invented fields (`claim_summary`, `deductions`, `DeductionItem`) no server produces |
 | `src/orchestration/graph.py`, `router.py`, `nodes.py`, `gateway.py`, `state.py` | **Rewritten** as `claimclear_graph/graph.py`, `router.py`, `nodes.py`, `gateway.py`, `state.py` | Same roles, now async, calling real tools, on the contract state |
 | `scripts/demo_mcp_set01.py`, `demo_trace.py`, `demo_live_trace.py` | **Replaced** by the web UI and `python start.py --auto SET-01` (a self-check through every agent) | One demo, same story, real servers |
-| `scripts/run_sample_evaluation.py` + `data/sample_claim_packets.jsonl` | **Replaced** by `dev_eval/graph_dev_cases/run.py` over the 42 dev cases | The 6 sample packets' "gold standard" came from the stub rules themselves; the dev cases have hand-computed answers |
+| `scripts/run_sample_evaluation.py` + `data/sample_claim_packets.jsonl` | **Replaced** by `development/dev_eval/graph_dev_cases/run.py` over the 42 dev cases | The 6 sample packets' "gold standard" came from the stub rules themselves; the dev cases have hand-computed answers |
 | `tests/test_orchestration.py`, `tests/test_mcp_integration.py` (28 tests) | **Re-expressed** in `agents/orchestration/tests` (62 tests after the review fixes) | Each safety property they tested is tested again on real engine outputs (table in §5); tests that only checked the stub's own rules (ICU bundling, "reasonable and customary", co-pay at 5 %) have no real counterpart to test |
 
 ## 3. Behaviour changes, and the defects they fix
@@ -72,11 +72,11 @@ Member 3's original 28 tests map onto the new suite as follows: state initialisa
 | # | Fix | Where |
 |---|---|---|
 | F0 | `ScopedToolkit` also filters `.tool()`, `.tools` and `.for_agent()` | `claimclear_graph/services.py` |
-| F1 | The 48 held-out tests are skipped with a clear reason while `dev_data/dataset/heldout` is missing | each server suite's `tests/conftest.py` |
+| F1 | The 48 held-out tests are skipped with a clear reason while `development/dev_data/dataset/heldout` is missing | each server suite's `tests/conftest.py` |
 | F2 | Document text is never checkpointed; the state keeps a `page_summary` | `agents/document_reader.py`, `state.py` |
 | F3 | Independent tool calls run concurrently (graph nodes and `ClaimClearToolkit.read_case`) | `agents/common.py:gather_calls`, `agents/toolkit/claimclear_tools/toolkit.py` |
 | F4 | The look-alike table ships in the contracts, with a test proving it equals the engine's | `contracts/claimclear_contracts/identifiers.py`, `contracts/tests/test_identifiers.py` |
-| F5 | `--llm-extract` evaluates the LLM extraction on every dev case (needs an API key to run) | `dev_eval/graph_dev_cases/run.py` |
+| F5 | `--llm-extract` evaluates the LLM extraction on every dev case (needs an API key to run) | `development/dev_eval/graph_dev_cases/run.py` |
 | F6 | One module per agent | `claimclear_graph/agents/` |
 | F7 | Bounded retries with back-off for retryable tool errors | `services.py` |
 | F8 | Plain-language grievance (method and excluded charges, no formula); optional plain-language / translated explanation, checked by the critic | `agents/grievance.py`, `language.py` |
@@ -89,7 +89,7 @@ All 42 dev cases still give the same verdicts as the fixed workflow after these 
 
 ## 7. Known gaps
 
-* **Held-out split absent.** `dev_data/dataset/heldout/` was not in the upload; the 48 server tests that read it are skipped (with that reason) until it is restored.
-* **Missing documents referenced by Member 2's guide.** `docs/member2_knowledge_memory_tools/overview.md` links to `.claude/skills/claimclear-member2/…`, `docs/setup_fedora.md`, `docs/technology_and_app_flow.md` and `docs/member2_work.md`, which were not in the upload.
-* **LLM extraction not yet measured.** `dev_eval/graph_dev_cases/run.py --llm-extract` is ready and tested offline, but needs an API key to run.
+* **Held-out split absent.** `development/dev_data/dataset/heldout/` was not in the upload; the 48 server tests that read it are skipped (with that reason) until it is restored.
+* **Missing documents referenced by Member 2's guide.** `additional_resources/member2_knowledge_memory_tools/overview.md` links to `.claude/skills/claimclear-member2/…`, `additional_resources/setup_fedora.md`, `docs/technology_and_app_flow.md` and `docs/member2_work.md`, which were not in the upload.
+* **LLM extraction not yet measured.** `development/dev_eval/graph_dev_cases/run.py --llm-extract` is ready and tested offline, but needs an API key to run.
 * **Portal is a dry run** until Member 4's mock portal replaces `DryRunPortal`; the tool interface stays the same.

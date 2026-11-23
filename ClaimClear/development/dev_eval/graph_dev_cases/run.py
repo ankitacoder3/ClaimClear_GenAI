@@ -1,12 +1,12 @@
 """Every development case through the **multi-agent graph** (Member 3), scored like the fixed workflow.
 
-    .venv-agents/bin/python dev_eval/graph_dev_cases/run.py                     # all 42 dev cases, servers over stdio
-    .venv-agents/bin/python dev_eval/graph_dev_cases/run.py --only SET-01 gen-dev-147e01
-    .venv-agents/bin/python dev_eval/graph_dev_cases/run.py --http              # against scripts/dev_servers.py
+    .venv-agents/bin/python development/dev_eval/graph_dev_cases/run.py                     # all 42 dev cases, servers over stdio
+    .venv-agents/bin/python development/dev_eval/graph_dev_cases/run.py --only SET-01 gen-dev-147e01
+    .venv-agents/bin/python development/dev_eval/graph_dev_cases/run.py --http              # against scripts/dev_servers.py
 
-``dev_eval/dev_cases/run.py`` (Member 2) drives the servers as a fixed C0 workflow. This run sends the same
+``development/dev_eval/dev_cases/run.py`` (Member 2) drives the servers as a fixed C0 workflow. This run sends the same
 cases, with the same development stand-ins (upload into a scratch store; claim/letter from
-``dev_eval/dev_cases/extract.py``), through ``claimclear_graph``: supervisor, document reader, policy
+``development/dev_eval/dev_cases/extract.py``), through ``claimclear_graph``: supervisor, document reader, policy
 analyst, auditor, critic (both reviews), explainer and grievance agent. It reuses that script's
 ``prepare``, ``store_case_id`` and ``score``, so both runs are scored identically against the answers.
 
@@ -20,7 +20,7 @@ Needs the app's model: a local LLM (``CLAIMCLEAR_LLM_BASE_URL``) or ``OPENROUTER
 overridden with ``$CLAIMCLEAR_EXTRACTION_MODEL``. Results go to
 ``results/graph_dev_cases_llm.md`` so they sit next to the stand-in run.
 
-Writes ``dev_eval/graph_dev_cases/results/graph_dev_cases.md`` and ``.json``. Held-out cases are never read.
+Writes ``development/dev_eval/graph_dev_cases/results/graph_dev_cases.md`` and ``.json``. Held-out cases are never read.
 """
 
 from __future__ import annotations
@@ -51,7 +51,7 @@ def c0_module():
 
 
 def as_c0_result(state: dict) -> dict:
-    """The graph's final state in the shape ``dev_eval/dev_cases/run.py:score`` reads."""
+    """The graph's final state in the shape ``development/dev_eval/dev_cases/run.py:score`` reads."""
     a, rows = state.get("letter_audit"), state.get("row_audits") or {}
     out: dict = {"route": state.get("outcome") or state.get("route"), "steps": {}}
     if a:
@@ -130,7 +130,7 @@ def report(rows: list[dict], c0: dict) -> str:
         return f"{sum(have)}/{len(have)}" if have else "-"
     lines = ["# Multi-agent graph: development cases", "",
              "Every dev case through `claimclear_graph` and the real MCP servers, scored with "
-             "`dev_eval/dev_cases/run.py:score` (the same answers and rules as the fixed-workflow C0 run). "
+             "`development/dev_eval/dev_cases/run.py:score` (the same answers and rules as the fixed-workflow C0 run). "
              "Questions left unanswered; grievances rejected at the gate (nothing filed).", "",
              "| Cases | Ran to the end (audit produced) | Overall verdict right | Row verdicts right | Payable right (±₹1) | "
              "Disputable right (±₹1) | Same overall verdict as C0 |", "|---|---|---|---|---|---|---|"]

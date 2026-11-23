@@ -48,6 +48,7 @@ ERROR_CODES: dict[str, dict[str, str]] = {
         "POLICY_NOT_FOUND": "no pre-stored schedule for the policy: extract it from the uploaded policy and confirm",
         "INVALID_SCOPE": "claim-history scope not recognised",
         "INVALID_ROLE": "upload path: a document role that doesn't exist",
+        "INVALID_POLICY": "upload path: setting a case's policy number to an empty value (set_policy)",
         "INVALID_WORDING": "upload path: a wording UIN in the wrong format",
         "UNSUPPORTED_MEDIA_TYPE": "upload path: only PDF, JPG and PNG are accepted",
         "FILE_TOO_LARGE": "upload path: the file is over 25 MB",

@@ -294,6 +294,7 @@
    "DOCUMENT_INTEGRITY": "the stored copy is missing or changed: ask the user to upload it again",
    "DOCUMENT_NOT_IN_CASE": "the document belongs to another case (or doesn't exist)",
    "FILE_TOO_LARGE": "upload path: the file is over 25 MB",
+   "INVALID_POLICY": "upload path: setting a case's policy number to an empty value (set_policy)",
    "INVALID_ROLE": "upload path: a document role that doesn't exist",
    "INVALID_SCOPE": "claim-history scope not recognised",
    "INVALID_WORDING": "upload path: a wording UIN in the wrong format",

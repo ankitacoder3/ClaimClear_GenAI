@@ -69,7 +69,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--audit", action="store_true", help="audit the insurer's letter (SET-xx only)")
     parser.add_argument("--json", action="store_true", help="print the full result as JSON")
     parser.add_argument("--hypotheses", action="store_true", help="list the hypothesis library and exit")
-    parser.add_argument("--dataset", help="path to dev_data/dataset (default: repo copy or $CLAIMCLEAR_DATASET_DIR)")
+    parser.add_argument("--dataset", help="path to development/dev_data/dataset (default: repo copy or $CLAIMCLEAR_DATASET_DIR)")
     args = parser.parse_args(argv)
     out = sys.stdout
 

@@ -1,12 +1,12 @@
 """The dev case book: every development case, what it contains, what the policy says should be paid, and how
 ClaimClear handles it. Generated from the dataset and the evaluation results, so nothing is typed by hand.
 
-    python scripts/dev_case_book.py      # writes docs/member2_knowledge_memory_tools/dev_dataset_case_book.md
+    python scripts/dev_case_book.py      # writes additional_resources/member2_knowledge_memory_tools/dev_dataset_case_book.md
     python scripts/dev_case_book.py --html out.html         # also an HTML version (for a PDF)
 
-Reads ``dev_data/dataset/dev`` (``cases.json``, ``answers/``, ``reference/policies.json``, ``reference/claim_history.json``)
-and the latest whole-application results ``dev_eval/dev_cases/results/dev_cases.json`` (the fixed workflow, C0) and
-``dev_eval/graph_dev_cases/results/graph_dev_cases.json`` (the multi-agent graph). Re-run the evaluations first if the
+Reads ``development/dev_data/dataset/dev`` (``cases.json``, ``answers/``, ``reference/policies.json``, ``reference/claim_history.json``)
+and the latest whole-application results ``development/dev_eval/dev_cases/results/dev_cases.json`` (the fixed workflow, C0) and
+``development/dev_eval/graph_dev_cases/results/graph_dev_cases.json`` (the multi-agent graph). Re-run the evaluations first if the
 code changed. Personal details on the synthetic documents (names, dates of birth) are left out.
 
 Standard library only.
@@ -21,7 +21,7 @@ from collections import Counter
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-DEV = REPO / "dev_data" / "dataset" / "dev"
+DEV = REPO / "development" / "dev_data" / "dataset" / "dev"
 REVIEWED_UIN = "GODHLIP24179V022324"
 VERDICT = {"matches_policy": "Matches the policy", "disputable": "May be disputable",
            "does_not_match_policy": "Does not match the policy", "not_verifiable": "Can't be checked yet",
@@ -35,7 +35,7 @@ ROLE = {"bill": "hospital bill", "settlement_letter": "settlement letter", "poli
 _PROPORTIONATE = ("ClaimClear follows IRDAI's 2020 circular for the proportionate deduction: medicines, consumables, "
                   "implants, tests and ICU charges are never cut, and only a room above its limit triggers the cut. The "
                   "answer key follows the case's older printed wording, which spares only medicines. This is a recorded "
-                  "team decision (`dev_eval/dev_cases/decisions.json`, `proportionate-2020`); it still counts as a miss.")
+                  "team decision (`development/dev_eval/dev_cases/decisions.json`, `proportionate-2020`); it still counts as a miss.")
 DIFFERS = {
     "gen-dev-50b4e6": _PROPORTIONATE + " Here it changes the overall verdict: ClaimClear finds ₹2,794.66 that may be "
                                        "disputable where the answer key says the letter matches the policy.",
@@ -70,8 +70,8 @@ def load() -> dict:
     history = json.loads((DEV / "reference" / "claim_history.json").read_text(encoding="utf-8"))
     answers = {c["case_id"]: json.loads((DEV / "answers" / f"{c['case_id']}.json").read_text(encoding="utf-8"))
                for c in cases}
-    c0 = {r["case"]: r for r in _json(REPO / "dev_eval" / "dev_cases" / "results" / "dev_cases.json")}
-    graph = {r["case"]: r for r in _json(REPO / "dev_eval" / "graph_dev_cases" / "results" / "graph_dev_cases.json")}
+    c0 = {r["case"]: r for r in _json(REPO / "development" / "dev_eval" / "dev_cases" / "results" / "dev_cases.json")}
+    graph = {r["case"]: r for r in _json(REPO / "development" / "dev_eval" / "graph_dev_cases" / "results" / "graph_dev_cases.json")}
     return {"cases": cases, "policies": policies, "history": history, "answers": answers, "c0": c0, "graph": graph}
 
 
@@ -115,7 +115,7 @@ def wording_line(case: dict, c0: dict) -> str:
     w = ((c0.get("result") or {}).get("steps") or {}).get("wording") or {}
     if case["wording_uin"] == REVIEWED_UIN:
         return (f"Go Digit Arogya Sanjeevani (UIN {REVIEWED_UIN}), the reviewed wording: limits from "
-                "dev_data/wordings/rules, clauses cited from the reviewed rule map")
+                "development/dev_data/wordings/rules, clauses cited from the reviewed rule map")
     return (f"The case's own wording (UIN {case['wording_uin']}, a policy_wording.pdf in the case) is not in the reviewed "
             f"catalogue, so ClaimClear checks against the reviewed Go Digit wording ({w.get('wording_uin', REVIEWED_UIN)}) "
             "and says so; the user is asked to upload their wording for exact clause citations")
@@ -200,11 +200,11 @@ def build(data: dict) -> list[dict]:
 
 # --------------------------------------------------------------------------- rendering
 
-INTRO = """The 42 development cases ClaimClear is built and scored on (`dev_data/dataset/dev`). For each case: what it
+INTRO = """The 42 development cases ClaimClear is built and scored on (`development/dev_data/dataset/dev`). For each case: what it
 contains, which policy wording applies, the claim history, what the insurer paid, what the policy says should be paid,
 every deduction with its expected verdict and the reason, how ClaimClear should handle it, and what ClaimClear actually
 did in the latest whole-application run. Generated by `scripts/dev_case_book.py` from the dataset's own files; re-run it
-after the evaluations. See `docs/member2_knowledge_memory_tools/dataset_guide.md` for the format itself.
+after the evaluations. See `additional_resources/member2_knowledge_memory_tools/dataset_guide.md` for the format itself.
 
 * **Two sources.** 22 *synthetic* cases (`syn-dev-*`) built around the reviewed Go Digit Arogya Sanjeevani wording,
   many of them stress tests (hidden text, scans, photos, handwriting, altered or fake bills). 20 *generated* cases
@@ -293,7 +293,7 @@ def to_html(markdown: str) -> str:
         t = re.sub(r"`(.+?)`", r"<code>\1</code>", t)
         t = re.sub(r"\[(.+?)\]\((#[^)]+)\)", r'<a href="\2">\1</a>', t)
         # a link to another document can't be followed from the PDF: show its name and path instead
-        return re.sub(r"\[(.+?)\]\(([^)#]+)(?:#[^)]*)?\)", r"\1 (<code>docs/member2_knowledge_memory_tools/\2</code>)", t)
+        return re.sub(r"\[(.+?)\]\(([^)#]+)(?:#[^)]*)?\)", r"\1 (<code>additional_resources/member2_knowledge_memory_tools/\2</code>)", t)
 
     def flush_table():
         if table:
@@ -347,7 +347,7 @@ ul{margin:3px 0 7px;padding-left:18px}li{margin:1px 0}a{color:#0f5e7a;text-decor
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--out", default=str(REPO / "docs" / "member2_knowledge_memory_tools" / "dev_dataset_case_book.md"))
+    ap.add_argument("--out", default=str(REPO / "additional_resources" / "member2_knowledge_memory_tools" / "dev_dataset_case_book.md"))
     ap.add_argument("--html", help="also write an HTML version here")
     args = ap.parse_args(argv)
     text = md(build(load()))

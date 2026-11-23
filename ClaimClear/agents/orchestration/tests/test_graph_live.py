@@ -49,7 +49,7 @@ def servers_env(tmp_path_factory):
                    cwd=REPO / "servers" / "case_records", check=True, capture_output=True)
     index = work / "policy_kb.json"
     subprocess.run([SERVER_PY, "-m", "policy_kb", "--index", str(index), "build", "--wording",
-                    str(REPO / "dev_data" / "wordings" / "policy-wordings-arogya-sanjeevani-policy-go-digit.pdf")],
+                    str(REPO / "development" / "dev_data" / "wordings" / "policy-wordings-arogya-sanjeevani-policy-go-digit.pdf")],
                    cwd=REPO / "servers" / "policy_kb", check=True, capture_output=True)
     mp = pytest.MonkeyPatch()
     mp.setenv("CLAIMCLEAR_CASE_STORE", str(store))

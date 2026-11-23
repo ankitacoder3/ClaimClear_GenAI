@@ -21,6 +21,8 @@ The memory part of Member 2's role. It remembers, **per user**, what ClaimClear 
 ## Contents
 
 1. [Rules](#rules)
+1a. [How it works in one minute](#how-it-works-in-one-minute)
+1b. [How to test it](#how-to-test-it)
 2. [Quick start](#quick-start)
 3. [Using it in the LangGraph graph](#using-it-in-the-langgraph-graph)
 4. [Controls: consent, expiry, trimming](#controls-consent-expiry-trimming)
@@ -43,6 +45,92 @@ The memory part of Member 2's role. It remembers, **per user**, what ClaimClear 
 5. **Remembered text is data, not instructions.** The context note says so, and `render()` repeats it in the prompt.
 6. **Only final audits.** An audit still waiting for the policyholder's answers (`needs_information`) is refused.
 7. **Only with consent, and not forever.** Nothing is stored until the user agrees to the [memory policy](memory_policy.md); data expires on its own (see [Controls](#controls-consent-expiry-trimming)).
+
+---
+
+## How it works in one minute
+
+* **Two kinds of long-term memory, one store per user.** *Structured* memory keeps facts ClaimClear has verified: the
+  policy profile, each audited claim, sub-limit balances and grievance status, copied from tool results (never from
+  model text). *Episodic* memory keeps what the user asked about in earlier conversations, as topics only.
+* **Written at two moments.** A claim is remembered after the critic passes its audit. A conversation is remembered
+  in the background after each answer (`remember_conversation`): only the user's questions, summarised, then scrubbed of
+  every amount, number of 3+ digits, date, phone, e-mail and long identifier.
+* **Read at the start of a session.** `context()` gives the agents a small block (newest claims, a summary of older
+  ones without amounts, balances, open grievances) within a 1,500-character budget, plus the list of figures the critic
+  may accept because an earlier engine run produced them. `recall(query)` finds earlier conversations by hybrid search
+  (BM25 + vectors, fused with RRF) weighted by recency (90-day half-life), at most 3, above a relevance floor.
+* **Kept under control.** Nothing is stored without consent to the current [memory policy](memory_policy.md); data
+  expires (claims 730 days, closed grievances 365, inactive users 365, conversations 180); the user can export or
+  forget everything; near-duplicate conversations are merged and a user keeps at most 200.
+
+---
+
+## How to test it
+
+Commands run from the `ClaimClear` folder with the servers' environment (`.venv/Scripts/python.exe`; on macOS/Linux
+`.venv/bin/python`). Expected results are from 23 November 2026.
+
+**1. Unit tests**
+
+```bash
+cd memory
+../.venv/Scripts/python.exe -m pytest -q -o addopts=""
+```
+
+Expected: **72 passed, 42 skipped**. The 42 are the same checks on PostgreSQL; they run with the database up:
+
+```bash
+docker compose -f deploy/storage.compose.yml up -d
+export CLAIMCLEAR_TEST_POSTGRES=postgresql://claimclear:claimclear@127.0.0.1:5432/claimclear
+```
+
+**2. The command line, on a throwaway database.** Pass `--db` (or set `CLAIMCLEAR_MEMORY_DB`) so the real memory file
+`var/memory/memory.db` is never touched:
+
+```bash
+.venv/Scripts/python.exe -m claimclear_memory --db var/memory/try.db consent demo-user     # agree to the memory policy
+.venv/Scripts/python.exe -m claimclear_memory --db var/memory/try.db status demo-user      # consent, counts, retention
+.venv/Scripts/python.exe -m claimclear_memory --help     # also: episodes, recall, export, forget, withdraw, purge
+```
+
+**3. Episodic memory: save a conversation and recall it.** In Python, again on a throwaway database:
+
+```python
+import os, tempfile
+from claimclear_memory import MemoryStore
+
+mem = MemoryStore(os.path.join(tempfile.mkdtemp(), "try.db")).for_user("demo-user")
+mem.grant_consent("try-it")
+mem.remember_conversation([("Why did they cut ₹4,300 from my pharmacy bill? Call me on 9876543210.", "..."),
+                           ("Is the co-payment on claim AGI/HC/2526/004512 correct?", "...")], case_id="case_demo")
+print(mem.episodes()[0].summary)
+print([e.summary[:40] for e in mem.recall("pharmacy bill cut")])
+print(mem.recall("medicine deduction"))
+```
+
+```
+Asked about: Why did they cut [amount] from my pharmacy bill? Call me on [phone].; Is the co-payment on claim [id] correct?
+['Asked about: Why did they cut [amount] f']
+[]
+```
+
+The amount, phone number and claim number are scrubbed before anything is stored. "pharmacy bill cut" shares words
+with the stored question, so it is recalled; "medicine deduction" says the same thing in other words and is **not**,
+because episodes use the offline hashing embedder (spelling and shared words, not meaning). Pass a semantic
+`embedder=` to `remember_conversation` and `recall` for paraphrase recall.
+
+**4. A live round trip through the settlement engine:**
+`agents/toolkit/tests/test_toolkit_live.py::test_memory_round_trip_through_the_engine` audits SET-01, remembers it,
+merges the history into a later claim and checks that the engine reports ₹2,12,905.36 of sum insured left. Run the
+toolkit suite: `cd agents/toolkit && ../../.venv-agents/Scripts/python.exe -m pytest -q -o addopts=""` (45 passed).
+
+**5. Memory on vs off** over the dev letters:
+`.venv/Scripts/python.exe development/dev_eval/memory_on_off/run.py`, results in
+`development/dev_eval/memory_on_off/results/` ([evaluation_memory_on_off.md](evaluation_memory_on_off.md)).
+
+**6. In the app:** start with `python start.py --memory-user demo-user` after giving consent (step 2 without `--db`),
+audit a claim, ask a question, then in a new session ask "what did I ask last time?".
 
 ---
 
@@ -165,7 +253,7 @@ async def remember(state):                     # after the critic passes
 
 ## Controls: consent, expiry, trimming
 
-The user-facing promises are in [docs/member2_knowledge_memory_tools/memory_policy.md](memory_policy.md) (version `memory-policy-v1` = `POLICY_VERSION`); a test checks the page and the code agree.
+The user-facing promises are in [additional_resources/member2_knowledge_memory_tools/memory_policy.md](memory_policy.md) (version `memory-policy-v1` = `POLICY_VERSION`); a test checks the page and the code agree.
 
 ### Consent
 
@@ -307,20 +395,22 @@ Open statuses: `draft`, `approved`, `filed`, `acknowledged`, `escalated`.
 
 ```
 memory/
-├── memory_README.md
 ├── pyproject.toml                package claimclear-memory, no dependencies
 ├── claimclear_memory/
 │   ├── __init__.py               public API
 │   ├── models.py                 PolicyProfile, ClaimRecord, LimitBalance, GrievanceRecord, GrievanceStatus, money()
 │   ├── store.py                  MemoryStore, UserMemory, NoMemory, Retention, ConsentStatus, merge_history, schema
 │   ├── context.py                build_context (trimming, older-claims summary), render (character budget)
+│   ├── episodes.py               episodic memory: scrub, extractive summary, hashing embedder, hybrid recall, recency
+│   ├── __main__.py               python -m claimclear_memory: consent, status, episodes, recall, export, forget, ...
 │   └── db.py                     Database: SQLite file or PostgreSQL, same tables
 └── tests/
     ├── fixtures/set01.json       SYNTHETIC: SET-01's case, letter and audit, captured from the real servers
     ├── test_memory.py            49 tests
+    ├── test_episodes.py          23 tests (episodic memory)
     └── test_postgres.py          42 tests on PostgreSQL (when CLAIMCLEAR_TEST_POSTGRES is set)
 
-The user-facing page is docs/member2_knowledge_memory_tools/memory_policy.md.
+The user-facing page is additional_resources/member2_knowledge_memory_tools/memory_policy.md.
 ```
 
 | Area | Tests |

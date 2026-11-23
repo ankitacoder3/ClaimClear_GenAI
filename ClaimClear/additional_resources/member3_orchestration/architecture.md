@@ -51,7 +51,7 @@ This is the reference architecture (Implementation II, *Agents and orchestration
 
 | Box | Implemented by |
 |---|---|
-| **Retrieval**: Policy KB, BM25 + vector search, reranker, passage IDs | `servers/policy_kb`: one chunk per clause, BM25 + vectors fused with RRF, query rewriting, optional reranker, stable clause IDs and citations, engine rule → clause maps (`rule_maps/`). Evaluated with Recall@k (`dev_eval/retrieval`) |
+| **Retrieval**: Policy KB, BM25 + vector search, reranker, passage IDs | `servers/policy_kb`: one chunk per clause, BM25 + vectors fused with RRF, query rewriting, optional reranker, stable clause IDs and citations, engine rule → clause maps (`rule_maps/`). Evaluated with Recall@k (`development/dev_eval/retrieval`) |
 | **MCP Servers**: Policy KB, Calc, Claims DB and Portal tools | `servers/policy_kb` (8103), `servers/settlement_engine` (8101, "Calc"), `servers/case_records` (8102, "Claims DB"), `servers/insurer_portal` (8104, "Portal"), plus `servers/document_reader` (8105). Reached through `agents/toolkit` (`ClaimClearToolkit`: one session per server, stdio or HTTP) |
 | **Memory & Safety**: short- and long-term memory, PII guardrails, human gate | **Short-term:** the graph state, checkpointed per thread (resume, inspect, time travel). **Long-term:** `memory/` (`claimclear_memory`): per-user policy profile, verified claims, sub-limit balances, grievance status; consent, expiry and "forget me". **Guardrails:** hidden-text channels and security flags from document-reader, look-alike policy numbers, tool arguments kept out of logs (`hooks.AuditLog`), personal names never stored. **Human gate:** `gateway.HumanApprovalGateway` + the portal's own hash and HMAC checks |
 

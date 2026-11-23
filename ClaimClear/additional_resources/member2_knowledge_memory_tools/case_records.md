@@ -9,7 +9,7 @@ Callers: the **document reader** (`get_document_text`) and the **policy analyst*
 
 For why these technologies were chosen, the alternatives, and the full app flow when a user asks to verify a settlement, see [docs/technology_and_app_flow.md](../../docs/technology_and_app_flow.md).
 
-How these tools plug into Member 3's LangGraph agents (environments, connection, per-agent tool lists, CaseState, graph edges): see [docs/member2_knowledge_memory_tools/servers_integration.md](servers_integration.md).
+How these tools plug into Member 3's LangGraph agents (environments, connection, per-agent tool lists, CaseState, graph edges): see [additional_resources/member2_knowledge_memory_tools/servers_integration.md](servers_integration.md).
 
 | | |
 |---|---|
@@ -154,7 +154,7 @@ policyholder uploads ──► app (Member 4) ──► CaseStore.create_case / 
 
 ## Policy and claim history
 
-`case_records/reference.py`, read once from `$CLAIMCLEAR_REFERENCE_DIR` (default `dev_data/dataset/dev/reference`). A record tagged with a `case_id` belongs to that case only (a dataset that reuses a policy number); dataset registration sets the case's `reference_key`.
+`case_records/reference.py`, read once from `$CLAIMCLEAR_REFERENCE_DIR` (default `development/dev_data/dataset/dev/reference`). A record tagged with a `case_id` belongs to that case only (a dataset that reuses a policy number); dataset registration sets the case's `reference_key`.
 
 * `policy(policy_no)` returns `policy_no`, `sum_insured`, `period_start`, `period_end`, `first_inception`, `holder`, `insurer`, `product`. These are **exactly** the fields of the settlement-engine's `PolicyIn`.
 * `claim_history(policy_no, scope)` returns `claim_id`, `policy_no`, `admission`, `status`, `settled_amount`, `diagnosis`, `procedure`. These are **exactly** the fields of `PastClaimIn`. Only claims on that policy are returned. `current_period` (default) keeps claims admitted inside the policy period on record; `all` returns every year. Bill line items are left out.
@@ -182,7 +182,7 @@ Users don't upload their policy wording when ClaimClear already has it. `case_re
 |---|---|---|---|
 | `uploaded` | the app indexed the user's own wording and set `upload:doc_...` on the case | that upload | no |
 | `selected` | the app set a catalogue UIN the user picked (a different UIN on the schedule is mentioned in `note`) | that UIN | no |
-| `from_schedule` | the schedule's UIN is in `dev_data/wordings/catalogue.json` | the schedule's UIN | no |
+| `from_schedule` | the schedule's UIN is in `development/dev_data/wordings/catalogue.json` | the schedule's UIN | no |
 | `not_reviewed` | the schedule names a wording ClaimClear hasn't reviewed | the default (standard Arogya Sanjeevani) | **yes**: ask the user to upload their wording, or index `wording_document_id` if the case already has one |
 | `not_printed` | no schedule, or no UIN on it | the default | no |
 

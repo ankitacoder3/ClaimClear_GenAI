@@ -47,5 +47,5 @@ point is the [main guide, `info.md`](../info.md) (what ClaimClear is, how to run
 | [integration_notes.md](shared/integration_notes.md) | How the two code bases were merged: what was kept, replaced or removed, and why |
 | [diagrams/](shared/diagrams) | The architecture diagram |
 
-Results files stay with their evaluation runs: `dev_eval/dev_cases/results/`, `dev_eval/graph_dev_cases/results/`,
-`dev_eval/memory_on_off/results/`, `dev_eval/retrieval/`.
+Results files stay with their evaluation runs: `development/dev_eval/dev_cases/results/`, `development/dev_eval/graph_dev_cases/results/`,
+`development/dev_eval/memory_on_off/results/`, `development/dev_eval/retrieval/`.

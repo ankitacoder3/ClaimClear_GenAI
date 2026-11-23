@@ -20,7 +20,7 @@ from claimclear_graph.webapp import server
 from conftest import condition_question_open, load
 
 REPO = Path(server.REPO)
-CASES = REPO / "dev_data" / "dataset" / "dev" / "cases"
+CASES = REPO / "development" / "dev_data" / "dataset" / "dev" / "cases"
 pytestmark = pytest.mark.skipif(not (REPO / ".venv").exists(), reason="needs the servers' environment for uploads")
 
 

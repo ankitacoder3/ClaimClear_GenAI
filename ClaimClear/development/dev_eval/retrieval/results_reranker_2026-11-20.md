@@ -19,9 +19,9 @@
 Reproduce (from the `ClaimClear` folder, after `pip install "fastembed>=0.4"` in `.venv`):
 
 ```bash
-.venv/Scripts/python.exe -m policy_kb evaluate dev_eval/retrieval/queries_godigit_DRAFT.jsonl -k 5 --reranker fastembed
-.venv/Scripts/python.exe -m policy_kb --index var/policy_kb/bge_small.json build --wording dev_data/wordings/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf --insurer "Go Digit General Insurance Limited" --uin GODHLIP24179V022324 --embedder fastembed
-.venv/Scripts/python.exe -m policy_kb --index var/policy_kb/bge_small.json evaluate dev_eval/retrieval/queries_godigit_DRAFT.jsonl -k 5 --reranker fastembed
+.venv/Scripts/python.exe -m policy_kb evaluate development/dev_eval/retrieval/queries_godigit_DRAFT.jsonl -k 5 --reranker fastembed
+.venv/Scripts/python.exe -m policy_kb --index var/policy_kb/bge_small.json build --wording development/dev_data/wordings/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf --insurer "Go Digit General Insurance Limited" --uin GODHLIP24179V022324 --embedder fastembed
+.venv/Scripts/python.exe -m policy_kb --index var/policy_kb/bge_small.json evaluate development/dev_eval/retrieval/queries_godigit_DRAFT.jsonl -k 5 --reranker fastembed
 ```
 
 ## 1. Offline index (`hashing-1024`), K = 5

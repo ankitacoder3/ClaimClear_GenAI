@@ -527,7 +527,7 @@ def test_context_for_one_policy(mem):
 # =========================================================================== the memory policy page
 
 
-POLICY_PAGE = Path(__file__).resolve().parents[2] / "docs" / "member2_knowledge_memory_tools" / "memory_policy.md"
+POLICY_PAGE = Path(__file__).resolve().parents[2] / "additional_resources" / "member2_knowledge_memory_tools" / "memory_policy.md"
 
 
 def test_memory_policy_page_matches_the_code():

@@ -261,7 +261,7 @@ This package is the orchestration from Member 3's code base, rebuilt on Member 2
 
 * **`plan.py`** builds the contract's `Plan` objects. `first_plan()` has 7 steps; `replan()` has 5 steps, with `version` bumped and the `replan_reason` the contract requires. ✅ The contract validates the plans (unique step IDs, a replan must say why).
 * **`extraction.py`**: `llm_extractor(chat_model)` sends **visible text only** to the model and asks it to fill the engine's own `ClaimIn` and `LetterIn` schemas, taken live from the servers. The engine then validates the result. ✅ The right boundary for an LLM: it reads, never computes.
-  * ✅ **F5, partly fixed.** `dev_eval/graph_dev_cases/run.py --llm-extract` now runs every dev case with the LLM doing the extraction and scores each extraction against the stand-in. The path is tested offline.
+  * ✅ **F5, partly fixed.** `development/dev_eval/graph_dev_cases/run.py --llm-extract` now runs every dev case with the LLM doing the extraction and scores each extraction against the stand-in. The path is tested offline.
   * ⚠️ The run itself needs an API key and has not been run yet, so the extractor's accuracy is still unmeasured.
 * **`language.py`**: `llm_rewriter(chat_model)` rewrites the explanation into plain English or one of 8 Indian languages, keeping every ₹ figure exactly. The critic checks the rewrite, and a rewrite that changes a figure falls back to the plain table (tested). This is the rest of F8.
 * **`checkpoints.py`**: `open_checkpointer(url)` returns an in-memory, SQLite (installed) or PostgreSQL saver, which closes cleanly on exit. This fixes F11.
@@ -310,7 +310,7 @@ Every server has the same four layers: pure logic, `schemas.py` (pydantic), `app
 | insurer-portal (8104) | `app.py`, `DryRunPortal` | `file_grievance` checks the SHA-256 and the HMAC token; dry run until the mock portal exists |
 | document-reader (8105) | `extract.py`, `reader.py` | PDF/OCR to text with spans; hidden text kept apart |
 
-**Review.** ✅ Mature: 315 engine tests, money in `Decimal`, read/write annotations on every tool, structured errors. ✅ **Fixed (F1).** 48 tests need the held-out split, which is absent from this upload. Each suite's `conftest.py` now lists them and skips them with that reason when `dev_data/dataset/heldout` is missing, so the suites are green; restoring the folder runs them again.
+**Review.** ✅ Mature: 315 engine tests, money in `Decimal`, read/write annotations on every tool, structured errors. ✅ **Fixed (F1).** 48 tests need the held-out split, which is absent from this upload. Each suite's `conftest.py` now lists them and skips them with that reason when `development/dev_data/dataset/heldout` is missing, so the suites are green; restoring the folder runs them again.
 
 ## B5. Memory: `memory/claimclear_memory` (Member 2)
 
@@ -327,8 +327,8 @@ Every server has the same four layers: pure logic, `schemas.py` (pydantic), `app
 
 | Item | Job |
 |---|---|
-| `dev_eval/dev_cases/run.py` (Member 2) | The C0 fixed workflow over 42 dev cases, scored against hand-computed answers |
-| `dev_eval/graph_dev_cases/run.py` (Member 3) | The same cases through the graph, scored by the **same** `score()` function, and compared case by case with C0 (42/42 same verdict); `--llm-extract` lets the LLM extract the documents and scores each extraction |
+| `development/dev_eval/dev_cases/run.py` (Member 2) | The C0 fixed workflow over 42 dev cases, scored against hand-computed answers |
+| `development/dev_eval/graph_dev_cases/run.py` (Member 3) | The same cases through the graph, scored by the **same** `score()` function, and compared case by case with C0 (42/42 same verdict); `--llm-extract` lets the LLM extract the documents and scores each extraction |
 | `examples/console.py` | The terminal console, and the `--auto` self-check `start.py` runs |
 | `start_llm.py` | Starts a local LLM (Ollama, or finds LM Studio / llama.cpp) and lets the user choose the model; `start.py` reuses its `find_local_llm()` to pick a running local model by default, else OpenRouter. Standard library only, so it runs before anything is installed |
 | `tests/test_local_llm.py` (22) | Both launchers against a stand-in OpenAI-compatible server |
@@ -730,11 +730,11 @@ All findings from the first review have been addressed. The status column says w
 | # | Severity | Finding | Status | Proof |
 |---|---|---|---|---|
 | F0 | High | `ScopedToolkit` let `.tool()`, `.tools` and `.for_agent()` through unchecked, so a node could fetch a write tool | **Fixed**: all three filtered by the agent's tool row | `test_scoped_toolkit_hides_raw_tools_of_other_agents` |
-| F1 | Medium | 48 server tests need `dev_data/dataset/heldout/`, which is not in the upload | **Fixed, as far as code can**: the 48 tests are listed in each suite's `conftest.py` and skipped with a clear reason while the folder is missing; with it present they run. The data itself must still be copied in from the original repository | settlement-engine 315 passed / 6 skipped; document-reader 69 / 11; case-records 25 / 34 (31 held-out, 3 PostgreSQL) |
+| F1 | Medium | 48 server tests need `development/dev_data/dataset/heldout/`, which is not in the upload | **Fixed, as far as code can**: the 48 tests are listed in each suite's `conftest.py` and skipped with a clear reason while the folder is missing; with it present they run. The data itself must still be copied in from the original repository | settlement-engine 315 passed / 6 skipped; document-reader 69 / 11; case-records 25 / 34 (31 held-out, 3 PostgreSQL) |
 | F2 | Medium | Full document text, hidden channels included, was stored in every checkpoint | **Fixed**: only a `page_summary` is stored; the extractor still receives the text directly | `test_document_text_is_not_checkpointed_only_a_summary` |
 | F3 | Medium | Tool calls were sequential | **Fixed**: documents, policy/wording/history, clause searches, row audits and clause lookups run concurrently (`agents/common.gather_calls`; also `ClaimClearToolkit.read_case`); verified live over real MCP sessions | `test_row_audits_run_concurrently_and_keep_order` (4 calls in flight at once), all live tests |
 | F4 | Medium | The look-alike guard read the engine's source from disk | **Fixed**: the table ships in `claimclear_contracts.identifiers`; a contracts test proves it is the same code as the engine's | `contracts/tests/test_identifiers.py`, `test_lookalike_policy_number_is_replaced_and_flagged` |
-| F5 | Medium | The LLM extractor was not evaluated | **Ready to run**: `dev_eval/graph_dev_cases/run.py --llm-extract` runs every case with the LLM extracting the documents and scores the extraction (bill total, line count, letter rows, paid amount, policy number). **It needs an API key** (`OPENROUTER_API_KEY` or `OPENAI_API_KEY`), so it has not been run here | `test_eval_runs_the_graph_on_the_extractor_and_scores_the_extraction` |
+| F5 | Medium | The LLM extractor was not evaluated | **Ready to run**: `development/dev_eval/graph_dev_cases/run.py --llm-extract` runs every case with the LLM extracting the documents and scores the extraction (bill total, line count, letter rows, paid amount, policy number). **It needs an API key** (`OPENROUTER_API_KEY` or `OPENAI_API_KEY`), so it has not been run here | `test_eval_runs_the_graph_on_the_extractor_and_scores_the_extraction` |
 | F6 | Low | `nodes.py` held all nine agents in 507 lines | **Fixed**: `agents/` has one module per agent (35–141 lines each); the old `nodes.py` has been removed | the whole suite |
 | F7 | Low | No retry for retryable tool errors | **Fixed**: bounded retries with exponential back-off for errors marked retryable; others fail at once | `test_retryable_error_is_retried_then_succeeds`, `test_non_retryable_error_is_not_retried_and_retries_are_bounded` |
 | F8 | Low | English-only template text; the grievance quoted the engine's formula | **Fixed**: the grievance explains the method and names the excluded charges in plain words; optional `llm_rewriter` produces plain English or 8 Indian languages, and the critic checks the rewrite (falls back to the plain table if a figure changes) | `test_set01_pauses_at_the_gate_…`, the three `test_rewriter_…` tests |

@@ -1,6 +1,6 @@
 """Upload one case folder and call every case-records tool on it, as an agent would.
 
-    .venv/Scripts/python.exe scripts/try_case_records.py dev_data/dataset/dev/cases/syn-dev-001
+    .venv/Scripts/python.exe scripts/try_case_records.py development/dev_data/dataset/dev/cases/syn-dev-001
 
 1. Registers the folder into a scratch store (var/try_case_store), the way the app's upload would:
    neutral document IDs, roles from the file names, the policy number read from the schedule.
@@ -100,10 +100,10 @@ async def run(folder: Path, store_dir: Path, reference: Path, ocr: bool) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Upload a case folder and call every case-records tool on it.")
-    parser.add_argument("folder", help="a case folder, e.g. dev_data/dataset/dev/cases/syn-dev-001")
+    parser.add_argument("folder", help="a case folder, e.g. development/dev_data/dataset/dev/cases/syn-dev-001")
     parser.add_argument("--store", default=str(REPO / "var" / "try_case_store"), help="scratch case store (default var/try_case_store)")
-    parser.add_argument("--reference", default=str(REPO / "dev_data" / "dataset" / "dev" / "reference"),
-                        help="policy records and claim history (default dev_data/dataset/dev/reference)")
+    parser.add_argument("--reference", default=str(REPO / "development" / "dev_data" / "dataset" / "dev" / "reference"),
+                        help="policy records and claim history (default development/dev_data/dataset/dev/reference)")
     parser.add_argument("--ocr", action="store_true", help="read image-only pages with Tesseract (must be installed)")
     args = parser.parse_args(argv)
     return asyncio.run(run(Path(args.folder), Path(args.store), Path(args.reference), args.ocr))

@@ -1,13 +1,13 @@
 # Whole-application run over the development cases
 
-Every case of `dev_data/dataset/dev` goes through the agents' toolkit and all five MCP servers, the way
+Every case of `development/dev_data/dataset/dev` goes through the agents' toolkit and all five MCP servers, the way
 Member 3's graph will call them, and is scored against its answer file.
 
 ```bash
-.venv-agents/Scripts/python.exe dev_eval/dev_cases/run.py                  # all 42 dev cases (servers over stdio)
-.venv-agents/Scripts/python.exe dev_eval/dev_cases/run.py --only gen-dev-147e01 syn-dev-005
+.venv-agents/Scripts/python.exe development/dev_eval/dev_cases/run.py                  # all 42 dev cases (servers over stdio)
+.venv-agents/Scripts/python.exe development/dev_eval/dev_cases/run.py --only gen-dev-147e01 syn-dev-005
 .venv/Scripts/python.exe scripts/dev_servers.py                         # in another terminal, then:
-.venv-agents/Scripts/python.exe dev_eval/dev_cases/run.py --http            # the same over HTTP
+.venv-agents/Scripts/python.exe development/dev_eval/dev_cases/run.py --http            # the same over HTTP
 ```
 
 On Windows, set `PYTHONIOENCODING=utf-8` if the console can't print ₹.
@@ -50,7 +50,7 @@ from `get_policy` and raises a guardrail flag, as the graph should.
 
 ## Results
 
-Written to [`results/dev_cases.md`](../../dev_eval/dev_cases/results/dev_cases.md) (one line per case) and `results/dev_cases.json`
+Written to [`results/dev_cases.md`](../../development/dev_eval/dev_cases/results/dev_cases.md) (one line per case) and `results/dev_cases.json`
 (every step's output). The current run:
 
 | Source | Cases | Ran to the end | Overall verdict right | Row verdicts right | Payable right (±₹1) | Disputable right (±₹1) |
@@ -146,7 +146,7 @@ An insurer following its printed wording could defend ₹17,988.
 
 **Decided: keep the 2020 rule.** The engine applies IRDAI's circular whatever an older copy of a wording
 says, and the policyholder can rely on it in a grievance. The three answers are left as they are (they
-are Member 1's). [`decisions.json`](../../dev_eval/dev_cases/decisions.json) records the decision, and the run labels these cases
+are Member 1's). [`decisions.json`](../../development/dev_eval/dev_cases/decisions.json) records the decision, and the run labels these cases
 "answer key differs by decision" and still counts them as misses. The alternative was to follow each
 case's printed wording: its exempt categories and ICU trigger would go into its rules file, and the
 engine would apply the narrower rule for that wording.

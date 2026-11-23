@@ -70,12 +70,12 @@ ClaimClear checks a health-insurance settlement letter against the policy: it wo
 | insurer-portal | `servers/insurer_portal` | 13 passed |
 | memory | `memory` | 91 passed |
 | contracts | `contracts` | 20 passed |
-| memory on vs off runner | `dev_eval/memory_on_off` | 3 passed |
+| memory on vs off runner | `development/dev_eval/memory_on_off` | 3 passed |
 | agents' toolkit | `agents/toolkit` | 45 passed |
 
 All five servers answered over HTTP (`scripts/dev_servers.py --check`).
 
-**Whole-application run over the 42 dev cases** (`dev_eval/dev_cases/run.py`, details in `docs/member2_knowledge_memory_tools/evaluation_dev_cases.md`): all 42 ran to the end; 40/42 overall verdicts, 89/94 row verdicts, 28/31 payables and 37/40 disputable amounts right. Synthetic cases: 21/22 overall, 20/20 rows, 21/21 disputable amounts. gen-data cases, which use another insurer's wording and phrasing: 19/20 overall, 69/74 rows, 16/19 disputable amounts. Section 16.1 has the full result. The README lists what the gen-data cases showed, what was fixed in the engine, what still differs, and where the answer key may be wrong. Decided: the proportionate deduction keeps IRDAI's 2020 rule, so three gen-data answers that cut consumables and diagnostics are labelled as decided disagreements (`dev_eval/dev_cases/decisions.json`). The dataset itself is explained in `docs/member2_knowledge_memory_tools/dataset_guide.md`.
+**Whole-application run over the 42 dev cases** (`development/dev_eval/dev_cases/run.py`, details in `additional_resources/member2_knowledge_memory_tools/evaluation_dev_cases.md`): all 42 ran to the end; 40/42 overall verdicts, 89/94 row verdicts, 28/31 payables and 37/40 disputable amounts right. Synthetic cases: 21/22 overall, 20/20 rows, 21/21 disputable amounts. gen-data cases, which use another insurer's wording and phrasing: 19/20 overall, 69/74 rows, 16/19 disputable amounts. Section 16.1 has the full result. The README lists what the gen-data cases showed, what was fixed in the engine, what still differs, and where the answer key may be wrong. Decided: the proportionate deduction keeps IRDAI's 2020 rule, so three gen-data answers that cut consumables and diagnostics are labelled as decided disagreements (`development/dev_eval/dev_cases/decisions.json`). The dataset itself is explained in `additional_resources/member2_knowledge_memory_tools/dataset_guide.md`.
 
 ## 2. System architecture
 
@@ -1532,7 +1532,7 @@ One claim's records: the uploaded documents (read through the document reader), 
 
 **What it does.** Which policy wording the case is checked against. It is read from the UIN printed on the policy schedule: a wording ClaimClear has reviewed is used without asking the user for anything. When `wording_needed` is true the schedule names a wording ClaimClear hasn't reviewed: tell the user the standard Arogya Sanjeevani wording was used and ask them to upload their policy wording (`note` says what to say).
 
-**How it works.** `case_records/wording.py` reads the visible text of the case's `policy_schedule` document and finds the IRDAI UIN it prints. Order: a wording the app set on the case (`uploaded`, `selected`), then the schedule's UIN if it is in `dev_data/wordings/catalogue.json` (`from_schedule`), else the default wording with `wording_needed` (`not_reviewed`), or the default when no UIN is printed (`not_printed`). `get_policy` returns the same `wording_uin`. A UIN on a document can only pick a reviewed catalogue wording.
+**How it works.** `case_records/wording.py` reads the visible text of the case's `policy_schedule` document and finds the IRDAI UIN it prints. Order: a wording the app set on the case (`uploaded`, `selected`), then the schedule's UIN if it is in `development/dev_data/wordings/catalogue.json` (`from_schedule`), else the default wording with `wording_needed` (`not_reviewed`), or the default when no UIN is printed (`not_printed`). `get_policy` returns the same `wording_uin`. A UIN on a document can only pick a reviewed catalogue wording.
 
 **Input fields**
 
@@ -1629,7 +1629,7 @@ The policy wording as citable clauses, with hybrid retrieval. Default wording: G
 
 **What it does.** The policy wordings available: the reviewed catalogue, plus the case's own uploaded wording when case_id is given. Each has a wording_uin to pass to the other tools. Use it to show the policy picker or to confirm which wording a case uses.
 
-**How it works.** Lists the catalogue wordings (dev_data/wordings/catalogue.json) and, with `case_id`, that case's uploaded wording, each with whether its index is built and whether it has a rule map.
+**How it works.** Lists the catalogue wordings (development/dev_data/wordings/catalogue.json) and, with `case_id`, that case's uploaded wording, each with whether its index is built and whether it has a rule map.
 
 **Input fields**
 
@@ -2471,7 +2471,7 @@ When it needs a fact it does not have (an unknown line the proportionate cut wou
 **Partial:** rows still `not_verifiable`: OT unbundling and lab totals above the itemised rate (SET-16 rows 2 and 5), surgical consumables (SET-33 row 2), a letter on an invented policy (SET-08).
 
 
-The dev-case results and the reasoning behind each fix are in `docs/member2_knowledge_memory_tools/evaluation_dev_cases.md`. **Decided:** the proportionate deduction keeps IRDAI's 2020 rule; three gen-data answers that follow an older wording are labelled from `dev_eval/dev_cases/decisions.json`.
+The dev-case results and the reasoning behind each fix are in `additional_resources/member2_knowledge_memory_tools/evaluation_dev_cases.md`. **Decided:** the proportionate deduction keeps IRDAI's 2020 rule; three gen-data answers that follow an older wording are labelled from `development/dev_eval/dev_cases/decisions.json`.
 
 ## 8. Document processing and OCR
 
@@ -2560,7 +2560,7 @@ record, data = store.read(case.case_id, doc.document_id)   # bytes after the SHA
 | Reranker | `rerankers.py`: none by default; fastembed `Xenova/ms-marco-MiniLM-L-6-v2` (downloaded on first use); not measured | Partial |
 | Rule maps | `rule_maps/GODHLIP24179V022324.json`: engine rule_ref → reviewed clauses; a test checks every clause exists | Implemented |
 | Evaluation | `python -m policy_kb evaluate <queries.jsonl>`: Recall@k, Hit@k, MRR, before/after rewriting; draft Recall@5 0.933 on draft labels; Member 1's labels needed | Partial |
-| Catalogue and uploads | `catalogue.py`: reviewed wordings from `dev_data/wordings/catalogue.json` plus per-case uploads (`upload:doc_<id>`, `reviewed: false`) | Implemented |
+| Catalogue and uploads | `catalogue.py`: reviewed wordings from `development/dev_data/wordings/catalogue.json` plus per-case uploads (`upload:doc_<id>`, `reviewed: false`) | Implemented |
 
 ## 11. Memory architecture
 
@@ -2652,7 +2652,7 @@ prompt_block = render(ctx, max_chars=1500)
 case["history"] = merge_history(history, mem.claim_history(policy["policy_no"]))
 ```
 
-**Memory on vs off: Partial.** `dev_eval/memory_on_off/run.py` runs the development cases per policyholder with and without memory and scores them. No difference on the current development set (it has no two paid claims on one policy); rerun with Member 3's graph (`--pipeline module:function`) and Member 1's same-policy cases.
+**Memory on vs off: Partial.** `development/dev_eval/memory_on_off/run.py` runs the development cases per policyholder with and without memory and scores them. No difference on the current development set (it has no two paid claims on one policy); rerun with Member 3's graph (`--pipeline module:function`) and Member 1's same-policy cases.
 
 ## 12. Storage and databases
 
@@ -2849,7 +2849,7 @@ sequenceDiagram
 | Variable | Default | Meaning |
 |---|---|---|
 | CLAIMCLEAR_CASE_STORE | var/case_store | case store root (local index and files) |
-| CLAIMCLEAR_REFERENCE_DIR | dev_data/dataset/dev/reference | policies and claim history |
+| CLAIMCLEAR_REFERENCE_DIR | development/dev_data/dataset/dev/reference | policies and claim history |
 | CLAIMCLEAR_CASE_INDEX | unset (index.json) | postgresql:// case index |
 | CLAIMCLEAR_BLOB_STORE | unset (files/) | s3://bucket?endpoint=… document store |
 | CLAIMCLEAR_S3_ACCESS_KEY / _SECRET_KEY | - | MinIO credentials (keep in .env) |
@@ -2857,13 +2857,13 @@ sequenceDiagram
 | CLAIMCLEAR_OCR / _OCR_LANGUAGE / _OCR_DPI | auto / eng / 300 | OCR switch, languages, resolution |
 | CLAIMCLEAR_DEFAULT_WORDING_UIN | GODHLIP24179V022324 | wording when a case names none |
 | CLAIMCLEAR_POLICY_KB_INDEX | var/policy_kb/index.json | policy index file |
-| CLAIMCLEAR_POLICY_CATALOGUE | dev_data/wordings/catalogue.json | reviewed wordings |
+| CLAIMCLEAR_POLICY_CATALOGUE | development/dev_data/wordings/catalogue.json | reviewed wordings |
 | CLAIMCLEAR_POLICY_KB_VECTORS | unset (in memory) | postgresql:// pgvector store |
 | CLAIMCLEAR_POLICY_KB_REWRITER / _RERANKER | glossary / none | query rewriting, reranking |
 | CLAIMCLEAR_EMBEDDING_MODEL / _REWRITE_MODEL | baai/bge-m3 / openai/gpt-4.1-mini | OpenRouter models |
 | CLAIMCLEAR_UPLOAD_EMBEDDER | hashing | embedder for uploaded wordings |
-| CLAIMCLEAR_POLICY_RULES / CLAIMCLEAR_RULES_DIR | dataset rules / dev_data/wordings/rules | engine limits per wording |
-| CLAIMCLEAR_DATASET_DIR | dev_data/dataset | dataset for the engine CLI and tests |
+| CLAIMCLEAR_POLICY_RULES / CLAIMCLEAR_RULES_DIR | dataset rules / development/dev_data/wordings/rules | engine limits per wording |
+| CLAIMCLEAR_DATASET_DIR | development/dev_data/dataset | dataset for the engine CLI and tests |
 | CLAIMCLEAR_MEMORY_DB | var/memory/memory.db | SQLite path or postgresql:// URL |
 | CLAIMCLEAR_PORTAL_STORE | var/insurer_portal/dry_run.json | dry-run filings |
 | CLAIMCLEAR_GATE_SECRET | unset | turns on the approval-token HMAC check |
@@ -2882,16 +2882,16 @@ python -m venv .venv
 .venv/Scripts/python.exe -m pip install -r requirements-servers.txt          # Linux/macOS: .venv/bin/python
 py -3.14 -m venv .venv-agents
 .venv-agents/Scripts/python.exe -m pip install -r requirements-agents.txt
-# Tesseract: winget install --id UB-Mannheim.TesseractOCR -e   (Fedora: see docs/setup_fedora.md)
+# Tesseract: winget install --id UB-Mannheim.TesseractOCR -e   (Fedora: see additional_resources/setup_fedora.md)
 cp .env.example .env                                                          # optional: OPENROUTER_API_KEY
 ```
 
 | Step | Command (from the repository root unless noted) | Result |
 |---|---|---|
-| Build the policy index | `cd servers/policy_kb && python -m policy_kb build --wording ../../dev_data/wordings/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf` | `var/policy_kb/index.json` |
+| Build the policy index | `cd servers/policy_kb && python -m policy_kb build --wording ../../development/dev_data/wordings/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf` | `var/policy_kb/index.json` |
 | Load the development cases | `cd servers/case_records && python -m case_records.register_dataset --split dev` | `var/case_store/` |
-| Try one case | `python scripts/try_case_records.py dev_data/dataset/dev/cases/syn-dev-001 --ocr` | every case-records tool, both safety checks |
-| Run every dev case through the whole app | `.venv-agents/Scripts/python.exe dev_eval/dev_cases/run.py` | `dev_eval/dev_cases/results/dev_cases.md`: route, verdicts and amounts per case, scored against `answers/` |
+| Try one case | `python scripts/try_case_records.py development/dev_data/dataset/dev/cases/syn-dev-001 --ocr` | every case-records tool, both safety checks |
+| Run every dev case through the whole app | `.venv-agents/Scripts/python.exe development/dev_eval/dev_cases/run.py` | `development/dev_eval/dev_cases/results/dev_cases.md`: route, verdicts and amounts per case, scored against `answers/` |
 | Audit the worked example | `cd servers/settlement_engine && python -m engine.cli SET-01 --audit` | ₹8,522.86 may be disputable |
 | Search the wording | `cd servers/policy_kb && python -m policy_kb search "they cut my medicine bill"` | clause IDs and scores |
 | Start all servers | `python scripts/dev_servers.py` (`--check` to verify) | HTTP on 8101–8105 |
@@ -2915,13 +2915,13 @@ export CLAIMCLEAR_S3_ACCESS_KEY=claimclear CLAIMCLEAR_S3_SECRET_KEY=claimclear-s
 | Consent, retention, forget, grievances, context bounds | `memory/tests` |
 | Contract drift, error codes, access marks, agent tool lists | `contracts/tests` |
 | Live: agents' environment against every server; both hook points | `agents/toolkit/tests/test_toolkit_live.py` |
-| Every dev case end to end, scored against its answer (section 16.1); the extraction stand-in reads and reconciles every case | `dev_eval/dev_cases/run.py`, `dev_eval/dev_cases/test_extract.py` |
+| Every dev case end to end, scored against its answer (section 16.1); the extraction stand-in reads and reconciles every case | `development/dev_eval/dev_cases/run.py`, `development/dev_eval/dev_cases/test_extract.py` |
 
 **CI** (`.github/workflows/ci.yml`): a servers job (Tesseract, PostgreSQL + pgvector, MinIO, every server suite, memory, contracts, the memory runner, all servers over HTTP) and a toolkit job (both environments, live tests). **Partial:** the result of its first run still has to be checked in the repository's Actions tab.
 
 ### 16.1 Whole-application run on the dev cases
 
-`dev_eval/dev_cases/run.py` sends each of the 42 dev cases through the toolkit and all five servers, the way Member 3's graph will call them, and scores it against `answers/` (read only after the run). There is no LLM yet, so the claim and letter come from a development stand-in (`dev_eval/dev_cases/extract.py`): printed fields for synthetic cases, parsed PDFs for gen-data cases, where every bill adds up to its printed total and every letter reconciles exactly.
+`development/dev_eval/dev_cases/run.py` sends each of the 42 dev cases through the toolkit and all five servers, the way Member 3's graph will call them, and scores it against `answers/` (read only after the run). There is no LLM yet, so the claim and letter come from a development stand-in (`development/dev_eval/dev_cases/extract.py`): printed fields for synthetic cases, parsed PDFs for gen-data cases, where every bill adds up to its printed total and every letter reconciles exactly.
 
 | Step | Who in the graph | Tools |
 |---|---|---|
@@ -2956,13 +2956,13 @@ Every case read its documents (163 documents, 1,157 pages) and its wording statu
 
 | Case | What differs | Why |
 |---|---|---|
-| gen-dev-50b4e6 (and the amounts of 6a82b1, a0a2f1) | the proportionate deduction | the answer key cuts consumables and diagnostics; ClaimClear keeps IRDAI's 2020 rule (decided, labelled from `dev_eval/dev_cases/decisions.json`) |
+| gen-dev-50b4e6 (and the amounts of 6a82b1, a0a2f1) | the proportionate deduction | the answer key cuts consumables and diagnostics; ClaimClear keeps IRDAI's 2020 rule (decided, labelled from `development/dev_eval/dev_cases/decisions.json`) |
 | gen-dev-b4331d | ₹215.50 disputable, the answer says none | the letter takes co-pay before its own ₹4,300 cut, so ₹215.50 is owed either way; the answer's own note agrees |
 | syn-dev-004, 006, 012, 015 | rejections (impossible dates, fraud, an invented hospital, an altered date) are confirmed: `matches_policy`, payable ₹0 | the integrity checks find the evidence in the documents (discharge before admission, room days beyond the stay, dated lines outside the stay, a malformed GSTIN) |
 | syn-dev-017 | the insurer paid a meniscus repair, so the condition it accepted is taken from the letter | no waiting-period row on a paid claim means the letter accepted the condition (fact `F-CONDITION-FROM-LETTER`) |
 | syn-dev-021 | asks for the admission date | a pharmacy bill with no admission date, by design |
 
-Results per case: `dev_eval/dev_cases/results/dev_cases.md` (and `.json` with every step's output). The fixes these cases led to, and the reasoning on the answer key, are in `docs/member2_knowledge_memory_tools/evaluation_dev_cases.md`.
+Results per case: `development/dev_eval/dev_cases/results/dev_cases.md` (and `.json` with every step's output). The fixes these cases led to, and the reasoning on the answer key, are in `additional_resources/member2_knowledge_memory_tools/evaluation_dev_cases.md`.
 
 ## 17. Files and modules walkthrough
 
@@ -2976,7 +2976,7 @@ Every module, its line count and the first line of its own docstring. Tests are 
 | `engine/calculators.py` | 338 | One pure function per policy rule. |
 | `engine/categories.py` | 195 | Bill-line categorisation and non-payable detection. |
 | `engine/cli.py` | 104 | Command line for the engine and the matcher. |
-| `engine/dataset.py` | 192 | Load cases from the standard dataset (`dev_data/dataset/`) into engine inputs. |
+| `engine/dataset.py` | 192 | Load cases from the standard dataset (`development/dev_data/dataset/`) into engine inputs. |
 | `engine/engine.py` | 468 | `compute_settlement`: what the policy wording says should be paid. |
 | `engine/hypotheses.py` | 727 | Hypothesis library: the ways an insurer might have calculated a deduction. |
 | `engine/identifiers.py` | 39 | Policy numbers as printed versus as filed. |
@@ -3099,7 +3099,7 @@ Every module, its line count and the first line of its own docstring. Tests are 
 
 | File | Lines | What it is |
 |---|---|---|
-| `dev_eval/memory_on_off/run.py` | 285 | Memory on vs off: run the development cases with and without ClaimClear's long-term memory. |
+| `development/dev_eval/memory_on_off/run.py` | 285 | Memory on vs off: run the development cases with and without ClaimClear's long-term memory. |
 | `scripts/dev_servers.py` | 142 | Start every built MCP server over streamable HTTP, for local agent development. |
 | `scripts/register_case_folder.py` | 77 | Register one case folder (bill, settlement letter, policy schedule, discharge summary) and print its case ID. |
 | `scripts/try_case_records.py` | 113 | Upload one case folder and call every case-records tool on it, as an agent would. |
@@ -3109,14 +3109,14 @@ Other files:
 
 | Path | What |
 |---|---|
-| `dev_data/dataset/` | every case in one standard format: `dev/` (42) and `heldout/` (53), each with `cases.json`, `cases/<case_id>/` (documents only), `reference/` and `answers/`; explained in `docs/member2_knowledge_memory_tools/dataset_guide.md` |
-| `dev_eval/dev_cases/` | the whole-application run over the dev cases (`run.py`), the extraction stand-in for the LLM document reader (`extract.py`), results and findings |
-| `dev_data/wordings/` | Go Digit Arogya Sanjeevani wording, its source record, the catalogue, checked limits |
+| `development/dev_data/dataset/` | every case in one standard format: `dev/` (42) and `heldout/` (53), each with `cases.json`, `cases/<case_id>/` (documents only), `reference/` and `answers/`; explained in `additional_resources/member2_knowledge_memory_tools/dataset_guide.md` |
+| `development/dev_eval/dev_cases/` | the whole-application run over the dev cases (`run.py`), the extraction stand-in for the LLM document reader (`extract.py`), results and findings |
+| `development/dev_data/wordings/` | Go Digit Arogya Sanjeevani wording, its source record, the catalogue, checked limits |
 | `servers/*/tests/snapshots/*.json` | pinned tool schemas |
 | `contracts/claimclear_contracts/tool_schemas.json`, `contracts/snapshots/contracts.json` | exported tool schemas; contract model schemas |
 | `deploy/storage.compose.yml` | PostgreSQL + pgvector and MinIO |
 | `.github/workflows/ci.yml` | CI |
-| `dev_eval/retrieval/`, `dev_eval/memory_on_off/results/` | draft retrieval queries and results; memory comparison results |
+| `development/dev_eval/retrieval/`, `development/dev_eval/memory_on_off/results/` | draft retrieval queries and results; memory comparison results |
 | `docs/` | this document, memory policy, Member 2 overview, technology choices, Fedora setup, tech-stack guide, diagrams |
 | `.claude/skills/claimclear-member2/` | Member 2 playbook for Claude and teammates |
 | `README.md` | repository guide |
@@ -3137,6 +3137,7 @@ From `contracts/claimclear_contracts/errors.py` (a test checks every code the co
 | case-records | `POLICY_NOT_FOUND` | no pre-stored schedule for the policy: extract it from the uploaded policy and confirm |
 | case-records | `INVALID_SCOPE` | claim-history scope not recognised |
 | case-records | `INVALID_ROLE` | upload path: a document role that doesn't exist |
+| case-records | `INVALID_POLICY` | upload path: setting a case's policy number to an empty value (`set_policy`) |
 | case-records | `INVALID_WORDING` | upload path: a wording UIN in the wrong format |
 | case-records | `UNSUPPORTED_MEDIA_TYPE` | upload path: only PDF, JPG and PNG are accepted |
 | case-records | `FILE_TOO_LARGE` | upload path: the file is over 25 MB |

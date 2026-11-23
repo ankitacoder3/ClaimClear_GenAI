@@ -31,6 +31,7 @@ This guide is for **Member 3** (agents and orchestration), from **Member 2** (kn
 11. [Keeping both sides in step](#11-keeping-both-sides-in-step)
 12. [Verified end to end](#12-verified-end-to-end)
 13. [Checklist for Member 3](#13-checklist-for-member-3)
+14. [How to test the MCP servers](#14-how-to-test-the-mcp-servers)
 
 ---
 
@@ -506,7 +507,7 @@ We ran an agent-side script in a **separate Python 3.14 environment** with `lang
 | 7 | `audit_settlement_letter` | disputable ₹8,522.86, unverifiable ₹0 |
 | 8 | `get_document_text` with a document ID that isn't in the case | error text with `DOCUMENT_NOT_IN_CASE` (no exception) |
 
-The toolkit's live tests (`agents/toolkit/tests/test_toolkit_live.py`) now repeat this run against all five servers, and `dev_eval/dev_cases/run.py` does it for every dev case.
+The toolkit's live tests (`agents/toolkit/tests/test_toolkit_live.py`) now repeat this run against all five servers, and `development/dev_eval/dev_cases/run.py` does it for every dev case.
 
 We also confirmed:
 - one session per server makes 5 calls in 0.08 s;
@@ -534,3 +535,100 @@ We also confirmed:
 - [ ] Policy-kb index built (`python -m policy_kb build ...`); critic checks every citation with `get_clause`
 - [ ] C0 and C1 baselines built on the same tools
 - [ ] SET-01 end to end in the weekly demo: payable ₹95,617.50, R3 `prop_on_all_lines`, disputable ₹8,522.86
+
+---
+
+## 14. How to test the MCP servers
+
+**How it works.** Each of Member 2's five servers is a separate Python program that speaks the Model Context Protocol
+(JSON-RPC: `initialize`, `tools/list` with JSON schemas, `tools/call`). The agents never import them: the toolkit
+(`claimclear_tools`) connects to them, either by starting each as a child process over **stdio** (the default, used in
+development and tests) or by connecting to running servers over **streamable HTTP** (`CLAIMCLEAR_MCP_MODE=http`,
+ports 8101-8105, used in Docker). Each agent sees only its own tools (§4); the one write tool, `file_grievance`, is
+refused unless the approved text's SHA-256 and the approval token match.
+
+Commands run from the `ClaimClear` folder (`.venv` for the servers, `.venv-agents` for the toolkit; on macOS/Linux
+`bin/python` instead of `Scripts/python.exe`). Expected results are from 23 November 2026.
+
+**1. Each server's own tests**, including its MCP layer and a snapshot of its tool schemas:
+
+```bash
+cd servers/policy_kb                    # or settlement_engine, case_records, document_reader, insurer_portal
+../../.venv/Scripts/python.exe -m pytest -q -o addopts=""
+../../.venv/Scripts/python.exe -m pytest -q -o addopts="" tests/test_mcp_server.py      # only the MCP layer
+```
+
+| Server | Expected |
+|---|---|
+| settlement-engine | 339 passed, 6 skipped (held-out split) |
+| policy-kb | 113 passed, 4 skipped (PostgreSQL, LangChain) |
+| case-records | 29 passed, 34 skipped (held-out split, PostgreSQL + MinIO) |
+| document-reader | 69 passed, 11 skipped (held-out split) |
+| insurer-portal | 13 passed |
+
+A schema change fails the snapshot test on purpose; regenerate it with `python -m <module> --dump-schemas >
+tests/snapshots/<server>_tools.json`, then `python -m claimclear_contracts.export` so the shared contracts follow.
+
+**2. Are all five servers up over HTTP?**
+
+```bash
+.venv/Scripts/python.exe scripts/dev_servers.py --check
+```
+
+```
+settlement-engine  http://127.0.0.1:8101/mcp   up
+case-records       http://127.0.0.1:8102/mcp   up
+policy-kb          http://127.0.0.1:8103/mcp   up
+insurer-portal     http://127.0.0.1:8104/mcp   up
+document-reader    http://127.0.0.1:8105/mcp   up
+```
+
+Without `--check` it keeps them running (Ctrl+C stops them); then use `CLAIMCLEAR_MCP_MODE=http` for the toolkit.
+
+**3. Call a tool yourself through the toolkit** (save as `try_mcp.py`, run with `.venv-agents/Scripts/python.exe
+try_mcp.py`; the toolkit starts the servers over stdio):
+
+```python
+import asyncio
+from claimclear_tools import ClaimClearToolkit
+
+async def main():
+    async with ClaimClearToolkit() as tk:
+        hits = await tk.search_clauses("is cataract surgery covered", k=3)
+        print([(h["clause_id"], h["title"]) for h in hits["hits"]])
+        print(sorted(t.name for t in tk.for_agent("explainer")))       # what one agent is allowed to call
+
+asyncio.run(main())
+```
+
+```
+[('C.3', 'Cataract Treatment'), ('C.1.1', 'Other expenses'), ('B.14', 'Dental Treatment')]
+['clauses_for_rule', 'get_clause']
+```
+
+`.venv-agents/Scripts/python.exe agents/toolkit/examples/verify_settlement_demo.py` runs the whole chain on SET-01
+(₹8,522.86 may be disputable), and `agents/toolkit/examples/show_agent_tools.py` lists every agent's tools.
+
+**4. The toolkit's live tests** run real calls against the servers (every tool, errors, the per-agent allow-list, the
+memory round trip):
+
+```bash
+cd agents/toolkit
+../../.venv-agents/Scripts/python.exe -m pytest -q -o addopts=""
+```
+
+Expected: **45 passed**.
+
+**5. Every dev case through the servers:** `.venv-agents/Scripts/python.exe development/dev_eval/dev_cases/run.py`
+(add `--http` to use the servers from step 2). Expected: 42 cases, 40/42 overall verdicts, 89/94 rows, 28/31
+payable, 37/40 disputable.
+
+**6. Look at a server by hand (optional):** with the servers running (step 2), the MCP Inspector
+(`npx @modelcontextprotocol/inspector`, needs Node.js) connects to `http://127.0.0.1:8103/mcp` with transport
+"Streamable HTTP" and lists and calls the tools. Every server also prints its tools' schemas:
+`cd servers/policy_kb && ../../.venv/Scripts/python.exe -m policy_kb.mcp_server --dump-schemas`.
+
+**7. Contracts:** `cd contracts && ../.venv/Scripts/python.exe -m pytest -q -o addopts=""` checks that the shared
+error codes and tool schemas match every server: expected **22 passed**. When a server gains an error code, add it to
+`contracts/claimclear_contracts/errors.py`; when its tool schemas change, regenerate its snapshot and then the shared
+file with `python -m claimclear_contracts.export` (`--check` only reports whether it is up to date).

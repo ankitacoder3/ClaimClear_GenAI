@@ -745,6 +745,25 @@
          "title": "Media Type",
          "type": "string"
         },
+        "name": {
+         "default": "",
+         "description": "The user's own file name, when the app recorded it; empty otherwise",
+         "title": "Name",
+         "type": "string"
+        },
+        "page_count": {
+         "anyOf": [
+          {
+           "type": "integer"
+          },
+          {
+           "type": "null"
+          }
+         ],
+         "default": null,
+         "description": "Pages in the document; null if it couldn't be counted",
+         "title": "Page Count"
+        },
         "role": {
          "description": "What the document is in this case, as given at upload",
          "enum": [
@@ -765,6 +784,12 @@
         "size_bytes": {
          "title": "Size Bytes",
          "type": "integer"
+        },
+        "summary": {
+         "default": "",
+         "description": "One line on what the document is, when the app recorded it",
+         "title": "Summary",
+         "type": "string"
         }
        },
        "required": [

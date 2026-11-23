@@ -168,7 +168,7 @@ def test_open_checkpointer_rejects_unknown_urls():
 def _eval_module():
     import importlib.util
     from pathlib import Path
-    path = Path(__file__).resolve().parents[3] / "dev_eval" / "graph_dev_cases" / "run.py"
+    path = Path(__file__).resolve().parents[3] / "development" / "dev_eval" / "graph_dev_cases" / "run.py"
     spec = importlib.util.spec_from_file_location("graph_dev_cases_run", path)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)

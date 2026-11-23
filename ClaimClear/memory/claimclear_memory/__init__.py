@@ -16,7 +16,7 @@ and the app's environments alike.
     mem.recall("what did I ask about the co-pay?")             # hybrid search over earlier conversations
 
 Memory never computes money, is written only from tool results, and follows
-docs/member2_knowledge_memory_tools/memory_policy.md (``POLICY_VERSION``).
+additional_resources/member2_knowledge_memory_tools/memory_policy.md (``POLICY_VERSION``).
 """
 
 from .context import build_context, render

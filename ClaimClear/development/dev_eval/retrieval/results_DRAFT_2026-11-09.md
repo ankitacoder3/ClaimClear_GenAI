@@ -75,15 +75,15 @@ Member 1 to decide whether the label should include E.9 (and the portability cla
 From `servers/policy_kb`, with `OPENROUTER_API_KEY` in the repo's `.env`:
 
 ```bash
-../../.venv/Scripts/python.exe -m policy_kb build --wording ../../dev_data/wordings/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf --embedder openrouter
+../../.venv/Scripts/python.exe -m policy_kb build --wording ../../development/dev_data/wordings/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf --embedder openrouter
 ```
 
 ```bash
-../../.venv/Scripts/python.exe -m policy_kb evaluate ../../dev_eval/retrieval/queries_godigit_DRAFT.jsonl --rewriter glossary
+../../.venv/Scripts/python.exe -m policy_kb evaluate ../../development/dev_eval/retrieval/queries_godigit_DRAFT.jsonl --rewriter glossary
 ```
 
 ```bash
-../../.venv/Scripts/python.exe -m policy_kb evaluate ../../dev_eval/retrieval/queries_godigit_DRAFT.jsonl --rewriter glossary+openrouter
+../../.venv/Scripts/python.exe -m policy_kb evaluate ../../development/dev_eval/retrieval/queries_godigit_DRAFT.jsonl --rewriter glossary+openrouter
 ```
 
 Replace the query file with `queries.jsonl` once Member 1 has labelled it. Add `--json` for machine-readable results.

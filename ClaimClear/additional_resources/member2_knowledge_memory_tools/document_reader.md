@@ -51,7 +51,7 @@ python -m pytest
 Read one file and print the result:
 
 ```bash
-python -m document_reader --read ../../dev_data/dataset/dev/cases/syn-dev-006/bill.pdf
+python -m document_reader --read ../../development/dev_data/dataset/dev/cases/syn-dev-006/bill.pdf
 ```
 
 Start the server:

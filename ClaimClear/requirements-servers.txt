@@ -1,6 +1,6 @@
 # MCP servers (Member 2): settlement-engine, case-records, policy-kb, insurer-portal, document-reader.
 # Servers run from their folders (python -m ...); case-records finds servers/document_reader on its own.
-# OCR: install Tesseract separately (see docs/member2_knowledge_memory_tools/document_reader.md).
+# OCR: install Tesseract separately (see additional_resources/member2_knowledge_memory_tools/document_reader.md).
 # Install into <repo>/.venv (Python 3.15 used in development):
 #   python -m venv .venv
 #   .venv/Scripts/python.exe -m pip install -r requirements-servers.txt      (Windows)

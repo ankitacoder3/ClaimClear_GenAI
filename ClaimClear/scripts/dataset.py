@@ -1,12 +1,12 @@
-"""Build, check and pack ClaimClear's standard dataset (``dev_data/dataset``).
+"""Build, check and pack ClaimClear's standard dataset (``development/dev_data/dataset``).
 
-    .venv/Scripts/python.exe scripts/dataset.py check                 # is dev_data/dataset in the standard format?
+    .venv/Scripts/python.exe scripts/dataset.py check                 # is development/dev_data/dataset in the standard format?
     .venv/Scripts/python.exe scripts/dataset.py pack                  # var/claimclear_dataset.zip, one file to share
     .venv/Scripts/python.exe scripts/dataset.py build --synthetic <synthetic_dataset folder> --gen-data <gen-data folder>
 
-The standard format (see ``docs/member2_knowledge_memory_tools/dataset_guide.md``) is the same for every case, whatever made it:
+The standard format (see ``additional_resources/member2_knowledge_memory_tools/dataset_guide.md``) is the same for every case, whatever made it:
 
-    dev_data/dataset/
+    development/dev_data/dataset/
       policy_rules.json                 the simplified limits the settlement engine's dataset adapter uses
       dev/  and  heldout/               the same layout in both splits
         cases.json                      the index: case ID, source, policy number, wording UIN, documents and roles
@@ -32,12 +32,12 @@ import shutil
 import sys
 import zipfile
 
-README = "dataset_README.md"   # a format note at the top of dev_data/dataset, kept if present when the dataset is rebuilt
-                               # (the format reference itself is docs/member2_knowledge_memory_tools/dataset_guide.md)
+README = "dataset_README.md"   # a format note at the top of development/dev_data/dataset, kept if present when the dataset is rebuilt
+                               # (the format reference itself is additional_resources/member2_knowledge_memory_tools/dataset_guide.md)
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-DATASET = REPO / "dev_data" / "dataset"
+DATASET = REPO / "development" / "dev_data" / "dataset"
 SPLITS = ("dev", "heldout")
 GODIGIT_UIN = "GODHLIP24179V022324"
 
@@ -224,7 +224,7 @@ def synthetic_cases(syn: Path, split: str):
         source_answer = {}
         for name, doc_id in case["files"].items():
             record = dict(docs[doc_id])
-            record["file"] = f"{split}/cases/{case_id}/{name}"        # relative to dev_data/dataset
+            record["file"] = f"{split}/cases/{case_id}/{name}"        # relative to development/dev_data/dataset
             source_answer[doc_id] = record
         answer = {
             "case_id": case_id, "split": split, "source": "claimclear-synthetic", "source_case": case["case"],
@@ -360,7 +360,7 @@ def pack(root: Path, out: Path) -> None:
             info = zipfile.ZipInfo(f"claimclear_dataset/{path.relative_to(root).as_posix()}", date_time=fixed)
             info.compress_type = zipfile.ZIP_DEFLATED
             z.writestr(info, path.read_bytes())
-        wording = REPO / "dev_data" / "wordings" / "policy-wordings-arogya-sanjeevani-policy-go-digit.pdf"
+        wording = REPO / "development" / "dev_data" / "wordings" / "policy-wordings-arogya-sanjeevani-policy-go-digit.pdf"
         info = zipfile.ZipInfo(f"claimclear_dataset/policy_wordings/{GODIGIT_UIN}.pdf", date_time=fixed)
         info.compress_type = zipfile.ZIP_DEFLATED
         z.writestr(info, wording.read_bytes())
@@ -370,13 +370,13 @@ def pack(root: Path, out: Path) -> None:
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     sub = p.add_subparsers(dest="command", required=True)
-    b = sub.add_parser("build", help="make dev_data/dataset from the two sources")
+    b = sub.add_parser("build", help="make development/dev_data/dataset from the two sources")
     b.add_argument("--synthetic", required=True, help="the synthetic dataset folder (manifest.json, cases.json, ...)")
     b.add_argument("--gen-data", required=True, help="the gen-data folder (data/cases, data/gold, data/meta)")
     b.add_argument("--out", default=str(DATASET))
-    c = sub.add_parser("check", help="check dev_data/dataset against the standard format")
+    c = sub.add_parser("check", help="check development/dev_data/dataset against the standard format")
     c.add_argument("--root", default=str(DATASET))
-    k = sub.add_parser("pack", help="zip dev_data/dataset (and the Go Digit wording) into one file to share")
+    k = sub.add_parser("pack", help="zip development/dev_data/dataset (and the Go Digit wording) into one file to share")
     k.add_argument("--root", default=str(DATASET))
     k.add_argument("--out", default=str(REPO / "var" / "claimclear_dataset.zip"))
     args = p.parse_args(argv)

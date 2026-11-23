@@ -29,8 +29,6 @@ All of it is exposed through MCP tools and small Python APIs that Member 3's age
 7. [Tests](#7-tests)
 8. [How the other members use it](#8-how-the-other-members-use-it)
 9. [Production](#9-production)
-10. [What changed on this branch](#10-what-changed-on-this-branch)
-11. [Not in this branch](#11-not-in-this-branch)
 
 ---
 
@@ -47,9 +45,9 @@ All of it is exposed through MCP tools and small Python APIs that Member 3's age
 | **Contracts** | [`contracts`](contracts.md) | none (a library) | `CaseState`, the hand-off messages between agents, every tool's schema, error codes and verdict wording, shared by both sides | Member 3, Member 4 |
 | **Agents' toolkit** | [`agents/toolkit`](toolkit.md) | none (a library) | One object that connects Member 3's LangGraph agents to every server, gives each agent only its tools, and turns results into graph routes | Member 3 |
 | Storage services | [`deploy/storage.compose.yml`](../../deploy/storage.compose.yml) | 5432, 9000 | PostgreSQL + pgvector and MinIO, for the production backends and their tests | Development, CI |
-| Whole-application run | [`dev_eval/dev_cases`](evaluation_dev_cases.md) | — | Every dev case through the toolkit and all five servers, scored against its answer | Everyone; Member 1's report |
-| Memory on vs off | [`dev_eval/memory_on_off`](evaluation_memory_on_off.md) | — | The plan's memory-on vs memory-off comparison on the development cases | Member 1's report |
-| Dataset | [`dev_data/dataset`](dataset_guide.md), guide: [`docs/member2_knowledge_memory_tools/dataset_guide.md`](dataset_guide.md) | — | 95 synthetic cases in one standard format (42 dev, 53 held-out) from two sources, with answers; the Arogya Sanjeevani wording | Every test and run |
+| Whole-application run | [`development/dev_eval/dev_cases`](evaluation_dev_cases.md) | — | Every dev case through the toolkit and all five servers, scored against its answer | Everyone; Member 1's report |
+| Memory on vs off | [`development/dev_eval/memory_on_off`](evaluation_memory_on_off.md) | — | The plan's memory-on vs memory-off comparison on the development cases | Member 1's report |
+| Dataset | [`development/dev_data/dataset`](dataset_guide.md), guide: [`additional_resources/member2_knowledge_memory_tools/dataset_guide.md`](dataset_guide.md) | — | 95 synthetic cases in one standard format (42 dev, 53 held-out) from two sources, with answers; the Arogya Sanjeevani wording | Every test and run |
 | CI | [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) | — | Every suite on every push, with Tesseract, PostgreSQL and MinIO | Everyone |
 
 ## 2. Find your way around
@@ -77,14 +75,14 @@ Where to look for what:
 | How is a deduction worked out? | `servers/settlement_engine/engine/engine.py` (the 12 steps), `calculators.py`, `hypotheses.py`, `matcher.py` |
 | How is a document read? | `servers/document_reader/document_reader/extract.py` (spans, hidden text, OCR), `reader.py` (checks, cache) |
 | How is the wording searched? | `servers/policy_kb/policy_kb/ingest.py` (clauses), `kb.py` (hybrid search), `vectorstore.py` (pgvector) |
-| What does memory keep and for how long? | `memory/claimclear_memory/store.py`, `docs/member2_knowledge_memory_tools/memory_policy.md` |
+| What does memory keep and for how long? | `memory/claimclear_memory/store.py`, `additional_resources/member2_knowledge_memory_tools/memory_policy.md` |
 | What do the agents put in their state? | `contracts/claimclear_contracts/state.py` |
-| How do the agents connect? | [`docs/member2_knowledge_memory_tools/servers_integration.md`](servers_integration.md) (integration guide), `docs/member2_knowledge_memory_tools/toolkit.md` |
-| The cases: what is in a case, the format, dev vs held-out, the answers, how the app uses them | [`docs/member2_knowledge_memory_tools/dataset_guide.md`](dataset_guide.md), format reference [`dev_data/dataset/`](dataset_guide.md); `scripts/dataset.py check` checks it, `pack` zips it to share |
-| How well does the whole app do on the dev cases? | [`dev_eval/dev_cases/`](evaluation_dev_cases.md) and its `results/dev_cases.md` |
-| Setting up on Fedora Linux | [`docs/setup_fedora.md`](setup_fedora.md) |
+| How do the agents connect? | [`additional_resources/member2_knowledge_memory_tools/servers_integration.md`](servers_integration.md) (integration guide), `additional_resources/member2_knowledge_memory_tools/toolkit.md` |
+| The cases: what is in a case, the format, dev vs held-out, the answers, how the app uses them | [`additional_resources/member2_knowledge_memory_tools/dataset_guide.md`](dataset_guide.md), format reference [`development/dev_data/dataset/`](dataset_guide.md); `scripts/dataset.py check` checks it, `pack` zips it to share |
+| How well does the whole app do on the dev cases? | [`development/dev_eval/dev_cases/`](evaluation_dev_cases.md) and its `results/dev_cases.md` |
+| Setting up on Fedora Linux | [`additional_resources/setup_fedora.md`](setup_fedora.md) |
 | Why these technologies? | [`docs/technology_and_app_flow.md`](technology_and_app_flow.md), `docs/ClaimClear_Member2_Tech_Stack.docx` |
-| Everything in one document: every tool with real input/output examples, how Member 3 connects and calls them, where hooks attach, memory, storage, workflow, tests | [`docs/member2_knowledge_memory_tools/technical_handover.md`](technical_handover.md) |
+| Everything in one document: every tool with real input/output examples, how Member 3 connects and calls them, where hooks attach, memory, storage, workflow, tests | [`additional_resources/member2_knowledge_memory_tools/technical_handover.md`](technical_handover.md) |
 | The whole picture | `docs/diagrams/ClaimClear_Architecture.pdf`, [`docs/member2_work.md`](member2_work.md) |
 | Rules and plan, for Claude and teammates | [`.claude/skills/claimclear-member2/`](../.claude/skills/claimclear-member2/SKILL.md) |
 
@@ -112,15 +110,15 @@ From the repository root, in this order. `var/` is git-ignored: every machine bu
 | Step | Command | Result |
 |---|---|---|
 | 1. Check everything works | see [Tests](#7-tests) | all suites green |
-| 2. Build the policy index | `cd servers/policy_kb && ../../.venv/Scripts/python.exe -m policy_kb build --wording ../../dev_data/wordings/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf` | `var/policy_kb/index.json` (add `--embedder openrouter` for bge-m3 vectors) |
+| 2. Build the policy index | `cd servers/policy_kb && ../../.venv/Scripts/python.exe -m policy_kb build --wording ../../development/dev_data/wordings/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf` | `var/policy_kb/index.json` (add `--embedder openrouter` for bge-m3 vectors) |
 | 3. Load the development cases | `cd servers/case_records && ../../.venv/Scripts/python.exe -m case_records.register_dataset --split dev` | `var/case_store/` (never load the held-out split for development) |
-| 4. Try one case end to end | `.venv/Scripts/python.exe scripts/try_case_records.py dev_data/dataset/dev/cases/syn-dev-001 --ocr` | upload, every case-records tool, both safety checks (any folder in `dev_data/dataset/dev/cases`, e.g. `gen-dev-147e01`) |
+| 4. Try one case end to end | `.venv/Scripts/python.exe scripts/try_case_records.py development/dev_data/dataset/dev/cases/syn-dev-001 --ocr` | upload, every case-records tool, both safety checks (any folder in `development/dev_data/dataset/dev/cases`, e.g. `gen-dev-147e01`) |
 | 5. Audit a settlement letter | `cd servers/settlement_engine && ../../.venv/Scripts/python.exe -m engine.cli SET-01 --audit` | the plan's worked example: ₹8,522.86 may be disputable |
 | 6. Search the wording | `cd servers/policy_kb && ../../.venv/Scripts/python.exe -m policy_kb search "they cut my medicine bill"` | clause IDs with scores |
 | 7. Start all five servers | `.venv/Scripts/python.exe scripts/dev_servers.py` (`--check` to start, confirm and stop) | HTTP on 8101–8105; agents use `CLAIMCLEAR_MCP_MODE=http` |
 | 8. Connect the agents | `.venv-agents/Scripts/python.exe agents/toolkit/examples/verify_settlement_demo.py` | the whole chain through the toolkit |
-| 9. Every dev case through the whole app | `.venv-agents/Scripts/python.exe dev_eval/dev_cases/run.py` (`--http` against step 7) | `dev_eval/dev_cases/results/dev_cases.md`: each case's route, verdicts and amounts against its answer |
-| 9b. Memory on vs off | `.venv/Scripts/python.exe dev_eval/memory_on_off/run.py` | `dev_eval/memory_on_off/results/memory_on_off_<date>.md` |
+| 9. Every dev case through the whole app | `.venv-agents/Scripts/python.exe development/dev_eval/dev_cases/run.py` (`--http` against step 7) | `development/dev_eval/dev_cases/results/dev_cases.md`: each case's route, verdicts and amounts against its answer |
+| 9b. Memory on vs off | `.venv/Scripts/python.exe development/dev_eval/memory_on_off/run.py` | `development/dev_eval/memory_on_off/results/memory_on_off_<date>.md` |
 | 10. (Production backends) | `docker compose -f deploy/storage.compose.yml up -d`, then set the variables in [Configuration](#6-configuration) | the same servers on PostgreSQL, pgvector and MinIO |
 
 ## 5. Each component: what it does, how to run it
@@ -159,7 +157,7 @@ Everything is an environment variable with a safe default under `var/`. Secrets 
 | Variable | Default | Meaning |
 |---|---|---|
 | `CLAIMCLEAR_CASE_STORE` | `var/case_store` | Case store root (local index and files) |
-| `CLAIMCLEAR_REFERENCE_DIR` | `dev_data/dataset/dev/reference` | Policies and claim history (`dev_data/dataset/heldout/reference` for an evaluation run) |
+| `CLAIMCLEAR_REFERENCE_DIR` | `development/dev_data/dataset/dev/reference` | Policies and claim history (`development/dev_data/dataset/heldout/reference` for an evaluation run) |
 | `CLAIMCLEAR_CASE_INDEX` | unset: `index.json` | `postgresql://...`: case index in PostgreSQL |
 | `CLAIMCLEAR_BLOB_STORE` | unset: `files/` | `s3://bucket?endpoint=host:9000&secure=0`: documents in MinIO |
 | `CLAIMCLEAR_S3_ACCESS_KEY`, `CLAIMCLEAR_S3_SECRET_KEY` | — | MinIO credentials |
@@ -175,21 +173,21 @@ Everything is an environment variable with a safe default under `var/`. Secrets 
 
 ## 7. Tests
 
-Run each suite from its folder. Results (Windows, Python 3.15 / 3.14, with Tesseract and the storage services running):
+Run each suite from its folder. Results on 23 November 2026 (Windows, Python 3.14, Tesseract installed, storage services off, so PostgreSQL and MinIO tests skip). Step-by-step testing guides: retrieval ([policy_kb.md](policy_kb.md#how-to-test-it)), memory ([memory.md](memory.md#how-to-test-it)) and the MCP servers ([servers_integration.md](servers_integration.md#14-how-to-test-the-mcp-servers)).
 
 | Suite | Command | Result |
 |---|---|---|
-| settlement-engine | `cd servers/settlement_engine && ../../.venv/Scripts/python.exe -m pytest` | 321 passed |
-| document-reader | `cd servers/document_reader && ../../.venv/Scripts/python.exe -m pytest` | 80 passed (2 OCR tests skip without Tesseract) |
-| case-records | `cd servers/case_records && ../../.venv/Scripts/python.exe -m pytest` | 59 passed (3 need PostgreSQL + MinIO) |
-| policy-kb | `cd servers/policy_kb && ../../.venv/Scripts/python.exe -m pytest` | 114 passed, 1 skipped (the LangChain test runs in `.venv-agents`) |
+| settlement-engine | `cd servers/settlement_engine && ../../.venv/Scripts/python.exe -m pytest` | 339 passed, 6 skipped (held-out split) |
+| document-reader | `cd servers/document_reader && ../../.venv/Scripts/python.exe -m pytest` | 69 passed, 11 skipped (held-out split; OCR tests also skip without Tesseract) |
+| case-records | `cd servers/case_records && ../../.venv/Scripts/python.exe -m pytest` | 29 passed, 34 skipped (held-out split; 3 need PostgreSQL + MinIO) |
+| policy-kb | `cd servers/policy_kb && ../../.venv/Scripts/python.exe -m pytest` | 113 passed, 4 skipped (3 need PostgreSQL; the LangChain test runs in `.venv-agents`) |
 | insurer-portal | `cd servers/insurer_portal && ../../.venv/Scripts/python.exe -m pytest` | 13 passed |
-| memory | `cd memory && ../.venv/Scripts/python.exe -m pytest` | 91 passed (42 of them on PostgreSQL) |
-| contracts | `cd contracts && ../.venv/Scripts/python.exe -m pytest` | 20 passed |
-| memory on vs off | `cd dev_eval/memory_on_off && ../../.venv/Scripts/python.exe -m pytest` | 3 passed |
+| memory | `cd memory && ../.venv/Scripts/python.exe -m pytest` | 72 passed, 42 skipped (the PostgreSQL copies) |
+| contracts | `cd contracts && ../.venv/Scripts/python.exe -m pytest` | 22 passed |
+| memory on vs off | `cd development/dev_eval/memory_on_off && ../../.venv/Scripts/python.exe -m pytest` | 3 passed |
 | agents' toolkit | `cd agents/toolkit && ../../.venv-agents/Scripts/python.exe -m pytest` | 45 passed (live against the four servers the agents use) |
 | all servers over HTTP | `.venv/Scripts/python.exe scripts/dev_servers.py --check` | 5 up |
-| whole app, every dev case | `.venv-agents/Scripts/python.exe dev_eval/dev_cases/run.py` | 42 cases, 41 to the end; scores in `dev_eval/dev_cases/results/dev_cases.md` |
+| whole app, every dev case | `.venv-agents/Scripts/python.exe development/dev_eval/dev_cases/run.py` | 42 cases, all to the end: 40/42 overall, 89/94 rows, 28/31 payable, 37/40 disputable (`development/dev_eval/dev_cases/results/dev_cases.md`) |
 
 Tests that need the storage services read these variables and skip without them:
 
@@ -206,7 +204,7 @@ export CLAIMCLEAR_S3_ACCESS_KEY=claimclear CLAIMCLEAR_S3_SECRET_KEY=claimclear-s
 
 * **Member 3 (agents):** import `claimclear_tools.ClaimClearToolkit` (one session per server, `tk.for_agent("settlement_auditor")`, typed calls, `signals` for graph routes, `critic` checks) and `claimclear_contracts` (`CaseState`, hand-offs, `tools.schema("ClaimIn")` for structured extraction). Read [`servers/README.md`](servers_integration.md) first. Wire Member 4's hooks in: the toolkit's `tool_interceptors` and each agent's `ToolNode(awrap_tool_call=...)`. Never read `var/dataset_map.json` or held-out cases.
 * **Member 4 (app, security, deployment):** uploads go through `CaseStore.create_case` / `add_document`; read an upload with document-reader `read_document`; hooks attach at LangGraph's `ToolNode(awrap_tool_call=...)` (knows the agent: permission, budget) and the toolkit's `tool_interceptors` (around every MCP call: logging, scrubbing); the permission hook uses `claimclear_tools.agents.may_use` and `claimclear_contracts.tools.access/app_only`; memory controls are `grant_consent`, `withdraw_consent`, `export`, `forget` and a daily `purge_expired()`; Compose adds the five servers (8101–8105) and the two storage services.
-* **Member 1 (evaluation):** golden answers are computed by hand, never by the engine; `python -m policy_kb evaluate <queries.jsonl>` gives Recall@5 before and after rewriting; `dev_eval/memory_on_off/run.py` gives the memory comparison. Add same-policy claim sequences to the golden set to make it meaningful.
+* **Member 1 (evaluation):** golden answers are computed by hand, never by the engine; `python -m policy_kb evaluate <queries.jsonl>` gives Recall@5 before and after rewriting; `development/dev_eval/memory_on_off/run.py` gives the memory comparison. Add same-policy claim sequences to the golden set to make it meaningful.
 
 Copy-ready instructions per member: [`.claude/skills/claimclear-member2/references/for-other-members.md`](../.claude/skills/claimclear-member2/references/for-other-members.md).
 

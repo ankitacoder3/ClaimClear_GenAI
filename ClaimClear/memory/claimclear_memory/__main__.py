@@ -1,6 +1,6 @@
 """Manage a user's long-term memory from the command line (the local stand-in for the app's settings screen).
 
-    python -m claimclear_memory consent  USER            # the user agrees to the memory policy (docs/member2_knowledge_memory_tools/memory_policy.md)
+    python -m claimclear_memory consent  USER            # the user agrees to the memory policy (additional_resources/member2_knowledge_memory_tools/memory_policy.md)
     python -m claimclear_memory status   USER            # consent and what is stored (counts)
     python -m claimclear_memory episodes USER            # the earlier conversations remembered (topics only)
     python -m claimclear_memory recall   USER "question" # which earlier conversations a question would recall
