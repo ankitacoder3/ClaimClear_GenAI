@@ -1,6 +1,6 @@
 # Whole-application run: development cases
 
-Every dev case of `dev_data/dataset/dev` through the toolkit and all five servers (no LLM: the claim and letter extraction is the development stand-in in `extract.py`). Scored against each case's answer file.
+Every dev case of `development/development/dev_data/dataset/dev` through the toolkit and all five servers (no LLM: the claim and letter extraction is the development stand-in in `extract.py`). Scored against each case's answer file.
 
 | Source | Cases | Ran to the end | Overall verdict right | Row verdicts right | Payable right (±₹1) | Disputable right (±₹1) |
 |---|---|---|---|---|---|---|
