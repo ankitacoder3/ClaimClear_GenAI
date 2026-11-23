@@ -238,7 +238,7 @@ async with ClaimClearToolkit() as tk:                                  # keep it
 | document-reader | `cd servers/document_reader && ../../.venv/bin/python -m pytest` | 69 passed, 11 skipped ¹ |
 | case-records | `cd servers/case_records && ../../.venv/bin/python -m pytest` | 25 passed, 34 skipped ¹ |
 
-¹ The skipped tests read the **held-out split** (`development/dev_data/dataset/heldout/`, documents such as SET-06, FMT-04, POI-08), which is not part of this upload; each suite's `conftest.py` lists them and skips them with that reason while the folder is missing (three case-records skips need PostgreSQL). Restore `development/dev_data/dataset/heldout` and they run as in Member 2's CI. `pytest` hides the summary line (`addopts = -q`); add `-o addopts=""` to see the counts. CI (`.github/workflows/ci.yml`) runs every suite on each push.
+¹ The skipped tests read the **held-out split** (`development/dev_data/dataset/heldout/`, documents such as SET-06, FMT-04, POI-08), which is not part of this upload; each suite's `conftest.py` lists them and skips them with that reason while the folder is missing (three case-records skips need PostgreSQL). Restore `development/dev_data/dataset/heldout` and they run as in Member 2's CI. `pytest` hides the summary line (`addopts = -q`); add `-o addopts=""` to see the counts. On each push CI runs `.github/workflows/member2.yml` (every Member 2 suite, with PostgreSQL, MinIO and Tesseract) and `.github/workflows/ci.yml` (the smoke tests), both at the repository root.
 
 ## 6. Results on the development cases
 

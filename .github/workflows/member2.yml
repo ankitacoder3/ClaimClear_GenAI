@@ -1,4 +1,7 @@
 # Member 2's suites: the MCP servers, the document reader, memory, contracts, the agents' toolkit.
+# Runs from the repository root; the code is in ClaimClear/, so every job starts there and every step path is
+# under ClaimClear/. No API keys or paid services: PostgreSQL + pgvector and MinIO are throwaway containers,
+# OpenRouter is tested against a fake, and tests that need a model skip.
 # Member 4 takes this over and adds the app, the evaluation gate and the deployment jobs.
 name: member2
 
@@ -21,6 +24,9 @@ jobs:
   servers:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: ClaimClear
     services:
       postgres:
         image: pgvector/pgvector:pg16
@@ -48,49 +54,49 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-          cache-dependency-path: requirements-servers.txt
+          cache-dependency-path: ClaimClear/requirements-servers.txt
 
       - name: Install the servers' environment
         run: python -m pip install -r requirements-servers.txt
 
       - name: Contracts are up to date with the servers
-        working-directory: contracts
+        working-directory: ClaimClear/contracts
         run: python -m claimclear_contracts.export --check
 
       - name: settlement-engine
-        working-directory: servers/settlement_engine
+        working-directory: ClaimClear/servers/settlement_engine
         run: python -m pytest -q -o addopts= -rs
 
       - name: document-reader (OCR tests run here)
-        working-directory: servers/document_reader
+        working-directory: ClaimClear/servers/document_reader
         run: python -m pytest -q -o addopts= -rs
 
       - name: case-records (with PostgreSQL + MinIO)
-        working-directory: servers/case_records
+        working-directory: ClaimClear/servers/case_records
         run: python -m pytest -q -o addopts= -rs
 
       - name: policy-kb (with pgvector)
-        working-directory: servers/policy_kb
+        working-directory: ClaimClear/servers/policy_kb
         run: python -m pytest -q -o addopts= -rs
 
       - name: insurer-portal
-        working-directory: servers/insurer_portal
+        working-directory: ClaimClear/servers/insurer_portal
         run: python -m pytest -q -o addopts= -rs
 
       - name: memory (SQLite and PostgreSQL)
-        working-directory: memory
+        working-directory: ClaimClear/memory
         run: python -m pytest -q -o addopts= -rs
 
       - name: contracts
-        working-directory: contracts
+        working-directory: ClaimClear/contracts
         run: python -m pytest -q -o addopts= -rs
 
       - name: memory on vs off runner
-        working-directory: development/dev_eval/memory_on_off
+        working-directory: ClaimClear/development/dev_eval/memory_on_off
         run: python -m pytest -q -o addopts= -rs
 
       - name: dev-case extraction stand-in
-        working-directory: development/dev_eval/dev_cases
+        working-directory: ClaimClear/development/dev_eval/dev_cases
         run: python -m pytest -q -o addopts= -rs
 
       - name: all five servers answer over HTTP
@@ -102,6 +108,9 @@ jobs:
     # the agents' environment is separate: langchain-mcp-adapters needs mcp<2, the servers use mcp 2.3
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: ClaimClear
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -116,5 +125,5 @@ jobs:
           python -m venv .venv-agents
           .venv-agents/bin/python -m pip install -r requirements-agents.txt
       - name: agents toolkit (live against every server)
-        working-directory: agents/toolkit
+        working-directory: ClaimClear/agents/toolkit
         run: ../../.venv-agents/bin/python -m pytest -q -o addopts= -rs

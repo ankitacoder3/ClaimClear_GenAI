@@ -2833,7 +2833,7 @@ sequenceDiagram
 | fastembed (optional) | not installed in .venv | local embeddings and reranker |
 | OpenRouter API | HTTPS | embeddings `baai/bge-m3`, LLM rewriting `openai/gpt-4.1-mini` (optional) |
 | Docker Compose | - | storage services |
-| GitHub Actions | - | CI `.github/workflows/ci.yml` |
+| GitHub Actions | - | CI `.github/workflows/member2.yml` (Member 2's suites) and `ci.yml` (smoke tests), at the repository root |
 
 | Package | Dependencies | Optional extras |
 |---|---|---|
@@ -2917,7 +2917,7 @@ export CLAIMCLEAR_S3_ACCESS_KEY=claimclear CLAIMCLEAR_S3_SECRET_KEY=claimclear-s
 | Live: agents' environment against every server; both hook points | `agents/toolkit/tests/test_toolkit_live.py` |
 | Every dev case end to end, scored against its answer (section 16.1); the extraction stand-in reads and reconciles every case | `development/dev_eval/dev_cases/run.py`, `development/dev_eval/dev_cases/test_extract.py` |
 
-**CI** (`.github/workflows/ci.yml`): a servers job (Tesseract, PostgreSQL + pgvector, MinIO, every server suite, memory, contracts, the memory runner, all servers over HTTP) and a toolkit job (both environments, live tests). **Partial:** the result of its first run still has to be checked in the repository's Actions tab.
+**CI** (`.github/workflows/member2.yml` at the repository root; moved there on 23 November, because GitHub only runs workflows from the root): a servers job (Tesseract, PostgreSQL + pgvector, MinIO, every server suite, memory, contracts, the memory runner, all servers over HTTP) and a toolkit job (both environments, live tests). No API keys or paid services. The root `ci.yml` (Member 4) runs the app's smoke tests separately.
 
 ### 16.1 Whole-application run on the dev cases
 
@@ -3115,7 +3115,7 @@ Other files:
 | `servers/*/tests/snapshots/*.json` | pinned tool schemas |
 | `contracts/claimclear_contracts/tool_schemas.json`, `contracts/snapshots/contracts.json` | exported tool schemas; contract model schemas |
 | `deploy/storage.compose.yml` | PostgreSQL + pgvector and MinIO |
-| `.github/workflows/ci.yml` | CI |
+| `.github/workflows/member2.yml` (repository root) | CI: Member 2's suites |
 | `development/dev_eval/retrieval/`, `development/dev_eval/memory_on_off/results/` | draft retrieval queries and results; memory comparison results |
 | `docs/` | this document, memory policy, Member 2 overview, technology choices, Fedora setup, tech-stack guide, diagrams |
 | `.claude/skills/claimclear-member2/` | Member 2 playbook for Claude and teammates |

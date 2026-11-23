@@ -48,7 +48,7 @@ All of it is exposed through MCP tools and small Python APIs that Member 3's age
 | Whole-application run | [`development/dev_eval/dev_cases`](evaluation_dev_cases.md) | — | Every dev case through the toolkit and all five servers, scored against its answer | Everyone; Member 1's report |
 | Memory on vs off | [`development/dev_eval/memory_on_off`](evaluation_memory_on_off.md) | — | The plan's memory-on vs memory-off comparison on the development cases | Member 1's report |
 | Dataset | [`development/dev_data/dataset`](dataset_guide.md), guide: [`additional_resources/member2_knowledge_memory_tools/dataset_guide.md`](dataset_guide.md) | — | 95 synthetic cases in one standard format (42 dev, 53 held-out) from two sources, with answers; the Arogya Sanjeevani wording | Every test and run |
-| CI | [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) | — | Every suite on every push, with Tesseract, PostgreSQL and MinIO | Everyone |
+| CI | [`.github/workflows/member2.yml`](../../../.github/workflows/member2.yml) (repository root) | — | Every Member 2 suite on every push, with Tesseract, PostgreSQL + pgvector and MinIO; no API keys. The root [`ci.yml`](../../../.github/workflows/ci.yml) runs the app's smoke tests | Everyone |
 
 ## 2. Find your way around
 
@@ -198,7 +198,7 @@ export CLAIMCLEAR_TEST_S3="s3://claimclear-test?endpoint=127.0.0.1:9000&secure=0
 export CLAIMCLEAR_S3_ACCESS_KEY=claimclear CLAIMCLEAR_S3_SECRET_KEY=claimclear-secret
 ```
 
-`pytest` hides the summary line (`addopts = -q`); add `-o addopts=""` to see the counts. CI runs all of it on every push.
+`pytest` hides the summary line (`addopts = -q`); add `-o addopts=""` to see the counts. CI (`.github/workflows/member2.yml` at the repository root) runs all of it on every push.
 
 ## 8. How the other members use it
 
