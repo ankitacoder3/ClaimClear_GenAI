@@ -1,13 +1,14 @@
 """Register one case folder (bill, settlement letter, policy schedule, discharge summary) and print its case ID.
 
-    .venv/Scripts/python.exe scripts/register_case_folder.py dev_data/dataset/dev/cases/syn-dev-001
-    .venv/Scripts/python.exe scripts/register_case_folder.py dev_data/dataset/dev/cases/gen-dev-147e01 --reference-key gen-dev-147e01
+    .venv/Scripts/python.exe scripts/register_case_folder.py development/dev_data/dataset/dev/cases/syn-dev-001
+    .venv/Scripts/python.exe scripts/register_case_folder.py development/dev_data/dataset/dev/cases/gen-dev-147e01 --reference-key gen-dev-147e01
     .venv/Scripts/python.exe scripts/register_case_folder.py <held-out case folder> --store var/heldout/case_store
 
 This is what the app's upload step does for a policyholder: the files get neutral document IDs and roles,
 and the policy number is read from the policy schedule. Nothing in the dataset's answer key is used, so
 it works for held-out cases too. Run it with the servers' environment (.venv).
 """
+# (Project restructuring #1)
 
 from __future__ import annotations
 
@@ -63,7 +64,7 @@ def register_folder(folder: Path, store: CaseStore, reference_key: str = "") -> 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Register one case folder into a case store and print its case ID.")
-    parser.add_argument("folder", help="a case folder, e.g. dev_data/dataset/dev/cases/syn-dev-001")
+    parser.add_argument("folder", help="a case folder, e.g. development/dev_data/dataset/dev/cases/syn-dev-001")
     parser.add_argument("--reference-key", default="",
                         help="the case's own reference record, when the reference data has several for its policy "
                              "number (the dataset case ID, e.g. gen-dev-147e01)")

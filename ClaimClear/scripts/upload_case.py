@@ -19,6 +19,7 @@ the web UI (``claimclear_graph.webapp``); the running case-records server sees t
 Output: ``{"case_id", "policy_no", "documents": [{name, role, document_id}], "extraction": {claim, letter} | null,
 "how": str, "warnings": [str]}``, or ``{"error": str}``.
 """
+# (Project restructuring #1)
 
 from __future__ import annotations
 
