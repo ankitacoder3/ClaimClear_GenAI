@@ -5,7 +5,7 @@
   py -3 generator/build_redteam.py --no-pdf
   py -3 generator/build_redteam.py --answers-only   # just (re)write each answer/, PDFs untouched
 
-Each attack starts from an existing gen case (base recipe + variant), so its money answer is known.
+Each attack starts from an existing gen case (in generate_data folder) (base recipe + variant), so its money answer is known. (# Project Restructuring #2)
 Document attacks change the rendered documents (text injected at a named spot, a fake clause in the wording,
 a swapped name, an edited line, a duplicate earlier letter). Chat and approval attacks reuse the base documents
 and add the user's input (chat.txt / steps.txt).

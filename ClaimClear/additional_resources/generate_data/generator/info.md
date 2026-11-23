@@ -1,5 +1,7 @@
 # ClaimClear case generator
 
+This `info.md` file serves as an index for the contents under `ClaimClear/additional_resources/generate_data/generator/` (# Project Restructuring #2).
+
 Turns a recipe (`data/recipes/<author>/*.json`) into the documents for each variant plus a hidden label.
 Python 3 standard library only; PDFs via headless Edge or Chrome (falls back to HTML if neither is found).
 

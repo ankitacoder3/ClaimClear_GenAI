@@ -1,6 +1,10 @@
 # generate_data: the case generator behind the `gen-` cases
 
-The 60 `gen-` cases (20 dev in `ClaimClear/development/dev_data/dataset/dev`, 40 held-out) were made by this generator. This folder holds
+This info.md file serves as an index for all contents under ClaimClear/additional_resources/generate_data (# Project Restructuring #2).
+
+The additional documentation, code and prompts for "generate_data" in ClaimClear are maintained here.
+
+Part of the were created using 60 `gen-` cases (20 dev in `ClaimClear/development/dev_data/dataset/dev`, 40 held-out) were made by this generator. This folder holds
 its code, all 24 recipes, and English specs for the datasets still to be generated, so the cases can be rebuilt
 and new ones added.
 
@@ -44,3 +48,5 @@ The imported dev cases already in `ClaimClear/development/dev_data/dataset/dev` 
   6a82b1 and a0a2f1.
 - The retrieval queries in `todo/` cite the IFFCO wording's clause numbers; the app's knowledge base indexes the
   Go Digit wording (`development/dev_eval/retrieval/queries_godigit_DRAFT.jsonl`), so relabel them before use there.
+
+ (# Project restructuring #1)
