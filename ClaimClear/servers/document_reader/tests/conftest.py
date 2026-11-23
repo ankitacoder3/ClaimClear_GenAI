@@ -4,11 +4,13 @@ from pathlib import Path
 
 import pytest
 
+# (Project restructuring #1)
+
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 
 REPO = HERE.parents[2]
-DATASET = REPO / "dev_data" / "dataset"
+DATASET = REPO / "development"/"dev_data" / "dataset"
 
 
 @pytest.fixture(scope="session")
@@ -34,14 +36,14 @@ def doc(dataset_dir):
 
 
 # ---------------------------------------------------------------------------------------------------------------
-# Tests that read the held-out split (dev_data/dataset/heldout). When it isn't in the checkout (e.g. a shared zip of
+# Tests that read the held-out split (development/dev_data/dataset/heldout). When it isn't in the checkout (e.g. a shared zip of
 # the dev split only) they are skipped with this reason instead of failing on a missing document; with the split
 # present they run as usual. Keep this list to tests that truly need held-out documents.
 import pathlib as _pathlib
 
 import pytest as _pytest
 
-_HELDOUT = _pathlib.Path(__file__).resolve().parents[3] / "dev_data" / "dataset" / "heldout"
+_HELDOUT = _pathlib.Path(__file__).resolve().parents[3] / "development"/"dev_data" / "dataset" / "heldout"
 _NEEDS_HELDOUT = {
     'tests/test_extract.py::test_multi_page_and_page_selection',
     'tests/test_extract.py::test_no_hidden_text_on_clean_documents[DS-05]',
@@ -60,7 +62,7 @@ _NEEDS_HELDOUT = {
 def pytest_collection_modifyitems(config, items):
     if _HELDOUT.is_dir():
         return
-    skip = _pytest.mark.skip(reason="needs the held-out split (dev_data/dataset/heldout), which is not in this checkout")
+    skip = _pytest.mark.skip(reason="needs the held-out split (development/dev_data/dataset/heldout), which is not in this checkout")
     for item in items:
         if item.nodeid.split("/", 1)[-1] in _NEEDS_HELDOUT or item.nodeid in _NEEDS_HELDOUT:
             item.add_marker(skip)

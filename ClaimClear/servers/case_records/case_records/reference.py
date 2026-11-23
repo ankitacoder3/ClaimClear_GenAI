@@ -14,6 +14,7 @@ A policy number normally has one record. A dataset may hold several cases that r
 different terms (gen-data's variants of one recipe): those records carry a ``case_id``, and a case
 registered with that ``reference_key`` gets its own record and history. Untagged records are shared.
 """
+# (Project restructuring #1)
 
 from __future__ import annotations
 

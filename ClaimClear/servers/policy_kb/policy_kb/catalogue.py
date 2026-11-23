@@ -16,6 +16,7 @@ Two sources, one way in (``PolicyLibrary.resolve``):
   as ``wording_uin = "upload:<doc_id>"``. It is served only to calls that name the owning ``case_id``,
   is never reviewed (no rule map), and is deleted with the case.
 """
+# (Project restructuring #1)
 
 from __future__ import annotations
 

@@ -10,6 +10,7 @@ next to the answer key (expected verdicts and amounts). This module reads only t
 letter as printed, plus the split's ``reference/``; tests read the answer key separately, and
 nothing here passes it to the engine.
 """
+# (Project restructuring #1)
 
 from __future__ import annotations
 

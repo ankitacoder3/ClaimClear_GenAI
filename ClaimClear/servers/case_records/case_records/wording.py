@@ -16,6 +16,7 @@ prints the wording's IRDAI UIN; the wording is chosen in this order:
 Only the schedule's visible text is read (hidden text is never trusted to choose a wording). A UIN
 printed on a document can only pick a wording from the reviewed catalogue, never load anything else.
 """
+# (Project restructuring #1)
 
 from __future__ import annotations
 

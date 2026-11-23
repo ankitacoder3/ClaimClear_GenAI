@@ -6,8 +6,9 @@
 
 Run from ``servers/case_records`` with the project virtual environment.
 Configuration: ``CLAIMCLEAR_CASE_STORE`` (default ``var/case_store``) and
-``CLAIMCLEAR_REFERENCE_DIR`` (default ``dev_data/dataset/dev/reference``).
+``CLAIMCLEAR_REFERENCE_DIR`` (default ``development/dev_data/dataset/dev/reference``).
 """
+# (Project restructuring #1)
 
 from __future__ import annotations
 

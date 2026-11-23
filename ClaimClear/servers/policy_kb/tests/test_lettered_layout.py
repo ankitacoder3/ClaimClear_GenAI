@@ -1,5 +1,5 @@
 """The lettered-section layout (as in Go Digit's wording), on a synthetic text; and checks on the real wording
-that run only when it has been downloaded into dev_data/wordings/ (it is git-ignored)."""
+that run only when it has been downloaded into development/dev_data/wordings/ (it is git-ignored)."""
 
 from pathlib import Path
 
@@ -9,6 +9,8 @@ from policy_kb import PolicyKB
 from policy_kb.ingest import ingest_file, ingest_text
 from policy_kb.kb import _normalise_id
 from policy_kb.models import WordingInfo
+
+# (Project restructuring #1)
 
 INFO = WordingInfo("Test Insurer", "Arogya Sanjeevani Policy", "TEST", synthetic=True)
 
@@ -124,7 +126,7 @@ def test_short_clauses_are_not_split(lettered):
 
 # --- the real Go Digit wording (skipped unless downloaded) -----------------------------------------
 
-GODIGIT = Path(__file__).resolve().parents[3] / "dev_data" / "wordings" / "policy-wordings-arogya-sanjeevani-policy-go-digit.pdf"
+GODIGIT = Path(__file__).resolve().parents[3] / "development"/"dev_data" / "wordings" / "policy-wordings-arogya-sanjeevani-policy-go-digit.pdf"
 
 
 @pytest.fixture(scope="module")

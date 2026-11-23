@@ -1,16 +1,17 @@
 """Command line for the policy knowledge base.
 
-    python -m policy_kb build --wording ../../dev_data/wordings/<file>.pdf      # metadata from <file>.source.json
+    python -m policy_kb build --wording ../../development/dev_data/wordings/<file>.pdf      # metadata from <file>.source.json # (Project restructuring #1)
     python -m policy_kb build --wording tests/fixtures/sample_wording.txt --insurer "Aarohan" --uin SYN --synthetic
     python -m policy_kb build --wording <file>.pdf --embedder openrouter                 # OpenRouter embeddings
     python -m policy_kb search "they cut my medicine bill" --rewriter glossary+openrouter
     python -m policy_kb search "they cut my medicine bill"
     python -m policy_kb clause 5.2
     python -m policy_kb clauses
-    python -m policy_kb evaluate ../../dev_eval/retrieval/queries.jsonl          # Recall@5 table
+    python -m policy_kb evaluate ../../development/dev_eval/retrieval/queries.jsonl          # Recall@5 table # (Project restructuring #1)
 
 The index goes to ``$CLAIMCLEAR_POLICY_KB_INDEX`` or ``<repo>/var/policy_kb/index.json``.
 """
+
 
 from __future__ import annotations
 
