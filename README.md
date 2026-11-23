@@ -76,7 +76,7 @@ ClaimClear_GenAI/
     ├── dev_eval/                   dev cases (fixed workflow), the same cases through the graph, memory on/off, retrieval
     ├── scripts/ and deploy/        helper scripts; PostgreSQL + pgvector + MinIO for production backends
     ├── Golden_Dataset/             the golden dataset (info.txt: Dev 20, Eval 40, RedTeam 30 = 90 cases)
-    └── docs/                       all documentation: setup/, member2_knowledge_memory_tools/, member3_orchestration/, shared/
+    └── additional_resources/                       all documentation: setup/, member2_knowledge_memory_tools/, member3_orchestration/, shared/
 ```
 
 <br>
@@ -154,7 +154,7 @@ python start.py --set-openrouter-key   # or save an OpenRouter key (hidden promp
 python start.py --auto SET-01
 ```
 
-5. **Run the tests and the evaluation** (details in `ClaimClear/docs/setup/setup_guide.md`)
+5. **Run the tests and the evaluation** (details in `ClaimClear/additional_resources/setup/setup_guide.md`)
 
 ```bash
 .venv-agents/bin/python dev_eval/graph_dev_cases/run.py     # all 42 dev cases through the graph (Scripts\python.exe on Windows)
@@ -194,7 +194,7 @@ cd ui_chainlit
 
 Bundles and extra tags are in `ClaimClear/ui_chainlit/eval_bundles.json`. `--track` adds a line to `ClaimClear/ui_chainlit/eval_history.csv` (in git, to follow results over time) and, with `LANGSMITH_API_KEY` in `ClaimClear/.env`, sends the run to LangSmith as an experiment with per-case scores and tags. Accounts outside the US region also need `LANGSMITH_ENDPOINT` (for example `https://apac.api.smith.langchain.com`). Reports: `ClaimClear/var/eval/ui_judge/<time>/report.md`.
 
-Full instructions, options and troubleshooting: [ClaimClear/info.md](ClaimClear/info.md) and [ClaimClear/docs/setup/setup_guide.md](ClaimClear/docs/setup/setup_guide.md).
+Full instructions, options and troubleshooting: [ClaimClear/info.md](ClaimClear/info.md) and [ClaimClear/additional_resources/setup/setup_guide.md](ClaimClear/additional_resources/setup/setup_guide.md).
 
 <br>
 <a href="#top">Back to top</a>
@@ -207,15 +207,15 @@ Full instructions, options and troubleshooting: [ClaimClear/info.md](ClaimClear/
 
 | Start | Audit and result |
 |---|---|
-| ![Start](ClaimClear/docs/member3_orchestration/screenshots/1_start.png) | ![The agents' audit](ClaimClear/docs/member3_orchestration/screenshots/2_audit.png) |
+| ![Start](ClaimClear/additional_resources/member3_orchestration/screenshots/1_start.png) | ![The agents' audit](ClaimClear/additional_resources/member3_orchestration/screenshots/2_audit.png) |
 
 | Streamed, grounded chat | An unsupported amount is withdrawn |
 |---|---|
-| ![Chat](ClaimClear/docs/member3_orchestration/screenshots/3_chat.png) | ![Withdrawn answer](ClaimClear/docs/member3_orchestration/screenshots/4_retracted.png) |
+| ![Chat](ClaimClear/additional_resources/member3_orchestration/screenshots/3_chat.png) | ![Withdrawn answer](ClaimClear/additional_resources/member3_orchestration/screenshots/4_retracted.png) |
 
 | Uploading documents | Choosing the model |
 |---|---|
-| ![Upload](ClaimClear/docs/member3_orchestration/screenshots/5_upload.png) | ![Model settings](ClaimClear/docs/member3_orchestration/screenshots/8_settings_ok.png) |
+| ![Upload](ClaimClear/additional_resources/member3_orchestration/screenshots/5_upload.png) | ![Model settings](ClaimClear/additional_resources/member3_orchestration/screenshots/8_settings_ok.png) |
 
 <br>
 <a href="#top">Back to top</a>
@@ -233,7 +233,7 @@ Full instructions, options and troubleshooting: [ClaimClear/info.md](ClaimClear/
 5. **Ask anything** about your records, the settlement or the policy ("Why was R3 deducted?", "Is cataract surgery covered?"). Answers stream in, and every rupee amount is checked as it streams.
 6. **Close the page** when you are done: the web UI and the servers stop, and your uploaded documents and chats are deleted (use `--keep-data` to keep them; the sample cases are synthetic).
 
-Results on the 42 development cases: 40/42 overall verdicts right, 89/94 row verdicts, 28/31 payable and 37/40 disputable amounts; the multi-agent graph agrees with the fixed workflow on every case. Every document is listed in [ClaimClear/docs/README.md](ClaimClear/docs/README.md).
+Results on the 42 development cases: 40/42 overall verdicts right, 89/94 row verdicts, 28/31 payable and 37/40 disputable amounts; the multi-agent graph agrees with the fixed workflow on every case. Every document is listed in [ClaimClear/additional_resources/README.md](ClaimClear/additional_resources/README.md).
 
 <br>
 <a href="#top">Back to top</a>
