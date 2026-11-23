@@ -1,7 +1,12 @@
 # ClaimClear documentation
 
-All of ClaimClear's documentation is here, one document per topic: the code folders hold code only. The project's entry
+This info.md file serves as an index file for all the documentation maintained under "ClaimClear/additional_resources" (# Project restructuring #2)
+
+The additional and detailed documentation of ClaimClear components or folders are maintained here.
+
+It contains one document per topic: the code folders hold code only. The project's entry
 point is the [main guide, `info.md`](../info.md) (what ClaimClear is, how to run it, results, configuration).
+
 
 ## Setup: running ClaimClear
 
