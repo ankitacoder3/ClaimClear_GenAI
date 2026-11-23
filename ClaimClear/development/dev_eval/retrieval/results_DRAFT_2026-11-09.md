@@ -77,13 +77,16 @@ From `servers/policy_kb`, with `OPENROUTER_API_KEY` in the repo's `.env`:
 ```bash
 ../../.venv/Scripts/python.exe -m policy_kb build --wording ../../development/dev_data/wordings/policy-wordings-arogya-sanjeevani-policy-go-digit.pdf --embedder openrouter
 ```
+ (# Project restructuring #1)
 
 ```bash
 ../../.venv/Scripts/python.exe -m policy_kb evaluate ../../development/dev_eval/retrieval/queries_godigit_DRAFT.jsonl --rewriter glossary
 ```
+(# Project restructuring #1)
 
 ```bash
 ../../.venv/Scripts/python.exe -m policy_kb evaluate ../../development/dev_eval/retrieval/queries_godigit_DRAFT.jsonl --rewriter glossary+openrouter
 ```
+(# Project restructuring #1)
 
 Replace the query file with `queries.jsonl` once Member 1 has labelled it. Add `--json` for machine-readable results.

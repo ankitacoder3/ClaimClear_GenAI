@@ -1,8 +1,8 @@
 """Whole-application run over the development cases: every case through every server, scored.
 
-    .venv-agents/Scripts/python.exe development/dev_eval/dev_cases/run.py              # all dev cases, servers over stdio
-    .venv-agents/Scripts/python.exe development/dev_eval/dev_cases/run.py --http       # against scripts/dev_servers.py
-    .venv-agents/Scripts/python.exe development/dev_eval/dev_cases/run.py --only gen-dev-147e01
+    .venv-agents/Scripts/python.exe development/dev_eval/dev_cases/run.py              # all dev cases, servers over stdio (# Project restructuring #1)
+    .venv-agents/Scripts/python.exe development/dev_eval/dev_cases/run.py --http       # against scripts/dev_servers.py  (# Project restructuring #1)
+    .venv-agents/Scripts/python.exe development/dev_eval/dev_cases/run.py --only gen-dev-147e01  (# Project restructuring #1)
 
 Run in the **agents'** environment: it drives the servers through ``claimclear_tools`` exactly as
 Member 3's graph does (the C0 fixed workflow, no LLM). Per case:
@@ -21,7 +21,7 @@ Member 3's graph does (the C0 fixed workflow, no LLM). Per case:
 7. **Score** against the case's answer file (read only here, after the run): overall verdict, each
    row's verdict, the policy-correct payable and the disputable amount.
 
-Writes ``development/dev_eval/dev_cases/results/dev_cases.md`` and ``.json``. Held-out cases are never read.
+Writes ``development/dev_eval/dev_cases/results/dev_cases.md`` and ``.json``. Held-out cases are never read.   (# Project restructuring #1)
 """
 
 from __future__ import annotations
@@ -42,7 +42,7 @@ from claimclear_tools.critic import allowed_figures, unsupported_figures, wordin
 from claimclear_tools.results import ClaimClearToolError
 
 REPO = find_repo()
-DATASET = REPO / "development"/"dev_data" / "dataset"
+DATASET = REPO / "development"/"dev_data" / "dataset"  # Project restructuring #1
 WORK = REPO / "var" / "dev_cases"
 RESULTS = Path(__file__).resolve().parent / "results"
 SPLIT = "dev"
@@ -268,7 +268,7 @@ def report(results: list[dict]) -> str:
         return f"{sum(have)}/{len(have)}" if have else "-"
 
     lines = ["# Whole-application run: development cases", "",
-             "Every dev case of `development/dev_data/dataset/dev` through the toolkit and all five servers (no LLM: the claim and "
+             "Every dev case of `development/dev_data/dataset/dev` through the toolkit and all five servers (no LLM: the claim and  (# Project restructuring #1)"
              "letter extraction is the development stand-in in `extract.py`). Scored against each case's answer file.",
              "", "| Source | Cases | Ran to the end | Overall verdict right | Row verdicts right | Payable right (±₹1) "
              "| Disputable right (±₹1) |", "|---|---|---|---|---|---|---|"]
