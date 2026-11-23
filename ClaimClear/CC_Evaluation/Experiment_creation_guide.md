@@ -4,13 +4,16 @@
 
 | **Experiment**                   | **Team Member** | **Required handover**                                                                                               |
 |----------------------------------|-----------------|---------------------------------------------------------------------------------------------------------------------|
-| **E1 – Architecture (C0/C1/C2)** | TM3             | Working implementations of C0, C1 and C2, a configurable switch to select each configuration, and run instructions. |
+| **E1 – Architecture (C0/C1/C2)** | TM3             | Working implementations of C0, C1 and C2, a configurable switch to select each configuration, and run instructions.  •	C0 – Fixed workflow
+•	C1 – Single-agent configuration
+•	C2 – Multi-agent configuration
+ |
 | **E2 – Defences (ON/OFF)**       | TM4             | Working defence ON/OFF implementation, configurable switch, and run instructions.                                   |
 | **E3 – Playbook (Before/After)** | TM4             | Working playbook OFF/ON implementation, configurable switch, and run instructions.                                  |
-| **E4 – Signature 1 Ablation**    | TM2             | Working baseline and ablation implementation, configurable switch, and run instructions.                            |
-| **E4 – Signature 2 Ablation**    | TM4             | Working baseline and ablation implementation, configurable switch, and run instructions.                            |
+| **E4 – Signature 1 Ablation**    | TM2             | Working baseline (Signature 1 ON) and ablation implementation (Signature 1 OFF), configurable switch, and run instructions.                            |
+| **E4 – Signature 2 Ablation**    | TM4             | Working baseline (Signature 2 ON) and ablation implementation (Signature 2 OFF), configurable switch, and run instructions.                            |
 
-- Who needs to Review what
+- ***Who is responsible for what***
 
 D-\> E4-SIGN1
 
@@ -457,13 +460,7 @@ E4- SIGN1- D-TM2
 
 E4-SIGN2- M-TM4
 
-Or, alternatively,
-
-D-\> E4-SIGN1
-
-S-\> E1
-
-M-\> E2, E3, E4-SIGN2
+---
 
 - Brief
 
@@ -513,7 +510,7 @@ The model, tools, and budget are the same across all configurations.
 
 - The system is not ready. So who is going to do that?
 
-Ah, now I understand the role clearly. **TM1, handles the entire
+**TM1, handles the entire
 evaluation,** and is not responsible for building the experiment
 implementations.
 
