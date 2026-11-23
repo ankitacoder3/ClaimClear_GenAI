@@ -88,6 +88,16 @@ def test_user_names_summaries_and_page_counts(tmp_path, doc):
     assert again.document_summaries[rec.document_id] == "City Eye Hospital, final bill"
 
 
+def test_only_the_file_name_is_kept_whatever_the_os(tmp_path, doc):
+    """Windows and POSIX folders are both removed on every OS (CI runs on Linux, developers on Windows)."""
+    store = CaseStore(tmp_path)
+    case = store.create_case("unknown", salt="t")
+    for name, kept in [(r"C:\uploads\my bill.pdf", "my bill.pdf"), ("/home/u/docs/letter.pdf", "letter.pdf"),
+                       (r"..\..\secret\schedule.pdf", "schedule.pdf"), ("plain.png", "plain.png")]:
+        rec = store.add_document(case.case_id, doc("GEN-01"), name=name)
+        assert store.case(case.case_id).document_names[rec.document_id] == kept, name
+
+
 def test_dataset_files_keep_no_name(tmp_path, doc):
     store = CaseStore(tmp_path)
     case = store.create_case("P1", salt="t")

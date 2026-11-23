@@ -44,7 +44,7 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Any, Awaitable, Callable, Optional
 
-REPO = Path(__file__).resolve().parents[2]
+REPO = Path(__file__).resolve().parents[3]          # the ClaimClear folder (development/dev_eval/memory_on_off/run.py)
 for sub in ("servers/settlement_engine", "memory"):
     sys.path.insert(0, str(REPO / sub))
 

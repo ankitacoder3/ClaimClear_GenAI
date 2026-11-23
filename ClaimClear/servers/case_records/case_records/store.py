@@ -30,7 +30,7 @@ import hashlib
 import os
 import re
 from dataclasses import asdict, dataclass, field
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from typing import Optional
 
 from .backends import Blobs, Index, blobs_for, index_for
@@ -159,7 +159,9 @@ class CaseStore:
             case.document_ids.append(document_id)
         case.document_roles[document_id] = role
         if name:
-            case.document_names[document_id] = Path(name).name[:200]
+            # only the file name, never the user's folders: PureWindowsPath splits on both "\" and "/" on every OS
+            # (Path splits only on the running OS's separator, so a Windows path kept its folders on Linux)
+            case.document_names[document_id] = PureWindowsPath(name).name[:200]
         self._save()
         return self._docs[document_id]
 
