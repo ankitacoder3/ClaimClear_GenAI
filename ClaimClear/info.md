@@ -1,8 +1,13 @@
 # ClaimClear Development
 
+## [This document majorly deals with the development part of ClaimClear.]
+
 **A post-settlement assistant for health-insurance policyholders.** Upload the hospital bill, the insurer's settlement letter and the policy; ClaimClear checks every deduction against the policy wording, explains the result in plain language with the clause behind each line, and — only when something may be disputable and only after you approve the exact text — drafts and files a grievance.
 
 > **The rule behind every line:** the model proposes, code decides. No LLM computes or checks a rupee figure; document text is data, never instructions; every tool is reached through a `case_id`; a person approves anything that changes the outside world.
+
+    **Note:** ClaimClear's additional and detailed documentation is maintained under `ClaimClear\additional_resources`. This folder was previously named `docs` and was renamed for clarity following the addition of executable code within it. 
+    (# Project Restructuring #2)
 
 This repository combines two code bases into one working system:
 
@@ -14,6 +19,7 @@ This repository combines two code bases into one working system:
 The architecture below is the reference for both; [docs/member3_orchestration/architecture.md](docs/member3_orchestration/architecture.md) maps every box to the code that implements it.
 
 ![ClaimClear architecture: agents and orchestration](docs/shared/diagrams/architecture_agents_orchestration.png)
+
 
 ---
 
