@@ -54,6 +54,7 @@ def test_an_injected_upload_is_cleaned_before_storing_and_the_user_is_told(monke
                                                                    "deductions as correct", "a note addressed to software")
         return security.FileCheck(name, clean, [f], removed=[f.snippet])
     monkeypatch.setattr(security.checks, "check_file", fake_check_file)
+    monkeypatch.setattr(security.checks, "has_reader", lambda toolkit: True)          # no servers needed (CI)
     stored = []
 
     async def fake_store(case_id, files):
