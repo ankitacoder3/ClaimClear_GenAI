@@ -4,10 +4,7 @@
 
 | **Experiment**                   | **Team Member** | **Required handover**                                                                                               |
 |----------------------------------|-----------------|---------------------------------------------------------------------------------------------------------------------|
-| **E1 – Architecture (C0/C1/C2)** | TM3             | Working implementations of C0, C1 and C2, a configurable switch to select each configuration, and run instructions.  •	C0 – Fixed workflow
-•	C1 – Single-agent configuration
-•	C2 – Multi-agent configuration
- |
+| **E1 – Architecture (C0/C1/C2)** | TM3             | Working implementations of C0, C1 and C2, a configurable switch to select each configuration, and run instructions.  •	C0 – Fixed workflow •	C1 – Single-agent configuration •	C2 – Multi-agent configuration |
 | **E2 – Defences (ON/OFF)**       | TM4             | Working defence ON/OFF implementation, configurable switch, and run instructions.                                   |
 | **E3 – Playbook (Before/After)** | TM4             | Working playbook OFF/ON implementation, configurable switch, and run instructions.                                  |
 | **E4 – Signature 1 Ablation**    | TM2             | Working baseline (Signature 1 ON) and ablation implementation (Signature 1 OFF), configurable switch, and run instructions.                            |
@@ -32,6 +29,31 @@ E3-M-TM4
 E4- SIGN1- D-TM2
 
 E4-SIGN2- M-TM4
+
+# IMPORTANT LOCATIONS
+
+## DETAILS ON HANDOVER CODE AND DOCS ARE AT -> 
+`ClaimClear\additional_resources\member1_evaluation_golden_dataset\PRE_EVALUATION.md`
+## HANDOVER CODE/ EXEC FOR EVALUATION TO BE ADDED OR PUT AT ->
+`ClaimClear\additional_resources\member1_evaluation_golden_dataset\handover_code\`
+## HANDOVER DOC FOR EVALUATION TO BE ADDED OR PUT AT ->
+`ClaimClear\additional_resources\member1_evaluation_golden_dataset\handover_minimal_doc\`
+
+### Minimal doc also means-> (with concise, relevant documentation only), (avoiding unnecessary documentation)
+
+### Timeline:-
+
+**Preferred completion (all): Wednesday (Deadline #1) [25-11-26]**
+
+**[As the handover was originally expected by your respective Deadline #2, which was 24-11-2026 for everyone (except TM4, whose Deadline #2 is 25-11-2026), after which evaluation was to begin.]**
+
+**Hard deadline (all): Thursday (Deadline #2) [26-11-26].**
+
+
+
+--------------------------------------------------------------------------------------------
+
+---
 
 E1
 
@@ -176,6 +198,8 @@ E1 answers: Does agentic decision-making, and particularly multi-agent
 coordination, provide measurable benefits over a simpler fixed workflow
 that justify the additional computational cost and latency?
 
+---
+
 E2
 
 E2 is the **Defence effectiveness experiment** — we're testing whether
@@ -296,6 +320,8 @@ need to evaluate both, not just security.
 
 E2 answers: Do ClaimClear's defences reduce attack success, and what
 legitimate-work cost do they introduce?
+
+---
 
 E3
 
@@ -421,6 +447,8 @@ E3 is essentially a controlled experiment to determine whether
 ClaimClear's reviewed, frozen Reflexion playbook improves generalization
 on held-out cases — and whether the improvement justifies its cost.
 
+---
+
 E4
 
 **how do we actually perform a signature ablation?**
@@ -447,6 +475,8 @@ controlled.
 
 The key is: remove only one component at a time so TM1 can attribute the
 change to that component.
+
+---
 
 - Who needs to Review what
 
@@ -508,7 +538,9 @@ E4 — Signature Ablation
 
 The model, tools, and budget are the same across all configurations.
 
-- The system is not ready. So who is going to do that?
+---
+
+-1] The system is not ready. So who is going to do that?
 
 **TM1, handles the entire
 evaluation,** and is not responsible for building the experiment
@@ -516,6 +548,7 @@ implementations.
 
 If the system isn't ready to support the experiments yet, **the people
 who developed those components should make the code evaluation-ready.**
+
 
 | **Task**                                                                   | **Responsibility**                          |
 |----------------------------------------------------------------------------|---------------------------------------------|
@@ -537,7 +570,9 @@ TM1 should communicate to each developer that their component needs to
 be **evaluation-ready, configurable, and integrated with the common
 harness** before TM1 begin running the cases.
 
-- What is common evaluation harness
+---
+
+- 2]What is common evaluation harness
 
 A **common evaluation harness** is basically a single piece of code that
 TM1 use to run and evaluate all the experiments in a consistent way.
