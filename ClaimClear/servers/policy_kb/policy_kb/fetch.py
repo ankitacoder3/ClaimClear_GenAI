@@ -9,6 +9,7 @@ build`` reads that file, so every clause in the index can name its exact source.
 
 Run it only after the team has agreed which wording to use.
 """
+# (Project restructuring #1)
 
 from __future__ import annotations
 

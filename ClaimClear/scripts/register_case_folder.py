@@ -8,6 +8,7 @@ This is what the app's upload step does for a policyholder: the files get neutra
 and the policy number is read from the policy schedule. Nothing in the dataset's answer key is used, so
 it works for held-out cases too. Run it with the servers' environment (.venv).
 """
+# (Project restructuring #1)
 
 from __future__ import annotations
 

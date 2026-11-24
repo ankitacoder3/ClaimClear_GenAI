@@ -14,6 +14,7 @@ MCP tools never read it, and it must never be given to an agent.
 Held-out cases go into their own store (``--split heldout``), so their case and document IDs never
 appear in development runs. The default is the dev split.
 """
+# (Project restructuring #1)
 
 from __future__ import annotations
 

@@ -1,6 +1,9 @@
 # Specs for the remaining datasets (English only, not generated yet)
 
-Plain-English specs for everything in the team plan besides the 60 claim cases and their gold. Each item refers to
+This `info.md` file serves as an index for the contents under `ClaimClear/additional_resources/generate_data/todo/` (# Project Restructuring #2).
+
+Plain-English specs for everything in the team plan besides the 60 claim cases and their gold. 
+Each item refers to
 an existing case (D1-D8 dev, H1-H16 held-out, "v" = variant) so its money answer is already known. Draft for
 review.
 

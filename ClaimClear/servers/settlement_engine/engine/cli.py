@@ -8,6 +8,7 @@
 
 Run from ``servers/settlement_engine``.
 """
+# (Project restructuring #1)
 
 from __future__ import annotations
 
