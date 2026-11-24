@@ -14,8 +14,8 @@ the misuse classes to look for (`security/policy.py`):
 - documents: **injection** (instructions to the AI), **phishing** (send documents or money elsewhere)
 - chat: **injection**, **fraud help**, **false claim**, **other people's data**, **off-topic**
 
-A flagged document is stored as a clean copy (`security/scrub.py`: flagged lines and all hidden text removed); the user
-is told what was found. A flagged chat message gets a reply that fits the class instead of reaching the answerer.
+A flagged document is stored as a clean copy (`security/scrub.py`: only the flagged text removed, nothing else); a
+clean document is stored unchanged; the user is told what was found. A flagged chat message gets a reply that fits the class instead of reaching the answerer.
 
 ## Options compared
 
@@ -47,7 +47,9 @@ with each other (RT-D) are not instructions or misuse: they need checks against 
 
 ## Status
 
-- The course OpenRouter key blocks all three guard models ("Model blocked by guardrail"); `openai/gpt-4.1-mini` is
-  allowed. We have asked for `gpt-oss-safeguard-20b` (and Llama Guard 4) to be allow-listed.
-- Until then a key that allows the guard is needed; without one, only the keyword rules run, and the chat says the
-  security check could not run fully.
+- 24 Nov: the course OpenRouter key now allows `gpt-oss-safeguard-20b` and Llama Guard 4 (Nemotron is still blocked),
+  so the default guards run on it.
+- If a key cannot use a guard model, ClaimClear checks at start, falls back to our own model with the same policy and
+  says so; guard errors are counted and shown, never read as "nothing found".
+- Document consistency checks (RT-A12, RT-D) are in `security/consistency_check.py`; the standard-wording check for
+  forged terms (RT-A06, A09) is next.
