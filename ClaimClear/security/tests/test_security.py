@@ -206,7 +206,10 @@ def test_scrub_removes_only_the_flagged_line_hidden_text_and_metadata(tmp_path):
     import json
     import subprocess
     from claimclear_tools.config import server_python
-    py = server_python(checks.REPO)
+    try:
+        py = server_python(checks.REPO)
+    except FileNotFoundError:                                  # no servers installed (CI quick job)
+        pytest.skip("the servers' Python is not installed here")
     if not Path(py).exists() or subprocess.run([py, "-c", "import pymupdf"], capture_output=True).returncode:
         pytest.skip("the servers' Python with PyMuPDF is not installed here")
     out = subprocess.run([py, "-c", SCRUB_CHECK, str(Path(checks.__file__).with_name("scrub.py")), str(tmp_path)],
