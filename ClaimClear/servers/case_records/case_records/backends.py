@@ -26,6 +26,7 @@ import json
 import os
 import re
 import tempfile
+import time
 from pathlib import Path
 from typing import Optional, Protocol
 from urllib.parse import parse_qs, unquote, urlparse
@@ -71,7 +72,14 @@ class JsonIndex:
         fd, tmp = tempfile.mkstemp(dir=self.root, suffix=".tmp")
         with os.fdopen(fd, "w", encoding="utf-8") as fh:
             json.dump({"documents": documents, "cases": cases}, fh, indent=2)
-        os.replace(tmp, self.file)
+        for attempt in range(50):        # Windows: replacing fails while another process is reading the file
+            try:
+                os.replace(tmp, self.file)
+                return
+            except PermissionError:
+                if attempt == 49:
+                    raise
+                time.sleep(0.05)
 
 
 class LocalBlobs:
