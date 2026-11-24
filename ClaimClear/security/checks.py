@@ -1,9 +1,9 @@
 """Run the chosen guards on uploads (before they are stored) and on chat messages.
 
 Upload flow, defences on: read the file without storing it (document reader's ``read_document``) -> the guards check
-its visible text and every hidden channel -> a clean copy is made (``scrub.py``: flagged snippets and all hidden text
-redacted, invisible extras stripped) -> the clean copy is what gets stored. Photos and scans cannot be redacted
-precisely, so a flagged image is not used (the user is asked for a clean copy).
+its visible text and every hidden channel -> nothing found: the original file is stored byte-for-byte; something found:
+one clean copy is made (``scrub.py`` removes the flagged snippets only, nothing else) and that is what gets stored.
+Photos and scans cannot be redacted precisely, so a flagged image is not used (the user is asked for a clean copy).
 """
 from __future__ import annotations
 
@@ -89,11 +89,10 @@ async def run(guards: list[InputGuard], items: list[tuple[str, str, bool]], kind
 @dataclass
 class FileCheck:
     name: str
-    path: Path                                   # what to store: the clean copy, or the original when not checked
+    path: Path                                   # what to store: the clean copy when something was flagged, else the original
     findings: list[Finding] = field(default_factory=list)
     removed: list[str] = field(default_factory=list)       # snippets redacted from the clean copy
     not_found: list[str] = field(default_factory=list)     # flagged snippets the redaction could not locate
-    hidden_removed: int = 0                                # hidden-text runs removed (attack or not)
     blocked: bool = False                                  # not used at all (a flagged photo or scan)
     error: str = ""
 
@@ -111,18 +110,17 @@ async def check_file(toolkit, guards: list[InputGuard], path: Path, name: str) -
     items = [(f"{name}: visible text", signals.visible_text(doc), long)]
     items += [(f"{name}: {k}", v, False) for k, v in channels(doc).items()]
     findings = await run(guards, items, "document")
-    hidden = [p["hidden_text"] for p in doc.get("pages", []) if (p.get("hidden_text") or "").strip()]
+    if not findings:
+        return FileCheck(name, path)                          # clean: stored exactly as uploaded
     if media != "application/pdf":
-        return FileCheck(name, path, findings, blocked=bool(findings))
+        return FileCheck(name, path, findings, blocked=True)
     out = CLEAN_DIR / uuid.uuid4().hex[:12] / path.name
     out.parent.mkdir(parents=True, exist_ok=True)
     flagged = list(dict.fromkeys(f.snippet for f in findings))
-    res = await _scrub(path, out, flagged + [h for h in hidden if h not in flagged])
+    res = await _scrub(path, out, flagged)
     if res.get("error"):
-        return FileCheck(name, path, findings, blocked=bool(findings), error=f"could not clean it: {res['error']}")
-    return FileCheck(name, Path(res["path"]), findings, removed=[s for s in res["removed"] if s in flagged],
-                     not_found=[s for s in res["not_found"] if s in flagged],
-                     hidden_removed=sum(1 for s in res["removed"] if s not in flagged))
+        return FileCheck(name, path, findings, blocked=True, error=f"could not clean it: {res['error']}")
+    return FileCheck(name, Path(res["path"]), findings, removed=res["removed"], not_found=res["not_found"])
 
 
 async def _scrub(path: Path, out: Path, snippets: list[str]) -> dict:

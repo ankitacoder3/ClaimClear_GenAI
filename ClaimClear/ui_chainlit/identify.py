@@ -44,6 +44,15 @@ class Identity(BaseModel):
     discharge_date: Optional[str] = Field(None, description="Date of discharge as printed")
     hospital: Optional[str] = Field(None, description="The hospital's name as printed")
     sum_insured: Optional[str] = Field(None, description="Sum insured as printed (with currency)")
+    first_inception: Optional[str] = Field(None, description="On a policy schedule: the date of first inception "
+                                                             "(when cover first started), as printed")
+    period_start: Optional[str] = Field(None, description="On a policy schedule: the start of the current policy "
+                                                          "period, as printed")
+    period_end: Optional[str] = Field(None, description="On a policy schedule: the end of the current policy period, "
+                                                        "as printed")
+    policy_holder: Optional[str] = Field(None, description="On a policy schedule: the policyholder's name as printed")
+    insurer: Optional[str] = Field(None, description="The insurance company's name as printed")
+    product: Optional[str] = Field(None, description="On a policy schedule: the product or plan name as printed")
     endorsements: list[str] = Field(default_factory=list, description="Each endorsement or special condition printed "
                                                                       "on a policy schedule, word for word")
 
@@ -66,8 +75,8 @@ async def identify_one(llm, toolkit, case_id: str, doc: dict) -> dict:
     done = await store_docs.describe_document(case_id, doc["document_id"], found.type, found.summary)
     if done.get("error"):
         return {**out, "error": done["error"]}
-    if found.type == "policy_schedule" and found.policy_no:
-        await store_docs.set_policy(case_id, found.policy_no)
+    if found.type == "policy_schedule" and found.policy_no:     # the uploaded schedule is the policy's source
+        await store_docs.set_policy(case_id, found.policy_no, schedule=store_docs.schedule_terms(out["facts"]))
     if found.type == "policy_wording":
         idx = await store_docs.index_wording(toolkit, case_id, doc["document_id"])
         out["note"] = (f"couldn't index it: {idx['error']}" if idx.get("error") else

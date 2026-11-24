@@ -190,6 +190,8 @@ async def on_message(msg: cl.Message) -> None:
 async def take_uploads(files: list[tuple[Path, str]]) -> None:
     """Store, identify, and start the review once everything it needs is there."""
     app, meta = await ready(), cl.user_session.get("chat")
+    if not meta.get("reference_key"):              # demo data: which dataset case, from the files as uploaded
+        meta["reference_key"] = store_docs.dataset_reference_key([store_docs.file_document_id(p) for p, _ in files])
     if security.enabled():                         # T1: checked and cleaned before anything is stored
         async with cl.Step(name="Security check", type="tool") as step:
             guards = security.build(app["llm"])
@@ -200,12 +202,11 @@ async def take_uploads(files: list[tuple[Path, str]]) -> None:
             step.output = "\n".join(
                 f"{c.name}: " + ("not used" if c.blocked else "cleaned" if c.findings else "clean")
                 + (f", {len(c.findings)} finding(s)" if c.findings else "")
-                + (f", {c.hidden_removed} hidden-text run(s) removed" if c.hidden_removed else "")
                 + (f" ({c.error})" if c.error else "") for c in checks)
             found = [f.line() for c in checks for f in c.findings]
             meta["security_flags"] += [f for f in found if f not in meta["security_flags"]]
             log("security_files", files=[{"name": c.name, "findings": [f.line() for f in c.findings],
-                                          "hidden_removed": c.hidden_removed, "blocked": c.blocked,
+                                          "removed": len(c.removed), "blocked": c.blocked,
                                           "error": c.error or None} for c in checks])
         if found:
             await cl.Message(content=await security.files_message(app["llm"], checks)).send()
@@ -274,12 +275,16 @@ async def settle_letters(meta: dict) -> None:
 async def start_review(case: dict) -> None:
     """Member 3's review graph on the chat's own case (the documents are typed, the policy number is set)."""
     meta = cl.user_session.get("chat")
-    key = store_docs.dataset_reference_key([d["document_id"] for d in case.get("documents", [])])
+    schedule = next((d.get("facts") or {} for d in meta.get("facts", {}).values() if d.get("type") == "policy_schedule"),
+                    {})
+    key = (meta.get("reference_key") or store_docs.dataset_reference_key([d["document_id"] for d in case.get("documents", [])])
+           or store_docs.reference_key_by_policy(case.get("policy_no") or "", schedule))
     if key:                                                    # demo data only (see store_docs.dataset_reference_key)
         await store_docs.set_policy(meta["case_id"], case["policy_no"], key)
     meta["review_case"] = meta["case_id"]
     log("review_start", case_id=meta["case_id"], policy_no=case.get("policy_no"), reference_key=key or None)
-    await cl.Message(content="I have your bill, settlement letter and policy, so I'm checking the settlement now.").send()
+    await cl.Message(content="I have your bill, settlement letter and policy, so I'm checking the settlement now.\n\n"
+                             + store_docs.policy_source_note(case.get("policy_no") or "", schedule or None)).send()
     cl.user_session.set("thread_id", f"cl-{uuid.uuid4().hex[:12]}")
     cl.user_session.set("shown", False)
     cl.user_session.set("outcome", None)

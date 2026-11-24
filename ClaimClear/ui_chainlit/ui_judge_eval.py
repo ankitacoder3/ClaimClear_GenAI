@@ -137,7 +137,7 @@ async def upload(app: dict, exp: Expected) -> tuple[str, dict, dict]:
         flags = [f.line() for c in checks for f in c.findings]
         if any(g.errors for g in guards):                     # a run with a guard that could not run is not valid
             guard_errors = {g.name: [len(g.errors), g.errors[0]] for g in guards if g.errors}
-        security_files = [{"name": c.name, "findings": len(c.findings), "hidden_removed": c.hidden_removed,
+        security_files = [{"name": c.name, "findings": len(c.findings), "removed": len(c.removed),
                            "blocked": c.blocked, "error": c.error or None} for c in checks]
         files = [(c.path, c.name) for c in checks if not c.blocked]
     stored = await store_docs.store_files("", files)

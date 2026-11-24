@@ -25,6 +25,7 @@ def test_each_document_is_identified_and_recorded(fake_store_writes):
                                                         ("DOC-3", "policy_schedule"), ("terms.pdf", "policy_wording")]
     assert ("describe", "C", "DOC-2", "settlement_letter", "Claim settlement advice, paid INR 7,125.00") in fake_store_writes
     assert ("policy", "C", "AS/2025/658678/79", "") in fake_store_writes                  # the schedule's number
+    assert ("schedule", "C", {"policy_no": "AS/2025/658678/79"}) in fake_store_writes      # its terms, as read
     assert ("wording", "C", "upload:DOC-W") in fake_store_writes and found[3]["note"].startswith("indexed for search")
     assert tk.meta["DOC-1"] == {"role": "bill", "name": "scan001.pdf", "summary": "City Eye Hospital final bill"}
     assert "File name (a hint only" in llm.prompts[0] and "scan001.pdf" in llm.prompts[0]

@@ -187,8 +187,10 @@ def fake_store_writes(monkeypatch, request):
         FakeToolkit.current.meta[document_id].update(role=role, summary=summary)
         return {"ok": True}
 
-    async def policy(case_id, policy_no, reference_key=""):
+    async def policy(case_id, policy_no, reference_key="", schedule=None):
         writes.append(("policy", case_id, policy_no, reference_key))
+        if schedule is not None:
+            writes.append(("schedule", case_id, schedule))
         FakeToolkit.current.policy = (policy_no, reference_key)
         return {"ok": True}
 
