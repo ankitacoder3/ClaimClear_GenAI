@@ -35,6 +35,17 @@ class Identity(BaseModel):
     summary: str = Field(description="One short line, under 20 words: what it is, who issued it, and the policy "
                                      "or claim number and date when printed")
     policy_no: Optional[str] = Field(None, description="The policy number exactly as printed, if page 1 shows one")
+    # the fact sheet: copied as printed on page 1, or null; checked across documents in code (security/consistency_check)
+    patient_name: Optional[str] = Field(None, description="The patient's name as printed")
+    claim_no: Optional[str] = Field(None, description="The claim number as printed")
+    document_date: Optional[str] = Field(None, description="The date of this document itself (letter or bill date), "
+                                                           "as printed")
+    admission_date: Optional[str] = Field(None, description="Date of admission as printed")
+    discharge_date: Optional[str] = Field(None, description="Date of discharge as printed")
+    hospital: Optional[str] = Field(None, description="The hospital's name as printed")
+    sum_insured: Optional[str] = Field(None, description="Sum insured as printed (with currency)")
+    endorsements: list[str] = Field(default_factory=list, description="Each endorsement or special condition printed "
+                                                                      "on a policy schedule, word for word")
 
 
 async def identify_one(llm, toolkit, case_id: str, doc: dict) -> dict:
@@ -50,7 +61,8 @@ async def identify_one(llm, toolkit, case_id: str, doc: dict) -> dict:
         found = found if isinstance(found, Identity) else Identity.model_validate(found)
     except (ClaimClearToolError, ValueError) as exc:
         return {**out, "error": str(exc)}
-    out.update(type=found.type, summary=found.summary, policy_no=found.policy_no)
+    out.update(type=found.type, summary=found.summary, policy_no=found.policy_no,
+               facts=found.model_dump(exclude={"type", "summary"}))
     done = await store_docs.describe_document(case_id, doc["document_id"], found.type, found.summary)
     if done.get("error"):
         return {**out, "error": done["error"]}

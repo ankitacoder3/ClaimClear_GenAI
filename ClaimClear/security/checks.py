@@ -58,9 +58,16 @@ def chosen() -> list[str]:
     return names
 
 
+UNAVAILABLE: set[str] = set()   # guard models the key can't use (model_access, at start): our model stands in
+
+
 def build(llm, names: Optional[list[str]] = None) -> list[InputGuard]:
     out: list[InputGuard] = []
     for n in names if names is not None else chosen():
+        if n in UNAVAILABLE and n not in ("rules", "llm"):
+            n = "llm"                                         # fallback: our model with the same policy
+        if n == "llm" and any(isinstance(g, LLMGuard) for g in out):
+            continue
         out.append(RulesGuard() if n == "rules" else LLMGuard(llm) if n == "llm" else OpenRouterGuard(n))
     return out
 

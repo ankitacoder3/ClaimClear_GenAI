@@ -43,6 +43,7 @@ import answers  # noqa: E402
 import bundles  # noqa: E402
 sys.path.insert(0, str(HERE.parent))     # ClaimClear/security
 import security  # noqa: E402
+from security import consistency_check  # noqa: E402
 import app as chat_app  # noqa: E402  (its ready(): toolkit, model, review graph, gate; no UI is started)
 import findings  # noqa: E402
 import store_docs  # noqa: E402
@@ -144,10 +145,17 @@ async def upload(app: dict, exp: Expected) -> tuple[str, dict, dict]:
         raise RuntimeError(f"store: {stored['error']}")
     case_id = stored["case_id"]
     found = await identify_documents(app["llm"], app["toolkit"], case_id, [d["document_id"] for d in stored["documents"]])
+    docs = [d for d in found if not d.get("error")]             # as the chat does: the current letter, earlier claims
+    pick = consistency_check.pick_current_letter(docs)
+    for i in pick["earlier"]:
+        await store_docs.describe_document(case_id, i, "other",
+                                           consistency_check.earlier_summary(next(d for d in docs if d["document_id"] == i)))
+    if security.enabled():
+        flags += [f.line() for f in consistency_check.check(docs, pick["current"])]
     case = await app["toolkit"].list_case_documents(case_id)
     if case.get("policy_no") not in (None, "", "unknown"):       # test setup: which reference policy record
         await store_docs.set_policy(case_id, case["policy_no"], exp.reference_key)
-    return case_id, case, {"files": [n for _, n in files], "input_flags": flags, "security_files": security_files,
+    return case_id, case, {"files": [n for _, n in files], "input_flags": flags, "security_files": security_files, "letters": pick,
                            "guard_errors": guard_errors,
                            "identified": {d["name"]: d.get("type") or d.get("error") for d in found}}
 
@@ -202,7 +210,7 @@ async def replay_chat(app: dict, exp: Expected, case_id: str, case: dict, st: di
             continue
         text = ""
         async for ev in chat.stream_answer(line, st, app["toolkit"], app["llm"], records, history,
-                                           documents=documents_block(case, True)):
+                                           documents=documents_block(case, True, st.get("security_flags") or [])):
             text = "" if ev["type"] == "retract" else text + ev.get("text", "") if ev["type"] == "delta" else text
         history.append((line, text))
     return [{"user": q, "answer": a} for q, a in history]
@@ -298,6 +306,12 @@ async def main(argv: Optional[list[str]] = None) -> int:
     app = await chat_app.ready()
     if not app["llm"]:
         raise SystemExit("no model configured (OPENROUTER_API_KEY in ClaimClear/.env)")
+    access = app.get("access") or {}
+    if access and not access.get("main_ok", True):
+        from security import model_access
+        raise SystemExit(model_access.main_model_message(getattr(app["llm"], "model_name", ""), access))
+    if access.get("guard_fallback"):
+        print(f"note: guard model not allowed ({access['guard_problem'][:80]}); the guards use our model instead")
     out = OUT / time.strftime("%Y%m%d-%H%M%S")
     out.mkdir(parents=True, exist_ok=True)
     results: dict = {}

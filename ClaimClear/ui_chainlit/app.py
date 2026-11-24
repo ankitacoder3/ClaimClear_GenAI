@@ -44,6 +44,7 @@ from claimclear_tools import ClaimClearToolError, ClaimClearToolkit
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))     # ClaimClear/security
 import security  # noqa: E402
+from security import consistency_check  # noqa: E402
 
 import findings
 import store_docs
@@ -110,7 +111,14 @@ async def ready() -> dict:
         llm = chat.chat_model_from_env()
         graph = build_claimclear_graph(Services(toolkit=tk, extractor=llm_extractor(llm) if llm else None),
                                        checkpointer=MemorySaver())
-        APP.update(cm=cm, toolkit=tk, llm=llm, graph=graph, gate=HumanApprovalGateway(graph))
+        APP.update(cm=cm, toolkit=tk, llm=llm, graph=graph, gate=HumanApprovalGateway(graph), access=None)
+        if llm is not None:                                   # which models the key may use (one tiny call each)
+            from security import model_access
+            local = "openrouter.ai" not in str(getattr(llm, "openai_api_base", "") or "openrouter.ai")
+            APP["access"] = await model_access.check(getattr(llm, "model_name", ""), local)
+            if APP["access"]["guard_fallback"]:
+                security.checks.UNAVAILABLE.add("safeguard")
+            log("model_access", **APP["access"])
     return APP
 
 
@@ -129,13 +137,22 @@ async def start() -> None:
     cl.user_session.set("chat", {"case_id": "", "review_case": "", "security_flags": []})
     cl.user_session.set("history", [])                  # (question, answer) pairs for the answerer
     model = chat.describe_model(app["llm"]) if app["llm"] else "no model configured"
+    access, model_id = app.get("access") or {}, getattr(app["llm"], "model_name", "")
+    if access and not access.get("main_ok", True):           # the key can't use the main model: nothing works
+        from security import model_access
+        await cl.Message(content=model_access.main_model_message(model_id, access)).send()
+        return
     actions = [cl.Action(name="sample", payload={"name": n}, label=label)
                for n, label in SAMPLES if (SAMPLE_DIR / n).is_dir()]
+    note = ""
+    if access.get("guard_fallback"):
+        from security import model_access
+        note = "\n\n" + model_access.guard_message(model_id, access)
     await cl.Message(
         content="**ClaimClear** checks your health-insurance claim settlement.\n\n"
                 "Upload your hospital bill, the insurer's settlement letter, your policy schedule and policy wording "
                 "with the 📎, and ask me anything about them. Or run a sample review below."
-                f"\n\n_Model: {model}_",
+                f"\n\n_Model: {model}_" + note,
         actions=actions).send()
 
 
@@ -157,6 +174,11 @@ async def on_sample(action: cl.Action) -> None:
 @cl.on_message
 @logged
 async def on_message(msg: cl.Message) -> None:
+    access = (await ready()).get("access") or {}
+    if access and not access.get("main_ok", True):           # the key can't use the main model: say so, do nothing
+        from security import model_access
+        await cl.Message(content=model_access.main_model_message(getattr(APP["llm"], "model_name", ""), access)).send()
+        return
     files = [(Path(e.path), e.name) for e in (msg.elements or []) if getattr(e, "path", None)]
     if files:
         await take_uploads(files)
@@ -208,11 +230,45 @@ async def take_uploads(files: list[tuple[Path, str]]) -> None:
                                     + (f" ({d['note']})" if d.get("note") else "")) for d in found)
             log("identified", documents=[{k: d.get(k) for k in ("name", "type", "policy_no", "note", "error")}
                                          for d in found])
+        docs = meta.setdefault("facts", {})                   # every document's fact sheet, for the checks below
+        docs.update({d["document_id"]: d for d in found if not d.get("error")})
+        await settle_letters(meta)
     case = await app["toolkit"].list_case_documents(meta["case_id"])
     readiness = review_readiness(case)
     log("readiness", case_id=meta["case_id"], **readiness)
     if meta["review_case"] != meta["case_id"] and readiness["ready"]:
         await start_review(case)
+
+
+async def settle_letters(meta: dict) -> None:
+    """With more than one settlement letter, check the current one and keep the others as earlier claims (bug #3);
+    with the defences on, check that the documents agree (consistency_check)."""
+    docs = list(meta.get("facts", {}).values())
+    pick = consistency_check.pick_current_letter(docs)
+    if pick["earlier"]:
+        by_id = {d["document_id"]: d for d in docs}
+        if pick["ambiguous"]:                                  # code can't tell: ask, with one button per letter
+            ans = await cl.AskActionMessage(
+                content="You uploaded more than one settlement letter. Which claim should I check?",
+                actions=[cl.Action(name="letter", payload={"id": i}, label=by_id[i]["name"])
+                         for i in [pick["current"], *pick["earlier"]]], timeout=300).send()
+            chosen = (ans or {}).get("payload", {}).get("id") or pick["current"]
+            pick = {**pick, "current": chosen, "reason": "you chose it",
+                    "earlier": [i for i in [pick["current"], *pick["earlier"]] if i != chosen]}
+        for i in pick["earlier"]:
+            await store_docs.describe_document(meta["case_id"], i, "other", consistency_check.earlier_summary(by_id[i]))
+            by_id[i]["type"] = "earlier_settlement_letter"
+        log("letters", current=pick["current"], earlier=pick["earlier"], reason=pick["reason"])
+        await cl.Message(content=f"I'm checking **{by_id[pick['current']]['name']}** ({pick['reason']}); "
+                                 + ", ".join(by_id[i]["name"] for i in pick["earlier"])
+                                 + " I've kept as earlier claims.").send()
+    if security.enabled():
+        found = consistency_check.check(docs, pick["current"])
+        new = [f.line() for f in found if f.line() not in meta["security_flags"]]
+        if new:
+            meta["security_flags"] += new
+            log("consistency", findings=new)
+            await cl.Message(content=consistency_check.message(found)).send()
 
 
 async def start_review(case: dict) -> None:
@@ -265,7 +321,7 @@ async def ask(question: str) -> None:
             return
     out, text = cl.Message(content=""), ""
     async for ev in chat.stream_answer(question, state, app["toolkit"], app["llm"], await records(meta["case_id"], case),
-                                       history, documents=documents_block(case, reviewed)):
+                                       history, documents=documents_block(case, reviewed, meta.get("security_flags") or [])):
         if ev["type"] == "delta":
             text += ev["text"]
             await out.stream_token(ev["text"])
