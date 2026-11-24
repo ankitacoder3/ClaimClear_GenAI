@@ -1,4 +1,4 @@
-"""ClaimClear in Chainlit: the chat UI (see additional_resources/member4_security_deployment/ui_options.md).
+"""ClaimClear in Chainlit: the chat UI (see additional_resources/member4_ui_security_deployment/ui_options.md).
 
 Run (with the five MCP servers already up, e.g. `python start.py --servers-only`):
 

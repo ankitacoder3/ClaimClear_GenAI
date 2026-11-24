@@ -123,10 +123,10 @@ ClaimClear_GenAI/
 | Memory | Long-term and episodic memory (SQLite or PostgreSQL), consent-gated, scrubbed summaries |
 | Storage | SQLite by default; PostgreSQL + pgvector + MinIO optional |
 | Models | OpenRouter (default `openai/gpt-4.1-mini`) or any local LLM (Ollama / LM Studio / llama.cpp) |
-| Web UI | **Chainlit** chat UI (selected: [why](ClaimClear/additional_resources/member4_security_deployment/ui_options.md)): uploads, streaming answers, review steps; the original Starlette single-page app still opens from `start.py` |
-| Safety | Critic with figure checks, streaming guard, human approval gate (SHA-256 + HMAC), per-agent tool permissions; input guardrails planned ([threat model](ClaimClear/additional_resources/member4_security_deployment/threat_model.md)) |
+| Web UI | **Chainlit** chat UI (selected: [why](ClaimClear/additional_resources/member4_ui_security_deployment/ui_options.md)): uploads, streaming answers, review steps; the original Starlette single-page app still opens from `start.py` |
+| Safety | Critic with figure checks, streaming guard, human approval gate (SHA-256 + HMAC), per-agent tool permissions; input guardrails planned ([threat model](ClaimClear/additional_resources/member4_ui_security_deployment/threat_model.md)) |
 | Tests | pytest, hypothesis, record/replay of real tool outputs; smoke tests in one command (`tests/run_smoke.py`), run by GitHub Actions CI on every push |
-| Evals | [UI judge evals](ClaimClear/ui_chainlit/ui_judge_eval.py): cases through the chat's path, graded by an LLM judge + fixed checks; [security eval](ClaimClear/additional_resources/member4_security_deployment/threat_model.md#security-eval-e2) (E2) on 30 attacks + 10 clean cases |
+| Evals | [UI judge evals](ClaimClear/ui_chainlit/ui_judge_eval.py): cases through the chat's path, graded by an LLM judge + fixed checks; [security eval](ClaimClear/additional_resources/member4_ui_security_deployment/threat_model.md#security-eval-e2) (E2) on 30 attacks + 10 clean cases |
 | Tracing | LangSmith: traces of every chat and review, and each eval run as an experiment; `eval_history.csv` in git |
 | Deployment | GitHub Actions CI; Docker Compose planned |
 
@@ -222,7 +222,7 @@ cd ui_chainlit
 ../.venv-agents/Scripts/python ui_judge_eval.py --bundle redteam --track  # security eval: 30 attacks + 10 clean cases, ~$0.80
 ```
 
-Bundles and extra tags are in `ClaimClear/ui_chainlit/eval_bundles.json`. `--track` adds a line to `ClaimClear/ui_chainlit/eval_history.csv` (in git, to follow results over time) and, with `LANGSMITH_API_KEY` in `ClaimClear/.env`, sends the run to LangSmith as an experiment with per-case scores and tags. Accounts outside the US region also need `LANGSMITH_ENDPOINT` (for example `https://apac.api.smith.langchain.com`). Reports: `ClaimClear/var/eval/ui_judge/<time>/report.md`. Security eval results: [threat model](ClaimClear/additional_resources/member4_security_deployment/threat_model.md#security-eval-e2).
+Bundles and extra tags are in `ClaimClear/ui_chainlit/eval_bundles.json`. `--track` adds a line to `ClaimClear/ui_chainlit/eval_history.csv` (in git, to follow results over time) and, with `LANGSMITH_API_KEY` in `ClaimClear/.env`, sends the run to LangSmith as an experiment with per-case scores and tags. Accounts outside the US region also need `LANGSMITH_ENDPOINT` (for example `https://apac.api.smith.langchain.com`). Reports: `ClaimClear/var/eval/ui_judge/<time>/report.md`. Security eval results: [threat model](ClaimClear/additional_resources/member4_ui_security_deployment/threat_model.md#security-eval-e2).
 
 Full instructions, options and troubleshooting: [ClaimClear/info.md](ClaimClear/info.md) and [ClaimClear/additional_resources/setup/setup_guide.md](ClaimClear/additional_resources/setup/setup_guide.md).
 
@@ -276,8 +276,8 @@ Results on the 42 development cases: 40/42 overall verdicts right, 89/94 row ver
 
 | Document | What it covers |
 |---|---|
-| [Threat model](ClaimClear/additional_resources/member4_security_deployment/threat_model.md) | Security deliverable: assets, attackers, lethal trifecta, threats with defences and tests, security eval (E2) |
-| [Chat UI options](ClaimClear/additional_resources/member4_security_deployment/ui_options.md) | Why the chat UI is built on Chainlit, and the options compared |
+| [Threat model](ClaimClear/additional_resources/member4_ui_security_deployment/threat_model.md) | Security deliverable: assets, attackers, lethal trifecta, threats with defences and tests, security eval (E2) |
+| [Chat UI options](ClaimClear/additional_resources/member4_ui_security_deployment/ui_options.md) | Why the chat UI is built on Chainlit, and the options compared |
 
 <br>
 <a href="#top">Back to top</a>
