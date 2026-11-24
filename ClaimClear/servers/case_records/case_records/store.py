@@ -76,6 +76,9 @@ class CaseRecord:
     reference_key: str = ""         # picks this case's own reference record when a dataset reuses a policy number
     document_names: dict[str, str] = field(default_factory=dict)      # document_id -> the user's file name
     document_summaries: dict[str, str] = field(default_factory=dict)  # document_id -> one line on what it is
+    # the terms read off the user's uploaded policy schedule (reference.POLICY_FIELDS, dates ISO); get_policy uses
+    # these first and the reference record only for what the upload does not show
+    uploaded_policy: dict = field(default_factory=dict)
 
     def effective_wording_uin(self) -> str:
         return self.wording_uin or os.environ.get(DEFAULT_WORDING_ENV, DEFAULT_WORDING_UIN)
@@ -181,14 +184,19 @@ class CaseStore:
         self._save()
         return case
 
-    def set_policy(self, case_id: str, policy_no: str, reference_key: str = "") -> CaseRecord:
+    def set_policy(self, case_id: str, policy_no: str, reference_key: str = "",
+                   schedule: Optional[dict] = None) -> CaseRecord:
         """Set the case's policy number once it is known (e.g. read off an uploaded schedule after the case was
-        created). ``reference_key``: as in ``create_case`` (dataset registration only)."""
+        created). ``reference_key``: as in ``create_case`` (dataset registration only). ``schedule``: the terms
+        read off the user's uploaded policy schedule (left as they are when omitted)."""
         case = self.case(case_id)
         if not policy_no.strip():
             raise StoreError("INVALID_POLICY", "the policy number is empty")
         case.policy_no = policy_no.strip()
         case.reference_key = reference_key
+        if schedule is not None:
+            from .reference import POLICY_FIELDS
+            case.uploaded_policy = {k: v for k, v in schedule.items() if k in POLICY_FIELDS and v not in (None, "")}
         self._save()
         return case
 

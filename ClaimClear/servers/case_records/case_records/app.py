@@ -166,14 +166,15 @@ def create_server(store_dir: Optional[str | Path] = None, reference_dir: Optiona
         title="Get policy",
         description=(
             "The policy schedule for the case's policy, in the shape the settlement-engine tools take, with the "
-            "wording_uin to pass to policy-kb. POLICY_NOT_FOUND means there is no pre-stored schedule (e.g. the "
-            "user uploaded their own policy): extract the schedule from the policy document and confirm it with "
-            "the user."),
+            "wording_uin to pass to policy-kb. The terms come from the policy schedule the user uploaded; the record "
+            "on file fills only what it does not show. POLICY_NOT_FOUND means neither gives the sum insured and the "
+            "policy dates: ask the user for their policy schedule."),
         annotations=READ_ONLY, meta=READ_META)
     def get_policy(case_id: CaseId) -> PolicyOut:
         def run():
             case, wording = wording_of(case_id)
-            return PolicyOut.model_validate({**reference.policy(case.policy_no, case.reference_key),
+            policy, _ = reference.case_policy(case.policy_no, case.reference_key, case.uploaded_policy)
+            return PolicyOut.model_validate({**policy,
                                              "wording_uin": wording.wording_uin,
                                              "wording_source": wording.wording_source})
         return guarded(run)
@@ -204,8 +205,9 @@ def create_server(store_dir: Optional[str | Path] = None, reference_dir: Optiona
                           scope: Literal["current_period", "all"] = "current_period") -> ClaimHistoryOut:
         def run():
             case = store().case(case_id)
+            policy, _ = reference.case_policy(case.policy_no, case.reference_key, case.uploaded_policy)
             return ClaimHistoryOut(policy_no=case.policy_no, scope=scope,
-                                   claims=reference.claim_history(case.policy_no, scope, case.reference_key))
+                                   claims=reference.claim_history(case.policy_no, scope, case.reference_key, policy))
         return guarded(run)
 
     return server

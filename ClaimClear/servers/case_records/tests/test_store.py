@@ -125,3 +125,27 @@ def test_set_policy_after_the_case_exists(tmp_path):
     assert (again.policy_no, again.reference_key, again.case_id) == ("AS-2025-100478", "gen-dev-147e01", case.case_id)
     with pytest.raises(StoreError):
         store.set_policy(case.case_id, "  ")
+
+
+def test_the_uploaded_schedule_is_the_policy_and_the_record_fills_gaps(tmp_path):
+    """The user's uploaded schedule comes first; the record on file only for what it does not show."""
+    from case_records.reference import ReferenceData
+    ref = ReferenceData()
+    store = CaseStore(tmp_path)
+    case = store.create_case("unknown", salt="t")
+    up = {"policy_no": "NEW-POLICY-1", "sum_insured": 300000, "period_start": "2026-04-01",
+          "period_end": "2027-03-31", "first_inception": "2024-04-01", "holder": "Asha Menon", "junk": "x"}
+    store.set_policy(case.case_id, "NEW-POLICY-1", schedule=up)
+    assert "junk" not in store.case(case.case_id).uploaded_policy
+    store.set_policy(case.case_id, "NEW-POLICY-1", reference_key="k")             # no schedule given: kept
+    stored = CaseStore(tmp_path).case(case.case_id).uploaded_policy
+    policy, source = ref.case_policy("NEW-POLICY-1", "", stored)                   # not on file: the upload alone
+    assert source == "uploaded_schedule" and policy["sum_insured"] == 300000
+    assert ref.claim_history("NEW-POLICY-1", "current_period", "", policy) == []
+    policy, source = ref.case_policy("AS-2026-102011", "", {"sum_insured": 250000})   # partial: the record fills
+    assert source == "uploaded_schedule+record" and policy["sum_insured"] == 250000
+    assert policy["period_start"] == "2026-02-01"
+    assert ref.case_policy("AS-2026-102011")[1] == "record"                       # nothing uploaded
+    with pytest.raises(StoreError) as e:
+        ref.case_policy("NEW-POLICY-2", "", {"sum_insured": 1})
+    assert e.value.code == "POLICY_NOT_FOUND"

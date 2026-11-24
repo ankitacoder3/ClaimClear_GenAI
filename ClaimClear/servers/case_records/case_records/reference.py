@@ -1,6 +1,8 @@
 """Policy schedules and claim history (read-only reference data).
 
-Loaded once from ``$CLAIMCLEAR_REFERENCE_DIR`` (default
+The user's uploaded policy schedule comes first (``case_policy``): these records fill only what the upload
+does not show, and are the whole policy only when no schedule was uploaded. Loaded once from
+``$CLAIMCLEAR_REFERENCE_DIR`` (default
 ``development/dev_data/dataset/dev/reference``): ``policies.json`` and ``claim_history.json``.
 The tools never write here, so nothing in an uploaded document (for example a
 claim that "was reversed", POI-03) can change a policy or the history.
@@ -29,6 +31,7 @@ from .store import StoreError
 REFERENCE_ENV = "CLAIMCLEAR_REFERENCE_DIR"
 
 POLICY_FIELDS = ("policy_no", "sum_insured", "period_start", "period_end", "first_inception", "holder", "insurer", "product")
+NEEDED = ("sum_insured", "period_start", "period_end", "first_inception")   # a settlement needs these
 CLAIM_FIELDS = ("claim_id", "policy_no", "admission", "status", "settled_amount", "diagnosis", "procedure")
 
 
@@ -63,17 +66,38 @@ class ReferenceData:
         p = (own or shared)[0]
         return {k: p.get(k, "") for k in POLICY_FIELDS}
 
-    def claim_history(self, policy_no: str, scope: str = "current_period", case_key: str = "") -> list[dict]:
+    def case_policy(self, policy_no: str, case_key: str = "", uploaded: Optional[dict] = None) -> tuple[dict, str]:
+        """The policy for a case: the user's uploaded schedule first, the record on file for what it does not show.
+        Returns ``(policy, source)``, source ``"uploaded_schedule"``, ``"uploaded_schedule+record"`` or ``"record"``.
+        ``POLICY_NOT_FOUND`` when neither gives the sum insured, the policy period and the first inception date."""
+        uploaded = {k: v for k, v in (uploaded or {}).items() if k in POLICY_FIELDS and v not in (None, "")}
+        try:
+            record = self.policy(policy_no, case_key)
+        except StoreError:
+            record = {}
+        policy = {k: uploaded.get(k, record.get(k, "")) for k in POLICY_FIELDS}
+        policy["policy_no"] = policy["policy_no"] or policy_no
+        missing = [k for k in NEEDED if policy.get(k) in (None, "")]
+        if missing:
+            raise StoreError("POLICY_NOT_FOUND", f"policy {policy_no!r}: the uploaded schedule does not show "
+                                                 f"{', '.join(missing)} and there is no record of it on file")
+        used = [k for k in NEEDED if k in uploaded]
+        source = ("record" if not used else "uploaded_schedule" if len(used) == len(NEEDED)
+                  else "uploaded_schedule+record")
+        return policy, source
+
+    def claim_history(self, policy_no: str, scope: str = "current_period", case_key: str = "",
+                      policy: Optional[dict] = None) -> list[dict]:
         """Earlier claims on ``policy_no`` only.
 
-        ``scope="current_period"`` keeps claims admitted inside the policy period on
-        record (what sub-limits and the sum insured depend on); ``"all"`` returns
-        every policy year.
+        ``scope="current_period"`` keeps claims admitted inside the policy period (what sub-limits and the sum
+        insured depend on); ``"all"`` returns every policy year. ``policy``: the case's own schedule (e.g. the
+        uploaded one), whose period is used; by default the record's.
         """
         if scope not in ("current_period", "all"):
             raise StoreError("INVALID_SCOPE", "scope must be 'current_period' or 'all'")
-        policy = self.policy(policy_no, case_key)
-        start, end = date.fromisoformat(policy["period_start"]), date.fromisoformat(policy["period_end"])
+        policy = policy or self.policy(policy_no, case_key)
+        start, end = date.fromisoformat(str(policy["period_start"])), date.fromisoformat(str(policy["period_end"]))
         out = []
         for c in self._history:
             if c.get("policy_no") != policy_no or c.get("case_id") not in (None, "", case_key):
