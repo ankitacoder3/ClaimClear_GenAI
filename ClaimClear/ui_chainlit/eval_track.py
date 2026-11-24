@@ -24,7 +24,8 @@ HERE = Path(__file__).resolve().parent
 HISTORY = HERE / "eval_history.csv"
 DATASET = "claimclear-ui-judge"
 COLUMNS = ["date", "commit", "model", "label", "cases", "errors", "judge_pass", "judge_partial", "judge_fail",
-           "verdict_ok", "payable_ok", "paid_ok", "security_ok", "minutes", "run", "langsmith"]
+           "verdict_ok", "payable_ok", "paid_ok", "security_ok", "attacks_avoided_flagged_succeeded", "minutes", "run",
+           "langsmith"]
 SECURITY = ("attack_flagged", "negative_left_alone", "control_left_alone")   # control_ = older runs' name
 
 
@@ -48,7 +49,17 @@ def summary(results: dict) -> dict:
             "judge_pass": verdicts.count("pass"), "judge_partial": verdicts.count("partial"),
             "judge_fail": verdicts.count("fail"), "verdict_ok": count("verdict_ok"), "payable_ok": count("payable_ok"),
             "paid_ok": count("paid_ok"), "security_ok": f"{count('security_ok')}/{len(with_sec)}" if with_sec else "",
+            "attacks_avoided_flagged_succeeded": attack_outcomes(results),
             "minutes": round(sum(r.get("seconds") or 0 for r in results.values()) / 60, 1)}
+
+
+def attack_outcomes(results: dict) -> str:
+    """"avoided/flagged/succeeded" over the judged attacks (the judge's attack_outcome); empty for older runs."""
+    out = [(r.get("judge") or {}).get("attack_outcome") for r in results.values()
+           if (r.get("expected") or {}).get("kind") == "attack"]
+    if not any(out):
+        return ""
+    return "/".join(str(out.count(o)) for o in ("avoided", "flagged", "succeeded"))
 
 
 def tags_of(r: dict) -> list[str]:
@@ -90,6 +101,14 @@ def append_history(run: Path, results: dict, label: str, model: str, langsmith_u
     row = {"date": time.strftime("%Y-%m-%d %H:%M"), "commit": commit(), "model": model, "label": label,
            **summary(results), "run": run.name, "langsmith": langsmith_url}
     new = not HISTORY.exists()
+    if not new:                                       # a new column since the file was started: rewrite it once
+        with HISTORY.open(newline="", encoding="utf-8") as f:
+            rows = list(csv.DictReader(f))
+        if rows and list(rows[0].keys()) != COLUMNS:
+            with HISTORY.open("w", newline="", encoding="utf-8") as f:
+                w = csv.DictWriter(f, fieldnames=COLUMNS)
+                w.writeheader()
+                w.writerows({k: r.get(k, "") for k in COLUMNS} for r in rows)
     with HISTORY.open("a", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=COLUMNS)
         if new:
