@@ -6,7 +6,7 @@
    case by case. Without the key this step is skipped. Accounts outside the US region also need the region's
    address, e.g. ``LANGSMITH_ENDPOINT=https://apac.api.smith.langchain.com`` (otherwise every call is 403 Forbidden).
 
-    ui_judge_eval.py ... --track                                    # track the run when it finishes
+    ui_judge_eval.py ... --track [--langsmith]                      # track the run (LangSmith only when asked)
     ../.venv-agents/Scripts/python eval_track.py ../var/eval/ui_judge/<time> [--label negatives]   # an earlier run
 """
 from __future__ import annotations
@@ -141,15 +141,16 @@ def to_langsmith(results: dict, label: str, model: str) -> str:
         return out.experiment_name
 
 
-def track(run: Path, label: str, model: str) -> dict:
+def track(run: Path, label: str, model: str, langsmith: bool = False) -> dict:
     results = json.loads((run / "results.json").read_text(encoding="utf-8"))
     url = ""
     try:
-        url = to_langsmith(results, label, model)
+        url = to_langsmith(results, label, model) if langsmith else ""
     except Exception as exc:                            # tracking must never lose the run: history.csv still gets the line
         print(f"LangSmith: not sent ({type(exc).__name__}: {exc})")
     row = append_history(run, results, label, model, url)
     print(f"tracked: {HISTORY.name} +1 line" + (f"; LangSmith: {url}" if url else
+                                                 " (LangSmith: not requested; add --langsmith)" if not langsmith else
                                                  "; LangSmith: not sent" if os.environ.get("LANGSMITH_API_KEY") else
                                                  " (LangSmith off: no LANGSMITH_API_KEY)"))
     return row
@@ -162,10 +163,11 @@ def main() -> None:
     ap = argparse.ArgumentParser(description="Track a finished UI judge eval run")
     ap.add_argument("run", type=Path, help="the run folder (var/eval/ui_judge/<time>)")
     ap.add_argument("--label", default="manual", help="which cases: negatives, attacks, team-dev, ...")
+    ap.add_argument("--langsmith", action="store_true", help="also send the run to LangSmith (uses quota)")
     ap.add_argument("--model", default=os.environ.get("CLAIMCLEAR_CHAT_MODEL") or chat.OPENROUTER_DEFAULT_MODEL,
                     help="the model the run used")
     a = ap.parse_args()
-    track(a.run, a.label, a.model)
+    track(a.run, a.label, a.model, langsmith=a.langsmith)
 
 
 if __name__ == "__main__":

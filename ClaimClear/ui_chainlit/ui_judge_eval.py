@@ -41,6 +41,8 @@ from pydantic import BaseModel, Field  # noqa: E402
 
 import answers  # noqa: E402
 import bundles  # noqa: E402
+sys.path.insert(0, str(HERE.parent))     # ClaimClear/security
+import security  # noqa: E402
 import app as chat_app  # noqa: E402  (its ready(): toolkit, model, review graph, gate; no UI is started)
 import findings  # noqa: E402
 import store_docs  # noqa: E402
@@ -127,6 +129,16 @@ async def judge(llm, exp: Expected, got: dict) -> dict:
 async def upload(app: dict, exp: Expected) -> tuple[str, dict, dict]:
     """Store and identify the case's documents, as the chat does. Returns (case_id, case listing, what happened)."""
     files = [(p, p.name) for p in sorted(exp.inputs.iterdir()) if p.is_file() and p.suffix.lower() in MEDIA]
+    flags, security_files, guard_errors = [], [], {}
+    if security.enabled():                                    # as the chat does: checked and cleaned before storing
+        guards = security.build(app["llm"])
+        checks = await security.check_files(app["toolkit"], guards, files)
+        flags = [f.line() for c in checks for f in c.findings]
+        if any(g.errors for g in guards):                     # a run with a guard that could not run is not valid
+            guard_errors = {g.name: [len(g.errors), g.errors[0]] for g in guards if g.errors}
+        security_files = [{"name": c.name, "findings": len(c.findings), "hidden_removed": c.hidden_removed,
+                           "blocked": c.blocked, "error": c.error or None} for c in checks]
+        files = [(c.path, c.name) for c in checks if not c.blocked]
     stored = await store_docs.store_files("", files)
     if stored.get("error"):
         raise RuntimeError(f"store: {stored['error']}")
@@ -135,15 +147,19 @@ async def upload(app: dict, exp: Expected) -> tuple[str, dict, dict]:
     case = await app["toolkit"].list_case_documents(case_id)
     if case.get("policy_no") not in (None, "", "unknown"):       # test setup: which reference policy record
         await store_docs.set_policy(case_id, case["policy_no"], exp.reference_key)
-    return case_id, case, {"files": [n for _, n in files],
+    return case_id, case, {"files": [n for _, n in files], "input_flags": flags, "security_files": security_files,
+                           "guard_errors": guard_errors,
                            "identified": {d["name"]: d.get("type") or d.get("error") for d in found}}
 
 
-async def review(app: dict, case_id: str) -> tuple[dict, dict]:
-    """Run the review graph to the end: questions get "don't know", a grievance is declined."""
+async def review(app: dict, case_id: str, flags: list[str] = ()) -> tuple[dict, dict]:
+    """Run the review graph to the end: questions get "don't know", a grievance is declined. ``flags``: the guard's
+    findings at upload, carried into the review as the chat does."""
     graph, gate = app["graph"], app["gate"]
     cfg = {"configurable": {"thread_id": f"eval-{uuid.uuid4().hex[:10]}"}}
     trace, asked, offered, inp = [], [], False, initial_state(case_id)
+    if flags:
+        inp["security_flags"] = list(flags)
     for _ in range(8):
         async for update in graph.astream(inp, cfg, stream_mode="updates"):
             trace += [line for ch in update.values() if isinstance(ch, dict) for line in ch.get("trace", [])]
@@ -179,6 +195,11 @@ async def replay_chat(app: dict, exp: Expected, case_id: str, case: dict, st: di
         return []
     records, history = await chat.load_records(app["toolkit"], case_id), []
     for line in [x.strip() for x in path.read_text(encoding="utf-8").splitlines() if x.strip()]:
+        found = await security.check_chat(security.build(app["llm"]), line) if security.enabled() else []
+        if found:                                     # as the chat does: the security reply, and the flag is recorded
+            st.setdefault("chat_flags", []).extend(f.line() for f in found)
+            history.append((line, await security.chat_reply(app["llm"], line, found)))
+            continue
         text = ""
         async for ev in chat.stream_answer(line, st, app["toolkit"], app["llm"], records, history,
                                            documents=documents_block(case, True)):
@@ -192,8 +213,9 @@ async def run_case(app: dict, exp: Expected) -> dict:
     readiness = review_readiness(case)
     if not readiness["ready"]:
         return {**got, "error": "not ready for a review: missing " + "; ".join(readiness["missing"])}
-    st, reviewed = await review(app, case_id)
+    st, reviewed = await review(app, case_id, got.get("input_flags") or [])
     got.update(reviewed, chat=await replay_chat(app, exp, case_id, case, st))
+    got["security_flags"] = sorted(set(got["security_flags"]) | set(st.get("chat_flags", [])))
     if (exp.inputs / "steps.txt").exists():
         got["not_simulated"] = "steps.txt (approval-flow steps) is not simulated yet"
     return got
@@ -255,10 +277,21 @@ async def main(argv: Optional[list[str]] = None) -> int:
     ap.add_argument("--team-dev", action="store_true", help="the team dataset's dev cases (gen-dev-*, syn-dev-*)")
     ap.add_argument("--no-judge", action="store_true", help="fixed checks only (no judge call)")
     ap.add_argument("--jobs", type=int, default=4, help="cases run at the same time (default 4; same cost, less time)")
-    ap.add_argument("--track", action="store_true", help="when done: a line in eval_history.csv, and LangSmith if "
-                                                         "LANGSMITH_API_KEY is set (eval_track.py)")
+    ap.add_argument("--defences", choices=["on", "off"], help="input guardrails on or off (E2); default: "
+                                                               "CLAIMCLEAR_DEFENCES, else on")
+    ap.add_argument("--guards", help="comma-separated guards when defences are on: " + ", ".join(security.GUARDS)
+                                     + " (default: CLAIMCLEAR_GUARDS, else rules,safeguard)")
+    ap.add_argument("--track", action="store_true", help="when done: a line in eval_history.csv (eval_track.py)")
+    ap.add_argument("--langsmith", action="store_true", help="with --track: also send the run to LangSmith "
+                                                             "(LANGSMITH_API_KEY; uses LangSmith quota)")
     a = ap.parse_args(argv)
+    if a.defences:
+        os.environ["CLAIMCLEAR_DEFENCES"] = a.defences
+    if a.guards:
+        os.environ["CLAIMCLEAR_GUARDS"] = a.guards
+        security.chosen()                                     # fail early on an unknown guard name
     cases, label = chosen_cases(a)
+    label += f"-defences-{'+'.join(security.chosen())}" if security.enabled() else "-defences-off"
     if not cases:
         ap.error("name some cases, or use --bundle / --negatives / --attacks / --generated / --team-dev")
 
@@ -289,7 +322,7 @@ async def main(argv: Optional[list[str]] = None) -> int:
                                    encoding="utf-8")
     print(f"\n{tag_table}\n\nreport: {out / 'report.md'}\nresults: {out / 'results.json'}")
     if a.track:
-        eval_track.track(out, label, getattr(app["llm"], "model_name", "") or "")
+        eval_track.track(out, label, getattr(app["llm"], "model_name", "") or "", langsmith=a.langsmith)
     return 0
 
 

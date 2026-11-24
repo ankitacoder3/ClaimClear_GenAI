@@ -205,7 +205,7 @@ def test_failed_store_is_shown_and_nothing_is_kept(ui, monkeypatch, tmp_path):
     async def scenario(rec):
         await app.start()
         await app.on_message(SimpleNamespace(content="", elements=[SimpleNamespace(path=str(f), name="tool.exe")]))
-        assert app.cl.user_session.get("chat") == {"case_id": "", "review_case": ""}
+        assert app.cl.user_session.get("chat") == {"case_id": "", "review_case": "", "security_flags": []}
     rec = in_chat(scenario)
     (store_step,) = [s for s in rec.tool_steps() if s["name"] == "Storing your documents"]
     assert store_step["output"] == "failed: file type not allowed"

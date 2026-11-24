@@ -166,6 +166,14 @@ CHAT = {"case_id": "CASE-T1"}
 
 
 @pytest.fixture(autouse=True)
+def defences_off_by_default(monkeypatch, request):
+    """The chat tests' fake toolkit has no document reader, so the security checks are off unless a test turns them
+    on (``test_security_chat.py``). Live tests use the real setting."""
+    if not request.node.get_closest_marker("live"):
+        monkeypatch.setenv("CLAIMCLEAR_DEFENCES", "off")
+
+
+@pytest.fixture(autouse=True)
 def fake_store_writes(monkeypatch, request):
     """The case store's writes (store_docs, which runs the servers' Python) land in the newest FakeToolkit.
     Not for live tests, which write to the real store."""

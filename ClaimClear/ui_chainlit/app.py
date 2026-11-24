@@ -26,6 +26,7 @@ import json
 import logging
 import logging.handlers
 import os
+import sys
 import uuid
 from pathlib import Path
 
@@ -40,6 +41,9 @@ from claimclear_graph.graph import build_claimclear_graph, initial_state
 from claimclear_graph.services import Services
 from claimclear_graph.webapp.server import REPO, SAMPLES, upload_case
 from claimclear_tools import ClaimClearToolError, ClaimClearToolkit
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))     # ClaimClear/security
+import security  # noqa: E402
 
 import findings
 import store_docs
@@ -122,7 +126,7 @@ async def start() -> None:
     app = await ready()
     log("chat_start", model=chat.describe_model(app["llm"]) if app["llm"] else None)
     # this chat: its case in the store, and the review thread once the review has run on that case
-    cl.user_session.set("chat", {"case_id": "", "review_case": ""})
+    cl.user_session.set("chat", {"case_id": "", "review_case": "", "security_flags": []})
     cl.user_session.set("history", [])                  # (question, answer) pairs for the answerer
     model = chat.describe_model(app["llm"]) if app["llm"] else "no model configured"
     actions = [cl.Action(name="sample", payload={"name": n}, label=label)
@@ -164,6 +168,28 @@ async def on_message(msg: cl.Message) -> None:
 async def take_uploads(files: list[tuple[Path, str]]) -> None:
     """Store, identify, and start the review once everything it needs is there."""
     app, meta = await ready(), cl.user_session.get("chat")
+    if security.enabled():                         # T1: checked and cleaned before anything is stored
+        async with cl.Step(name="Security check", type="tool") as step:
+            guards = security.build(app["llm"])
+            checks = await security.check_files(app["toolkit"], guards, files)
+            if any(g.errors for g in guards):                 # a guard that can't run finds nothing: say so
+                log("security_guard_errors", errors={g.name: [len(g.errors), g.errors[0]] for g in guards if g.errors})
+                await cl.Message(content=security.guard_problems(guards)).send()
+            step.output = "\n".join(
+                f"{c.name}: " + ("not used" if c.blocked else "cleaned" if c.findings else "clean")
+                + (f", {len(c.findings)} finding(s)" if c.findings else "")
+                + (f", {c.hidden_removed} hidden-text run(s) removed" if c.hidden_removed else "")
+                + (f" ({c.error})" if c.error else "") for c in checks)
+            found = [f.line() for c in checks for f in c.findings]
+            meta["security_flags"] += [f for f in found if f not in meta["security_flags"]]
+            log("security_files", files=[{"name": c.name, "findings": [f.line() for f in c.findings],
+                                          "hidden_removed": c.hidden_removed, "blocked": c.blocked,
+                                          "error": c.error or None} for c in checks])
+        if found:
+            await cl.Message(content=await security.files_message(app["llm"], checks)).send()
+        files = [(c.path, c.name) for c in checks if not c.blocked]
+        if not files:
+            return
     async with cl.Step(name="Storing your documents", type="tool") as step:
         result = await store_files(meta["case_id"], files)
         log("upload", case_id=result.get("case_id") or meta["case_id"], files=[n for _, n in files],
@@ -201,7 +227,10 @@ async def start_review(case: dict) -> None:
     cl.user_session.set("thread_id", f"cl-{uuid.uuid4().hex[:12]}")
     cl.user_session.set("shown", False)
     cl.user_session.set("outcome", None)
-    await advance(initial_state(meta["case_id"]))
+    state = initial_state(meta["case_id"])
+    if meta.get("security_flags"):                           # the guard's findings travel with the review (T1)
+        state["security_flags"] = list(meta["security_flags"])
+    await advance(state)
 
 
 async def ask(question: str) -> None:
@@ -220,6 +249,20 @@ async def ask(question: str) -> None:
                 pass
     history = cl.user_session.get("history") or []
     log("question", case_id=meta["case_id"], reviewed=reviewed, question=question)
+    if security.enabled():                                    # T2: the answerer never sees an injected message
+        guards = security.build(app["llm"])
+        found = await security.check_chat(guards, question)
+        if any(g.errors for g in guards) and not cl.user_session.get("guard_warned"):   # once per chat
+            cl.user_session.set("guard_warned", True)
+            log("security_guard_errors", errors={g.name: [len(g.errors), g.errors[0]] for g in guards if g.errors})
+            await cl.Message(content=security.guard_problems(guards)).send()
+        if found:
+            meta["security_flags"] = meta.get("security_flags", []) + [f.line() for f in found]
+            log("security_chat", findings=[f.line() for f in found])
+            reply = await security.chat_reply(app["llm"], question, found)
+            await cl.Message(content=reply).send()
+            cl.user_session.set("history", (history + [(question, reply)])[-12:])
+            return
     out, text = cl.Message(content=""), ""
     async for ev in chat.stream_answer(question, state, app["toolkit"], app["llm"], await records(meta["case_id"], case),
                                        history, documents=documents_block(case, reviewed)):
@@ -268,9 +311,11 @@ async def run_case(result: dict) -> None:
 
 async def advance(inp) -> None:
     """Run the graph until it ends or pauses; show each agent's step as it finishes."""
-    app = await ready()
+    app, flags = await ready(), (cl.user_session.get("chat") or {}).get("security_flags") or []
+    config = cfg() if not flags else {**cfg(), "tags": ["security_issue"],       # visible in traces when tracing is on
+                                      "metadata": {"security_flags": len(flags)}}
     async with cl.Step(name="Agents at work", type="run") as run:
-        async for update in app["graph"].astream(inp, cfg(), stream_mode="updates"):
+        async for update in app["graph"].astream(inp, config, stream_mode="updates"):
             for node, change in update.items():
                 if isinstance(change, dict):
                     for line in change.get("trace", []):
