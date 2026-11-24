@@ -14,10 +14,12 @@
 | **Experiment** | **Team Member** |
 |---|---|
 | **E1 – Architecture (C0/C1/C2)** | TM3 |
-| **E2 – Defences (ON/OFF)** | TM1 · [defences on/off](../member4_ui_security_deployment/2026-11-24_E2_security_on_off.md) |
-| **E3 – Playbook (Before/After)** | To be decided in the team chat |
+| **E2 – Defences (ON/OFF)** | TM4 · [defences on/off](../member4_ui_security_deployment/2026-11-24_E2_security_on_off.md) |
+| **E3 – Playbook (Before/After)** | To be decided in the team chat (TM4)|
 | **E4 – Signature 1 Ablation** | TM2 |
-| ~~**E4 – Signature 2 Ablation**~~ | ~~TM4~~ The course guide lists one E4 ablation (Signature 1, above) |
+| ~~**E4 – Signature 2 Ablation**~~ | ~~TM4~~ The course guide lists one E4 ablation (Signature 1, above) [TM1 Comments-> You sure?] |
+
+|   Evaluation Harness  | TM1 |
 
 -> Code can be placed under ->  `./handover_code/`
 -> Documentations can be placed under -> `./handover_minimal_doc/`
