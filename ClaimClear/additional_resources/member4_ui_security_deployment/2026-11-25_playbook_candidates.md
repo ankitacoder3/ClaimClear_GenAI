@@ -87,7 +87,15 @@ lessons; freeze the playbook; then the E3 run on held-out cases (three repeats).
    has a platelet line -> L2). Keyword or tag matching is enough at this size; at most a few lessons per call.
 3. **Use:** add them to that agent's prompt as a short "Lessons from earlier cases" block. The engine stays as is:
    lessons change what the model reads, classifies and says, never the arithmetic.
-4. **Switch:** `CLAIMCLEAR_PLAYBOOK=off|on`, so E3 is the same held-out run twice (plus three repeats).
+4. **Switch:** `CLAIMCLEAR_PLAYBOOK=off|on`, so E3 is the same held-out run twice (plus three repeats). From
+   `ClaimClear/`, with the servers up (PowerShell: `$env:CLAIMCLEAR_PLAYBOOK="on"`):
+
+   ```
+   CLAIMCLEAR_PLAYBOOK=off .venv-agents/Scripts/python ui_chainlit/ui_judge_eval.py <cases or --bundle> --judge-model google/gemini-3.1-flash-lite
+   CLAIMCLEAR_PLAYBOOK=on  .venv-agents/Scripts/python ui_chainlit/ui_judge_eval.py <cases or --bundle> --judge-model google/gemini-3.1-flash-lite
+   ```
+
+   Start the two runs a few seconds apart: runs that start in the same second share an output folder.
 5. **Loop:** new failures on dev -> the judge's problems -> a reflection step drafts a lesson -> a person accepts or
    rejects -> playbook. Count the cost of the reflection calls.
 

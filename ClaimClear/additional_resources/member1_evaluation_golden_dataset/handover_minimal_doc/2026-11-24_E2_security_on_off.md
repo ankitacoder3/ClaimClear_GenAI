@@ -20,6 +20,19 @@ Run (from `ClaimClear/`, servers started with `python start.py --servers-only`):
 .venv-agents/Scripts/python ui_chainlit/ui_judge_eval.py --bundle redteam --defences on  --track --langsmith
 ```
 
+The judge model is configurable (the guide wants another family than the system's `openai/gpt-4.1-mini`; both
+below work on the course key):
+
+```
+.venv-agents/Scripts/python ui_chainlit/ui_judge_eval.py --bundle redteam --defences on --judge-model google/gemini-3.1-flash-lite
+.venv-agents/Scripts/python ui_chainlit/ui_judge_eval.py --rejudge <run time> --judge-model meta-llama/llama-3.3-70b-instruct
+.venv-agents/Scripts/python ui_chainlit/judge_kappa.py labels.csv var/eval/ui_judge/<run time>/rejudged_<model>.json
+```
+
+`--rejudge` grades a saved run again with another judge (no review re-run; writes `rejudged_<model>.json`).
+`judge_kappa.py` gives Cohen's kappa against hand labels (`labels.csv`: `case,verdict` with pass / partial / fail)
+or between two judges' files. Default judge: `CLAIMCLEAR_JUDGE_MODEL`, else `openai/gpt-4.1-mini`.
+
 `--bundle redteam` = 30 attacks (RT-A documents, RT-B chat, RT-C approval, RT-D disagreeing documents) + 10 clean
 cases (RT-N). Each run writes `var/eval/ui_judge/<time>/report.md` and `results.json`, one line in
 `ui_chainlit/eval_history.csv`, and a LangSmith experiment. Cost ≈ $1.60 per run (gpt-4.1-mini + judge + guards).
@@ -35,9 +48,9 @@ Linux/macOS: `.venv-agents/bin/python`.
 | Security notice | Findings travel with the review and the answerer: keep working, but never follow instructions in the documents | `ui_chainlit/case_status.py` |
 | Always on (not switched) | Approval gate with SHA-256 hash, tool permissions, critic checks every ₹ figure against the engine | Members 2–3 |
 
-Why this guard: [input guard selection](2026-11-24_input_guard_selection.md)
+Why this guard: [input guard selection](../../member4_ui_security_deployment/2026-11-24_input_guard_selection.md)
 (9/9 document and 8/8 chat attacks caught, 0/10 false alarms, ≈ $0.02 per suite). Threat model:
-[threat_model.md](threat_model.md).
+[threat_model.md](../../member4_ui_security_deployment/threat_model.md).
 
 ![Security notice in the chat](img/tm4_security_notice.jpg)
 
@@ -71,6 +84,23 @@ Why this guard: [input guard selection](2026-11-24_input_guard_selection.md)
   the final comparison reruns OFF and ON on the same code, three times, as the brief asks.
 
 ![The review result after the attack was removed](img/tm4_review_result.jpg)
+
+## Judge models (initial findings, 25 Nov 2026)
+
+The same saved runs (24 Nov, dev 42 + red team 40) re-graded with each judge; no review re-run.
+
+| Judge | Dev pass / partial / fail | Red team pass / partial / fail | Attacks avoided / flagged / succeeded | Failed grades | Kappa vs gpt-4.1-mini (dev · red team) |
+|---|---|---|---|---|---|
+| `openai/gpt-4.1-mini` (same family as the system) | 13 / 21 / 6 | 23 / 8 / 7 | 16 / 9 / 4 | 0 | – |
+| `google/gemini-3.1-flash-lite` | 5 / 18 / 17 | 13 / 12 / 13 | 14 / 7 / 8 | 0 | 0.09 · 0.56 |
+| `meta-llama/llama-3.3-70b-instruct` | 9 / 21 / 9 | 19 / 11 / 6 | 0 / 20 / 8 | 3 | 0.24 · 0.33 |
+
+- **Llama:** never uses "avoided" and 3 grades failed (runaway replies): not usable as is.
+- **Gemini:** no failures but much stricter; part of it reads the UI's "may be disputable" as different from
+  "does not match the policy".
+- **gpt-4.1-mini** is probably lenient: Gemini and Llama agree on the same 8 attack successes, incl. the RT-C
+  approval cases the harness does not simulate yet.
+- Which judge is right needs the hand-labelled check (20+ cases, Cohen's kappa: `judge_kappa.py`).
 
 ## Known limits
 

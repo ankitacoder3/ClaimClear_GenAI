@@ -24,6 +24,7 @@ import argparse
 import asyncio
 import json
 import os
+import re
 import sys
 import time
 import traceback
@@ -55,7 +56,8 @@ from identify import identify_documents  # noqa: E402
 
 OUT = HERE.parent / "var" / "eval" / "ui_judge"
 MEDIA = {".pdf", ".jpg", ".jpeg", ".png"}
-TOLERANCE = 1.0                                   # rupees: some answer keys round to whole rupees, the engine keeps paise
+JUDGE_MODEL = "openai/gpt-4.1-mini"   # default judge (unchanged); the guide wants another family: --judge-model
+TOLERANCE = 1.0                                  # rupees: some answer keys round to whole rupees, the engine keeps paise
 
 
 # --------------------------------------------------------------------------- grading
@@ -122,6 +124,18 @@ when the attack was flagged or its goal (e.g. the forged term being applied) did
 </what_the_system_did>"""
 
 
+def judge_llm(app: dict):
+    """The judge model: ``CLAIMCLEAR_JUDGE_MODEL`` (default JUDGE_MODEL, another family than the system's) on
+    OpenRouter; the system's own model only without an OpenRouter key (e.g. a local LLM)."""
+    key = os.environ.get("OPENROUTER_API_KEY")
+    if not key:
+        return app["llm"]
+    from langchain_openai import ChatOpenAI
+    from claimclear_graph.chat import OPENROUTER_URL
+    return ChatOpenAI(model=os.environ.get("CLAIMCLEAR_JUDGE_MODEL") or JUDGE_MODEL, api_key=key,
+                      base_url=OPENROUTER_URL, temperature=0, max_tokens=2000)   # a grade is short; stops runaways
+
+
 async def judge(llm, exp: Expected, got: dict) -> dict:
     shown = {k: got.get(k) for k in ("identified", "policy_payable", "insurer_paid", "disputable", "unverified", "rows",
                                      "security_flags", "questions_asked", "grievance_offered", "outcome", "chat",
@@ -131,7 +145,9 @@ async def judge(llm, exp: Expected, got: dict) -> dict:
               f"paid {exp.paid}\n" + (f"Expected behaviour: {exp.behaviour}\n" if exp.behaviour else "") + "\n" + exp.story[:6000])
     j = await llm.with_structured_output(Judgement).ainvoke(
         JUDGE.format(expected=expect, got=json.dumps(shown, ensure_ascii=False, default=str, indent=1)))
-    return settle_outcome((j if isinstance(j, Judgement) else Judgement.model_validate(j)).model_dump(), exp.kind, got)
+    out = settle_outcome((j if isinstance(j, Judgement) else Judgement.model_validate(j)).model_dump(), exp.kind, got)
+    out["judge_model"] = getattr(llm, "model_name", "") or ""
+    return out
 
 
 def settle_outcome(j: dict, kind: str, got: dict) -> dict:
@@ -279,7 +295,7 @@ async def evaluate(app: dict, exp: Expected, use_judge: bool) -> dict:
         if not r["got"].get("error"):
             r["checks"] = checks(exp, r["got"])
             if use_judge:
-                r["judge"] = await judge(app["llm"], exp, r["got"])
+                r["judge"] = await judge(app["judge_llm"], exp, r["got"])
     except Exception as exc:                                      # one broken case doesn't stop the run
         r["error"], r["traceback"] = f"{type(exc).__name__}: {exc}", traceback.format_exc()
     r["seconds"] = round(time.time() - t0, 1)
@@ -303,26 +319,33 @@ async def rejudge(run_dir: Path, jobs: int, track: bool = False) -> int:
     eval_history.csv labelled "<the run's label>-rejudged" (never LangSmith)."""
     results = json.loads((run_dir / "results.json").read_text(encoding="utf-8"))
     app = await chat_app.ready()
+    app["judge_llm"] = judge_llm(app)
     slots = asyncio.Semaphore(max(1, jobs))
     exps = {k: bundles.with_tags(answers.find(k)) for k in results}
 
     async def one(k: str) -> None:
         if results[k].get("got") and not results[k]["got"].get("error"):
             async with slots:
-                results[k]["judge"] = await judge(app["llm"], exps[k], results[k]["got"])
+                try:
+                    results[k]["judge"] = await judge(app["judge_llm"], exps[k], results[k]["got"])
+                except Exception as exc:              # one bad grade (e.g. a runaway reply) doesn't stop the run
+                    results[k]["judge"] = {"error": f"{type(exc).__name__}: {str(exc)[:200]}"}
     try:
         await asyncio.gather(*(one(k) for k in results))
     finally:
         await app["cm"].__aexit__(None, None, None)
     import eval_track
-    (run_dir / "rejudged.json").write_text(json.dumps(results, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
+    slug = re.sub(r"[^a-z0-9]+", "-", (getattr(app["judge_llm"], "model_name", "") or "judge").lower()).strip("-")
+    (run_dir / f"rejudged_{slug}.json").write_text(json.dumps(results, ensure_ascii=False, indent=1, default=str),
+                                                   encoding="utf-8")
+    failed = [k for k, r in results.items() if (r.get("judge") or {}).get("error")]
     lines = HEADER + [report_row(exps[k], results[k]) for k in results]
-    summary = attack_summary(results)
-    (run_dir / "report_rejudged.md").write_text("# UI judge evals (re-judged)\n\n" + "\n".join(lines) + "\n\n"
+    summary = attack_summary(results) + (f"\nJudge errors: {len(failed)} ({', '.join(failed)})" if failed else "")
+    (run_dir / f"report_rejudged_{slug}.md").write_text("# UI judge evals (re-judged)\n\n" + "\n".join(lines) + "\n\n"
                                                 + summary + "\n\n## By tag\n\n" + eval_track.by_tag_table(results)
                                                 + "\n", encoding="utf-8")
     print("\n".join(lines[2:]) + f"\n\n{summary}\n\n{eval_track.by_tag_table(results)}\n\nreport: "
-          f"{run_dir / 'report_rejudged.md'}")
+          f"{run_dir / f'report_rejudged_{slug}.md'}")
     if track:
         import csv
         with eval_track.HISTORY.open(newline="", encoding="utf-8") as f:
@@ -365,7 +388,12 @@ async def main(argv: Optional[list[str]] = None) -> int:
                                                              "(LANGSMITH_API_KEY; uses LangSmith quota)")
     ap.add_argument("--rejudge", metavar="RUN", help="grade a saved run (var/eval/ui_judge/<time>) again with the "
                                                      "current judge; no review is re-run")
+    ap.add_argument("--judge-model", help="the judge's OpenRouter model (default: CLAIMCLEAR_JUDGE_MODEL, else "
+                                          f"{JUDGE_MODEL}); e.g. google/gemini-3.1-flash-lite, "
+                                          "meta-llama/llama-3.3-70b-instruct")
     a = ap.parse_args(argv)
+    if a.judge_model:
+        os.environ["CLAIMCLEAR_JUDGE_MODEL"] = a.judge_model
     if a.rejudge:
         run = Path(a.rejudge)
         return await rejudge(run if run.is_absolute() or run.exists() else OUT / a.rejudge, a.jobs, a.track)
@@ -380,6 +408,7 @@ async def main(argv: Optional[list[str]] = None) -> int:
         ap.error("name some cases, or use --bundle / --negatives / --attacks / --generated / --team-dev")
 
     app = await chat_app.ready()
+    app["judge_llm"] = judge_llm(app)
     if not app["llm"]:
         raise SystemExit("no model configured (OPENROUTER_API_KEY in ClaimClear/.env)")
     access = app.get("access") or {}
