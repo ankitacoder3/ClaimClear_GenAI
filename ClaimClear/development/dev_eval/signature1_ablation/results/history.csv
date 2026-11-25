@@ -1,0 +1,7 @@
+time,signature1,split,model,cases,overall_right,rows_right,rows,rupee_within_1,rupee_cases,rupee_mae,false_dispute_rows,correct_rows,false_dispute_cases,matches_cases,cost_usd,median_s,p95_s,errors
+2026-11-24_1813,on,dev,,42,40,89,94,37,40,253.41,1,67,1,20,,0.89,2.65,0
+2026-11-24_1813,on,dev,,42,40,89,94,37,40,253.41,1,67,1,20,,0.59,0.95,0
+2026-11-24_1813,on,dev,,42,40,89,94,37,40,253.41,1,67,1,20,,0.53,0.82,0
+2026-11-24_1835,off,dev,openai/gpt-4.1-mini,42,24,61,94,19,42,12886.66,8,67,4,20,0.0978,3.9,6.87,0
+2026-11-24_1835,off,dev,openai/gpt-4.1-mini,42,22,58,94,18,42,12869.04,11,67,3,20,0.0992,3.73,6.65,0
+2026-11-24_1835,off,dev,openai/gpt-4.1-mini,42,20,58,94,18,42,13845.22,11,67,4,20,0.0977,3.89,5.93,0
