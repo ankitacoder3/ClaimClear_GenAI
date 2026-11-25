@@ -49,6 +49,11 @@ def make(services: Services) -> dict:
         clauses: dict = dict(state.get("clauses") or {})
         queries = [q for q in (f"{r.get('particulars', '')} {r.get('reason', '')}".strip()
                                for r in state["letter"].get("rows", [])) if q]
+        if not wording.get("cite_clauses", True):
+            # The wording on file is another product's (case-records get_policy_wording): its clauses are not
+            # this policy's terms, so none are searched and none can be cited.
+            queries = []
+            note += f"; wording {wording.get('wording_uin')} is not this policy's, no clauses searched"
         try:
             found = await gather_calls(tk.search_clauses(q, k=2, wording_uin=wording.get("wording_uin") or None,
                                                          case_id=case_id) for q in queries)

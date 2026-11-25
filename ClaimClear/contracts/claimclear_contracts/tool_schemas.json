@@ -646,6 +646,11 @@
        "title": "Case Id",
        "type": "string"
       },
+      "cite_clauses": {
+       "description": "False: wording_uin is not this policy's wording (another product); never quote its clauses as the user's terms.",
+       "title": "Cite Clauses",
+       "type": "boolean"
+      },
       "note": {
        "description": "What to tell or ask the user, in plain words.",
        "title": "Note",
@@ -657,13 +662,14 @@
        "type": "string"
       },
       "status": {
-       "description": "selected: the user picked a catalogue wording. uploaded: their own wording is indexed. from_schedule: the UIN on the policy schedule is a reviewed wording. not_reviewed: the schedule names a wording ClaimClear hasn't reviewed (the standard one is used for now). not_printed: no UIN on the schedule (the standard one is used).",
+       "description": "selected: the user picked a catalogue wording. uploaded: their own wording is indexed. from_schedule: the UIN on the policy schedule is a reviewed wording. not_reviewed: the schedule names a wording ClaimClear hasn't reviewed (the standard one is used for now). not_printed: no UIN on an Arogya Sanjeevani schedule, or no schedule (the standard one is used). other_product: the schedule prints no UIN and isn't an Arogya Sanjeevani policy.",
        "enum": [
         "selected",
         "uploaded",
         "from_schedule",
         "not_reviewed",
-        "not_printed"
+        "not_printed",
+        "other_product"
        ],
        "title": "Status",
        "type": "string"
@@ -700,7 +706,8 @@
       "schedule_wording_uin",
       "wording_needed",
       "wording_document_id",
-      "note"
+      "note",
+      "cite_clauses"
      ],
      "title": "WordingOut",
      "type": "object"

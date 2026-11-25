@@ -224,7 +224,8 @@
        "verdict_wording",
        "disputable_total",
        "clause_not_found",
-       "forbidden_phrase"
+       "forbidden_phrase",
+       "clause_from_other_wording"
       ],
       "title": "Check",
       "type": "string"

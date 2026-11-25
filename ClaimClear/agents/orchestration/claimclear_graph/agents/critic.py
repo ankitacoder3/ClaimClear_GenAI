@@ -6,7 +6,8 @@ Tools: ``audit_settlement_letter``.
   every auditor row must agree. 1st failure: retry the auditor; 2nd: ask the supervisor to replan; the router's
   loop guard stops it at ``max_revisions``. A passed audit is remembered (memory, with consent).
 * **Draft review** (after the explainer, ``critic_stage == draft_ready``): every ₹ figure from a tool, allowed
-  wording per verdict, no forbidden phrase, only real clauses. The text checked is what the user will read,
+  wording per verdict, no forbidden phrase, only real clauses, and none at all when the wording on file is
+  another product's (``cite_clauses`` false). The text checked is what the user will read,
   i.e. the rewritten explanation when a rewriter is configured. 1st failure: plain table; 2nd: ``critic_blocked``.
 """
 
@@ -87,7 +88,8 @@ def make(services: Services) -> dict:
             text, row_sentences, letter_audit, settlement=state.get("settlement"),
             row_audits=(state.get("row_audits") or {}).values(), cited_clause_ids=cited,
             known_clause_ids=(state.get("clauses") or {}).keys(),
-            remembered=(state.get("memory") or {}).get("figures", []))
+            remembered=(state.get("memory") or {}).get("figures", []),
+            clauses_quotable=(state.get("wording") or {}).get("cite_clauses", True))
         attempt = max(1, min(state.get("draft_attempt", 1), 2))
         report = CriticReport(passed=not failures, attempt=attempt, failures=failures,
                               disputable_amount=letter_audit.get("disputable_amount")).model_dump(mode="json")

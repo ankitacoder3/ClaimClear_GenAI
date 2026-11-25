@@ -91,7 +91,7 @@ class AuditorHandoff(_Msg):
 
 class CriticFailure(_Msg):
     check: Literal["figure_not_from_engine", "verdict_wording", "disputable_total", "clause_not_found",
-                   "forbidden_phrase"]
+                   "forbidden_phrase", "clause_from_other_wording"]
     detail: str
 
 

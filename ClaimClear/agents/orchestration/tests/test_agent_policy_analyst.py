@@ -103,3 +103,12 @@ def test_memory_history_is_merged_and_the_policy_remembered(before, tmp_path):
     out = run(fn({**before, "user_id": "u1"}))
     assert out["route"] == "ok"
     assert store.for_user("u1").profile("AS-2025-100478") is not None    # remembered for next time
+
+
+def test_another_products_wording_is_not_searched(before, fx):
+    wording = {**call(fx, "get_policy_wording"), "wording_needed": True, "status": "other_product",
+               "cite_clauses": False}
+    fn, tk = node_fn("policy_analyst", overrides={"get_policy_wording": lambda c: wording})
+    out = run(fn({**before, "clauses": {}}))
+    assert out["route"] == "ok" and out["clauses"] == {} and tk.log.count("search_clauses") == 0
+    assert "is not this policy's, no clauses searched" in out["trace"][0]

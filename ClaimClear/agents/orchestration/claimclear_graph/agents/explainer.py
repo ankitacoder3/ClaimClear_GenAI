@@ -31,6 +31,11 @@ from .common import DISCLAIMER, cite
 
 log = logging.getLogger("claimclear.graph")
 
+# Said when case-records reports cite_clauses false: the policy is another product than the wording on file.
+NOT_THIS_WORDING = ("ClaimClear doesn't have your policy's wording, so no clause is quoted here. These verdicts use "
+                    "the standard Arogya Sanjeevani rules and may not match your policy's terms; upload your policy "
+                    "wording to check them against it.")
+
 
 def make(services: Services) -> dict:
     async def explainer(state: GraphState) -> dict:
@@ -39,13 +44,15 @@ def make(services: Services) -> dict:
         letter_audit = state.get("letter_audit") or {}
         policy = state.get("policy") or {}
         clauses = dict(state.get("clauses") or {})
+        wording_info = state.get("wording") or {}
+        citable = wording_info.get("cite_clauses", True)     # False: the wording on file is another product's
+        wording_uin = wording_info.get("wording_uin") or policy.get("wording_uin") or None
 
-        refs = sorted({r["rule_ref"] for r in letter_audit.get("rows", []) if r.get("rule_ref")})
+        refs = sorted({r["rule_ref"] for r in letter_audit.get("rows", []) if r.get("rule_ref")}) if citable else []
 
         async def lookup(ref: str):
             try:
-                return ref, await tk.clauses_for_rule(ref, wording_uin=policy.get("wording_uin") or None,
-                                                      case_id=state.get("case_id"))
+                return ref, await tk.clauses_for_rule(ref, wording_uin=wording_uin, case_id=state.get("case_id"))
             except ClaimClearToolError:
                 return ref, {}                                   # NO_RULE_MAP / INDEX_UNAVAILABLE: no citation
         rule_clause: dict[str, dict] = {}
@@ -61,6 +68,8 @@ def make(services: Services) -> dict:
             sentences.append(ExplanationSentence(
                 text=f"The insurer paid {checks.inr(paid)}. Checked against your policy, the amount payable "
                      f"works out to {checks.inr(payable)}.", fact_ids=["F-PAYABLE"]))
+        if not citable:
+            sentences.append(ExplanationSentence(text=NOT_THIS_WORDING))
         table = ["| Row | Particulars | Insurer deducted | Policy allows | Verdict | Policy clause |",
                  "|---|---|---|---|---|---|"]
         for row in letter_audit.get("rows", []):
@@ -106,7 +115,7 @@ def make(services: Services) -> dict:
                     if f.get("kind") == "integrity" and (f.get("inputs") or {}).get("definite"):
                         sentences.append(ExplanationSentence(text=f"{f['text'][:450]}. The insurer may question the "
                                                                   "bill because of this.", fact_ids=[f["fact_id"]]))
-            if (state.get("wording") or {}).get("wording_needed"):
+            if wording_info.get("wording_needed") and citable:
                 sentences.append(ExplanationSentence(text="Your policy wording isn't on file yet; uploading it "
                                                           "lets ClaimClear cite your exact clauses."))
         sentences.append(ExplanationSentence(text=DISCLAIMER))

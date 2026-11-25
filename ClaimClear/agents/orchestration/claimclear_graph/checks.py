@@ -8,7 +8,8 @@ Two reviews, both deterministic ("the model proposes, code decides"):
 2. **Draft review** (after the explainer): every rupee figure must come from a tool
    (``figure_not_from_engine``), each row's sentence must use the wording allowed for its verdict
    (``verdict_wording``), no forbidden phrase (``forbidden_phrase``), and every cited clause must be a
-   clause policy-kb returned (``clause_not_found``).
+   clause policy-kb returned (``clause_not_found``) and none may be cited when the wording on file is
+   another product's (``clause_from_other_wording``).
 
 Failures use the ``claimclear_contracts.CriticFailure`` check names, so the report is a valid
 ``CriticReport``.
@@ -85,8 +86,12 @@ def forbidden_phrases(text: str) -> list[str]:
 
 def review_draft(text: str, row_sentences: dict[str, str], letter_audit: dict, *, settlement: Optional[dict] = None,
                  row_audits: Iterable[dict] = (), cited_clause_ids: Iterable[str] = (),
-                 known_clause_ids: Iterable[str] = (), remembered: Iterable = ()) -> list[dict]:
-    """All draft checks. ``row_sentences`` maps row_id -> the sentence that states that row's verdict."""
+                 known_clause_ids: Iterable[str] = (), remembered: Iterable = (),
+                 clauses_quotable: bool = True) -> list[dict]:
+    """All draft checks. ``row_sentences`` maps row_id -> the sentence that states that row's verdict.
+
+    ``clauses_quotable`` false (case-records ``cite_clauses``: the wording on file is another product's): any
+    cited clause fails, even one policy-kb returned, because it is not the user's policy."""
     out = []
     allowed = allowed_figures(settlement, list(row_audits), letter_audit, remembered)
     for fig in unsupported_figures(text, allowed):
@@ -101,4 +106,8 @@ def review_draft(text: str, row_sentences: dict[str, str], letter_audit: dict, *
     known = set(known_clause_ids)
     for cid in set(cited_clause_ids) - known:
         out.append(failure("clause_not_found", f"clause {cid} was cited but policy-kb never returned it"))
+    if not clauses_quotable:
+        for cid in sorted(set(cited_clause_ids) & known):
+            out.append(failure("clause_from_other_wording",
+                               f"clause {cid} is from a wording that is not this policy's; it may not be cited"))
     return out

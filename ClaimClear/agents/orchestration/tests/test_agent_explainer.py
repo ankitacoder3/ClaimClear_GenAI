@@ -178,3 +178,15 @@ def test_an_assumption_from_the_letter_is_stated(before):
     fn, _ = node_fn("explainer")
     out = run(fn({**before, "letter_audit": audit}))
     assert "treats the condition as covered" in text(out)
+
+
+def test_another_products_wording_is_never_cited(before):
+    fn, tk = node_fn("explainer")
+    out = run(fn({**before, "wording": {**before["wording"], "cite_clauses": False, "wording_needed": True,
+                                        "status": "other_product"}}))
+    assert tk.log.count("clauses_for_rule") == 0
+    assert not any(s["clause_ids"] for s in out["draft"]["sentences"]) and "(see " not in text(out)
+    assert "doesn't have your policy's wording, so no clause is quoted" in text(out)
+    assert "Your policy wording isn't on file" not in text(out)          # said once, not twice
+    assert all(line.split("|")[-2].strip() in ("-", "Policy clause", "---")
+               for line in out["audit_table_markdown"].splitlines())

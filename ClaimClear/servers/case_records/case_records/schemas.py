@@ -85,14 +85,17 @@ class WordingOut(_Out):
     wording_uin: str = Field(description="The wording get_policy returns and policy-kb is called with: a catalogue "
                                          "UIN, or upload:doc_<id> for the user's indexed upload.")
     wording_source: Literal["catalogue", "uploaded"]
-    status: Literal["selected", "uploaded", "from_schedule", "not_reviewed", "not_printed"] = Field(
+    status: Literal["selected", "uploaded", "from_schedule", "not_reviewed", "not_printed", "other_product"] = Field(
         description="selected: the user picked a catalogue wording. uploaded: their own wording is indexed. "
                     "from_schedule: the UIN on the policy schedule is a reviewed wording. not_reviewed: the "
                     "schedule names a wording ClaimClear hasn't reviewed (the standard one is used for now). "
-                    "not_printed: no UIN on the schedule (the standard one is used).")
+                    "not_printed: no UIN on an Arogya Sanjeevani schedule, or no schedule (the standard one is "
+                    "used). other_product: the schedule prints no UIN and isn't an Arogya Sanjeevani policy.")
     schedule_wording_uin: str = Field(description="The UIN printed on the policy schedule; empty if none.")
     wording_needed: bool = Field(description="True: ask the user to upload their policy wording (or index "
                                              "wording_document_id if the case already has one).")
     wording_document_id: str = Field(description="A document of the case with the role policy_wording; empty if "
                                                  "none.")
     note: str = Field(description="What to tell or ask the user, in plain words.")
+    cite_clauses: bool = Field(description="False: wording_uin is not this policy's wording (another product); "
+                                           "never quote its clauses as the user's terms.")

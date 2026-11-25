@@ -37,3 +37,22 @@ def test_catalogue_uins(tmp_path):
     assert catalogue_uins(cat) == {DEFAULT}
     assert catalogue_uins(tmp_path / "missing.json") == frozenset()
     assert DEFAULT in catalogue_uins()                           # the repository's catalogue
+
+
+def test_a_schedule_of_another_product_is_not_quoted_from_the_default_wording():
+    brochure = "Even Healthcare for Godrej employees. OPD cover: medicines up to Rs 5,000. Consumables not covered."
+    w = choose("", DEFAULT, brochure, CATALOGUE)
+    assert (w.status, w.wording_needed, w.cite_clauses) == ("other_product", True, False)
+    assert w.wording_uin == DEFAULT and "No clause can be quoted" in w.note and "upload" in w.note
+    other = choose("", DEFAULT, "Star Comprehensive, UIN QQQQQQQ11111V222222", CATALOGUE)
+    assert (other.status, other.wording_needed, other.cite_clauses) == ("not_reviewed", True, False)
+
+
+def test_the_default_wording_is_quoted_only_for_arogya_sanjeevani_or_no_readable_schedule():
+    assert choose("", DEFAULT, "AROGYA SANJEEVANI POLICY - Individual. Policy No. AS-1", CATALOGUE).cite_clauses
+    assert choose("", DEFAULT, "Arogya Sanjeevani, UIN QQQQQQQ11111V222222", CATALOGUE).cite_clauses
+    for no_text in (None, "", "   \n"):
+        w = choose("", DEFAULT, no_text, CATALOGUE)
+        assert (w.status, w.wording_needed, w.cite_clauses) == ("not_printed", False, True)
+    assert choose("upload:doc_0123456789abcdef", DEFAULT, "Even OPD brochure", CATALOGUE).cite_clauses
+    assert choose("ABCDEFG12345V123456", DEFAULT, "Even OPD brochure", CATALOGUE).cite_clauses

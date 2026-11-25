@@ -69,6 +69,7 @@ Rules for callers:
 - Pass get_policy and get_claim_history results unchanged to the settlement-engine tools.
 - Call get_policy_wording once per case. If wording_needed is true, tell the user the standard
   Arogya Sanjeevani wording was used and ask them to upload their policy wording (see note).
+  If cite_clauses is false the policy is another product: never quote a clause of wording_uin.
 """
 
 READ_ONLY = ToolAnnotations(read_only_hint=True, destructive_hint=False, idempotent_hint=True, open_world_hint=False)
@@ -186,7 +187,8 @@ def create_server(store_dir: Optional[str | Path] = None, reference_dir: Optiona
             "schedule: a wording ClaimClear has reviewed is used without asking the user for anything. When "
             "wording_needed is true the schedule names a wording ClaimClear hasn't reviewed: tell the user the "
             "standard Arogya Sanjeevani wording was used and ask them to upload their policy wording (note says "
-            "what to say)."),
+            "what to say). cite_clauses false: the policy is another product, so quote none of that wording's "
+            "clauses."),
         annotations=READ_ONLY, meta=READ_META)
     def get_policy_wording(case_id: CaseId) -> WordingOut:
         def run():

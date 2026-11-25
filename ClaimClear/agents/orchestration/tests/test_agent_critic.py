@@ -186,3 +186,11 @@ def test_remembered_figures_are_allowed(drafted):
     assert run(fn({**drafted, "explanation": text}))["critic_stage"] == "draft_failed"
     ok = run(fn({**drafted, "explanation": text, "memory": {"figures": [4321]}}))
     assert ok["critic_stage"] == "draft_passed"
+
+
+def test_a_clause_from_another_products_wording_fails(drafted):
+    fn, _ = node_fn("critic")
+    assert any(s["clause_ids"] for s in drafted["draft"]["sentences"])
+    out = run(fn({**drafted, "wording": {**(drafted.get("wording") or {}), "cite_clauses": False}}))
+    assert out["critic_stage"] == "draft_failed"
+    assert "clause_from_other_wording" in {f["check"] for f in out["critic"]["failures"]}

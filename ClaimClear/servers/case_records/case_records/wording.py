@@ -11,7 +11,16 @@ prints the wording's IRDAI UIN; the wording is chosen in this order:
    Sanjeevani wording (the default) is used for now, and ``wording_needed`` is true: ask the user to
    upload their policy wording. If the case already holds a document with the role
    ``policy_wording``, ``wording_document_id`` names it, and the app indexes that instead of asking.
-4. ``not_printed``: no schedule, or no UIN on it. The default wording is used; nothing is asked.
+4. ``not_printed``: no schedule, or no UIN on a schedule that names Arogya Sanjeevani (or can't be
+   read). The default wording is used; nothing is asked.
+5. ``other_product``: a readable schedule with no UIN that never names Arogya Sanjeevani (a group or
+   OPD plan, a brochure ...). The default wording is not this policy's, and ``wording_needed`` is true.
+
+``cite_clauses`` says whether clauses of ``wording_uin`` may be quoted as the policy's own terms: true
+for the user's choice, their upload and a reviewed UIN; for the default wording only when the schedule
+names Arogya Sanjeevani (a standard product: every insurer's wording has the same clauses) or there is
+no readable schedule to say otherwise. False for ``other_product``, and for ``not_reviewed`` when the
+schedule doesn't name Arogya Sanjeevani: then no clause is quoted, and verdicts are only indicative.
 
 Only the schedule's visible text is read (hidden text is never trusted to choose a wording). A UIN
 printed on a document can only pick a wording from the reviewed catalogue, never load anything else.
@@ -30,6 +39,7 @@ from typing import Optional
 
 CATALOGUE_ENV = "CLAIMCLEAR_POLICY_CATALOGUE"
 UIN_IN_TEXT = re.compile(r"\b[A-Z]{7}\d{5}V\d{6}\b")
+DEFAULT_PRODUCT = re.compile(r"arogya\s*sanjeevani", re.IGNORECASE)
 
 
 def default_catalogue_path() -> Path:
@@ -52,15 +62,21 @@ def uin_in(text: str) -> str:
     return found.most_common(1)[0][0] if found else ""
 
 
+def names_default_product(text: Optional[str]) -> bool:
+    """The schedule says it is an Arogya Sanjeevani policy (the product the default wording is)."""
+    return bool(DEFAULT_PRODUCT.search(text or ""))
+
+
 @dataclass(frozen=True)
 class WordingChoice:
     wording_uin: str               # pass to policy-kb; also what get_policy returns
     wording_source: str            # "catalogue" or "uploaded"
-    status: str                    # selected | uploaded | from_schedule | not_reviewed | not_printed
+    status: str                    # selected | uploaded | from_schedule | not_reviewed | not_printed | other_product
     schedule_wording_uin: str      # as printed on the policy schedule ("" if none)
     wording_needed: bool           # ask the user for their policy wording
     wording_document_id: str       # a policy_wording document already in the case ("" if none)
     note: str                      # for the agent: what to tell or ask the user
+    cite_clauses: bool = True      # clauses of wording_uin may be quoted as this policy's terms
 
     def as_dict(self) -> dict:
         return asdict(self)
@@ -72,8 +88,9 @@ def choose(case_wording: str, default_uin: str, schedule_text: Optional[str], ca
     printed = uin_in(schedule_text or "")
     if case_wording.startswith("upload:"):
         return WordingChoice(case_wording, "uploaded", "uploaded", printed, False, wording_document_id,
-                             "The user's own uploaded policy wording is used (not reviewed by ClaimClear: "
-                             "limits are the standard Arogya Sanjeevani ones).")
+                             "The user's own uploaded policy wording is used for clauses. It is not reviewed by "
+                             "ClaimClear: the engine's limits are the standard Arogya Sanjeevani ones and may "
+                             "differ from this policy's.")
     if case_wording:
         note = "The wording the user selected is used."
         if printed and printed != case_wording:
@@ -82,11 +99,23 @@ def choose(case_wording: str, default_uin: str, schedule_text: Optional[str], ca
     if printed and printed in catalogue:
         return WordingChoice(printed, "catalogue", "from_schedule", printed, False, wording_document_id,
                              f"The policy schedule names wording {printed}, which ClaimClear has reviewed.")
+    ask = (f"The case already has a policy wording document ({wording_document_id}): index it "
+           "(the app's upload step) instead of asking." if wording_document_id else
+           "Ask the user to upload their policy wording (the document with the policy's terms and "
+           "conditions); they can also continue without it.")
+    standard = names_default_product(schedule_text)
+    unquotable = ("No clause can be quoted until the user's wording is uploaded; verdicts use the standard "
+                  "Arogya Sanjeevani rules and may not match this policy.")
+    if printed and not standard:
+        return WordingChoice(default_uin, "catalogue", "not_reviewed", printed, True, wording_document_id,
+                             f"The policy schedule names wording {printed}, which ClaimClear has not reviewed "
+                             f"and which isn't an Arogya Sanjeevani policy. {unquotable} {ask}", cite_clauses=False)
+    if (schedule_text or "").strip() and not printed and not standard:
+        return WordingChoice(default_uin, "catalogue", "other_product", "", True, wording_document_id,
+                             "The policy schedule prints no wording UIN and doesn't name Arogya Sanjeevani: it "
+                             f"is another product, and ClaimClear doesn't have its wording. {unquotable} {ask}",
+                             cite_clauses=False)
     if printed:
-        ask = (f"The case already has a policy wording document ({wording_document_id}): index it "
-               "(the app's upload step) instead of asking." if wording_document_id else
-               "Ask the user to upload their policy wording (the document with the policy's terms and "
-               "conditions); they can also continue without it.")
         return WordingChoice(default_uin, "catalogue", "not_reviewed", printed, True, wording_document_id,
                              f"The policy schedule names wording {printed}, which ClaimClear has not reviewed. "
                              f"Until the user's wording is uploaded, the standard Arogya Sanjeevani wording "
