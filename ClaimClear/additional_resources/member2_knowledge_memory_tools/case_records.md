@@ -171,20 +171,23 @@ All four are read-only: annotated `read_only_hint=true`, `destructive_hint=false
 | `list_case_documents` | `case_id` | `case_id`, `policy_no`, documents (`document_id`, `role`, `media_type`, `size_bytes`, `sha256`) | Document reader |
 | `get_document_text` | `case_id`, `document_id`, optional `pages` (1-based, ≤ 50) | `DocumentTextOut` (see [Reading documents](#reading-documents)) | Document reader, input guardrails |
 | `get_policy` | `case_id` | `PolicyOut`, same fields as settlement-engine `PolicyIn`, including `wording_uin` and `wording_source` (catalogue / uploaded) | Policy analyst |
-| `get_policy_wording` | `case_id` | `WordingOut`: `wording_uin`, `wording_source`, `status` (selected / uploaded / from_schedule / not_reviewed / not_printed), `schedule_wording_uin`, `wording_needed`, `wording_document_id`, `note` | Policy analyst; the supervisor asks the user when `wording_needed` |
+| `get_policy_wording` | `case_id` | `WordingOut`: `wording_uin`, `wording_source`, `status` (selected / uploaded / from_schedule / not_reviewed / not_printed / other_product), `schedule_wording_uin`, `wording_needed`, `wording_document_id`, `note`, `cite_clauses` | Policy analyst; the supervisor asks the user when `wording_needed` |
 | `get_claim_history` | `case_id`, `scope` (`current_period` / `all`) | `policy_no`, `scope`, claims (same fields as `PastClaimIn`) | Policy analyst |
 
 ### Which policy wording a case uses
 
 Users don't upload their policy wording when ClaimClear already has it. `case_records/wording.py` reads the IRDAI UIN printed on the case's policy schedule (visible text only) and chooses, in this order:
 
-| `status` | When | `wording_uin` | `wording_needed` |
-|---|---|---|---|
-| `uploaded` | the app indexed the user's own wording and set `upload:doc_...` on the case | that upload | no |
-| `selected` | the app set a catalogue UIN the user picked (a different UIN on the schedule is mentioned in `note`) | that UIN | no |
-| `from_schedule` | the schedule's UIN is in `development/dev_data/wordings/catalogue.json` | the schedule's UIN | no |
-| `not_reviewed` | the schedule names a wording ClaimClear hasn't reviewed | the default (standard Arogya Sanjeevani) | **yes**: ask the user to upload their wording, or index `wording_document_id` if the case already has one |
-| `not_printed` | no schedule, or no UIN on it | the default | no |
+| `status` | When | `wording_uin` | `wording_needed` | `cite_clauses` |
+|---|---|---|---|---|
+| `uploaded` | the app indexed the user's own wording and set `upload:doc_...` on the case | that upload | no | yes |
+| `selected` | the app set a catalogue UIN the user picked (a different UIN on the schedule is mentioned in `note`) | that UIN | no | yes |
+| `from_schedule` | the schedule's UIN is in `development/dev_data/wordings/catalogue.json` | the schedule's UIN | no | yes |
+| `not_reviewed` | the schedule names a wording ClaimClear hasn't reviewed | the default (standard Arogya Sanjeevani) | **yes**: ask the user to upload their wording, or index `wording_document_id` if the case already has one | only if the schedule names Arogya Sanjeevani |
+| `not_printed` | no schedule, an unreadable one, or no UIN on an Arogya Sanjeevani schedule | the default | no | yes |
+| `other_product` | a readable schedule with no UIN that never names Arogya Sanjeevani (a group or OPD plan, a brochure) | the default, for the engine's rules only | **yes** | **no** |
+
+`cite_clauses` false means the wording on file is another product's: the policy analyst searches no clauses, the explainer quotes none and says the verdicts use the standard Arogya Sanjeevani rules and may not match the policy, and the critic fails any cited clause (`clause_from_other_wording`). Arogya Sanjeevani is a standard product (every insurer's wording has the same clauses), so the default is quoted for any schedule that names it.
 
 `get_policy` returns the same `wording_uin`, so policy-kb and the settlement engine use the chosen wording. `CLAIMCLEAR_POLICY_CATALOGUE` points at another catalogue; `CLAIMCLEAR_DEFAULT_WORDING_UIN` sets the default.
 
