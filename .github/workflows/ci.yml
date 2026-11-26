@@ -9,29 +9,21 @@
 #              Needs the repository secret OPENROUTER_API_KEY (Settings > Secrets and variables > Actions).
 #   eval-gate  every push (gate A, free): the 42 dev cases through the review graph (stand-in extraction, no
 #              model); fails below 38 right overall verdicts (tests/ci_eval_gate.py).
-#   ui-eval    nightly and from "Run workflow" (gate C, about $0.10): the smoke3 bundle through the UI path with
-#              the judge; fails if a case fails the judge or errors, or an attack succeeds. Needs OPENROUTER_API_KEY.
+#   Gate C (smoke3 with the judge) is its own workflow: .github/workflows/ui-eval.yml.
 name: CI
 
 on:
   push:
   pull_request:
-  schedule:
-    - cron: "30 20 * * *"      # 02:00 IST: gate C (ui-eval) only
   workflow_dispatch:
     inputs:
       llm_smoke:
         description: "Run the LLM judge smoke test (needs OPENROUTER_API_KEY; about $0.02)"
         type: boolean
         default: false
-      ui_eval:
-        description: "Run gate C: smoke3 through the UI with the judge (needs OPENROUTER_API_KEY; about $0.10)"
-        type: boolean
-        default: false
 
 jobs:
   eval-gate:
-    if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     defaults:
@@ -51,48 +43,7 @@ jobs:
       - name: Gate A (at least 38/42 overall verdicts right)
         run: python tests/ci_eval_gate.py graph development/dev_eval/graph_dev_cases/results/graph_dev_cases.json --min-verdicts 38
 
-  ui-eval:
-    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.ui_eval)
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
-    defaults:
-      run:
-        working-directory: ClaimClear
-    env:
-      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-      PYTHONUTF8: "1"
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
-      - name: Check the key is set
-        run: test -n "$OPENROUTER_API_KEY" || { echo "Add the OPENROUTER_API_KEY repository secret first"; exit 1; }
-      - name: Environments and data, then the five servers
-        run: |
-          python start.py --setup-only --no-local-llm
-          nohup python start.py --servers-only --no-local-llm > servers.log 2>&1 &
-          for i in $(seq 1 120); do
-            python -c "import socket; [socket.create_connection(('127.0.0.1', p), 1).close() for p in (8101, 8102, 8103, 8104, 8105)]" 2>/dev/null && break
-            sleep 5
-          done
-      - name: smoke3 through the UI path, graded by the judge
-        run: .venv-agents/bin/python ui_chainlit/ui_judge_eval.py --bundle smoke3 --jobs 3
-      - name: Gate C (no judge fail, no error, no attack succeeded)
-        run: python tests/ci_eval_gate.py ui "$(ls -td var/eval/ui_judge/*/ | head -1)"
-      - name: Keep the report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: ui-eval-report
-          path: |
-            ClaimClear/var/eval/ui_judge/*/report.md
-            ClaimClear/var/eval/ui_judge/*/results.json
-            ClaimClear/servers.log
-          if-no-files-found: ignore
-
   quick:
-    if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     defaults:
@@ -114,7 +65,6 @@ jobs:
         run: python tests/run_smoke.py
 
   docker:
-    if: github.event_name != 'schedule'
     # The one-command install: build the image (both environments, data, policy index), start it with
     # docker compose, and check the five servers and the chat (UI2, host port 80) answer. No key, no model.
     runs-on: ubuntu-latest

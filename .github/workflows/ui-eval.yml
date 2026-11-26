@@ -1,0 +1,75 @@
+# Gate C: the smoke3 bundle (RT-N-004, RT-A01, RT-B01) through the chat's real path, graded by the LLM judge
+# (about $0.10 a run, OPENROUTER_API_KEY). At most once per 2-hour window, and only for an untested commit:
+#   push to main       runs unless C already ran in the current 2-hour window (UTC 00-02, 02-04, ...)
+#   every 2 hours      runs if nothing ran in this window and the latest commit is untested (a push skipped earlier)
+#   Run workflow       always runs
+# The decision and its reason are in the run's summary (tests/ui_eval_decide.py).
+name: UI eval (gate C)
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "5 */2 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: ui-eval
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  decide:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.d.outputs.run }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: d
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python ClaimClear/tests/ui_eval_decide.py --event "${{ github.event_name }}" --sha "${{ github.sha }}" --hours 2
+
+  eval:
+    needs: decide
+    if: needs.decide.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: ClaimClear
+    env:
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Check the key is set
+        run: test -n "$OPENROUTER_API_KEY" || { echo "Add the OPENROUTER_API_KEY repository secret first"; exit 1; }
+      - name: Environments and data, then the five servers
+        run: |
+          python start.py --setup-only --no-local-llm
+          nohup python start.py --servers-only --no-local-llm > servers.log 2>&1 &
+          for i in $(seq 1 120); do
+            python -c "import socket; [socket.create_connection(('127.0.0.1', p), 1).close() for p in (8101, 8102, 8103, 8104, 8105)]" 2>/dev/null && break
+            sleep 5
+          done
+      - name: smoke3 through the UI path, graded by the judge
+        run: .venv-agents/bin/python ui_chainlit/ui_judge_eval.py --bundle smoke3 --jobs 3
+      - name: Gate C (no judge fail, no error, no attack succeeded)
+        run: python tests/ci_eval_gate.py ui "$(ls -td var/eval/ui_judge/*/ | head -1)"
+      - name: Keep the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-eval-report
+          path: |
+            ClaimClear/var/eval/ui_judge/*/report.md
+            ClaimClear/var/eval/ui_judge/*/results.json
+            ClaimClear/servers.log
+          if-no-files-found: ignore
