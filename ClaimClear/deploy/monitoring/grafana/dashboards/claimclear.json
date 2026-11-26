@@ -1,0 +1,379 @@
+{
+ "uid": "claimclear",
+ "title": "ClaimClear",
+ "tags": [
+  "claimclear"
+ ],
+ "timezone": "browser",
+ "schemaVersion": 39,
+ "version": 1,
+ "refresh": "30s",
+ "time": {
+  "from": "now-6h",
+  "to": "now"
+ },
+ "panels": [
+  {
+   "id": 1,
+   "type": "stat",
+   "title": "Reviews (since start)",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "claimclear-prometheus"
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "claimclear-prometheus"
+     },
+     "expr": "sum(claimclear_reviews_total) or vector(0)",
+     "legendFormat": "reviews",
+     "refId": "A",
+     "instant": true
+    }
+   ],
+   "gridPos": {
+    "x": 0,
+    "y": 0,
+    "w": 6,
+    "h": 4
+   },
+   "options": {},
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+   }
+  },
+  {
+   "id": 2,
+   "type": "stat",
+   "title": "Errors (since start)",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "claimclear-prometheus"
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "claimclear-prometheus"
+     },
+     "expr": "sum(claimclear_errors_total) or vector(0)",
+     "legendFormat": "errors",
+     "refId": "A",
+     "instant": true
+    }
+   ],
+   "gridPos": {
+    "x": 6,
+    "y": 0,
+    "w": 6,
+    "h": 4
+   },
+   "options": {
+    "colorMode": "background"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       },
+       {
+        "color": "red",
+        "value": 1
+       }
+      ]
+     }
+    },
+    "overrides": []
+   }
+  },
+  {
+   "id": 3,
+   "type": "stat",
+   "title": "Alert: error rate above 20%",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "claimclear-prometheus"
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "claimclear-prometheus"
+     },
+     "expr": "sum(ALERTS{alertname=\"ClaimClearErrorRateHigh\",alertstate=\"firing\"}) or vector(0)",
+     "legendFormat": "alert",
+     "refId": "A",
+     "instant": true
+    }
+   ],
+   "gridPos": {
+    "x": 12,
+    "y": 0,
+    "w": 6,
+    "h": 4
+   },
+   "options": {
+    "colorMode": "background"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       },
+       {
+        "color": "red",
+        "value": 1
+       }
+      ]
+     },
+     "mappings": [
+      {
+       "type": "value",
+       "options": {
+        "0": {
+         "text": "OK",
+         "color": "green"
+        },
+        "1": {
+         "text": "FIRING",
+         "color": "red"
+        }
+       }
+      }
+     ]
+    },
+    "overrides": []
+   }
+  },
+  {
+   "id": 4,
+   "type": "stat",
+   "title": "Security flags (since start)",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "claimclear-prometheus"
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "claimclear-prometheus"
+     },
+     "expr": "sum(claimclear_security_flags_total) or vector(0)",
+     "legendFormat": "flags",
+     "refId": "A",
+     "instant": true
+    }
+   ],
+   "gridPos": {
+    "x": 18,
+    "y": 0,
+    "w": 6,
+    "h": 4
+   },
+   "options": {},
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+   }
+  },
+  {
+   "id": 5,
+   "type": "bargauge",
+   "title": "Reviews by outcome",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "claimclear-prometheus"
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "claimclear-prometheus"
+     },
+     "expr": "sum by (outcome) (claimclear_reviews_total)",
+     "legendFormat": "{{outcome}}",
+     "refId": "A",
+     "instant": true
+    }
+   ],
+   "gridPos": {
+    "x": 0,
+    "y": 4,
+    "w": 12,
+    "h": 8
+   },
+   "options": {
+    "orientation": "horizontal",
+    "displayMode": "basic"
+   },
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+   }
+  },
+  {
+   "id": 6,
+   "type": "bargauge",
+   "title": "Deduction verdicts",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "claimclear-prometheus"
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "claimclear-prometheus"
+     },
+     "expr": "sum by (verdict) (claimclear_deductions_total)",
+     "legendFormat": "{{verdict}}",
+     "refId": "A",
+     "instant": true
+    }
+   ],
+   "gridPos": {
+    "x": 12,
+    "y": 4,
+    "w": 12,
+    "h": 8
+   },
+   "options": {
+    "orientation": "horizontal",
+    "displayMode": "basic"
+   },
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+   }
+  },
+  {
+   "id": 7,
+   "type": "timeseries",
+   "title": "Review time (median and p95, seconds)",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "claimclear-prometheus"
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "claimclear-prometheus"
+     },
+     "expr": "histogram_quantile(0.5, sum by (le) (rate(claimclear_review_seconds_bucket[30m])))",
+     "legendFormat": "median",
+     "refId": "A",
+     "instant": false
+    },
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "claimclear-prometheus"
+     },
+     "expr": "histogram_quantile(0.95, sum by (le) (rate(claimclear_review_seconds_bucket[30m])))",
+     "legendFormat": "p95",
+     "refId": "B",
+     "instant": false
+    }
+   ],
+   "gridPos": {
+    "x": 0,
+    "y": 12,
+    "w": 12,
+    "h": 8
+   },
+   "options": {},
+   "fieldConfig": {
+    "defaults": {
+     "unit": "s"
+    },
+    "overrides": []
+   }
+  },
+  {
+   "id": 8,
+   "type": "bargauge",
+   "title": "Security flags by source",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "claimclear-prometheus"
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "claimclear-prometheus"
+     },
+     "expr": "sum by (source) (claimclear_security_flags_total)",
+     "legendFormat": "{{source}}",
+     "refId": "A",
+     "instant": true
+    }
+   ],
+   "gridPos": {
+    "x": 12,
+    "y": 12,
+    "w": 12,
+    "h": 8
+   },
+   "options": {
+    "orientation": "horizontal",
+    "displayMode": "basic"
+   },
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+   }
+  },
+  {
+   "id": 9,
+   "type": "timeseries",
+   "title": "Activity (events per minute)",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "claimclear-prometheus"
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "claimclear-prometheus"
+     },
+     "expr": "sum by (event) (rate(claimclear_events_total[5m])) * 60",
+     "legendFormat": "{{event}}",
+     "refId": "A",
+     "instant": false
+    }
+   ],
+   "gridPos": {
+    "x": 0,
+    "y": 20,
+    "w": 24,
+    "h": 8
+   },
+   "options": {},
+   "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+   }
+  }
+ ],
+ "templating": {
+  "list": []
+ },
+ "annotations": {
+  "list": []
+ }
+}

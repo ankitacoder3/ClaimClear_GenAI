@@ -1,0 +1,12 @@
+# Prometheus inside the ClaimClear image: reads the chat's metrics (127.0.0.1:9100, ui_chainlit/metrics.py).
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - alerts.yml
+
+scrape_configs:
+  - job_name: claimclear
+    static_configs:
+      - targets: ["127.0.0.1:9100"]

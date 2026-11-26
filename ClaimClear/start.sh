@@ -1,5 +1,5 @@
 #!/bin/sh
-# ClaimClear in one command (macOS / Linux): installs on first run, starts the servers, opens the web UI.
+# ClaimClear in one command (macOS / Linux): installs on first run, starts the servers, opens the chat (UI2).
 # Any Python 3.8+ can start it; start.py picks or downloads a Python the dependencies support.
 cd "$(dirname "$0")" || exit 1
 for py in python3 python; do

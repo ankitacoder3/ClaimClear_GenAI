@@ -1,10 +1,15 @@
 # CI for ClaimClear.
 #   quick      every push and pull request: tests/run_smoke.py (tests/smoke: always true, the chat UI builds, eval
 #              tracking and its LangSmith integration against a fake; plus ui_chainlit/tests). Free: no servers, no model.
+#   docker     every push: builds the Docker image, starts it (docker compose) and checks the servers and the chat
+#              (UI2, port 80) answer. No key, no model.
 #   llm-smoke  only from "Run workflow" with "Run the LLM judge smoke test" ticked: starts the five servers and
 #              runs tests/smoke/test_judge.py: one simple case through the UI path, graded by the LLM judge
 #              (about $0.02 a run).
 #              Needs the repository secret OPENROUTER_API_KEY (Settings > Secrets and variables > Actions).
+#   eval-gate  every push (gate A, free): the 42 dev cases through the review graph (stand-in extraction, no
+#              model); fails below 38 right overall verdicts (tests/ci_eval_gate.py).
+#   Gate C (smoke3 with the judge) is its own workflow: .github/workflows/ui-eval.yml.
 name: CI
 
 on:
@@ -18,6 +23,26 @@ on:
         default: false
 
 jobs:
+  eval-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: ClaimClear
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Environments and data (start.py --setup-only)
+        run: python start.py --setup-only --no-local-llm
+      - name: The 42 dev cases through the review graph (no model)
+        env:
+          PYTHONUTF8: "1"
+        run: .venv-agents/bin/python development/dev_eval/graph_dev_cases/run.py
+      - name: Gate A (at least 38/42 overall verdicts right)
+        run: python tests/ci_eval_gate.py graph development/dev_eval/graph_dev_cases/results/graph_dev_cases.json --min-verdicts 38
+
   quick:
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -38,6 +63,35 @@ jobs:
           LANGSMITH_API_KEY: ${{ secrets.LANGSMITH_API_KEY }}
           LANGSMITH_ENDPOINT: ${{ vars.LANGSMITH_ENDPOINT || 'https://apac.api.smith.langchain.com' }}
         run: python tests/run_smoke.py
+
+  docker:
+    # The one-command install: build the image (both environments, data, policy index), start it with
+    # docker compose, and check the five servers and the chat (UI2, host port 80) answer. No key, no model.
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: ClaimClear
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the image
+        run: docker compose build
+      - name: Start it
+        run: docker compose up -d
+      - name: Wait for the servers and the chat
+        run: |
+          for i in $(seq 1 120); do
+            docker compose exec -T claimclear python -c "import socket; [socket.create_connection(('127.0.0.1', p), 1).close() for p in (8101, 8102, 8103, 8104, 8105)]" 2>/dev/null \
+              && curl -sf -o /dev/null http://127.0.0.1:80/ && { echo "all up after $((i * 5)) s"; exit 0; }
+            sleep 5
+          done
+          echo "not up after 10 minutes"; exit 1
+      - name: Logs
+        if: always()
+        run: docker compose logs --tail 80
+      - name: Stop
+        if: always()
+        run: docker compose down -v
 
   llm-smoke:
     if: github.event_name == 'workflow_dispatch' && inputs.llm_smoke

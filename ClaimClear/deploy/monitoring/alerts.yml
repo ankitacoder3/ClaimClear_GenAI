@@ -1,0 +1,17 @@
+# The one working alert (course guide, minimum bar; team brief: "error rate exceeds threshold"): more than 20% of
+# the reviews in the last 10 minutes ended in an error, or any handler / guard error happened.
+groups:
+  - name: claimclear
+    rules:
+      - alert: ClaimClearErrorRateHigh
+        expr: |
+          (
+            sum(increase(claimclear_errors_total[10m]))
+            /
+            clamp_min(sum(increase(claimclear_reviews_total[10m])), 1)
+          ) > 0.2
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: "ClaimClear error rate above 20% in the last 10 minutes"

@@ -295,7 +295,7 @@ async def evaluate(app: dict, exp: Expected, use_judge: bool) -> dict:
         if not r["got"].get("error"):
             r["checks"] = checks(exp, r["got"])
             if use_judge:
-                r["judge"] = await judge(app["judge_llm"], exp, r["got"])
+                r["judge"] = await judge(app.get("judge_llm") or judge_llm(app), exp, r["got"])
     except Exception as exc:                                      # one broken case doesn't stop the run
         r["error"], r["traceback"] = f"{type(exc).__name__}: {exc}", traceback.format_exc()
     r["seconds"] = round(time.time() - t0, 1)
