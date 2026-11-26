@@ -1,0 +1,13 @@
+# never in the image: keys, environments built for this machine, run data
+.env
+.env.*
+!.env.example
+.keys/
+.venv/
+.venv-agents/
+.python/
+var/
+**/__pycache__/
+**/.pytest_cache/
+**/.chainlit/.files/
+*.log

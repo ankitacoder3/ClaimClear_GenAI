@@ -75,7 +75,7 @@ You upload the hospital bill, the insurer's settlement letter and the policy. Cl
 ClaimClear_GenAI/
 ├── README.md                       this page
 └── ClaimClear/                     the application
-    ├── start.bat / start.sh / start.py   one command: install, start the servers, open the web UI
+    ├── start.bat / start.sh / start.py   one command: install, start the servers, open the chat (UI2)
     ├── start_llm.bat / .sh / .py         start a local LLM and choose its model
     ├── agents/
     │   ├── orchestration/          the LangGraph multi-agent system (supervisor, six specialists, critic loop, approval gate, web UI)
@@ -123,7 +123,7 @@ ClaimClear_GenAI/
 | Memory | Long-term and episodic memory (SQLite or PostgreSQL), consent-gated, scrubbed summaries |
 | Storage | SQLite by default; PostgreSQL + pgvector + MinIO optional |
 | Models | OpenRouter (default `openai/gpt-4.1-mini`) or any local LLM (Ollama / LM Studio / llama.cpp) |
-| Web UI | **Chainlit** chat UI (selected: [why](ClaimClear/additional_resources/member4_ui_security_deployment/ui_options.md)): uploads, streaming answers, review steps; the original Starlette single-page app still opens from `start.py` |
+| Web UI | **Chainlit** chat UI (selected: [why](ClaimClear/additional_resources/member4_ui_security_deployment/ui_options.md)): uploads, streaming answers, review steps; **the default** (`start.py` opens it; Docker serves it on port 80). The original Starlette single-page app (UI1) opens only with `start.py --ui1` |
 | Safety | Critic with figure checks, streaming guard, human approval gate (SHA-256 + HMAC), per-agent tool permissions; input guardrails planned ([threat model](ClaimClear/additional_resources/member4_ui_security_deployment/threat_model.md)) |
 | Tests | pytest, hypothesis, record/replay of real tool outputs; smoke tests in one command (`tests/run_smoke.py`), run by GitHub Actions CI on every push |
 | Evals | [UI judge evals](ClaimClear/ui_chainlit/ui_judge_eval.py): cases through the chat's path, graded by an LLM judge + fixed checks; [security eval](ClaimClear/additional_resources/member4_ui_security_deployment/threat_model.md#security-eval-e2) (E2) on 30 attacks + 10 clean cases |
@@ -166,9 +166,9 @@ cd ClaimClear
 | macOS / Linux | `./start.sh` |
 | Any | `python start.py` |
 
-The first run takes a few minutes: it creates both Python environments, installs everything, tries to install Tesseract OCR, loads the development cases and builds the policy index. Later runs start in a few seconds. It then starts the five MCP servers and opens ClaimClear in your browser.
+The first run takes a few minutes: it creates both Python environments, installs everything, tries to install Tesseract OCR, loads the development cases and builds the policy index. Later runs start in a few seconds. It then starts the five MCP servers and opens **UI2, the Chainlit chat** (http://localhost, port 80), the default UI. Another port: `--port 8001` or `CLAIMCLEAR_CHAT_PORT`; if port 80 is taken it falls back to 8001 by itself. UI1, the earlier web UI, is not started (`python start.py --ui1` opens it instead).
 
-**UI2 (the new Chainlit chat UI):** run `python start.py --servers-only`, then from `ui_chainlit` `../.venv-agents/Scripts/chainlit run app.py --port 8001 -h` and open http://localhost:8001 (details in step 6).
+**With Docker** (nothing else to install; the key is read from `ClaimClear/.env` at run time): `docker compose up --build`, then open http://localhost (the chat on port 80). CI builds and starts the image on every push.
 
 3. **Choose a model (optional)**
 
@@ -190,17 +190,16 @@ python start.py --auto SET-01
 .venv-agents/bin/python development/dev_eval/graph_dev_cases/run.py     # all 42 dev cases through the graph (Scripts\python.exe on Windows)
 ```
 
-6. **Run UI2, the Chainlit chat UI** (from the `ClaimClear` folder, after step 2 has set up the environments once)
+6. **UI2, the Chainlit chat UI (the default)** (from the `ClaimClear` folder)
 
 ```bash
-# once: install Chainlit into the agents' environment
-.venv-agents/Scripts/python -m pip install -r requirements-ui.txt        # Windows
-.venv-agents/bin/python -m pip install -r requirements-ui.txt            # macOS / Linux
+python start.py                 # servers + the chat at http://localhost (port 80; --port 8001 for another)
+python start.py --ui1           # open UI1, the earlier web UI, instead
+```
 
-# terminal 1: the five MCP servers (Ctrl+C stops them)
-python start.py --servers-only
+Running the chat on its own (e.g. while editing it), with the servers already up (`python start.py --servers-only`):
 
-# terminal 2: the chat, then open http://localhost:8001
+```bash
 cd ui_chainlit
 ../.venv-agents/Scripts/chainlit run app.py --port 8001 -h               # Windows
 ../.venv-agents/bin/chainlit run app.py --port 8001 -h                   # macOS / Linux
