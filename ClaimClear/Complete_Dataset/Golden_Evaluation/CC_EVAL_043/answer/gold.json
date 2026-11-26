@@ -1,0 +1,23 @@
+{
+  "case_id": "CC_EVAL_043",
+  "payable": 84930,
+  "insurer_paid": 82650,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Non-payable items: gloves, masks, syringes, caps",
+      "amount": 2400,
+      "verdict": "matches",
+      "correct_amount": 2400,
+      "why": "Listed as non-payable items under the policy"
+    },
+    {
+      "deduction": "Surgical consumables",
+      "amount": 2400,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "Consumables are not payable"
+    }
+  ],
+  "notes": "The same consumables deducted twice under different names."
+}

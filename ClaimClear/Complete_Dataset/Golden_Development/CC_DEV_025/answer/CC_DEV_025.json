@@ -1,0 +1,168 @@
+{
+  "case_id": "CC_DEV_025",
+  "base_id": "SET-01",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "dev",
+  "planted_type": "genuine",
+  "insurer_error": {
+    "kind": "proportionate_deduction_misapplied",
+    "flags": [
+      "proportionate_deduction_misapplied"
+    ],
+    "method": "Proportionate deduction applied to every non-room line, including items not priced by room category."
+  },
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 128350,
+    "admissible": null,
+    "copay": null,
+    "payable": 95617.5,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 91678.57,
+    "copay": 4583.93,
+    "payable": 87094.64,
+    "rejected": null
+  },
+  "underpaid_by": 8522.86,
+  "letter_deductions": [
+    {
+      "deduction": "Room rent above eligible limit (₹2,000 a day for 3 days)",
+      "reason": "Room rent is limited to 2% of sum insured, at most ₹5,000 a day",
+      "amount": 6000,
+      "verdict": "matches",
+      "correct_amount": 6000
+    },
+    {
+      "deduction": "GST on room rent above eligible limit",
+      "reason": "Follows the room rent deduction",
+      "amount": 300,
+      "verdict": "matches",
+      "correct_amount": 300
+    },
+    {
+      "deduction": "Proportionate deduction on associated medical expenses (₹5,000 / ₹7,000)",
+      "reason": "Room category above eligibility, so associated expenses are reduced in the same proportion",
+      "amount": 30371.43,
+      "verdict": "disputable",
+      "correct_amount": 21400
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Proportionate deduction on associated medical expenses (₹5,000 / ₹7,000)",
+      "clause": "",
+      "correct": 21400,
+      "insurer": 30371.43,
+      "excess_deducted": 8971.43
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "GEN-02",
+      "category": "genuine",
+      "status": "Good",
+      "title": "Genuine room-rent breach, which is a deduction and not fraud",
+      "format": "Digital PDF",
+      "what_changed_and_where": "Nothing changed. Row 1 room rate is above the cap, which is an honest deduction and not fraud.",
+      "expected_verdict": "clean_with_deductions",
+      "expected_flags": [],
+      "attack_goal": "None. Tests that a costly but honest bill is not treated as fraud.",
+      "detection_signals": [
+        "Room ₹7,000 against a ₹5,000 cap",
+        "GST applied to room only"
+      ],
+      "notes": "Sum insured ₹3,00,000 gives min(₹6,000, ₹5,000) = ₹5,000 per day. Expect a proportional cut of 5,000/7,000 on linked charges, with no fraud flag."
+    },
+    "04_discharge_summary.pdf": {
+      "doc_id": "DS-02",
+      "category": "discharge_summaries",
+      "status": "Good",
+      "title": "Summary for GEN-02 confirming a private room by choice",
+      "format": "Discharge summary PDF",
+      "what_changed_and_where": "Nothing changed. Course in hospital records that the patient chose a private room, which explains the room-rent deduction in SET-01.",
+      "expected_verdict": "consistent_with_bill",
+      "expected_flags": [],
+      "attack_goal": "None. Supports the room-rent deduction in SET-01.",
+      "detection_signals": [
+        "Records that the patient chose a private room",
+        "Hypertension is disclosed and unrelated, with cover since 2022"
+      ],
+      "notes": "Hypertension must not be read as a reason to reject: the policy began in 2022 and gallstones are unrelated."
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-GEN-02",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for GEN-02",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-01",
+      "category": "settlement_letters",
+      "status": "Insurer error",
+      "title": "Proportionate deduction applied to the wrong lines",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Deductions row 3: proportionate deduction also cuts tests, MRCP, pharmacy and implants (₹30,371.43 instead of ₹21,400). Underpaid by ₹8,522.86 after co-pay.",
+      "expected_verdict": "settlement_disputable",
+      "expected_flags": [
+        "proportionate_deduction_misapplied"
+      ],
+      "attack_goal": "None. Tests whether ClaimClear works out the insurer's method and finds the underpayment.",
+      "detection_signals": [
+        "Row 3 is reproduced only by cutting tests, MRCP, pharmacy and implants too",
+        "Rows 1-2 are correct"
+      ],
+      "notes": "Assumes the hospital does not price tests, pharmacy or implants by room category. Read with GEN-02 and DS-02."
+    }
+  },
+  "open_question_flags": [],
+  "story": "Genuine room-rent breach, which is a deduction and not fraud",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_DEV_025",
+    "source_case": "dev/case-005",
+    "documents": {
+      "02_itemised_bill.pdf": "GEN-02",
+      "04_discharge_summary.pdf": "DS-02",
+      "01_policy_schedule.pdf": "SCH-GEN-02",
+      "03_settlement_letter.pdf": "SET-01"
+    },
+    "scenario": {
+      "type": "genuine",
+      "title": "Genuine room-rent breach, which is a deduction and not fraud",
+      "what_changed": "Nothing changed. Row 1 room rate is above the cap, which is an honest deduction and not fraud.",
+      "attack_goal": "None. Tests that a costly but honest bill is not treated as fraud.",
+      "expected_flags": []
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2025-100478",
+      "holder": "Rudransh Kelapure",
+      "sex": "M",
+      "dob": "1967-08-21",
+      "sum_insured": 300000,
+      "period_start": "2025-07-15",
+      "period_end": "2026-07-14",
+      "first_inception": "2022-07-15",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": []
+  }
+}

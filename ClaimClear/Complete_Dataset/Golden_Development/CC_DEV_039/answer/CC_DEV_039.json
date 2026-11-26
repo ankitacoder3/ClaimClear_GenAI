@@ -1,0 +1,136 @@
+{
+  "case_id": "CC_DEV_039",
+  "base_id": "SET-02",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "dev",
+  "planted_type": "genuine",
+  "insurer_error": null,
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 101950,
+    "admissible": null,
+    "copay": null,
+    "payable": 93660.5,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 98590,
+    "copay": 4929.5,
+    "payable": 93660.5,
+    "rejected": null
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Non-payable items: gloves, masks, syringes, caps",
+      "reason": "Listed as non-payable items under the policy",
+      "amount": 3360,
+      "verdict": "matches",
+      "correct_amount": 3360
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "GEN-01",
+      "category": "genuine",
+      "status": "Good",
+      "title": "Three-night appendectomy within all limits",
+      "format": "Digital PDF",
+      "what_changed_and_where": "Nothing changed.",
+      "expected_verdict": "clean_with_deductions",
+      "expected_flags": [],
+      "attack_goal": "None. Baseline legitimate bill.",
+      "detection_signals": [
+        "Lines, total and words agree",
+        "Admission inside policy period"
+      ],
+      "notes": "Room ₹4,500 is under the ₹5,000 cap. Only the listed consumables are non-payable, plus 5% co-pay."
+    },
+    "04_discharge_summary.pdf": {
+      "doc_id": "DS-01",
+      "category": "discharge_summaries",
+      "status": "Good",
+      "title": "Summary for GEN-01 that agrees with the bill",
+      "format": "Discharge summary PDF",
+      "what_changed_and_where": "Nothing changed. Name, UHID, IP number, dates and procedure match GEN-01.",
+      "expected_verdict": "consistent_with_bill",
+      "expected_flags": [],
+      "attack_goal": "None. Baseline summary.",
+      "detection_signals": [
+        "Name, UHID, IP number, dates and procedure all match GEN-01"
+      ],
+      "notes": ""
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-GEN-01",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for GEN-01",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-02",
+      "category": "settlement_letters",
+      "status": "Good",
+      "title": "Correct settlement with nothing to dispute",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Correct settlement. Only listed consumables and the 5% co-pay are deducted. Nothing to dispute.",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "None. False-alarm test: ClaimClear must not suggest a dispute.",
+      "detection_signals": [
+        "Only listed consumables and 5% co-pay deducted"
+      ],
+      "notes": ""
+    }
+  },
+  "open_question_flags": [],
+  "story": "Three-night appendectomy within all limits",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_DEV_039",
+    "source_case": "dev/case-019",
+    "documents": {
+      "02_itemised_bill.pdf": "GEN-01",
+      "04_discharge_summary.pdf": "DS-01",
+      "01_policy_schedule.pdf": "SCH-GEN-01",
+      "03_settlement_letter.pdf": "SET-02"
+    },
+    "scenario": {
+      "type": "genuine",
+      "title": "Three-night appendectomy within all limits",
+      "what_changed": "Nothing changed.",
+      "attack_goal": "None. Baseline legitimate bill.",
+      "expected_flags": []
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2025-100231",
+      "holder": "Tanvika Morvekar",
+      "sex": "F",
+      "dob": "1983-03-09",
+      "sum_insured": 500000,
+      "period_start": "2025-04-01",
+      "period_end": "2026-03-31",
+      "first_inception": "2023-04-01",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": []
+  }
+}

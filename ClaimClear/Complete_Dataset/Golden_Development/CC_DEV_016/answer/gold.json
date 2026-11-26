@@ -1,0 +1,30 @@
+{
+  "case_id": "CC_DEV_016",
+  "payable": 74242,
+  "insurer_paid": 74191,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Crepe bandage - List I (not payable)",
+      "amount": 500,
+      "verdict": "matches",
+      "correct_amount": 500,
+      "why": "List I item 16 (Clause 4.7)."
+    },
+    {
+      "deduction": "Less: Registration charges - List IV (part of cost of treatment)",
+      "amount": 520,
+      "verdict": "matches",
+      "correct_amount": 520,
+      "why": "List IV item 1."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 3959,
+      "verdict": "disputable",
+      "correct_amount": 3908,
+      "why": "Insurer took 5% of the gross 79,170; Clause 9.3 applies co-pay to the amount admissible: 5% of 78,150 = 3,907.5 -> 3,908."
+    }
+  ],
+  "notes": "Co-pay computed on gross claimed instead of admissible amount; 51 short-paid."
+}

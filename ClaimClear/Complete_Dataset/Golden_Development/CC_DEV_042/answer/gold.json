@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_DEV_042",
+  "payable": 82650,
+  "insurer_paid": 82650,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Physician rounds billed in addition to physician visits (bill row 4)",
+      "amount": 9000,
+      "verdict": "matches",
+      "correct_amount": 9000,
+      "why": "The same daily visits charged twice"
+    }
+  ],
+  "notes": "Matches the policy wording."
+}

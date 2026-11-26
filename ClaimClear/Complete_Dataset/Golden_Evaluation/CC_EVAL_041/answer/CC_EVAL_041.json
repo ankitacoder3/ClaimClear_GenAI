@@ -1,0 +1,166 @@
+{
+  "case_id": "CC_EVAL_041",
+  "base_id": "SET-16",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "heldout",
+  "planted_type": "malicious",
+  "insurer_error": null,
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 230220,
+    "admissible": null,
+    "copay": null,
+    "payable": 107350,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 113000,
+    "copay": 5650,
+    "payable": 107350,
+    "rejected": null
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Surgeon fee billed twice (bill row 3)",
+      "reason": "Same surgeon fee as bill row 2",
+      "amount": 48000,
+      "verdict": "matches",
+      "correct_amount": 48000
+    },
+    {
+      "deduction": "OT instrument set and table charges",
+      "reason": "Part of the operation theatre charges in bill row 4",
+      "amount": 18000,
+      "verdict": "matches",
+      "correct_amount": 18000
+    },
+    {
+      "deduction": "Non-payable items: sterile gloves, syringes, N95 masks",
+      "reason": "Listed as non-payable items under the policy",
+      "amount": 32220,
+      "verdict": "matches",
+      "correct_amount": 32220
+    },
+    {
+      "deduction": "Patient care kit",
+      "reason": "Listed as non-payable items under the policy",
+      "amount": 9000,
+      "verdict": "matches",
+      "correct_amount": 9000
+    },
+    {
+      "deduction": "Laboratory tests above the itemised rate",
+      "reason": "Printed ₹28,000 for 12 tests at ₹1,500 (₹18,000)",
+      "amount": 10000,
+      "verdict": "matches",
+      "correct_amount": 10000
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "MAL-05",
+      "category": "malicious",
+      "status": "Modified",
+      "title": "Padded bill with duplicate lines and impossible quantities",
+      "format": "Digital PDF",
+      "what_changed_and_where": "Rows 2-3: surgeon fee twice. Rows 4-5: OT split in two. Rows 6-8: inflated quantities. Row 9: consumables renamed as a kit. Row 10: 12 x ₹1,500 printed as ₹28,000.",
+      "expected_verdict": "flag_for_review",
+      "expected_flags": [
+        "above_tariff_range",
+        "duplicate_line_item",
+        "implausible_quantity",
+        "qty_rate_amount_mismatch",
+        "unbundled_charges",
+        "non_payable_item_disguised",
+        "senior_approval_required"
+      ],
+      "attack_goal": "Inflate a routine surgery to more than twice the top of its tariff range.",
+      "detection_signals": [
+        "Surgeon fee appears twice under two names",
+        "180 gloves and 90 N95 masks in 3 days",
+        "12 x ₹1,500 printed as ₹28,000",
+        "₹2,30,220 against a ₹1,05,000 tier-2 maximum"
+      ],
+      "notes": ""
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-MAL-05",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for MAL-05",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-16",
+      "category": "settlement_letters",
+      "status": "Good",
+      "title": "Padded bill paid after removing the padding",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Deductions rows 1-5 remove the duplicate surgeon fee, split OT, padded consumables, care kit and wrong lab total.",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "None. Every deduction removes padding, so there is nothing to dispute.",
+      "detection_signals": [
+        "Duplicate fee, split OT, inflated consumables and a wrong line total all removed"
+      ],
+      "notes": ""
+    }
+  },
+  "open_question_flags": [],
+  "story": "Padded bill with duplicate lines and impossible quantities",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_EVAL_041",
+    "source_case": "heldout/case-001",
+    "documents": {
+      "02_itemised_bill.pdf": "MAL-05",
+      "01_policy_schedule.pdf": "SCH-MAL-05",
+      "03_settlement_letter.pdf": "SET-16"
+    },
+    "scenario": {
+      "type": "malicious",
+      "title": "Padded bill with duplicate lines and impossible quantities",
+      "what_changed": "Rows 2-3: surgeon fee twice. Rows 4-5: OT split in two. Rows 6-8: inflated quantities. Row 9: consumables renamed as a kit. Row 10: 12 x ₹1,500 printed as ₹28,000.",
+      "attack_goal": "Inflate a routine surgery to more than twice the top of its tariff range.",
+      "expected_flags": [
+        "above_tariff_range",
+        "duplicate_line_item",
+        "implausible_quantity",
+        "qty_rate_amount_mismatch",
+        "unbundled_charges",
+        "non_payable_item_disguised",
+        "senior_approval_required"
+      ]
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2026-101739",
+      "holder": "Yuvaan Nerurkhe",
+      "sex": "M",
+      "dob": "1985-03-28",
+      "sum_insured": 500000,
+      "period_start": "2026-02-15",
+      "period_end": "2027-02-14",
+      "first_inception": "2023-02-15",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": []
+  }
+}

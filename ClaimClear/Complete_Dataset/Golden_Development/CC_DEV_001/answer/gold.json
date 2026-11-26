@@ -1,0 +1,37 @@
+{
+  "case_id": "CC_DEV_001",
+  "payable": 66025,
+  "insurer_paid": 63025,
+  "overall": "not_verifiable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Gauze and cotton - List III (part of procedure charges)",
+      "amount": 550,
+      "verdict": "matches",
+      "correct_amount": 550,
+      "why": "Gauze, cotton are Annexure A List III items (Clause 4.7) - not separately payable."
+    },
+    {
+      "deduction": "Less: Urine bag - List IV (part of cost of treatment)",
+      "amount": 150,
+      "verdict": "matches",
+      "correct_amount": 150,
+      "why": "Urine bag is Annexure A List IV item 18 (Clause 4.7)."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 3475,
+      "verdict": "matches",
+      "correct_amount": 3475,
+      "why": "5% of 69,500 (Clause 9.3); but the letter takes co-pay before its room deduction - if any room deduction stood, co-pay must be on the amount after it (DECISIONS #3)."
+    },
+    {
+      "deduction": "Less: Room and nursing charges - deduction as per eligibility",
+      "amount": 3000,
+      "verdict": "not_verifiable",
+      "correct_amount": 0,
+      "why": "No clause cited; bill gives one lump 22,000 for 4 days with no ICU/ward split, so the room/ICU caps of Clause 4.1(i)/(ii) cannot be applied; 3,000 matches no possible cap computation."
+    }
+  ],
+  "notes": "The room line cannot be checked: 22,000 for a 4-day stay = 5,500/day. If all 4 days were ward/room, cap 3,000/day -> excess 10,000 plus a proportionate deduction of 10,977 on non-medicine charges (Clause 4.1 Note 2), payable would be 46,097. If the days were ICU (procedure says ICU monitoring), ICU cap 7,500/day -> no excess, payable 66,025. The insurer's 3,000 (no clause) fits neither reading. Gold payable 66,025 is the figure with no unverifiable room deduction; the day-wise room/ICU break-up is needed. Also the letter applies co-pay before the room deduction (wrong order per DECISIONS #3). Treated List III items (gauze/cotton) as not separately payable even though there is no surgical procedure charge here."
+}

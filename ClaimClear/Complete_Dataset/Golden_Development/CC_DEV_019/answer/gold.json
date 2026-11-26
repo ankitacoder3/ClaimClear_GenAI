@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_DEV_019",
+  "payable": 92197,
+  "insurer_paid": 0,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: Hernia 24-month specific waiting period not completed (Clause 6.3)",
+      "amount": 99000,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "Inception 10-Jan-2024 to admission 20-Aug-2026 is >30 months continuous cover, so the 24-month wait (6.3 i.12) was complete."
+    }
+  ],
+  "notes": "Rejection wrong unless the SI was enhanced or cover broken - nothing in the documents suggests either. Payable computed as for an admissible claim."
+}

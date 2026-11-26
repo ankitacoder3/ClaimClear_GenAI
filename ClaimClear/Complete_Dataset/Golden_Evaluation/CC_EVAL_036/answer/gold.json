@@ -1,0 +1,37 @@
+{
+  "case_id": "CC_EVAL_036",
+  "payable": 44901,
+  "insurer_paid": 40755,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Room / ICU rent above eligible limit",
+      "amount": 10364,
+      "verdict": "disputable",
+      "correct_amount": 6000,
+      "why": "(5,500-4,000) x 4 days = 6,000 (cl. 4.1(i)); no basis for 10,364."
+    },
+    {
+      "deduction": "Less: Discharge procedure charges - List II (part of room charges)",
+      "amount": 460,
+      "verdict": "matches",
+      "correct_amount": 460,
+      "why": "Annexure A List II item 30."
+    },
+    {
+      "deduction": "Less: Proportionate deduction (room category above eligibility)",
+      "amount": 7336,
+      "verdict": "matches",
+      "correct_amount": 7336,
+      "why": "26,900 x 1,500/5,500, medicines exempt (cl. 4.1 Note 2)."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 2145,
+      "verdict": "consequential",
+      "correct_amount": 2363,
+      "why": "5% of admissible 47,264 (cl. 9.3); differs because of the room excess."
+    }
+  ],
+  "notes": "Medicated burn dressings correctly allowed (subject to the proportionate cut). The insurer's room excess 10,364 cannot be derived from any cap. Underpaid by 4,146."
+}

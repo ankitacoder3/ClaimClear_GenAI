@@ -1,0 +1,23 @@
+{
+  "case_id": "CC_EVAL_006",
+  "payable": 207385,
+  "insurer_paid": 207385,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Less: ECG electrodes - List I (not payable)",
+      "amount": 600,
+      "verdict": "matches",
+      "correct_amount": 600,
+      "why": "Annexure A List I item 55 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 10915,
+      "verdict": "matches",
+      "correct_amount": 10915,
+      "why": "5% of Rs 2,18,300 (Cl. 9.3)"
+    }
+  ],
+  "notes": "ICCU Rs 9,500/day within Rs 10,000 cap, room Rs 4,500/day within Rs 5,000 cap. SI remaining Rs 2,25,000 (admitted basis) or Rs 2,33,750 (paid basis); net Rs 2,07,385 fits under both, so the open question in DECISIONS.md item 4 does not change the answer."
+}

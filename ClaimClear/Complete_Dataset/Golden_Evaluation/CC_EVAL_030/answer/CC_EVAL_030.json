@@ -1,0 +1,85 @@
+{
+  "case_id": "CC_EVAL_030",
+  "base_id": "H11",
+  "variant": 2,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "proportionate",
+  "insurer_error": {
+    "kind": "prop_on_capped_room"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 131700,
+    "admissible": 108090,
+    "copay": 5405,
+    "payable": 102685,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 104090,
+    "copay": 5205,
+    "payable": 98885,
+    "rejected": null
+  },
+  "underpaid_by": 3800,
+  "letter_deductions": [
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause_cited": "4.1(i), 4.1(ii)",
+      "amount": 7500,
+      "verdict": "disputable",
+      "correct_amount": 3500
+    },
+    {
+      "deduction": "Gauze and cotton - List III (part of procedure charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 900,
+      "verdict": "matches",
+      "correct_amount": 900
+    },
+    {
+      "deduction": "Sanitary pads - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 350,
+      "verdict": "matches",
+      "correct_amount": 350
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause_cited": "4.1 Note 2",
+      "amount": 18860,
+      "verdict": "matches",
+      "correct_amount": 18860
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 5205,
+      "verdict": "consequential",
+      "correct_amount": 5405
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 5405,
+      "insurer": 5205,
+      "excess_deducted": -200
+    },
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause": "4.1(i), 4.1(ii)",
+      "correct": 3500,
+      "insurer": 7500,
+      "excess_deducted": 4000
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Hysterectomy on a floater; HDU night and private room both above caps."
+}

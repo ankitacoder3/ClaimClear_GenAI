@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_DEV_041",
+  "payable": 0,
+  "insurer_paid": 0,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: The medicines claimed (telmisartan, metformin, atorvastatin and glucometer strips) are for long-term blood pressure and diabetes care, not for the acute appendicitis treated under claim CLM-2026-00397. Post-hospitalisation cover applies only to expenses for the same condition, so these outpatient purchases are not payable.",
+      "amount": 1065,
+      "verdict": "matches",
+      "correct_amount": 1065,
+      "why": "Matches: post-hospitalisation cover is for the same condition only."
+    }
+  ],
+  "notes": "Matches: post-hospitalisation cover is for the same condition only."
+}

@@ -1,0 +1,75 @@
+{
+  "case_id": "CC_DEV_005",
+  "base_id": "D1",
+  "variant": 1,
+  "tag": "MD",
+  "split": "dev",
+  "planted_type": "none",
+  "insurer_error": null,
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 121510,
+    "admissible": 95662,
+    "copay": 4783,
+    "payable": 90879,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 95662,
+    "copay": 4783,
+    "payable": 90879,
+    "rejected": null
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause_cited": "4.1(i), 4.1(ii)",
+      "amount": 6500,
+      "verdict": "matches",
+      "correct_amount": 6500
+    },
+    {
+      "deduction": "Gloves and masks - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 750,
+      "verdict": "matches",
+      "correct_amount": 750
+    },
+    {
+      "deduction": "Mineral water - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 160,
+      "verdict": "matches",
+      "correct_amount": 160
+    },
+    {
+      "deduction": "Admission kit - List II (part of room charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 450,
+      "verdict": "matches",
+      "correct_amount": 450
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause_cited": "4.1 Note 2",
+      "amount": 17988,
+      "verdict": "matches",
+      "correct_amount": 17988
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 4783,
+      "verdict": "matches",
+      "correct_amount": 4783
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Neha's gall bladder surgery: ICU night then private room, both above caps; pre-admission ultrasound."
+}

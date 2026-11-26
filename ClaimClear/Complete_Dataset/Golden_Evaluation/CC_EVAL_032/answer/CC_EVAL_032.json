@@ -1,0 +1,87 @@
+{
+  "case_id": "CC_EVAL_032",
+  "base_id": "H12",
+  "variant": 3,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "non_payable",
+  "insurer_error": {
+    "kind": "disallow",
+    "line": "imp3",
+    "reason": "Mesh - surgical consumable, not payable"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 95850,
+    "admissible": 93150,
+    "copay": 4658,
+    "payable": 88492,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 79850,
+    "copay": 3993,
+    "payable": 75857,
+    "rejected": null
+  },
+  "underpaid_by": 12635,
+  "letter_deductions": [
+    {
+      "deduction": "Prolene mesh 15x15 - Mesh - surgical consumable, not payable",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 13300,
+      "verdict": "disputable",
+      "correct_amount": 0
+    },
+    {
+      "deduction": "Abdominal binder - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 900,
+      "verdict": "matches",
+      "correct_amount": 900
+    },
+    {
+      "deduction": "Discharge procedure charges - List II (part of room charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 350,
+      "verdict": "matches",
+      "correct_amount": 350
+    },
+    {
+      "deduction": "Pharmacy refill - outside post-hospitalisation period (70 days)",
+      "clause_cited": "4.5",
+      "amount": 1450,
+      "verdict": "matches",
+      "correct_amount": 1450
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 3993,
+      "verdict": "consequential",
+      "correct_amount": 4658
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 4658,
+      "insurer": 3993,
+      "excess_deducted": -665
+    },
+    {
+      "deduction": "Prolene mesh 15x15 - Mesh - surgical consumable, not payable",
+      "clause": "4.7, Annexure A",
+      "correct": 0,
+      "insurer": 13300,
+      "excess_deducted": 13300
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Hernia repair, day-wise bill; post-discharge dressings and a late refill."
+}

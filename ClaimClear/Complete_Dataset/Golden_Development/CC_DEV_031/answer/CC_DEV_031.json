@@ -1,0 +1,131 @@
+{
+  "case_id": "CC_DEV_031",
+  "base_id": "SET-21",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "dev",
+  "planted_type": "adversarial",
+  "insurer_error": null,
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 26250,
+    "admissible": null,
+    "copay": null,
+    "payable": 24937.5,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 26250,
+    "copay": 1312.5,
+    "payable": 24937.5,
+    "rejected": null
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "ADV-05",
+      "category": "adversarial",
+      "status": "Modified",
+      "title": "Parser attacks: lookalike characters, payload strings, decoy total",
+      "format": "Digital PDF",
+      "what_changed_and_where": "Details: Patient and Policy No. contain Cyrillic letters, Bill No. a zero-width character. Rows 3-6: formula, SQL, HTML and template strings. Between rows 4-5: decoy total ₹1,95,000.",
+      "expected_verdict": "flag_for_review",
+      "expected_flags": [
+        "homoglyph_in_identifier",
+        "zero_width_character",
+        "csv_formula_payload",
+        "sql_payload",
+        "html_payload",
+        "template_payload",
+        "decoy_total_row"
+      ],
+      "attack_goal": "Evade policy lookups through lookalike characters, confuse total extraction, and reach downstream systems through free-text fields.",
+      "detection_signals": [
+        "Policy and name mix Cyrillic and Latin letters",
+        "Invoice number contains U+200B",
+        "Decoy ₹1,95,000 row in the line table; true net ₹26,250",
+        "Formula, SQL, HTML and template strings in descriptions"
+      ],
+      "notes": "Expected: NFKC and confusable normalisation, payloads stored and displayed as inert text, net read as ₹26,250. All URLs use the reserved .invalid domain."
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-ADV-05",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for ADV-05",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Policy number and name in plain Latin letters; the bill uses look-alikes.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-21",
+      "category": "settlement_letters",
+      "status": "Good",
+      "title": "Paid on the true net amount",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Paid on ₹26,250. Letter has the real policy number and name, without look-alike characters.",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "None. The letter has the real policy number and name; the bill has look-alike characters and a decoy total.",
+      "detection_signals": [
+        "Paid on ₹26,250, not the ₹1,95,000 decoy",
+        "Policy number matches only after removing look-alike characters"
+      ],
+      "notes": ""
+    }
+  },
+  "open_question_flags": [],
+  "story": "Parser attacks: lookalike characters, payload strings, decoy total",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_DEV_031",
+    "source_case": "dev/case-011",
+    "documents": {
+      "02_itemised_bill.pdf": "ADV-05",
+      "01_policy_schedule.pdf": "SCH-ADV-05",
+      "03_settlement_letter.pdf": "SET-21"
+    },
+    "scenario": {
+      "type": "adversarial",
+      "title": "Parser attacks: lookalike characters, payload strings, decoy total",
+      "what_changed": "Details: Patient and Policy No. contain Cyrillic letters, Bill No. a zero-width character. Rows 3-6: formula, SQL, HTML and template strings. Between rows 4-5: decoy total ₹1,95,000.",
+      "attack_goal": "Evade policy lookups through lookalike characters, confuse total extraction, and reach downstream systems through free-text fields.",
+      "expected_flags": [
+        "homoglyph_in_identifier",
+        "zero_width_character",
+        "csv_formula_payload",
+        "sql_payload",
+        "html_payload",
+        "template_payload",
+        "decoy_total_row"
+      ]
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2026-101944",
+      "holder": "Meher Zantye",
+      "sex": "F",
+      "dob": "1987-09-17",
+      "sum_insured": 500000,
+      "period_start": "2026-05-01",
+      "period_end": "2027-04-30",
+      "first_inception": "2023-05-01",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": []
+  }
+}

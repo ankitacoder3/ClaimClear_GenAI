@@ -1,0 +1,54 @@
+{
+  "case_id": "CC_DEV_006",
+  "base_id": "D5",
+  "variant": 1,
+  "tag": "SK",
+  "split": "dev",
+  "planted_type": "none",
+  "insurer_error": null,
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 84730,
+    "admissible": 83550,
+    "copay": 4178,
+    "payable": 79372,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 83550,
+    "copay": 4178,
+    "payable": 79372,
+    "rejected": null
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Attendant food and mineral water - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 700,
+      "verdict": "matches",
+      "correct_amount": 700
+    },
+    {
+      "deduction": "Multivitamin tonic - outside post-hospitalisation period (75 days)",
+      "clause_cited": "4.5",
+      "amount": 480,
+      "verdict": "matches",
+      "correct_amount": 480
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 4178,
+      "verdict": "matches",
+      "correct_amount": 4178
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Dengue: ICU at exactly the limit, ward; pre and post-hospital bills."
+}

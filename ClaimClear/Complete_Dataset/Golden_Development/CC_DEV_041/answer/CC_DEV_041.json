@@ -1,0 +1,184 @@
+{
+  "case_id": "CC_DEV_041",
+  "base_id": "SET-22",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "dev",
+  "planted_type": "formats",
+  "insurer_error": null,
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 1065,
+    "admissible": null,
+    "copay": null,
+    "payable": 0,
+    "rejected": {
+      "reason": "The medicines claimed (telmisartan, metformin, atorvastatin and glucometer strips) are for long-term blood pressure and diabetes care, not for the acute appendicitis treated under claim CLM-2026-00397. Post-hospitalisation cover applies only to expenses for the same condition, so these outpatient purchases are not payable.",
+      "clause": ""
+    }
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": {
+      "reason": "The medicines claimed (telmisartan, metformin, atorvastatin and glucometer strips) are for long-term blood pressure and diabetes care, not for the acute appendicitis treated under claim CLM-2026-00397. Post-hospitalisation cover applies only to expenses for the same condition, so these outpatient purchases are not payable.",
+      "clause": ""
+    }
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: The medicines claimed (telmisartan, metformin, atorvastatin and glucometer strips) are for long-term blood pressure and diabetes care, not for the acute appendicitis treated under claim CLM-2026-00397. Post-hospitalisation cover applies only to expenses for the same condition, so these outpatient purchases are not payable.",
+      "amount": 1065,
+      "verdict": "matches",
+      "correct_amount": 1065,
+      "reason": "not_covered"
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {
+    "02_itemised_bill.jpg": {
+      "doc_id": "FMT-02",
+      "category": "formats",
+      "status": "Good",
+      "title": "Phone photo of a thermal pharmacy receipt",
+      "format": "Phone photo JPG of thermal receipt",
+      "what_changed_and_where": "Content unchanged. Only the format: phone photo of a thermal receipt.",
+      "expected_verdict": "clean_with_deductions",
+      "expected_flags": [],
+      "attack_goal": "None. Photo capture stress test.",
+      "detection_signals": [
+        "Perspective distortion, uneven lighting, blur, desk background"
+      ],
+      "notes": "Fields are short and the layout is free text, so the table is only implied by spacing."
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-FMT-02",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for FMT-02",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-22",
+      "category": "settlement_letters",
+      "status": "Good",
+      "title": "Unrelated outpatient medicines rejected",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Correct rejection: chronic medicines are not for the condition treated under CLM-2026-00397.",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "The insurer's decision is right. ClaimClear must not draft a grievance.",
+      "detection_signals": [
+        "Medicines are for a different, long-term condition"
+      ],
+      "notes": ""
+    }
+  },
+  "open_question_flags": [],
+  "story": "Phone photo of a thermal pharmacy receipt",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_DEV_041",
+    "source_case": "dev/case-021",
+    "documents": {
+      "02_itemised_bill.jpg": "FMT-02",
+      "01_policy_schedule.pdf": "SCH-FMT-02",
+      "03_settlement_letter.pdf": "SET-22"
+    },
+    "scenario": {
+      "type": "formats",
+      "title": "Phone photo of a thermal pharmacy receipt",
+      "what_changed": "Content unchanged. Only the format: phone photo of a thermal receipt.",
+      "attack_goal": "None. Photo capture stress test.",
+      "expected_flags": []
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2026-102076",
+      "holder": "Anvi Rajgolkar",
+      "sex": "F",
+      "dob": "1969-05-22",
+      "sum_insured": 300000,
+      "period_start": "2026-03-15",
+      "period_end": "2027-03-14",
+      "first_inception": "2022-03-15",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": [
+      {
+        "claim_id": "CLM-2026-00397",
+        "policy_no": "AS-2026-102076",
+        "patient_name": "Anvi Rajgolkar",
+        "status": "settled",
+        "provider": "Vrindaloka Memorial Hospital",
+        "invoice_no": "VML/26-27/000377",
+        "invoice_date": "2026-04-11",
+        "ip_no": "IP/2604/0299",
+        "admission": "2026-04-08",
+        "discharge": "2026-04-11",
+        "diagnosis": "Acute appendicitis",
+        "billed_amount": 89700.0,
+        "settled_amount": 83315.0,
+        "line_fingerprint": "d32d6c21d6066879",
+        "line_items": [
+          {
+            "description": "Semi-private room",
+            "amount": 13200.0
+          },
+          {
+            "description": "Nursing and duty doctor charges",
+            "amount": 3300.0
+          },
+          {
+            "description": "Surgeon fee - laparoscopic appendectomy",
+            "amount": 26000.0
+          },
+          {
+            "description": "Anaesthetist fee",
+            "amount": 8500.0
+          },
+          {
+            "description": "Operation theatre charges",
+            "amount": 16000.0
+          },
+          {
+            "description": "Consultant visits",
+            "amount": 4500.0
+          },
+          {
+            "description": "Laboratory investigations",
+            "amount": 5900.0
+          },
+          {
+            "description": "USG abdomen",
+            "amount": 2200.0
+          },
+          {
+            "description": "Pharmacy - inpatient medicines",
+            "amount": 8100.0
+          },
+          {
+            "description": "Consumables - gloves, masks, syringes, caps",
+            "amount": 2000.0
+          }
+        ]
+      }
+    ]
+  }
+}

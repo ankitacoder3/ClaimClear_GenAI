@@ -1,0 +1,37 @@
+{
+  "case_id": "CC_DEV_003",
+  "payable": 66025,
+  "insurer_paid": 53675,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Room / ICU rent above eligible limit",
+      "amount": 13000,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "ICU 6,500/day is under the ICU cap 7,500 (5% of 1.5L, Clause 4.1(ii)); ward 2,500 under room cap 3,000 (4.1(i)); nothing is above limit. Insurer appears to cap ICU days at the room-rent cap 3,000."
+    },
+    {
+      "deduction": "Less: Gauze and cotton - List III (part of procedure charges)",
+      "amount": 550,
+      "verdict": "matches",
+      "correct_amount": 550,
+      "why": "Annexure A List III (Clause 4.7)."
+    },
+    {
+      "deduction": "Less: Urine bag - List IV (part of cost of treatment)",
+      "amount": 150,
+      "verdict": "matches",
+      "correct_amount": 150,
+      "why": "Annexure A List IV item 18 (Clause 4.7)."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 2825,
+      "verdict": "consequential",
+      "correct_amount": 3475,
+      "why": "5% method right (Clause 9.3) but base reduced by the wrong 13,000 room/ICU deduction; correct 5% of 69,500."
+    }
+  ],
+  "notes": "ICU cap is 5% of SI = 7,500/day, not the 2% room cap. No proportionate deduction since no room/ICU rate exceeds its cap. Same claim number/invoice as CC_DEV_001 but this bill itemises ICU and ward days."
+}

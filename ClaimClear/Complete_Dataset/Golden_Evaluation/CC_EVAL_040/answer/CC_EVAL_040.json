@@ -1,0 +1,66 @@
+{
+  "case_id": "CC_EVAL_040",
+  "base_id": "H10",
+  "variant": 3,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "sublimit",
+  "insurer_error": {
+    "kind": "cb_ignored"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 264000,
+    "admissible": 263400,
+    "copay": 13170,
+    "payable": 250230,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 263400,
+    "copay": 13170,
+    "payable": 233750,
+    "rejected": null
+  },
+  "underpaid_by": 16480,
+  "letter_deductions": [
+    {
+      "deduction": "ECG electrodes - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 600,
+      "verdict": "matches",
+      "correct_amount": 600
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 13170,
+      "verdict": "matches",
+      "correct_amount": 13170
+    },
+    {
+      "deduction": "Sum insured balance for the policy year",
+      "clause_cited": "2, 3.47",
+      "amount": 16480,
+      "verdict": "disputable",
+      "correct_amount": 0
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Sum insured balance for the policy year",
+      "clause": "2, 3.47",
+      "correct": 0,
+      "insurer": 16480,
+      "excess_deducted": 16480
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [
+    "si_depletion_by_paid"
+  ],
+  "story": "Angioplasty after an earlier angiography this year."
+}

@@ -1,0 +1,30 @@
+{
+  "case_id": "CC_EVAL_027",
+  "payable": 265810,
+  "insurer_paid": 265600,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Knee immobilizer - List I (not payable)",
+      "amount": 2400,
+      "verdict": "matches",
+      "correct_amount": 2400,
+      "why": "Annexure A List I item 46."
+    },
+    {
+      "deduction": "Less: Walker - List I (not payable)",
+      "amount": 1800,
+      "verdict": "matches",
+      "correct_amount": 1800,
+      "why": "Annexure A List I item 34 walking aids."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 14200,
+      "verdict": "disputable",
+      "correct_amount": 13990,
+      "why": "Co-pay is 5% of the admissible amount 2,79,800 (cl. 9.3), not of the gross bill 2,84,000."
+    }
+  ],
+  "notes": "Insurer took co-pay on the gross bill. Underpaid by 210."
+}

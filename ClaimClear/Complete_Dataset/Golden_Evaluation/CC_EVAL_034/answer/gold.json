@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_EVAL_034",
+  "payable": 67592,
+  "insurer_paid": 0,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: Sinus surgery 48-month waiting period not completed (Clause 6.3)",
+      "amount": 72180,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "Sinusitis is a 24-month item (cl. 6.3(i) item 16) and cover since 20-May-2022 (51 months) exceeds even 48 months."
+    }
+  ],
+  "notes": "Payable computed: less gauze/cotton 640 (List III), documentation 390 (List II), co-pay 5% of 71,150 = 3,558 -> 67,592. Room 3,500 within cap. Wrongly rejected; underpaid by 67,592."
+}

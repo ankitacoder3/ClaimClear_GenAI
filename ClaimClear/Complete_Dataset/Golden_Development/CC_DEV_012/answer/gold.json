@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_DEV_012",
+  "payable": 74242,
+  "insurer_paid": 0,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: Date of admission falls outside the policy period (Clause 2)",
+      "amount": 79170,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "Admission 4 Sep 2026 is within the period 1 Sep 2026 - 31 Aug 2027 stated in the schedule; the renewal is continuous since 2021."
+    }
+  ],
+  "notes": "Rejection is contradicted by the schedule. Payable computed as for an admissible claim."
+}

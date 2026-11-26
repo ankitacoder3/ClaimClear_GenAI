@@ -1,0 +1,80 @@
+{
+  "case_id": "CC_DEV_009",
+  "base_id": "D5",
+  "variant": 3,
+  "tag": "SK",
+  "split": "dev",
+  "planted_type": "non_payable",
+  "insurer_error": {
+    "kind": "disallow",
+    "line": "blo4",
+    "reason": "Blood products not payable"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 84730,
+    "admissible": 83550,
+    "copay": 4178,
+    "payable": 79372,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 73450,
+    "copay": 3673,
+    "payable": 69777,
+    "rejected": null
+  },
+  "underpaid_by": 9595,
+  "letter_deductions": [
+    {
+      "deduction": "Platelet transfusion (SDP) - Blood products not payable",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 10100,
+      "verdict": "disputable",
+      "correct_amount": 0
+    },
+    {
+      "deduction": "Attendant food and mineral water - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 700,
+      "verdict": "matches",
+      "correct_amount": 700
+    },
+    {
+      "deduction": "Multivitamin tonic - outside post-hospitalisation period (75 days)",
+      "clause_cited": "4.5",
+      "amount": 480,
+      "verdict": "matches",
+      "correct_amount": 480
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 3673,
+      "verdict": "consequential",
+      "correct_amount": 4178
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 4178,
+      "insurer": 3673,
+      "excess_deducted": -505
+    },
+    {
+      "deduction": "Platelet transfusion (SDP) - Blood products not payable",
+      "clause": "4.7, Annexure A",
+      "correct": 0,
+      "insurer": 10100,
+      "excess_deducted": 10100
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Dengue: ICU at exactly the limit, ward; pre and post-hospital bills."
+}

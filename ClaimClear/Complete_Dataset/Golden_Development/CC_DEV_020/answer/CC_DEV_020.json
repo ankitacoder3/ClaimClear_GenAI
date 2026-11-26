@@ -1,0 +1,74 @@
+{
+  "case_id": "CC_DEV_020",
+  "base_id": "D6",
+  "variant": 2,
+  "tag": "SK",
+  "split": "dev",
+  "planted_type": "copay",
+  "insurer_error": {
+    "kind": "copay_pct",
+    "pct": 10
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 77980,
+    "admissible": 76350,
+    "copay": 3818,
+    "payable": 72532,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 76350,
+    "copay": 7635,
+    "payable": 68715,
+    "rejected": null
+  },
+  "underpaid_by": 3817,
+  "letter_deductions": [
+    {
+      "deduction": "Nebuliser kit - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 650,
+      "verdict": "matches",
+      "correct_amount": 650
+    },
+    {
+      "deduction": "Urine bag - List IV (part of cost of treatment)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 180,
+      "verdict": "matches",
+      "correct_amount": 180
+    },
+    {
+      "deduction": "Ambulance charges above limit",
+      "clause_cited": "4.1.1(v)",
+      "amount": 800,
+      "verdict": "matches",
+      "correct_amount": 800
+    },
+    {
+      "deduction": "Co-payment 10%",
+      "clause_cited": "9.3",
+      "amount": 7635,
+      "verdict": "disputable",
+      "correct_amount": 3818
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 10%",
+      "clause": "9.3",
+      "correct": 3818,
+      "insurer": 7635,
+      "excess_deducted": 3817
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [
+    "si_depletion_by_paid"
+  ],
+  "story": "Pneumonia on a senior floater; husband's earlier claim; ambulance."
+}

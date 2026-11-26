@@ -1,0 +1,65 @@
+{
+  "case_id": "CC_EVAL_029",
+  "base_id": "H15",
+  "variant": 2,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "not_verifiable",
+  "insurer_error": {
+    "kind": "nv_lumpsum",
+    "amount": 6200
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 145980,
+    "admissible": 145650,
+    "copay": 7283,
+    "payable": 138367,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 145650,
+    "copay": 7283,
+    "payable": 132167,
+    "rejected": null
+  },
+  "underpaid_by": 6200,
+  "letter_deductions": [
+    {
+      "deduction": "Crepe bandage - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 330,
+      "verdict": "matches",
+      "correct_amount": 330
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 7283,
+      "verdict": "matches",
+      "correct_amount": 7283
+    },
+    {
+      "deduction": "Other deductions as per policy terms and conditions",
+      "clause_cited": "",
+      "amount": 6200,
+      "verdict": "not_verifiable",
+      "correct_amount": 0
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Other deductions as per policy terms and conditions",
+      "clause": "",
+      "correct": 0,
+      "insurer": 6200,
+      "excess_deducted": 6200
+    }
+  ],
+  "expected_verdict": "not_verifiable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Stroke: four neuro-ICU days then ward."
+}

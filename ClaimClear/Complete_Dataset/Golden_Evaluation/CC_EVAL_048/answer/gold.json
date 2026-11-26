@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_EVAL_048",
+  "payable": 9503.8,
+  "insurer_paid": 0,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: Diagnostic tests done without hospitalisation are outpatient expenses and are not covered under the policy.",
+      "amount": 10004,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "Pre-hospitalisation expenses treated as outpatient expenses."
+    }
+  ],
+  "notes": "Pre-hospitalisation expenses treated as outpatient expenses."
+}

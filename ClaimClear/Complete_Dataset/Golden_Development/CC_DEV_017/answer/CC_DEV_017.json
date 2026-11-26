@@ -1,0 +1,73 @@
+{
+  "case_id": "CC_DEV_017",
+  "base_id": "D8",
+  "variant": 1,
+  "tag": "SK",
+  "split": "dev",
+  "planted_type": "non_payable",
+  "insurer_error": {
+    "kind": "disallow",
+    "line": "con2",
+    "reason": "Duplicate entry of consultation"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 21400,
+    "admissible": 21100,
+    "copay": 1055,
+    "payable": 20045,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 19600,
+    "copay": 980,
+    "payable": 18620,
+    "rejected": null
+  },
+  "underpaid_by": 1425,
+  "letter_deductions": [
+    {
+      "deduction": "Gastroenterologist visit (day 2) - Duplicate entry of consultation",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 1500,
+      "verdict": "disputable",
+      "correct_amount": 0
+    },
+    {
+      "deduction": "File opening charges - List II (part of room charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 300,
+      "verdict": "matches",
+      "correct_amount": 300
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 980,
+      "verdict": "consequential",
+      "correct_amount": 1055
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 1055,
+      "insurer": 980,
+      "excess_deducted": -75
+    },
+    {
+      "deduction": "Gastroenterologist visit (day 2) - Duplicate entry of consultation",
+      "clause": "4.7, Annexure A",
+      "correct": 0,
+      "insurer": 1500,
+      "excess_deducted": 1500
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Gastroenteritis; two doctors on two days; a test billed twice."
+}

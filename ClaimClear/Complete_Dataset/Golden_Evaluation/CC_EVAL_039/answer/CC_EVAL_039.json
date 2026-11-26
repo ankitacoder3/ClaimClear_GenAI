@@ -1,0 +1,83 @@
+{
+  "case_id": "CC_EVAL_039",
+  "base_id": "H9",
+  "variant": 3,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "waiting_period",
+  "insurer_error": {
+    "kind": "reject_waiting",
+    "clause": "6.2",
+    "basis": "First 30 days waiting period"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 133450,
+    "admissible": 130300,
+    "copay": 6515,
+    "payable": 123785,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": {
+      "reason": "First 30 days waiting period",
+      "clause": "6.2"
+    }
+  },
+  "underpaid_by": 123785,
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: First 30 days waiting period",
+      "clause_cited": "6.2",
+      "amount": 133450,
+      "verdict": "disputable",
+      "correct_amount": 0
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Ambulance charges above limit",
+      "clause": "4.1.1(v)",
+      "correct": 1500,
+      "insurer": 0,
+      "excess_deducted": -1500
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 6515,
+      "insurer": 0,
+      "excess_deducted": -6515
+    },
+    {
+      "deduction": "Crepe bandage - List I (not payable)",
+      "clause": "4.7, Annexure A",
+      "correct": 450,
+      "insurer": 0,
+      "excess_deducted": -450
+    },
+    {
+      "deduction": "Splint - List I (not payable)",
+      "clause": "4.7, Annexure A",
+      "correct": 1200,
+      "insurer": 0,
+      "excess_deducted": -1200
+    },
+    {
+      "deduction": "Claim not admissible: First 30 days waiting period",
+      "clause": "6.2",
+      "correct": 0,
+      "insurer": 133450,
+      "excess_deducted": 133450
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Road accident 16 days into a new policy; plate fixation; ambulance."
+}

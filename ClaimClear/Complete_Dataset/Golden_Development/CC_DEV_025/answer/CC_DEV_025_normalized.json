@@ -1,0 +1,346 @@
+{
+  "case_id": "CC_DEV_025",
+  "split": "dev",
+  "source": "claimclear-synthetic",
+  "source_case": "dev/case-005",
+  "scenario": {
+    "type": "genuine",
+    "title": "Genuine room-rent breach, which is a deduction and not fraud",
+    "what_changed": "Nothing changed. Row 1 room rate is above the cap, which is an honest deduction and not fraud.",
+    "attack_goal": "None. Tests that a costly but honest bill is not treated as fraud.",
+    "expected_flags": []
+  },
+  "expected": {
+    "overall_verdict": "disputable",
+    "overall_verdict_source": "settlement_disputable",
+    "policy_payable": 95617.5,
+    "insurer_paid": 87094.64,
+    "gap": 8522.86,
+    "disputable_amount": 8522.86,
+    "unverified_amount": 0.0,
+    "deductions": [
+      {
+        "particulars": "Room rent above eligible limit (₹2,000 a day for 3 days)",
+        "amount": 6000.0,
+        "verdict": "matches_policy",
+        "verdict_source": "matches_policy",
+        "correct_amount": 6000.0,
+        "why": "Room rent is limited to 2% of sum insured, at most ₹5,000 a day"
+      },
+      {
+        "particulars": "GST on room rent above eligible limit",
+        "amount": 300.0,
+        "verdict": "matches_policy",
+        "verdict_source": "matches_policy",
+        "correct_amount": 300.0,
+        "why": "Follows the room rent deduction"
+      },
+      {
+        "particulars": "Proportionate deduction on associated medical expenses (₹5,000 / ₹7,000)",
+        "amount": 30371.43,
+        "verdict": "does_not_match_policy",
+        "verdict_source": "does_not_match_policy",
+        "correct_amount": 21400.0,
+        "why": "Room category above eligibility, so associated expenses are reduced in the same proportion"
+      }
+    ],
+    "rejection": null,
+    "notes": "Proportionate deduction applied to every non-room line, including items not priced by room category."
+  },
+  "documents": {
+    "bill.pdf": "GEN-02",
+    "discharge_summary.pdf": "DS-02",
+    "settlement_letter.pdf": "SET-01",
+    "policy_schedule.pdf": "SCH-GEN-02"
+  },
+  "source_answer": {
+    "GEN-02": {
+      "doc_id": "GEN-02",
+      "file": "dev/cases/CC_DEV_025/bill.pdf",
+      "sha256": "03b5e74322726c01b66c3e015567e785393e77f0736a616b474b64197490f2fb",
+      "category": "genuine",
+      "document_type": "bill",
+      "status": "Good",
+      "what_changed_and_where": "Nothing changed. Row 1 room rate is above the cap, which is an honest deduction and not fraud.",
+      "title": "Genuine room-rent breach, which is a deduction and not fraud",
+      "format": "Digital PDF",
+      "expected_verdict": "clean_with_deductions",
+      "expected_flags": [],
+      "attack_goal": "None. Tests that a costly but honest bill is not treated as fraud.",
+      "detection_signals": [
+        "Room ₹7,000 against a ₹5,000 cap",
+        "GST applied to room only"
+      ],
+      "notes": "Sum insured ₹3,00,000 gives min(₹6,000, ₹5,000) = ₹5,000 per day. Expect a proportional cut of 5,000/7,000 on linked charges, with no fraud flag.",
+      "details": {},
+      "invoices": [
+        {
+          "provider_name": "Tarangi Health Institute",
+          "provider_gstin": "00AABFT5678K1Z2",
+          "provider_registration_no": "FIC/NMC/HOSP/01187",
+          "invoice_no": "THI/25-26/009014",
+          "invoice_date": "2026-01-22",
+          "patient_name": "Rudransh Kelapure",
+          "sex": "M",
+          "age": 58,
+          "policy_no": "AS-2025-100478",
+          "uhid": "THI-1120457",
+          "ip_no": "IP-26-00318",
+          "admission": "2026-01-19",
+          "discharge": "2026-01-22",
+          "diagnosis": "Cholelithiasis with cholecystitis",
+          "procedure": "Laparoscopic cholecystectomy",
+          "tariff_key": "lap_cholecystectomy",
+          "line_items": [
+            {
+              "description": "Private room",
+              "qty": 3.0,
+              "rate": 7000.0,
+              "printed_amount": 21000.0,
+              "gst_pct": 5.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Nursing and duty doctor charges",
+              "qty": 3.0,
+              "rate": 1500.0,
+              "printed_amount": 4500.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Surgeon fee - laparoscopic cholecystectomy",
+              "qty": 1.0,
+              "rate": 32000.0,
+              "printed_amount": 32000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Anaesthetist fee",
+              "qty": 1.0,
+              "rate": 11000.0,
+              "printed_amount": 11000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Operation theatre charges",
+              "qty": 1.0,
+              "rate": 22000.0,
+              "printed_amount": 22000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Consultant visits",
+              "qty": 3.0,
+              "rate": 1800.0,
+              "printed_amount": 5400.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Laboratory investigations",
+              "qty": 1.0,
+              "rate": 7200.0,
+              "printed_amount": 7200.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "MRCP",
+              "qty": 1.0,
+              "rate": 6500.0,
+              "printed_amount": 6500.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Pharmacy - inpatient medicines",
+              "qty": 1.0,
+              "rate": 12900.0,
+              "printed_amount": 12900.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Laparoscopic clips and retrieval bag",
+              "qty": 1.0,
+              "rate": 4800.0,
+              "printed_amount": 4800.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            }
+          ],
+          "sum_of_printed_lines": 127300.0,
+          "sum_of_qty_x_rate": 127300.0,
+          "cgst": 525.0,
+          "sgst": 525.0,
+          "discount": 0.0,
+          "recomputed_total": 128350.0,
+          "printed_total": 128350.0,
+          "advance": 0.0,
+          "balance_payable": 128350.0
+        }
+      ]
+    },
+    "DS-02": {
+      "doc_id": "DS-02",
+      "file": "dev/cases/CC_DEV_025/discharge_summary.pdf",
+      "sha256": "928779f13efdcd37cae2282503a5996b2712ded75ebb645624a344c6ba26bed8",
+      "category": "discharge_summaries",
+      "document_type": "discharge",
+      "status": "Good",
+      "what_changed_and_where": "Nothing changed. Course in hospital records that the patient chose a private room, which explains the room-rent deduction in SET-01.",
+      "title": "Summary for GEN-02 confirming a private room by choice",
+      "format": "Discharge summary PDF",
+      "expected_verdict": "consistent_with_bill",
+      "expected_flags": [],
+      "attack_goal": "None. Supports the room-rent deduction in SET-01.",
+      "detection_signals": [
+        "Records that the patient chose a private room",
+        "Hypertension is disclosed and unrelated, with cover since 2022"
+      ],
+      "notes": "Hypertension must not be read as a reason to reject: the policy began in 2022 and gallstones are unrelated.",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "GEN-02",
+        "patient_name": "Rudransh Kelapure",
+        "age": 58,
+        "sex": "M",
+        "uhid": "THI-1120457",
+        "ip_no": "IP-26-00318",
+        "admission": "2026-01-19",
+        "discharge": "2026-01-22",
+        "procedure_date": "2026-01-20",
+        "diagnosis": "Cholelithiasis with cholecystitis",
+        "icd10": "K80.1",
+        "procedure": "Laparoscopic cholecystectomy",
+        "consistent_with_bill": true,
+        "conflicts_with_bill": []
+      }
+    },
+    "SET-01": {
+      "doc_id": "SET-01",
+      "file": "dev/cases/CC_DEV_025/settlement_letter.pdf",
+      "sha256": "53c308cb2a52d5f295c31a0f5dbf7fec737075050f76f282257ba579348b64bd",
+      "category": "settlement_letters",
+      "document_type": "settlement",
+      "status": "Insurer error",
+      "what_changed_and_where": "Deductions row 3: proportionate deduction also cuts tests, MRCP, pharmacy and implants (₹30,371.43 instead of ₹21,400). Underpaid by ₹8,522.86 after co-pay.",
+      "title": "Proportionate deduction applied to the wrong lines",
+      "format": "Insurer letter PDF",
+      "expected_verdict": "settlement_disputable",
+      "expected_flags": [
+        "proportionate_deduction_misapplied"
+      ],
+      "attack_goal": "None. Tests whether ClaimClear works out the insurer's method and finds the underpayment.",
+      "detection_signals": [
+        "Row 3 is reproduced only by cutting tests, MRCP, pharmacy and implants too",
+        "Rows 1-2 are correct"
+      ],
+      "notes": "Assumes the hospital does not price tests, pharmacy or implants by room category. Read with GEN-02 and DS-02.",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "GEN-02",
+        "claim_no": "AGI/HC/2526/004512",
+        "letter_type": "settlement",
+        "letter_date": "2026-02-18",
+        "policy_no": "AS-2025-100478",
+        "patient_name": "Rudransh Kelapure",
+        "hospital": "Tarangi Health Institute",
+        "bill_invoice_no": "THI/25-26/009014",
+        "admission": "2026-01-19",
+        "discharge": "2026-01-22",
+        "claimed_amount": 128350.0,
+        "copay_pct_applied": 5.0,
+        "rejection_kind": null,
+        "duplicate_of": null,
+        "insurer_deductions": [
+          {
+            "particulars": "Room rent above eligible limit (₹2,000 a day for 3 days)",
+            "amount": 6000.0,
+            "reason": "Room rent is limited to 2% of sum insured, at most ₹5,000 a day",
+            "expected_verdict": "matches_policy",
+            "expected_amount": 6000.0
+          },
+          {
+            "particulars": "GST on room rent above eligible limit",
+            "amount": 300.0,
+            "reason": "Follows the room rent deduction",
+            "expected_verdict": "matches_policy",
+            "expected_amount": 300.0
+          },
+          {
+            "particulars": "Proportionate deduction on associated medical expenses (₹5,000 / ₹7,000)",
+            "amount": 30371.43,
+            "reason": "Room category above eligibility, so associated expenses are reduced in the same proportion",
+            "expected_verdict": "does_not_match_policy",
+            "expected_amount": 21400.0
+          }
+        ],
+        "rejection_reason": null,
+        "rejection_expected_verdict": null,
+        "insurer_admissible": 91678.57,
+        "insurer_copay": 4583.93,
+        "insurer_paid": 87094.64,
+        "expected_payable": 95617.5,
+        "disputable_amount": 8522.86,
+        "unverified_amount": 0.0,
+        "insurer_method": "Proportionate deduction applied to every non-room line, including items not priced by room category."
+      }
+    },
+    "SCH-GEN-02": {
+      "doc_id": "SCH-GEN-02",
+      "file": "dev/cases/CC_DEV_025/policy_schedule.pdf",
+      "sha256": "942e07845ed7604aeaaad7de112cecf0579344149dd199d82897689468e67e52",
+      "category": "policy_schedules",
+      "document_type": "schedule",
+      "status": "Good",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "title": "Policy schedule for GEN-02",
+      "format": "Insurer schedule PDF",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "GEN-02",
+        "policy_no": "AS-2025-100478",
+        "holder": "Rudransh Kelapure",
+        "sex": "M",
+        "dob": "1967-08-21",
+        "sum_insured": 300000,
+        "period_start": "2025-07-15",
+        "period_end": "2026-07-14",
+        "first_inception": "2022-07-15",
+        "product": "Arogya Sanjeevani Policy",
+        "insurer": "Aarohan General Insurance Ltd.",
+        "address": "12 Fictional Housing Society, Nagpur 000440",
+        "issued": "2025-07-11",
+        "premium": 6165.0,
+        "wording_uin": "GODHLIP24179V022324",
+        "copay_pct": 5,
+        "in_insurer_records": true
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "case_id": "CC_DEV_018",
+  "payable": 72532,
+  "insurer_paid": 72532,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Nebuliser kit - List I (not payable)",
+      "amount": 650,
+      "verdict": "matches",
+      "correct_amount": 650,
+      "why": "List I item 38/57 (Clause 4.7)."
+    },
+    {
+      "deduction": "Less: Urine bag - List IV (part of cost of treatment)",
+      "amount": 180,
+      "verdict": "matches",
+      "correct_amount": 180,
+      "why": "List IV item 18."
+    },
+    {
+      "deduction": "Less: Ambulance charges above limit",
+      "amount": 800,
+      "verdict": "matches",
+      "correct_amount": 800,
+      "why": "Clause 4.1.1(v): road ambulance max 2,000 per hospitalisation."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 3818,
+      "verdict": "matches",
+      "correct_amount": 3818,
+      "why": "5% of 76,350 = 3,817.5 -> 3,818 (Clause 9.3)."
+    }
+  ],
+  "notes": "Ambulance: List I item 67 lists \"AMBULANCE\" as not payable, but Clause 4.1.1(v) specifically covers road ambulance up to 2,000 per hospitalisation; the specific benefit is applied (2,000 paid, 800 deducted). Floater SI remaining 4,30,300 (by paid) / 4,24,000 (by admitted) - not binding."
+}

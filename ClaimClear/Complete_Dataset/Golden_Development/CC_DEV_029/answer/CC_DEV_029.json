@@ -1,0 +1,152 @@
+{
+  "case_id": "CC_DEV_029",
+  "base_id": "SET-04",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "dev",
+  "planted_type": "genuine",
+  "insurer_error": {
+    "kind": "unexplained_deduction",
+    "flags": [
+      "unexplained_deduction"
+    ],
+    "method": "No item or clause given for ₹4,700, and no known calculation produces it."
+  },
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 90000,
+    "admissible": null,
+    "copay": null,
+    "payable": 82745,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 82400,
+    "copay": 4120,
+    "payable": 78280,
+    "rejected": null
+  },
+  "underpaid_by": 4465,
+  "letter_deductions": [
+    {
+      "deduction": "Non-payable items: gloves, masks, IV sets",
+      "reason": "Listed as non-payable items under the policy",
+      "amount": 2900,
+      "verdict": "matches",
+      "correct_amount": 2900
+    },
+    {
+      "deduction": "Other deductions",
+      "reason": "As per policy terms and conditions",
+      "amount": 4700,
+      "verdict": "not_verifiable",
+      "correct_amount": null
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "not_verifiable",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "GEN-05",
+      "category": "genuine",
+      "status": "Good",
+      "title": "Dengue admission with ICU, discount and advance",
+      "format": "Digital PDF",
+      "what_changed_and_where": "Nothing changed. Claimable net is ₹90,000; the ₹70,000 balance is after the advance.",
+      "expected_verdict": "clean_with_deductions",
+      "expected_flags": [],
+      "attack_goal": "None. Discount and advance must not be confused with the claimed amount.",
+      "detection_signals": [
+        "ICU ₹9,500 is under the ₹10,000 cap",
+        "Net ₹90,000, balance ₹70,000"
+      ],
+      "notes": "Room ₹4,800 and ICU ₹9,500 are inside limits. Consumables are non-payable."
+    },
+    "04_discharge_summary.pdf": {
+      "doc_id": "DS-03",
+      "category": "discharge_summaries",
+      "status": "Good",
+      "title": "Summary for GEN-05 with an ICU stay",
+      "format": "Discharge summary PDF",
+      "what_changed_and_where": "Nothing changed. Course in hospital confirms 2 ICU days and 2 platelet transfusions billed in GEN-05.",
+      "expected_verdict": "consistent_with_bill",
+      "expected_flags": [],
+      "attack_goal": "None. Justifies the ICU days and transfusions on the bill.",
+      "detection_signals": [
+        "2 ICU days and 2 platelet transfusions, matching bill rows 1 and 5"
+      ],
+      "notes": ""
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-GEN-05",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for GEN-05",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-04",
+      "category": "settlement_letters",
+      "status": "Unclear",
+      "title": "Unexplained deduction “as per policy terms”",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Deductions row 2: ₹4,700 “as per policy terms” with no item or clause. ₹4,465 after co-pay can't be checked without a breakdown.",
+      "expected_verdict": "settlement_not_verifiable",
+      "expected_flags": [
+        "unexplained_deduction"
+      ],
+      "attack_goal": "None. Tests whether ClaimClear says it can't check something instead of guessing.",
+      "detection_signals": [
+        "₹4,700 with no item or clause, and no known calculation produces it",
+        "Consumables deduction is correct"
+      ],
+      "notes": "Expected behaviour: ask the insurer for an itemised breakdown and the clause. Claimed amount is the net bill after the hospital discount."
+    }
+  },
+  "open_question_flags": [],
+  "story": "Dengue admission with ICU, discount and advance",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_DEV_029",
+    "source_case": "dev/case-009",
+    "documents": {
+      "02_itemised_bill.pdf": "GEN-05",
+      "04_discharge_summary.pdf": "DS-03",
+      "01_policy_schedule.pdf": "SCH-GEN-05",
+      "03_settlement_letter.pdf": "SET-04"
+    },
+    "scenario": {
+      "type": "genuine",
+      "title": "Dengue admission with ICU, discount and advance",
+      "what_changed": "Nothing changed. Claimable net is ₹90,000; the ₹70,000 balance is after the advance.",
+      "attack_goal": "None. Discount and advance must not be confused with the claimed amount.",
+      "expected_flags": []
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2025-101344",
+      "holder": "Prisha Galvankar",
+      "sex": "F",
+      "dob": "1988-01-23",
+      "sum_insured": 400000,
+      "period_start": "2025-09-01",
+      "period_end": "2026-08-31",
+      "first_inception": "2023-09-01",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": []
+  }
+}

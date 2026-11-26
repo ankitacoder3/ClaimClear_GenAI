@@ -1,0 +1,142 @@
+{
+  "case_id": "CC_DEV_028",
+  "base_id": "SET-12",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "dev",
+  "planted_type": "malicious",
+  "insurer_error": null,
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 148210,
+    "admissible": null,
+    "copay": null,
+    "payable": 109449.5,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 115210,
+    "copay": 5760.5,
+    "payable": 109449.5,
+    "rejected": null
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Amount not supported by the itemised charges",
+      "reason": "The bill total is ₹30,000 more than the sum of its itemised charges (₹1,18,210.00)",
+      "amount": 30000,
+      "verdict": "matches",
+      "correct_amount": 30000
+    },
+    {
+      "deduction": "Non-payable items: gloves, masks, syringes, caps",
+      "reason": "Listed as non-payable items under the policy",
+      "amount": 3000,
+      "verdict": "matches",
+      "correct_amount": 3000
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "MAL-01",
+      "category": "malicious",
+      "status": "Modified",
+      "title": "Amounts edited after issue with a painted-over patch",
+      "format": "Digital PDF",
+      "what_changed_and_where": "Totals, bottom right: Sub total and Net amount painted from ₹1,18,210 to ₹1,48,210 in another font. Old value stays in the text layer; Amount in words not updated. PDF Producer shows an editor.",
+      "expected_verdict": "reject",
+      "expected_flags": [
+        "total_line_mismatch",
+        "visual_tamper_overlay",
+        "text_layer_conflict",
+        "amount_words_mismatch",
+        "pdf_metadata_edited"
+      ],
+      "attack_goal": "Add ₹30,000 by editing sub total and net amount. The new total stays inside the tariff range, so tariff checks pass.",
+      "detection_signals": [
+        "Lines sum to ₹1,18,210, page shows ₹1,48,210",
+        "Words still say the old amount",
+        "Old value remains in the text layer",
+        "Incremental save and an editor in the Producer field"
+      ],
+      "notes": ""
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-MAL-01",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for MAL-01",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-12",
+      "category": "settlement_letters",
+      "status": "Good",
+      "title": "Painted-over total paid only on the itemised charges",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Deductions row 1: the ₹30,000 painted onto the total is refused; row 2: consumables. Paid on the itemised charges.",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "None. ClaimClear must not dispute the ₹30,000 the insurer refused for the altered total.",
+      "detection_signals": [
+        "₹30,000 difference between the printed total and the lines",
+        "Consumables deduction is correct"
+      ],
+      "notes": "A tampered bill could also be repudiated in full under the fraud condition; paying the itemised charges is the more generous outcome, so nothing is disputable either way."
+    }
+  },
+  "open_question_flags": [],
+  "story": "Amounts edited after issue with a painted-over patch",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_DEV_028",
+    "source_case": "dev/case-008",
+    "documents": {
+      "02_itemised_bill.pdf": "MAL-01",
+      "01_policy_schedule.pdf": "SCH-MAL-01",
+      "03_settlement_letter.pdf": "SET-12"
+    },
+    "scenario": {
+      "type": "malicious",
+      "title": "Amounts edited after issue with a painted-over patch",
+      "what_changed": "Totals, bottom right: Sub total and Net amount painted from ₹1,18,210 to ₹1,48,210 in another font. Old value stays in the text layer; Amount in words not updated. PDF Producer shows an editor.",
+      "attack_goal": "Add ₹30,000 by editing sub total and net amount. The new total stays inside the tariff range, so tariff checks pass.",
+      "expected_flags": [
+        "total_line_mismatch",
+        "visual_tamper_overlay",
+        "text_layer_conflict",
+        "amount_words_mismatch",
+        "pdf_metadata_edited"
+      ]
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2025-101671",
+      "holder": "Saanvi Chikhalkar",
+      "sex": "F",
+      "dob": "1955-12-19",
+      "sum_insured": 300000,
+      "period_start": "2025-08-01",
+      "period_end": "2026-07-31",
+      "first_inception": "2021-08-01",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": []
+  }
+}

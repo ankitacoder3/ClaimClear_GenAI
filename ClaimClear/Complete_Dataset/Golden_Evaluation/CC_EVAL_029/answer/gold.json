@@ -1,0 +1,30 @@
+{
+  "case_id": "CC_EVAL_029",
+  "payable": 138367,
+  "insurer_paid": 132167,
+  "overall": "not_verifiable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Crepe bandage - List I (not payable)",
+      "amount": 330,
+      "verdict": "matches",
+      "correct_amount": 330,
+      "why": "Annexure A List I item 16."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 7283,
+      "verdict": "matches",
+      "correct_amount": 7283,
+      "why": "5% of 1,45,650 = 7,282.5, rounded half up (cl. 9.3)."
+    },
+    {
+      "deduction": "Less: Other deductions as per policy terms and conditions",
+      "amount": 6200,
+      "verdict": "not_verifiable",
+      "correct_amount": 0,
+      "why": "No item, clause or reason given; no line in the bill or clause in the wording yields 6,200, so it cannot be checked; on the documents nothing further is deductible."
+    }
+  ],
+  "notes": "Everything that can be checked matches; the only difference is an unexplained lump-sum deduction of 6,200 with no clause or item. On the documents the policy requires 1,38,367; the insurer should be asked to itemise the 6,200. Also the insurer deducted it after co-pay, which itself is irregular. Overall marked not_verifiable because the sole discrepancy cannot be checked from the documents (it is also the basis for a dispute)."
+}

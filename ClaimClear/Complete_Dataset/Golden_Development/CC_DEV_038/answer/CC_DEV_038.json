@@ -1,0 +1,189 @@
+{
+  "case_id": "CC_DEV_038",
+  "base_id": "SET-13",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "dev",
+  "planted_type": "malicious",
+  "insurer_error": null,
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 86340,
+    "admissible": null,
+    "copay": null,
+    "payable": 0,
+    "rejected": {
+      "reason": "This hospitalisation was already settled under claim CLM-2025-00811 (Vrindaloka Memorial Hospital, admitted 18-Aug-2025, acute appendicitis). The same expenses cannot be paid twice.",
+      "clause": ""
+    }
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": {
+      "reason": "This hospitalisation was already settled under claim CLM-2025-00811 (Vrindaloka Memorial Hospital, admitted 18-Aug-2025, acute appendicitis). The same expenses cannot be paid twice.",
+      "clause": ""
+    }
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: This hospitalisation was already settled under claim CLM-2025-00811 (Vrindaloka Memorial Hospital, admitted 18-Aug-2025, acute appendicitis). The same expenses cannot be paid twice.",
+      "amount": 86340,
+      "verdict": "matches",
+      "correct_amount": 86340,
+      "reason": "duplicate"
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "MAL-02",
+      "category": "malicious",
+      "status": "Duplicate",
+      "title": "Exact duplicate of a bill that was already paid",
+      "format": "Digital PDF",
+      "what_changed_and_where": "Nothing edited on the page. The whole bill was already paid under CLM-2025-00811.",
+      "expected_verdict": "reject",
+      "expected_flags": [
+        "duplicate_invoice_exact"
+      ],
+      "attack_goal": "Claim twice for one admission. The document alone is flawless.",
+      "detection_signals": [
+        "Invoice number, IP number and lines match settled claim CLM-2025-00811",
+        "Only claim history can catch this"
+      ],
+      "notes": ""
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-MAL-02",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for MAL-02",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Same policy as POI-03, so the two schedules are identical files.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-13",
+      "category": "settlement_letters",
+      "status": "Good",
+      "title": "Duplicate claim rejected",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Correct rejection: already paid under CLM-2025-00811.",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "The insurer's decision is right. ClaimClear must not draft a grievance.",
+      "detection_signals": [
+        "Same admission as CLM-2025-00811"
+      ],
+      "notes": ""
+    }
+  },
+  "open_question_flags": [],
+  "story": "Exact duplicate of a bill that was already paid",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_DEV_038",
+    "source_case": "dev/case-018",
+    "documents": {
+      "02_itemised_bill.pdf": "MAL-02",
+      "01_policy_schedule.pdf": "SCH-MAL-02",
+      "03_settlement_letter.pdf": "SET-13"
+    },
+    "scenario": {
+      "type": "malicious",
+      "title": "Exact duplicate of a bill that was already paid",
+      "what_changed": "Nothing edited on the page. The whole bill was already paid under CLM-2025-00811.",
+      "attack_goal": "Claim twice for one admission. The document alone is flawless.",
+      "expected_flags": [
+        "duplicate_invoice_exact"
+      ]
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2025-101122",
+      "holder": "Lavanya Ikkurthi",
+      "sex": "F",
+      "dob": "1972-06-30",
+      "sum_insured": 500000,
+      "period_start": "2025-06-01",
+      "period_end": "2026-05-31",
+      "first_inception": "2022-06-01",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": [
+      {
+        "claim_id": "CLM-2025-00811",
+        "policy_no": "AS-2025-101122",
+        "patient_name": "Lavanya Ikkurthi",
+        "status": "settled",
+        "provider": "Vrindaloka Memorial Hospital",
+        "invoice_no": "VML/25-26/004417",
+        "invoice_date": "2025-08-21",
+        "ip_no": "IP/2508/1466",
+        "admission": "2025-08-18",
+        "discharge": "2025-08-21",
+        "diagnosis": "Acute appendicitis",
+        "billed_amount": 86340.0,
+        "settled_amount": 80123.0,
+        "line_fingerprint": "c448a888ef8196a9",
+        "line_items": [
+          {
+            "description": "Semi-private room",
+            "amount": 12000.0
+          },
+          {
+            "description": "Nursing and duty doctor charges",
+            "amount": 3300.0
+          },
+          {
+            "description": "Surgeon fee - laparoscopic appendectomy",
+            "amount": 25000.0
+          },
+          {
+            "description": "Anaesthetist fee",
+            "amount": 8000.0
+          },
+          {
+            "description": "Operation theatre charges",
+            "amount": 15000.0
+          },
+          {
+            "description": "Consultant visits",
+            "amount": 4200.0
+          },
+          {
+            "description": "Laboratory investigations",
+            "amount": 6100.0
+          },
+          {
+            "description": "USG abdomen",
+            "amount": 2200.0
+          },
+          {
+            "description": "Pharmacy - inpatient medicines",
+            "amount": 8540.0
+          },
+          {
+            "description": "Consumables - gloves, masks, syringes, caps",
+            "amount": 2000.0
+          }
+        ]
+      }
+    ]
+  }
+}

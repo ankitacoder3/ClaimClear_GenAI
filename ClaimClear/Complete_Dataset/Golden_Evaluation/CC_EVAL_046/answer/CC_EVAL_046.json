@@ -1,0 +1,187 @@
+{
+  "case_id": "CC_EVAL_046",
+  "base_id": "SET-14",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "heldout",
+  "planted_type": "malicious",
+  "insurer_error": null,
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 108050,
+    "admissible": null,
+    "copay": null,
+    "payable": 0,
+    "rejected": {
+      "reason": "This hospitalisation was already settled under claim CLM-2025-01042 (Tarangi Health Institute, admitted 06-Oct-2025, left inguinal hernia). The same expenses cannot be paid twice.",
+      "clause": ""
+    }
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": {
+      "reason": "This hospitalisation was already settled under claim CLM-2025-01042 (Tarangi Health Institute, admitted 06-Oct-2025, left inguinal hernia). The same expenses cannot be paid twice.",
+      "clause": ""
+    }
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: This hospitalisation was already settled under claim CLM-2025-01042 (Tarangi Health Institute, admitted 06-Oct-2025, left inguinal hernia). The same expenses cannot be paid twice.",
+      "amount": 108050,
+      "verdict": "matches",
+      "correct_amount": 108050,
+      "reason": "duplicate"
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "MAL-03",
+      "category": "malicious",
+      "status": "Modified",
+      "title": "Disguised duplicate with small edits",
+      "format": "Digital PDF",
+      "what_changed_and_where": "Copy of CLM-2025-01042. Details: Bill No. 007731 to 007137, IP No. 08214 to 08241, dates moved 1 day. Rows 1-9 renamed. Row 5: ₹20,000 to ₹20,050.",
+      "expected_verdict": "flag_for_review",
+      "expected_flags": [
+        "duplicate_invoice_near_match"
+      ],
+      "attack_goal": "Defeat exact-match duplicate checks while reusing an already-settled bill.",
+      "detection_signals": [
+        "Invoice and IP numbers have transposed digits",
+        "Dates moved by one day",
+        "Lines renamed in the same order",
+        "Total differs by ₹50"
+      ],
+      "notes": ""
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-MAL-03",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for MAL-03",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-14",
+      "category": "settlement_letters",
+      "status": "Good",
+      "title": "Duplicate claim rejected",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Correct rejection: same admission as CLM-2025-01042.",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "The insurer's decision is right. ClaimClear must not draft a grievance.",
+      "detection_signals": [
+        "Same admission as CLM-2025-01042"
+      ],
+      "notes": ""
+    }
+  },
+  "open_question_flags": [],
+  "story": "Disguised duplicate with small edits",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_EVAL_046",
+    "source_case": "heldout/case-006",
+    "documents": {
+      "02_itemised_bill.pdf": "MAL-03",
+      "01_policy_schedule.pdf": "SCH-MAL-03",
+      "03_settlement_letter.pdf": "SET-14"
+    },
+    "scenario": {
+      "type": "malicious",
+      "title": "Disguised duplicate with small edits",
+      "what_changed": "Copy of CLM-2025-01042. Details: Bill No. 007731 to 007137, IP No. 08214 to 08241, dates moved 1 day. Rows 1-9 renamed. Row 5: ₹20,000 to ₹20,050.",
+      "attack_goal": "Defeat exact-match duplicate checks while reusing an already-settled bill.",
+      "expected_flags": [
+        "duplicate_invoice_near_match"
+      ]
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2025-101209",
+      "holder": "Devansh Orlikar",
+      "sex": "M",
+      "dob": "1969-09-05",
+      "sum_insured": 500000,
+      "period_start": "2025-05-01",
+      "period_end": "2026-04-30",
+      "first_inception": "2021-05-01",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": [
+      {
+        "claim_id": "CLM-2025-01042",
+        "policy_no": "AS-2025-101209",
+        "patient_name": "Devansh Orlikar",
+        "status": "settled",
+        "provider": "Tarangi Health Institute",
+        "invoice_no": "THI/25-26/007731",
+        "invoice_date": "2025-10-09",
+        "ip_no": "IP-25-08214",
+        "admission": "2025-10-06",
+        "discharge": "2025-10-09",
+        "diagnosis": "Left inguinal hernia",
+        "billed_amount": 108000.0,
+        "settled_amount": 102600.0,
+        "line_fingerprint": "ac7513ab13aafec7",
+        "line_items": [
+          {
+            "description": "Semi-private room",
+            "amount": 12600.0
+          },
+          {
+            "description": "Nursing and duty doctor charges",
+            "amount": 3300.0
+          },
+          {
+            "description": "Surgeon fee - laparoscopic hernia repair",
+            "amount": 30000.0
+          },
+          {
+            "description": "Anaesthetist fee",
+            "amount": 10000.0
+          },
+          {
+            "description": "Operation theatre charges",
+            "amount": 20000.0
+          },
+          {
+            "description": "Prolene mesh",
+            "amount": 14500.0
+          },
+          {
+            "description": "Consultant visits",
+            "amount": 4500.0
+          },
+          {
+            "description": "Laboratory investigations",
+            "amount": 5200.0
+          },
+          {
+            "description": "Pharmacy - inpatient medicines",
+            "amount": 7900.0
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "case_id": "CC_EVAL_049",
+  "base_id": "SET-24",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "heldout",
+  "planted_type": "formats",
+  "insurer_error": {
+    "kind": "daily_charges_treated_as_duplicates",
+    "flags": [
+      "daily_charges_treated_as_duplicates"
+    ],
+    "method": "Daily oxygen therapy and physician rounds treated as duplicates of the first day."
+  },
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 72310,
+    "admissible": null,
+    "copay": null,
+    "payable": 68694.5,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 62860,
+    "copay": 3143,
+    "payable": 59717,
+    "rejected": null
+  },
+  "underpaid_by": 8977.5,
+  "letter_deductions": [
+    {
+      "deduction": "Duplicate entries: oxygen therapy repeated on days 2-4",
+      "reason": "Charged more than once",
+      "amount": 2850,
+      "verdict": "disputable",
+      "correct_amount": 0
+    },
+    {
+      "deduction": "Duplicate entries: physician rounds repeated on days 2-6",
+      "reason": "Charged more than once",
+      "amount": 6600,
+      "verdict": "disputable",
+      "correct_amount": 0
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Duplicate entries: oxygen therapy repeated on days 2-4",
+      "clause": "",
+      "correct": 0,
+      "insurer": 2850,
+      "excess_deducted": 2850
+    },
+    {
+      "deduction": "Duplicate entries: physician rounds repeated on days 2-6",
+      "clause": "",
+      "correct": 0,
+      "insurer": 6600,
+      "excess_deducted": 6600
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "FMT-04",
+      "category": "formats",
+      "status": "Good",
+      "title": "Multi-page date-wise bill with summary on the last page",
+      "format": "Multi-page digital PDF",
+      "what_changed_and_where": "Content unchanged. Only the format: table across pages, total on page 3. Repeated daily rows are correct.",
+      "expected_verdict": "clean_with_deductions",
+      "expected_flags": [],
+      "attack_goal": "None. Table continuation test.",
+      "detection_signals": [
+        "Table runs across pages with a repeated header",
+        "Date group rows",
+        "Same line repeated per day is not a duplicate",
+        "Total only on the last page"
+      ],
+      "notes": "Repeated daily lines must not trigger duplicate_line_item."
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-FMT-04",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for FMT-04",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-24",
+      "category": "settlement_letters",
+      "status": "Insurer error",
+      "title": "Daily charges treated as duplicates",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Deductions rows 1-2: daily oxygen therapy and physician rounds treated as duplicates. Underpaid by ₹8,977.50 after co-pay.",
+      "expected_verdict": "settlement_disputable",
+      "expected_flags": [
+        "daily_charges_treated_as_duplicates"
+      ],
+      "attack_goal": "None. Tests whether ClaimClear reads the date-wise bill: one entry a day is not a duplicate.",
+      "detection_signals": [
+        "Each repeated row is on a different day of the stay"
+      ],
+      "notes": ""
+    }
+  },
+  "open_question_flags": [],
+  "story": "Multi-page date-wise bill with summary on the last page",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_EVAL_049",
+    "source_case": "heldout/case-009",
+    "documents": {
+      "02_itemised_bill.pdf": "FMT-04",
+      "01_policy_schedule.pdf": "SCH-FMT-04",
+      "03_settlement_letter.pdf": "SET-24"
+    },
+    "scenario": {
+      "type": "formats",
+      "title": "Multi-page date-wise bill with summary on the last page",
+      "what_changed": "Content unchanged. Only the format: table across pages, total on page 3. Repeated daily rows are correct.",
+      "attack_goal": "None. Table continuation test.",
+      "expected_flags": []
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2026-102198",
+      "holder": "Tara Vengsurkar",
+      "sex": "F",
+      "dob": "1965-07-07",
+      "sum_insured": 500000,
+      "period_start": "2026-02-20",
+      "period_end": "2027-02-19",
+      "first_inception": "2021-02-20",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": []
+  }
+}

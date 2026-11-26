@@ -1,0 +1,44 @@
+{
+  "case_id": "CC_EVAL_030",
+  "payable": 102685,
+  "insurer_paid": 98885,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Room / ICU rent above eligible limit",
+      "amount": 7500,
+      "verdict": "disputable",
+      "correct_amount": 3500,
+      "why": "HDU (12,500-10,000) + room 2 x (5,500-5,000) = 3,500 (cl. 4.1(i),(ii)); insurer's 7,500 is not consistent with its own 0.8 ratio."
+    },
+    {
+      "deduction": "Less: Gauze and cotton - List III (part of procedure charges)",
+      "amount": 900,
+      "verdict": "matches",
+      "correct_amount": 900,
+      "why": "Annexure A List III items 8, 18."
+    },
+    {
+      "deduction": "Less: Sanitary pads - List I (not payable)",
+      "amount": 350,
+      "verdict": "matches",
+      "correct_amount": 350,
+      "why": "Annexure A List I item 13."
+    },
+    {
+      "deduction": "Less: Proportionate deduction (room category above eligibility)",
+      "amount": 18860,
+      "verdict": "matches",
+      "correct_amount": 18860,
+      "why": "20% of 94,300 non-medicine charges, ratio 0.8 (cl. 4.1 Note 2, DECISIONS 2)."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 5205,
+      "verdict": "consequential",
+      "correct_amount": 5405,
+      "why": "5% of admissible (cl. 9.3); differs because of the room/ICU excess."
+    }
+  ],
+  "notes": "Ambiguity: whether a High Dependency Unit counts as ICU (cap 10,000) or as a room (cap 5,000). Resolved as ICU, consistent with the insurer's own 0.8 proportion. If HDU were capped as a room, excess would be 8,500, ratio 0.4 and the payable far lower; the insurer's 7,500 excess matches neither reading for all three days. Underpaid by 3,800."
+}

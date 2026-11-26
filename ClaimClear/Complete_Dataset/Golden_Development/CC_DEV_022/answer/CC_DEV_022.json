@@ -1,0 +1,135 @@
+{
+  "case_id": "CC_DEV_022",
+  "base_id": "SET-03",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "dev",
+  "planted_type": "genuine",
+  "insurer_error": {
+    "kind": "sub_limit_misapplied",
+    "flags": [
+      "sub_limit_misapplied"
+    ],
+    "method": "Cataract limit taken as 15% of sum insured instead of the lower of 25% of sum insured and ₹40,000 per eye."
+  },
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 38500,
+    "admissible": null,
+    "copay": null,
+    "payable": 36575,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 30000,
+    "copay": 1500,
+    "payable": 28500,
+    "rejected": null
+  },
+  "underpaid_by": 8075,
+  "letter_deductions": [
+    {
+      "deduction": "Cataract limit: admissible ₹30,000 for the right eye",
+      "reason": "Cataract treatment is limited to 15% of sum insured per eye",
+      "amount": 8500,
+      "verdict": "disputable",
+      "correct_amount": 0
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Cataract limit: admissible ₹30,000 for the right eye",
+      "clause": "",
+      "correct": 0,
+      "insurer": 8500,
+      "excess_deducted": 8500
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "GEN-03",
+      "category": "genuine",
+      "status": "Good",
+      "title": "Cataract day care under the per-eye limit",
+      "format": "Digital PDF",
+      "what_changed_and_where": "Nothing changed. Same-day admission and discharge is normal for day care.",
+      "expected_verdict": "clean_with_deductions",
+      "expected_flags": [],
+      "attack_goal": "None. Same-day admission and discharge is normal here.",
+      "detection_signals": [
+        "₹38,500 is below the ₹40,000 per-eye limit"
+      ],
+      "notes": "Limit is min(25% of ₹2,00,000, ₹40,000) = ₹40,000. Only the 5% co-pay applies."
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-GEN-03",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for GEN-03",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-03",
+      "category": "settlement_letters",
+      "status": "Insurer error",
+      "title": "Cataract limit worked out with the wrong percentage",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Deductions row 1: cataract limit taken as 15% of sum insured (₹30,000) instead of the lower of 25% and ₹40,000. Underpaid by ₹8,075.",
+      "expected_verdict": "settlement_disputable",
+      "expected_flags": [
+        "sub_limit_misapplied"
+      ],
+      "attack_goal": "None. Tests whether ClaimClear checks the limit against the wording.",
+      "detection_signals": [
+        "Limit taken as 15% of sum insured (₹30,000) instead of the lower of 25% and ₹40,000"
+      ],
+      "notes": ""
+    }
+  },
+  "open_question_flags": [],
+  "story": "Cataract day care under the per-eye limit",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_DEV_022",
+    "source_case": "dev/case-002",
+    "documents": {
+      "02_itemised_bill.pdf": "GEN-03",
+      "01_policy_schedule.pdf": "SCH-GEN-03",
+      "03_settlement_letter.pdf": "SET-03"
+    },
+    "scenario": {
+      "type": "genuine",
+      "title": "Cataract day care under the per-eye limit",
+      "what_changed": "Nothing changed. Same-day admission and discharge is normal for day care.",
+      "attack_goal": "None. Same-day admission and discharge is normal here.",
+      "expected_flags": []
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2025-100592",
+      "holder": "Ahana Dhumatkar",
+      "sex": "F",
+      "dob": "1958-11-02",
+      "sum_insured": 200000,
+      "period_start": "2025-10-01",
+      "period_end": "2026-09-30",
+      "first_inception": "2021-10-01",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": []
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "case_id": "CC_EVAL_025",
+  "payable": 67592,
+  "insurer_paid": 67541,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Gauze and cotton - List III (part of procedure charges)",
+      "amount": 640,
+      "verdict": "matches",
+      "correct_amount": 640,
+      "why": "Annexure A List III items 8, 18 (cl. 4.7)."
+    },
+    {
+      "deduction": "Less: Documentation charges - List II (part of room charges)",
+      "amount": 390,
+      "verdict": "matches",
+      "correct_amount": 390,
+      "why": "Annexure A List II item 29 (cl. 4.7)."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 3609,
+      "verdict": "disputable",
+      "correct_amount": 3558,
+      "why": "Co-pay is 5% of the admissible amount (cl. 9.3, 3.11), i.e. of 71,150, not of the gross claim 72,180."
+    }
+  ],
+  "notes": "Room 3,500/day within the 5,000 cap; no proportionate deduction. Insurer took co-pay on the gross bill. Underpaid by 51."
+}

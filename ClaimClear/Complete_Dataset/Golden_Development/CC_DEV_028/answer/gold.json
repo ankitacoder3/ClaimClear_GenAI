@@ -1,0 +1,23 @@
+{
+  "case_id": "CC_DEV_028",
+  "payable": 109449.5,
+  "insurer_paid": 109449.5,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Amount not supported by the itemised charges",
+      "amount": 30000,
+      "verdict": "matches",
+      "correct_amount": 30000,
+      "why": "The bill total is ₹30,000 more than the sum of its itemised charges (₹1,18,210.00)"
+    },
+    {
+      "deduction": "Non-payable items: gloves, masks, syringes, caps",
+      "amount": 3000,
+      "verdict": "matches",
+      "correct_amount": 3000,
+      "why": "Listed as non-payable items under the policy"
+    }
+  ],
+  "notes": "Matches: only the itemised charges are payable."
+}

@@ -1,0 +1,54 @@
+{
+  "case_id": "CC_EVAL_007",
+  "base_id": "H2",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "none",
+  "insurer_error": null,
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 284000,
+    "admissible": 279800,
+    "copay": 13990,
+    "payable": 265810,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 279800,
+    "copay": 13990,
+    "payable": 265810,
+    "rejected": null
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Knee immobilizer - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 2400,
+      "verdict": "matches",
+      "correct_amount": 2400
+    },
+    {
+      "deduction": "Walker - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 1800,
+      "verdict": "matches",
+      "correct_amount": 1800
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 13990,
+      "verdict": "matches",
+      "correct_amount": 13990
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Knee replacement at 50 months of cover; room at the limit."
+}

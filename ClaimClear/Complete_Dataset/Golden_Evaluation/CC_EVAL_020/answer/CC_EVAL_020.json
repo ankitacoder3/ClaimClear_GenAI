@@ -1,0 +1,85 @@
+{
+  "case_id": "CC_EVAL_020",
+  "base_id": "H6",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "room_icu_cap",
+  "insurer_error": {
+    "kind": "icu_at_room_cap"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 80020,
+    "admissible": 79150,
+    "copay": 3958,
+    "payable": 75192,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 55794,
+    "copay": 2790,
+    "payable": 53004,
+    "rejected": null
+  },
+  "underpaid_by": 22188,
+  "letter_deductions": [
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause_cited": "4.1(i), 4.1(ii)",
+      "amount": 8000,
+      "verdict": "disputable",
+      "correct_amount": 0
+    },
+    {
+      "deduction": "Gloves and masks - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 870,
+      "verdict": "matches",
+      "correct_amount": 870
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause_cited": "4.1 Note 2",
+      "amount": 15356,
+      "verdict": "disputable",
+      "correct_amount": 0
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 2790,
+      "verdict": "consequential",
+      "correct_amount": 3958
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 3958,
+      "insurer": 2790,
+      "excess_deducted": -1168
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause": "4.1 Note 2",
+      "correct": 0,
+      "insurer": 15356,
+      "excess_deducted": 15356
+    },
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause": "4.1(i), 4.1(ii)",
+      "correct": 0,
+      "insurer": 8000,
+      "excess_deducted": 8000
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Atrial fibrillation; cardiac ICU within limit."
+}

@@ -1,0 +1,72 @@
+{
+  "case_id": "CC_EVAL_001",
+  "base_id": "H15",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "room_icu_cap",
+  "insurer_error": {
+    "kind": "icu_days",
+    "days": 2
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 145980,
+    "admissible": 145650,
+    "copay": 7283,
+    "payable": 138367,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 126650,
+    "copay": 6333,
+    "payable": 120317,
+    "rejected": null
+  },
+  "underpaid_by": 18050,
+  "letter_deductions": [
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause_cited": "4.1(i), 4.1(ii)",
+      "amount": 19000,
+      "verdict": "disputable",
+      "correct_amount": 0
+    },
+    {
+      "deduction": "Crepe bandage - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 330,
+      "verdict": "matches",
+      "correct_amount": 330
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 6333,
+      "verdict": "consequential",
+      "correct_amount": 7283
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 7283,
+      "insurer": 6333,
+      "excess_deducted": -950
+    },
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause": "4.1(i), 4.1(ii)",
+      "correct": 0,
+      "insurer": 19000,
+      "excess_deducted": 19000
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Stroke: four neuro-ICU days then ward."
+}

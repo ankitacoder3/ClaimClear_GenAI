@@ -1,0 +1,79 @@
+{
+  "case_id": "CC_EVAL_011",
+  "base_id": "H11",
+  "variant": 3,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "copay",
+  "insurer_error": {
+    "kind": "copay_pct",
+    "pct": 20
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 131700,
+    "admissible": 108090,
+    "copay": 5405,
+    "payable": 102685,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 108090,
+    "copay": 21618,
+    "payable": 86472,
+    "rejected": null
+  },
+  "underpaid_by": 16213,
+  "letter_deductions": [
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause_cited": "4.1(i), 4.1(ii)",
+      "amount": 3500,
+      "verdict": "matches",
+      "correct_amount": 3500
+    },
+    {
+      "deduction": "Gauze and cotton - List III (part of procedure charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 900,
+      "verdict": "matches",
+      "correct_amount": 900
+    },
+    {
+      "deduction": "Sanitary pads - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 350,
+      "verdict": "matches",
+      "correct_amount": 350
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause_cited": "4.1 Note 2",
+      "amount": 18860,
+      "verdict": "matches",
+      "correct_amount": 18860
+    },
+    {
+      "deduction": "Co-payment 20%",
+      "clause_cited": "9.3",
+      "amount": 21618,
+      "verdict": "disputable",
+      "correct_amount": 5405
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 20%",
+      "clause": "9.3",
+      "correct": 5405,
+      "insurer": 21618,
+      "excess_deducted": 16213
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Hysterectomy on a floater; HDU night and private room both above caps."
+}

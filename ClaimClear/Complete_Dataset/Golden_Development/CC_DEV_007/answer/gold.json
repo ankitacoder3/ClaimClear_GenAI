@@ -1,0 +1,23 @@
+{
+  "case_id": "CC_DEV_007",
+  "payable": 20045,
+  "insurer_paid": 21090,
+  "overall": "inconsistent_documents",
+  "letter_deductions": [
+    {
+      "deduction": "Less: File opening charges - List II (part of room charges)",
+      "amount": 300,
+      "verdict": "matches",
+      "correct_amount": 300,
+      "why": "List II item 34 (Clause 4.7)."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 1110,
+      "verdict": "consequential",
+      "correct_amount": 1055,
+      "why": "5% method right (Clause 9.3); base should exclude the duplicated 1,100 electrolytes line: 5% of 21,100."
+    }
+  ],
+  "notes": "The itemised bill contains a duplicated line (Serum electrolytes LAB-114 twice on 08/10/2026); the insurer paid both. Gold removes one as not actually incurred (Clause 3.28 \"necessarily and actually incurred\"). If both tests were genuinely done, payable would be 21,090 as the insurer paid; needs lab reports to confirm."
+}

@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_DEV_021",
+  "payable": 81985,
+  "insurer_paid": 0,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: The claim is for treatment of a knee joint condition. Diseases of the joints are listed illnesses with a 24-month waiting period. Your policy started on 01-Feb-2026, so the waiting period has not been completed and the claim is not admissible.",
+      "amount": 88100,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "Waiting period counted from the current renewal instead of first inception."
+    }
+  ],
+  "notes": "Waiting period counted from the current renewal instead of first inception."
+}

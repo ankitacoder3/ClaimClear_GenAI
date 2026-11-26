@@ -1,0 +1,30 @@
+{
+  "case_id": "CC_DEV_025",
+  "payable": 95617.5,
+  "insurer_paid": 87094.64,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Room rent above eligible limit (₹2,000 a day for 3 days)",
+      "amount": 6000,
+      "verdict": "matches",
+      "correct_amount": 6000,
+      "why": "Room rent is limited to 2% of sum insured, at most ₹5,000 a day"
+    },
+    {
+      "deduction": "GST on room rent above eligible limit",
+      "amount": 300,
+      "verdict": "matches",
+      "correct_amount": 300,
+      "why": "Follows the room rent deduction"
+    },
+    {
+      "deduction": "Proportionate deduction on associated medical expenses (₹5,000 / ₹7,000)",
+      "amount": 30371.43,
+      "verdict": "disputable",
+      "correct_amount": 21400,
+      "why": "Room category above eligibility, so associated expenses are reduced in the same proportion"
+    }
+  ],
+  "notes": "Proportionate deduction applied to every non-room line, including items not priced by room category."
+}

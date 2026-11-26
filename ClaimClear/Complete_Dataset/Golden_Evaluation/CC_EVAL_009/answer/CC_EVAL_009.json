@@ -1,0 +1,72 @@
+{
+  "case_id": "CC_EVAL_009",
+  "base_id": "H16",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "doc_inconsistency",
+  "insurer_error": {
+    "kind": "doc_line_after_discharge",
+    "line": "med1",
+    "days": 1
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 37540,
+    "admissible": 36900,
+    "copay": 1845,
+    "payable": 35055,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 36900,
+    "copay": 1845,
+    "payable": 35055,
+    "rejected": null
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Thermometer - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 300,
+      "verdict": "matches",
+      "correct_amount": 300
+    },
+    {
+      "deduction": "Mineral water - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 140,
+      "verdict": "matches",
+      "correct_amount": 140
+    },
+    {
+      "deduction": "Urine bag - List IV (part of cost of treatment)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 200,
+      "verdict": "matches",
+      "correct_amount": 200
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 1845,
+      "verdict": "matches",
+      "correct_amount": 1845
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "inconsistent_documents",
+  "doc_tweaks": {
+    "line_date": {
+      "line": "med1",
+      "date": "2026-09-26"
+    }
+  },
+  "open_question_flags": [
+    "si_depletion_by_paid"
+  ],
+  "story": "Eye injection for diabetic macular oedema; two earlier injections this year."
+}

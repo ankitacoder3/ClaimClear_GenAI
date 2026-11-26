@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_DEV_037",
+  "payable": 81985,
+  "insurer_paid": 81985,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Non-payable items: gloves, masks, syringes, caps",
+      "amount": 1800,
+      "verdict": "matches",
+      "correct_amount": 1800,
+      "why": "Listed as non-payable items under the policy"
+    }
+  ],
+  "notes": "Matches the policy wording."
+}

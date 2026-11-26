@@ -1,0 +1,92 @@
+{
+  "case_id": "CC_EVAL_021",
+  "base_id": "H13",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "proportionate",
+  "insurer_error": {
+    "kind": "prop_on_medicines"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 82120,
+    "admissible": 69620,
+    "copay": 3481,
+    "payable": 66139,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 64960,
+    "copay": 3248,
+    "payable": 61712,
+    "rejected": null
+  },
+  "underpaid_by": 4427,
+  "letter_deductions": [
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause_cited": "4.1(i), 4.1(ii)",
+      "amount": 4000,
+      "verdict": "matches",
+      "correct_amount": 4000
+    },
+    {
+      "deduction": "Urine bag - List IV (part of cost of treatment)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 180,
+      "verdict": "matches",
+      "correct_amount": 180
+    },
+    {
+      "deduction": "Attendant food - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 380,
+      "verdict": "matches",
+      "correct_amount": 380
+    },
+    {
+      "deduction": "Discharge procedure charges - List II (part of room charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 360,
+      "verdict": "matches",
+      "correct_amount": 360
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause_cited": "4.1 Note 2",
+      "amount": 12240,
+      "verdict": "disputable",
+      "correct_amount": 7580
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 3248,
+      "verdict": "consequential",
+      "correct_amount": 3481
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 3481,
+      "insurer": 3248,
+      "excess_deducted": -233
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause": "4.1 Note 2",
+      "correct": 7580,
+      "insurer": 12240,
+      "excess_deducted": 4660
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Toddler with pneumonia on a floater; room above limit."
+}

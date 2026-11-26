@@ -1,0 +1,94 @@
+{
+  "case_id": "CC_EVAL_022",
+  "base_id": "H8",
+  "variant": 2,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "non_payable",
+  "insurer_error": {
+    "kind": "disallow",
+    "line": "con2",
+    "reason": "Crepe bandage - List I (not payable)"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 61060,
+    "admissible": 47264,
+    "copay": 2363,
+    "payable": 44901,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 39082,
+    "copay": 1954,
+    "payable": 37128,
+    "rejected": null
+  },
+  "underpaid_by": 7773,
+  "letter_deductions": [
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause_cited": "4.1(i), 4.1(ii)",
+      "amount": 6000,
+      "verdict": "matches",
+      "correct_amount": 6000
+    },
+    {
+      "deduction": "Medicated burn dressings - Crepe bandage - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 11250,
+      "verdict": "disputable",
+      "correct_amount": 0
+    },
+    {
+      "deduction": "Discharge procedure charges - List II (part of room charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 460,
+      "verdict": "matches",
+      "correct_amount": 460
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause_cited": "4.1 Note 2",
+      "amount": 4268,
+      "verdict": "consequential",
+      "correct_amount": 7336
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 1954,
+      "verdict": "consequential",
+      "correct_amount": 2363
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 2363,
+      "insurer": 1954,
+      "excess_deducted": -409
+    },
+    {
+      "deduction": "Medicated burn dressings - Crepe bandage - List I (not payable)",
+      "clause": "4.7, Annexure A",
+      "correct": 0,
+      "insurer": 11250,
+      "excess_deducted": 11250
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause": "4.1 Note 2",
+      "correct": 7336,
+      "insurer": 4268,
+      "excess_deducted": -3068
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Kitchen burns three weeks into a new policy; room above limit."
+}

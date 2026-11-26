@@ -1,0 +1,312 @@
+{
+  "case_id": "CC_DEV_029",
+  "split": "dev",
+  "source": "claimclear-synthetic",
+  "source_case": "dev/case-009",
+  "scenario": {
+    "type": "genuine",
+    "title": "Dengue admission with ICU, discount and advance",
+    "what_changed": "Nothing changed. Claimable net is ₹90,000; the ₹70,000 balance is after the advance.",
+    "attack_goal": "None. Discount and advance must not be confused with the claimed amount.",
+    "expected_flags": []
+  },
+  "expected": {
+    "overall_verdict": "not_verifiable",
+    "overall_verdict_source": "settlement_not_verifiable",
+    "policy_payable": 82745.0,
+    "insurer_paid": 78280.0,
+    "gap": 4465.0,
+    "disputable_amount": 0.0,
+    "unverified_amount": 4465.0,
+    "deductions": [
+      {
+        "particulars": "Non-payable items: gloves, masks, IV sets",
+        "amount": 2900.0,
+        "verdict": "matches_policy",
+        "verdict_source": "matches_policy",
+        "correct_amount": 2900.0,
+        "why": "Listed as non-payable items under the policy"
+      },
+      {
+        "particulars": "Other deductions",
+        "amount": 4700.0,
+        "verdict": "not_verifiable",
+        "verdict_source": "not_verifiable",
+        "correct_amount": null,
+        "why": "As per policy terms and conditions"
+      }
+    ],
+    "rejection": null,
+    "notes": "No item or clause given for ₹4,700, and no known calculation produces it."
+  },
+  "documents": {
+    "bill.pdf": "GEN-05",
+    "discharge_summary.pdf": "DS-03",
+    "settlement_letter.pdf": "SET-04",
+    "policy_schedule.pdf": "SCH-GEN-05"
+  },
+  "source_answer": {
+    "GEN-05": {
+      "doc_id": "GEN-05",
+      "file": "dev/cases/CC_DEV_029/bill.pdf",
+      "sha256": "103f3c6b37b5c3ea3f96c8d05a4c0a0a5d751052d1aa27b65a91ae40d360797c",
+      "category": "genuine",
+      "document_type": "bill",
+      "status": "Good",
+      "what_changed_and_where": "Nothing changed. Claimable net is ₹90,000; the ₹70,000 balance is after the advance.",
+      "title": "Dengue admission with ICU, discount and advance",
+      "format": "Digital PDF",
+      "expected_verdict": "clean_with_deductions",
+      "expected_flags": [],
+      "attack_goal": "None. Discount and advance must not be confused with the claimed amount.",
+      "detection_signals": [
+        "ICU ₹9,500 is under the ₹10,000 cap",
+        "Net ₹90,000, balance ₹70,000"
+      ],
+      "notes": "Room ₹4,800 and ICU ₹9,500 are inside limits. Consumables are non-payable.",
+      "details": {},
+      "invoices": [
+        {
+          "provider_name": "Kshemavan Superspeciality Hospital",
+          "provider_gstin": "00AAGFK6789V1Z3",
+          "provider_registration_no": "FIC/BBMP/HOSP/02231",
+          "invoice_no": "KSH-BLR-26-044918",
+          "invoice_date": "2026-07-08",
+          "patient_name": "Prisha Galvankar",
+          "sex": "F",
+          "age": 38,
+          "policy_no": "AS-2025-101344",
+          "uhid": "KSH-3390271",
+          "ip_no": "BLR/IP/26/18840",
+          "admission": "2026-07-03",
+          "discharge": "2026-07-08",
+          "diagnosis": "Dengue fever with thrombocytopenia",
+          "procedure": "Medical management",
+          "tariff_key": "dengue_medical",
+          "line_items": [
+            {
+              "description": "ICU charges",
+              "qty": 2.0,
+              "rate": 9500.0,
+              "printed_amount": 19000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Semi-private ward",
+              "qty": 3.0,
+              "rate": 4800.0,
+              "printed_amount": 14400.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Nursing charges",
+              "qty": 5.0,
+              "rate": 1000.0,
+              "printed_amount": 5000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Physician visits",
+              "qty": 7.0,
+              "rate": 1200.0,
+              "printed_amount": 8400.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Platelet transfusion",
+              "qty": 2.0,
+              "rate": 8500.0,
+              "printed_amount": 17000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Laboratory investigations",
+              "qty": 1.0,
+              "rate": 14800.0,
+              "printed_amount": 14800.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Pharmacy - inpatient medicines",
+              "qty": 1.0,
+              "rate": 9600.0,
+              "printed_amount": 9600.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Consumables - gloves, masks, IV sets",
+              "qty": 1.0,
+              "rate": 2900.0,
+              "printed_amount": 2900.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": true
+            }
+          ],
+          "sum_of_printed_lines": 91100.0,
+          "sum_of_qty_x_rate": 91100.0,
+          "cgst": 0.0,
+          "sgst": 0.0,
+          "discount": 1100.0,
+          "recomputed_total": 90000.0,
+          "printed_total": 90000.0,
+          "advance": 20000.0,
+          "balance_payable": 70000.0
+        }
+      ]
+    },
+    "DS-03": {
+      "doc_id": "DS-03",
+      "file": "dev/cases/CC_DEV_029/discharge_summary.pdf",
+      "sha256": "4603a3221cf068de71532236dbff72e2d29cf4a663bc67972eb074c39b0287d2",
+      "category": "discharge_summaries",
+      "document_type": "discharge",
+      "status": "Good",
+      "what_changed_and_where": "Nothing changed. Course in hospital confirms 2 ICU days and 2 platelet transfusions billed in GEN-05.",
+      "title": "Summary for GEN-05 with an ICU stay",
+      "format": "Discharge summary PDF",
+      "expected_verdict": "consistent_with_bill",
+      "expected_flags": [],
+      "attack_goal": "None. Justifies the ICU days and transfusions on the bill.",
+      "detection_signals": [
+        "2 ICU days and 2 platelet transfusions, matching bill rows 1 and 5"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "GEN-05",
+        "patient_name": "Prisha Galvankar",
+        "age": 38,
+        "sex": "F",
+        "uhid": "KSH-3390271",
+        "ip_no": "BLR/IP/26/18840",
+        "admission": "2026-07-03",
+        "discharge": "2026-07-08",
+        "procedure_date": "2026-07-04",
+        "diagnosis": "Dengue fever with thrombocytopenia",
+        "icd10": "A97.1",
+        "procedure": "Medical management",
+        "consistent_with_bill": true,
+        "conflicts_with_bill": []
+      }
+    },
+    "SET-04": {
+      "doc_id": "SET-04",
+      "file": "dev/cases/CC_DEV_029/settlement_letter.pdf",
+      "sha256": "077fb82f5fe9535974317841f51573d67de88a91cc11bf41dac8ebad1ab32a75",
+      "category": "settlement_letters",
+      "document_type": "settlement",
+      "status": "Unclear",
+      "what_changed_and_where": "Deductions row 2: ₹4,700 “as per policy terms” with no item or clause. ₹4,465 after co-pay can't be checked without a breakdown.",
+      "title": "Unexplained deduction “as per policy terms”",
+      "format": "Insurer letter PDF",
+      "expected_verdict": "settlement_not_verifiable",
+      "expected_flags": [
+        "unexplained_deduction"
+      ],
+      "attack_goal": "None. Tests whether ClaimClear says it can't check something instead of guessing.",
+      "detection_signals": [
+        "₹4,700 with no item or clause, and no known calculation produces it",
+        "Consumables deduction is correct"
+      ],
+      "notes": "Expected behaviour: ask the insurer for an itemised breakdown and the clause. Claimed amount is the net bill after the hospital discount.",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "GEN-05",
+        "claim_no": "AGI/HC/2627/001942",
+        "letter_type": "settlement",
+        "letter_date": "2026-08-04",
+        "policy_no": "AS-2025-101344",
+        "patient_name": "Prisha Galvankar",
+        "hospital": "Kshemavan Superspeciality Hospital",
+        "bill_invoice_no": "KSH-BLR-26-044918",
+        "admission": "2026-07-03",
+        "discharge": "2026-07-08",
+        "claimed_amount": 90000.0,
+        "copay_pct_applied": 5.0,
+        "rejection_kind": null,
+        "duplicate_of": null,
+        "insurer_deductions": [
+          {
+            "particulars": "Non-payable items: gloves, masks, IV sets",
+            "amount": 2900.0,
+            "reason": "Listed as non-payable items under the policy",
+            "expected_verdict": "matches_policy",
+            "expected_amount": 2900.0
+          },
+          {
+            "particulars": "Other deductions",
+            "amount": 4700.0,
+            "reason": "As per policy terms and conditions",
+            "expected_verdict": "not_verifiable",
+            "expected_amount": null
+          }
+        ],
+        "rejection_reason": null,
+        "rejection_expected_verdict": null,
+        "insurer_admissible": 82400.0,
+        "insurer_copay": 4120.0,
+        "insurer_paid": 78280.0,
+        "expected_payable": 82745.0,
+        "disputable_amount": 0.0,
+        "unverified_amount": 4465.0,
+        "insurer_method": "No item or clause given for ₹4,700, and no known calculation produces it."
+      }
+    },
+    "SCH-GEN-05": {
+      "doc_id": "SCH-GEN-05",
+      "file": "dev/cases/CC_DEV_029/policy_schedule.pdf",
+      "sha256": "f178aa8d2b59b50f8580fd9e4d20766a7ad23cece6cb2d8402cb386c363d9c86",
+      "category": "policy_schedules",
+      "document_type": "schedule",
+      "status": "Good",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "title": "Policy schedule for GEN-05",
+      "format": "Insurer schedule PDF",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "GEN-05",
+        "policy_no": "AS-2025-101344",
+        "holder": "Prisha Galvankar",
+        "sex": "F",
+        "dob": "1988-01-23",
+        "sum_insured": 400000,
+        "period_start": "2025-09-01",
+        "period_end": "2026-08-31",
+        "first_inception": "2023-09-01",
+        "product": "Arogya Sanjeevani Policy",
+        "insurer": "Aarohan General Insurance Ltd.",
+        "address": "45 Fictional Layout, Bengaluru 000560",
+        "issued": "2025-08-28",
+        "premium": 5280.0,
+        "wording_uin": "GODHLIP24179V022324",
+        "copay_pct": 5,
+        "in_insurer_records": true
+      }
+    }
+  }
+}

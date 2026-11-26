@@ -1,0 +1,80 @@
+{
+  "case_id": "CC_EVAL_033",
+  "base_id": "H1",
+  "variant": 3,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "doc_inconsistency",
+  "insurer_error": {
+    "kind": "doc_total_mismatch",
+    "extra": 1500
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 72600,
+    "admissible": 50517,
+    "copay": 2526,
+    "payable": 47991,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 50517,
+    "copay": 2526,
+    "payable": 47991,
+    "rejected": null
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause_cited": "4.1(i), 4.1(ii)",
+      "amount": 3000,
+      "verdict": "matches",
+      "correct_amount": 3000
+    },
+    {
+      "deduction": "Crepe bandage - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 350,
+      "verdict": "matches",
+      "correct_amount": 350
+    },
+    {
+      "deduction": "Documentation charges - List II (part of room charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 300,
+      "verdict": "matches",
+      "correct_amount": 300
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause_cited": "4.1 Note 2",
+      "amount": 17833,
+      "verdict": "matches",
+      "correct_amount": 17833
+    },
+    {
+      "deduction": "Ambulance charges above limit",
+      "clause_cited": "4.1.1(v)",
+      "amount": 600,
+      "verdict": "matches",
+      "correct_amount": 600
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 2526,
+      "verdict": "matches",
+      "correct_amount": 2526
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "inconsistent_documents",
+  "doc_tweaks": {
+    "bill_total_extra": 1500
+  },
+  "open_question_flags": [],
+  "story": "Student with appendicitis; twin-sharing room above limit; ambulance."
+}

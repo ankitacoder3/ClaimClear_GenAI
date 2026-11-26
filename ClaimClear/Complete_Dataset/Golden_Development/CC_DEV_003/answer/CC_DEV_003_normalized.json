@@ -1,0 +1,182 @@
+{
+  "case_id": "CC_DEV_003",
+  "split": "dev",
+  "source": "gen-data",
+  "source_case": "CC_DEV_003",
+  "scenario": {
+    "type": "room_icu_cap",
+    "recipe": "D7 variant 1",
+    "insurer_error": {
+      "kind": "icu_days",
+      "days": 1
+    },
+    "summary": "Snakebite in a farmer: three ICU days, one ward day."
+  },
+  "expected": {
+    "overall_verdict": "disputable",
+    "overall_verdict_source": "disputable",
+    "policy_payable": 66025,
+    "insurer_paid": 53675,
+    "gap": 12350,
+    "deductions": [
+      {
+        "particulars": "Less: Room / ICU rent above eligible limit",
+        "amount": 13000,
+        "verdict": "does_not_match_policy",
+        "verdict_source": "disputable",
+        "correct_amount": 0,
+        "why": "ICU 6,500/day is under the ICU cap 7,500 (5% of 1.5L, Clause 4.1(ii)); ward 2,500 under room cap 3,000 (4.1(i)); nothing is above limit. Insurer appears to cap ICU days at the room-rent cap 3,000."
+      },
+      {
+        "particulars": "Less: Gauze and cotton - List III (part of procedure charges)",
+        "amount": 550,
+        "verdict": "matches_policy",
+        "verdict_source": "matches",
+        "correct_amount": 550,
+        "why": "Annexure A List III (Clause 4.7)."
+      },
+      {
+        "particulars": "Less: Urine bag - List IV (part of cost of treatment)",
+        "amount": 150,
+        "verdict": "matches_policy",
+        "verdict_source": "matches",
+        "correct_amount": 150,
+        "why": "Annexure A List IV item 18 (Clause 4.7)."
+      },
+      {
+        "particulars": "Less: Co-payment 5%",
+        "amount": 2825,
+        "verdict": "method_matches",
+        "verdict_source": "consequential",
+        "correct_amount": 3475,
+        "why": "5% method right (Clause 9.3) but base reduced by the wrong 13,000 room/ICU deduction; correct 5% of 69,500."
+      }
+    ],
+    "notes": "ICU cap is 5% of SI = 7,500/day, not the 2% room cap. No proportionate deduction since no room/ICU rate exceeds its cap. Same claim number/invoice as CC_DEV_001 but this bill itemises ICU and ward days."
+  },
+  "documents": {
+    "policy_wording.pdf": "00_policy_wording.pdf",
+    "policy_schedule.pdf": "01_policy_schedule.pdf",
+    "bill.pdf": "02_itemised_bill.pdf",
+    "settlement_letter.pdf": "03_settlement_letter.pdf"
+  },
+  "source_answer": {
+    "meta": {
+      "case_id": "CC_DEV_003",
+      "base_id": "D7",
+      "variant": 1,
+      "tag": "SK",
+      "split": "dev",
+      "planted_type": "room_icu_cap",
+      "insurer_error": {
+        "kind": "icu_days",
+        "days": 1
+      },
+      "wording": "IFFCO",
+      "wording_uin": "IFFHLIP20161V011920",
+      "correct_settlement": {
+        "billed": 70200,
+        "admissible": 69500,
+        "copay": 3475,
+        "payable": 66025,
+        "rejected": null
+      },
+      "insurer_settlement": {
+        "admissible": 56500,
+        "copay": 2825,
+        "payable": 53675,
+        "rejected": null
+      },
+      "underpaid_by": 12350,
+      "letter_deductions": [
+        {
+          "deduction": "Room / ICU rent above eligible limit",
+          "clause_cited": "4.1(i), 4.1(ii)",
+          "amount": 13000,
+          "verdict": "disputable",
+          "correct_amount": 0
+        },
+        {
+          "deduction": "Gauze and cotton - List III (part of procedure charges)",
+          "clause_cited": "4.7, Annexure A",
+          "amount": 550,
+          "verdict": "matches",
+          "correct_amount": 550
+        },
+        {
+          "deduction": "Urine bag - List IV (part of cost of treatment)",
+          "clause_cited": "4.7, Annexure A",
+          "amount": 150,
+          "verdict": "matches",
+          "correct_amount": 150
+        },
+        {
+          "deduction": "Co-payment 5%",
+          "clause_cited": "9.3",
+          "amount": 2825,
+          "verdict": "consequential",
+          "correct_amount": 3475
+        }
+      ],
+      "deductions_missing_from_letter": [],
+      "wrong_deductions": [
+        {
+          "deduction": "Co-payment 5%",
+          "clause": "9.3",
+          "correct": 3475,
+          "insurer": 2825,
+          "excess_deducted": -650
+        },
+        {
+          "deduction": "Room / ICU rent above eligible limit",
+          "clause": "4.1(i), 4.1(ii)",
+          "correct": 0,
+          "insurer": 13000,
+          "excess_deducted": 13000
+        }
+      ],
+      "expected_verdict": "disputable",
+      "doc_tweaks": {},
+      "open_question_flags": [],
+      "story": "Snakebite in a farmer: three ICU days, one ward day."
+    },
+    "gold": {
+      "case_id": "CC_DEV_003",
+      "payable": 66025,
+      "insurer_paid": 53675,
+      "overall": "disputable",
+      "letter_deductions": [
+        {
+          "deduction": "Less: Room / ICU rent above eligible limit",
+          "amount": 13000,
+          "verdict": "disputable",
+          "correct_amount": 0,
+          "why": "ICU 6,500/day is under the ICU cap 7,500 (5% of 1.5L, Clause 4.1(ii)); ward 2,500 under room cap 3,000 (4.1(i)); nothing is above limit. Insurer appears to cap ICU days at the room-rent cap 3,000."
+        },
+        {
+          "deduction": "Less: Gauze and cotton - List III (part of procedure charges)",
+          "amount": 550,
+          "verdict": "matches",
+          "correct_amount": 550,
+          "why": "Annexure A List III (Clause 4.7)."
+        },
+        {
+          "deduction": "Less: Urine bag - List IV (part of cost of treatment)",
+          "amount": 150,
+          "verdict": "matches",
+          "correct_amount": 150,
+          "why": "Annexure A List IV item 18 (Clause 4.7)."
+        },
+        {
+          "deduction": "Less: Co-payment 5%",
+          "amount": 2825,
+          "verdict": "consequential",
+          "correct_amount": 3475,
+          "why": "5% method right (Clause 9.3) but base reduced by the wrong 13,000 room/ICU deduction; correct 5% of 69,500."
+        }
+      ],
+      "notes": "ICU cap is 5% of SI = 7,500/day, not the 2% room cap. No proportionate deduction since no room/ICU rate exceeds its cap. Same claim number/invoice as CC_DEV_001 but this bill itemises ICU and ward days."
+    },
+    "worksheet_md": "# Worksheet CC_DEV_003\n\n## Facts from the documents\n- Policy AS/2026/635471/60, individual, SI 1,50,000, CB 0, period 01/03/2026-28/02/2027, continuous since 01/03/2023.\n- Admission 12/07/2026, discharge 16/07/2026 = 4 days (nights). Diagnosis: snake bite with envenomation (accidental).\n- Bill: ICU 3 days x 6,500 and general ward 1 day x 2,500 (3+1 = 4 days, consistent with the dates).\n\n## Eligibility checks\n- Renewal with continuous cover since 01/03/2023; admission 12/07/2026 lies within the policy period 01/03/2026-28/02/2027 (Clause 2). 30-day (6.2), 24/48-month (6.3) and PED (6.1) waiting periods: not applicable (accident; >36 months cover).\n- Snake bite is an Accident (Clause 3.1); Hospitalisation > 24 hours (4.1 Note 1).\n\n## Limits (Clause 4.1(i), 4.1(ii))\n- Room rent cap = min(2% x SI 150,000.00, 5,000) = 3,000.00 per day\n- ICU cap = min(5% x SI 150,000.00, 10,000) = 7,500.00 per day\n- Sum insured used for these % limits is the base SI in the schedule (Clause 3.47 defines SI separately from Cumulative Bonus).\n\n## Proportionate deduction ratio (Clause 4.1 Note 2; DECISIONS #1, #2)\n- No room/ICU line exceeds its cap -> no proportionate deduction (ratio = 1).\n\n## Bill lines\n| # | Item | Billed | Treatment | Clause | Admissible before proportion |\n|---|---|---:|---|---|---:|\n| 1 | ICU - room rent | 19,500.00 | ICU 3 d x 6,500.00 ; cap 7,500.00 /day -> eligible 19,500.00 | 4.1(ii) | 19,500.00 |\n| 2 | General ward - room rent | 2,500.00 | Room 1 d x 2,500.00 ; cap 3,000.00 /day -> eligible 2,500.00 | 4.1(i) | 2,500.00 |\n| 3 | Physician visits | 6,800.00 | Payable | 4.1(iii)/(iv) | 6,800.00 |\n| 4 | Anti-snake venom and drugs | 23,350.00 | Payable (medicines) | 4.1(iv); 4.1 Note 2 | 23,350.00 |\n| 5 | Clotting profile, renal function | 8,950.00 | Payable | 4.1(iii)/(iv) | 8,950.00 |\n| 6 | Consumables | 4,600.00 | Payable | 4.1(iii)/(iv) | 4,600.00 |\n| 7 | Gauze and cotton | 550.00 | Not payable: List III items 7-8, 18 (gauze, cotton) - subsumed into procedure charges, not separately payable | 4.7, Annexure A | 0.00 |\n| 8 | Fresh frozen plasma | 3,800.00 | Payable | 4.1(iv) blood | 3,800.00 |\n| 9 | Urine bag | 150.00 | Not payable: List IV item 18 - subsumed into cost of treatment | 4.7, Annexure A | 0.00 |\n| | **Total billed/claimed** | **70,200.00** | | | **69,500.00** |\n\n- Check: hospital lines sum to 70,200.00 vs bill grand total 70,200.00 -> agree\n- Total claimed (hospital + other bills) = 70,200.00\n\n## Step results\n1. Room/ICU excess over caps (4.1(i)/(ii)): 0.00\n2. Non-payable / subsumed items (4.7, Annexure A; 4.1.1(v); 4.5): 700.00\n3. Proportionate deduction: nil\n4. Admissible before sub-limit/co-pay = 69,500.00\n5. Sub-limits: none applicable\n6. Co-payment 5% (Clause 9.3; DECISIONS #3, on admissible after all deductions/sub-limits): 69,500.00 x 5% = 3,475.00 -> 3,475\n7. Net after co-pay = 66,025.00\n8. Sum insured + CB this policy year = 150,000.00; earlier claims paid 0.00 / admitted 0.00 -> available 150,000.00 (by paid) / 150,000.00 (by admitted) (Clause 2, 3.47, DECISIONS #4)\n9. **Payable = 66,025**\n\n## Comparison with the settlement letter\n| Letter deduction | Amount | Verdict | Correct amount | Why |\n|---|---:|---|---:|---|\n| Less: Room / ICU rent above eligible limit | 13,000 | disputable | 0 | ICU 6,500/day is under the ICU cap 7,500 (5% of 1.5L, Clause 4.1(ii)); ward 2,500 under room cap 3,000 (4.1(i)); nothing is above limit. Insurer appears to cap ICU days at the room-rent cap 3,000. |\n| Less: Gauze and cotton - List III (part of procedure charges) | 550 | matches | 550 | Annexure A List III (Clause 4.7). |\n| Less: Urine bag - List IV (part of cost of treatment) | 150 | matches | 150 | Annexure A List IV item 18 (Clause 4.7). |\n| Less: Co-payment 5% | 2,825 | consequential | 3,475 | 5% method right (Clause 9.3) but base reduced by the wrong 13,000 room/ICU deduction; correct 5% of 69,500. |\n\n- Insurer paid: 53,675 ; gold payable: 66,025 ; difference (payable - paid): 12,350\n- Overall: **disputable**\n\n## Notes\nICU cap is 5% of SI = 7,500/day, not the 2% room cap. No proportionate deduction since no room/ICU rate exceeds its cap. Same claim number/invoice as CC_DEV_001 but this bill itemises ICU and ward days.\n"
+  }
+}

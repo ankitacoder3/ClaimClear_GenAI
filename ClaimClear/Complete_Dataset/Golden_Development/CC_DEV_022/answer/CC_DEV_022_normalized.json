@@ -1,0 +1,240 @@
+{
+  "case_id": "CC_DEV_022",
+  "split": "dev",
+  "source": "claimclear-synthetic",
+  "source_case": "dev/case-002",
+  "scenario": {
+    "type": "genuine",
+    "title": "Cataract day care under the per-eye limit",
+    "what_changed": "Nothing changed. Same-day admission and discharge is normal for day care.",
+    "attack_goal": "None. Same-day admission and discharge is normal here.",
+    "expected_flags": []
+  },
+  "expected": {
+    "overall_verdict": "disputable",
+    "overall_verdict_source": "settlement_disputable",
+    "policy_payable": 36575.0,
+    "insurer_paid": 28500.0,
+    "gap": 8075.0,
+    "disputable_amount": 8075.0,
+    "unverified_amount": 0.0,
+    "deductions": [
+      {
+        "particulars": "Cataract limit: admissible ₹30,000 for the right eye",
+        "amount": 8500.0,
+        "verdict": "does_not_match_policy",
+        "verdict_source": "does_not_match_policy",
+        "correct_amount": 0.0,
+        "why": "Cataract treatment is limited to 15% of sum insured per eye"
+      }
+    ],
+    "rejection": null,
+    "notes": "Cataract limit taken as 15% of sum insured instead of the lower of 25% of sum insured and ₹40,000 per eye."
+  },
+  "documents": {
+    "bill.pdf": "GEN-03",
+    "settlement_letter.pdf": "SET-03",
+    "policy_schedule.pdf": "SCH-GEN-03"
+  },
+  "source_answer": {
+    "GEN-03": {
+      "doc_id": "GEN-03",
+      "file": "dev/cases/CC_DEV_022/bill.pdf",
+      "sha256": "4e8f6d8acc2c6f820958bf757fb00b0c8aafa1c89f9c11859a25faed4fe80343",
+      "category": "genuine",
+      "document_type": "bill",
+      "status": "Good",
+      "what_changed_and_where": "Nothing changed. Same-day admission and discharge is normal for day care.",
+      "title": "Cataract day care under the per-eye limit",
+      "format": "Digital PDF",
+      "expected_verdict": "clean_with_deductions",
+      "expected_flags": [],
+      "attack_goal": "None. Same-day admission and discharge is normal here.",
+      "detection_signals": [
+        "₹38,500 is below the ₹40,000 per-eye limit"
+      ],
+      "notes": "Limit is min(25% of ₹2,00,000, ₹40,000) = ₹40,000. Only the 5% co-pay applies.",
+      "details": {},
+      "invoices": [
+        {
+          "provider_name": "Ojasvi Eye & Day Care Centre",
+          "provider_gstin": "00AACFO9012M1Z8",
+          "provider_registration_no": "FIC/NSK/DC/00266",
+          "invoice_no": "OED/2526/01877",
+          "invoice_date": "2026-02-06",
+          "patient_name": "Ahana Dhumatkar",
+          "sex": "F",
+          "age": 67,
+          "policy_no": "AS-2025-100592",
+          "uhid": "OED-77310",
+          "ip_no": "DC/2602/0144",
+          "admission": "2026-02-06",
+          "discharge": "2026-02-06",
+          "diagnosis": "Senile cataract, right eye",
+          "procedure": "Phacoemulsification with IOL, right eye",
+          "tariff_key": "cataract_phaco_per_eye",
+          "line_items": [
+            {
+              "description": "Phacoemulsification package - right eye",
+              "qty": 1.0,
+              "rate": 24000.0,
+              "printed_amount": 24000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Foldable intraocular lens",
+              "qty": 1.0,
+              "rate": 9500.0,
+              "printed_amount": 9500.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "OT and day-care bed charges",
+              "qty": 1.0,
+              "rate": 2500.0,
+              "printed_amount": 2500.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Pre-operative evaluation and biometry",
+              "qty": 1.0,
+              "rate": 1200.0,
+              "printed_amount": 1200.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Ophthalmologist consultation",
+              "qty": 1.0,
+              "rate": 800.0,
+              "printed_amount": 800.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Post-operative eye drops",
+              "qty": 1.0,
+              "rate": 500.0,
+              "printed_amount": 500.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            }
+          ],
+          "sum_of_printed_lines": 38500.0,
+          "sum_of_qty_x_rate": 38500.0,
+          "cgst": 0.0,
+          "sgst": 0.0,
+          "discount": 0.0,
+          "recomputed_total": 38500.0,
+          "printed_total": 38500.0,
+          "advance": 0.0,
+          "balance_payable": 38500.0
+        }
+      ]
+    },
+    "SET-03": {
+      "doc_id": "SET-03",
+      "file": "dev/cases/CC_DEV_022/settlement_letter.pdf",
+      "sha256": "0946495689179e858f5a5967342c6539263e7dc2beb69fd9a1f3594d1daa585e",
+      "category": "settlement_letters",
+      "document_type": "settlement",
+      "status": "Insurer error",
+      "what_changed_and_where": "Deductions row 1: cataract limit taken as 15% of sum insured (₹30,000) instead of the lower of 25% and ₹40,000. Underpaid by ₹8,075.",
+      "title": "Cataract limit worked out with the wrong percentage",
+      "format": "Insurer letter PDF",
+      "expected_verdict": "settlement_disputable",
+      "expected_flags": [
+        "sub_limit_misapplied"
+      ],
+      "attack_goal": "None. Tests whether ClaimClear checks the limit against the wording.",
+      "detection_signals": [
+        "Limit taken as 15% of sum insured (₹30,000) instead of the lower of 25% and ₹40,000"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "GEN-03",
+        "claim_no": "AGI/HC/2526/005033",
+        "letter_type": "settlement",
+        "letter_date": "2026-03-02",
+        "policy_no": "AS-2025-100592",
+        "patient_name": "Ahana Dhumatkar",
+        "hospital": "Ojasvi Eye & Day Care Centre",
+        "bill_invoice_no": "OED/2526/01877",
+        "admission": "2026-02-06",
+        "discharge": "2026-02-06",
+        "claimed_amount": 38500.0,
+        "copay_pct_applied": 5.0,
+        "rejection_kind": null,
+        "duplicate_of": null,
+        "insurer_deductions": [
+          {
+            "particulars": "Cataract limit: admissible ₹30,000 for the right eye",
+            "amount": 8500.0,
+            "reason": "Cataract treatment is limited to 15% of sum insured per eye",
+            "expected_verdict": "does_not_match_policy",
+            "expected_amount": 0.0
+          }
+        ],
+        "rejection_reason": null,
+        "rejection_expected_verdict": null,
+        "insurer_admissible": 30000.0,
+        "insurer_copay": 1500.0,
+        "insurer_paid": 28500.0,
+        "expected_payable": 36575.0,
+        "disputable_amount": 8075.0,
+        "unverified_amount": 0.0,
+        "insurer_method": "Cataract limit taken as 15% of sum insured instead of the lower of 25% of sum insured and ₹40,000 per eye."
+      }
+    },
+    "SCH-GEN-03": {
+      "doc_id": "SCH-GEN-03",
+      "file": "dev/cases/CC_DEV_022/policy_schedule.pdf",
+      "sha256": "6b91f79f50a2bdd191dc2c954cde626eea53115219b7372dcb81002f8dd5f70b",
+      "category": "policy_schedules",
+      "document_type": "schedule",
+      "status": "Good",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "title": "Policy schedule for GEN-03",
+      "format": "Insurer schedule PDF",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "GEN-03",
+        "policy_no": "AS-2025-100592",
+        "holder": "Ahana Dhumatkar",
+        "sex": "F",
+        "dob": "1958-11-02",
+        "sum_insured": 200000,
+        "period_start": "2025-10-01",
+        "period_end": "2026-09-30",
+        "first_inception": "2021-10-01",
+        "product": "Arogya Sanjeevani Policy",
+        "insurer": "Aarohan General Insurance Ltd.",
+        "address": "3 Fictional Lane, Nashik 000422",
+        "issued": "2025-09-27",
+        "premium": 4740.0,
+        "wording_uin": "GODHLIP24179V022324",
+        "copay_pct": 5,
+        "in_insurer_records": true
+      }
+    }
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "case_id": "CC_DEV_021",
+  "base_id": "SET-05",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "dev",
+  "planted_type": "formats",
+  "insurer_error": {
+    "kind": "waiting_period_miscounted",
+    "flags": [
+      "waiting_period_miscounted",
+      "wrongful_rejection"
+    ],
+    "method": "Waiting period counted from the current renewal instead of first inception."
+  },
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 88100,
+    "admissible": null,
+    "copay": null,
+    "payable": 81985,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": {
+      "reason": "The claim is for treatment of a knee joint condition. Diseases of the joints are listed illnesses with a 24-month waiting period. Your policy started on 01-Feb-2026, so the waiting period has not been completed and the claim is not admissible.",
+      "clause": ""
+    }
+  },
+  "underpaid_by": 81985,
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: The claim is for treatment of a knee joint condition. Diseases of the joints are listed illnesses with a 24-month waiting period. Your policy started on 01-Feb-2026, so the waiting period has not been completed and the claim is not admissible.",
+      "amount": 88100,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "reason": "waiting_period"
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Claim not admissible: The claim is for treatment of a knee joint condition. Diseases of the joints are listed illnesses with a 24-month waiting period. Your policy started on 01-Feb-2026, so the waiting period has not been completed and the claim is not admissible.",
+      "clause": "",
+      "correct": 0,
+      "insurer": 88100,
+      "excess_deducted": 88100
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "FMT-01",
+      "category": "formats",
+      "status": "Good",
+      "title": "Image-only scanned PDF, skewed and noisy",
+      "format": "Scanned image-only PDF",
+      "what_changed_and_where": "Content unchanged. Only the format: image-only scan with skew and noise.",
+      "expected_verdict": "clean_with_deductions",
+      "expected_flags": [],
+      "attack_goal": "None. OCR stress test.",
+      "detection_signals": [
+        "No text layer, 1.3 degree skew, copier shadow, specks"
+      ],
+      "notes": ""
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-FMT-01",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for FMT-01",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-05",
+      "category": "settlement_letters",
+      "status": "Insurer error",
+      "title": "Claim rejected using the wrong start date for the waiting period",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Reason for rejection: waiting period counted from the renewal on 01-Feb-2026 instead of first inception on 01-Feb-2022. Whole claim of ₹81,985 wrongly rejected.",
+      "expected_verdict": "settlement_disputable",
+      "expected_flags": [
+        "waiting_period_miscounted",
+        "wrongful_rejection"
+      ],
+      "attack_goal": "None. Tests whether ClaimClear checks continuity of cover.",
+      "detection_signals": [
+        "Letter counts from the renewal on 01-Feb-2026",
+        "Cover has been continuous since 01-Feb-2022, longer than any waiting period"
+      ],
+      "notes": "Even if the condition is a listed illness, 49 months of continuous cover exceeds every waiting period in the policy."
+    }
+  },
+  "open_question_flags": [],
+  "story": "Image-only scanned PDF, skewed and noisy",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_DEV_021",
+    "source_case": "dev/case-001",
+    "documents": {
+      "02_itemised_bill.pdf": "FMT-01",
+      "01_policy_schedule.pdf": "SCH-FMT-01",
+      "03_settlement_letter.pdf": "SET-05"
+    },
+    "scenario": {
+      "type": "formats",
+      "title": "Image-only scanned PDF, skewed and noisy",
+      "what_changed": "Content unchanged. Only the format: image-only scan with skew and noise.",
+      "attack_goal": "None. OCR stress test.",
+      "expected_flags": []
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2026-102011",
+      "holder": "Shaurya Kamatkar",
+      "sex": "M",
+      "dob": "1978-01-30",
+      "sum_insured": 500000,
+      "period_start": "2026-02-01",
+      "period_end": "2027-01-31",
+      "first_inception": "2022-02-01",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": []
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "case_id": "CC_EVAL_002",
+  "payable": 76752,
+  "insurer_paid": 65011,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Room / ICU rent above eligible limit",
+      "amount": 2000,
+      "verdict": "matches",
+      "correct_amount": 2000,
+      "why": "Room Rs 6,000/day vs cap Rs 5,000 (2% of Rs 2,50,000), 2 days (Cl. 4.1(i))"
+    },
+    {
+      "deduction": "Less: Abdominal binder - List I (not payable)",
+      "amount": 900,
+      "verdict": "matches",
+      "correct_amount": 900,
+      "why": "Annexure A List I item 51 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Discharge procedure charges - List II (part of room charges)",
+      "amount": 350,
+      "verdict": "matches",
+      "correct_amount": 350,
+      "why": "Annexure A List II item 30 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Pharmacy refill - outside post-hospitalisation period (70 days)",
+      "amount": 1450,
+      "verdict": "matches",
+      "correct_amount": 1450,
+      "why": "Bill dated 08/10/2026 is 70 days after discharge; limit is 60 days (Cl. 3.37, 4.5)"
+    },
+    {
+      "deduction": "Less: Proportionate deduction (room category above eligibility)",
+      "amount": 24717,
+      "verdict": "disputable",
+      "correct_amount": 12358,
+      "why": "Ratio 5,000/6,000 applied to non-medicine hospital charges Rs 74,150 gives Rs 12,358 (Cl. 4.1 Note 2); letter deducts about double"
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 3422,
+      "verdict": "consequential",
+      "correct_amount": 4040,
+      "why": "5% co-pay (Cl. 9.3) right; on correct admissible Rs 80,792 it is Rs 4,040"
+    }
+  ],
+  "notes": "Proportionate deduction: base = surgeon 29,350 + anaesthetist 8,500 + OT 15,100 + mesh 13,300 + consumables 4,650 + USG/blood/ECG 3,250 = Rs 74,150 (pharmacy exempt; List I/II items and outside-hospital post-hospitalisation bills excluded). Letter figure Rs 24,717 is about one-third of the base, consistent with neither the Rs 5,000 cap used in its own room-excess line nor any other ratio in the documents. Room cap: 2% of SI is Rs 5,000 whether or not CB is added (max Rs 5,000). Correct payable Rs 76,752 vs Rs 65,011 paid."
+}

@@ -1,0 +1,37 @@
+{
+  "case_id": "CC_DEV_014",
+  "payable": 23750,
+  "insurer_paid": 9600,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Eye kit and drape - List III (part of procedure charges)",
+      "amount": 900,
+      "verdict": "matches",
+      "correct_amount": 900,
+      "why": "List III items 14-15 (Clause 4.7)."
+    },
+    {
+      "deduction": "Less: Cataract limit (right eye), balance available INR 25,000.00",
+      "amount": 29700,
+      "verdict": "matches",
+      "correct_amount": 29700,
+      "why": "Clause 4.3: 25% of 1,00,000 = 25,000; 54,700 - 25,000."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 1250,
+      "verdict": "matches",
+      "correct_amount": 1250,
+      "why": "5% of 25,000 (Clause 9.3)."
+    },
+    {
+      "deduction": "Less: Sum insured balance for the policy year INR 9,600.00",
+      "amount": 14150,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "SI used is only the 49,400 paid (or 52,000 admitted) on the LRTI claim; the rejected 41,000 claim used nothing. Balance 50,600 / 48,000 > 23,750, so no cap (Clause 2, 3.47)."
+    }
+  ],
+  "notes": "Insurer's balance 9,600 = 1,00,000 - 41,000 (rejected claim) - 49,400; counting a rejected claim against the SI is wrong. Either convention for SI used (paid 49,400 or admitted 52,000) leaves more than 23,750."
+}

@@ -1,0 +1,44 @@
+{
+  "case_id": "CC_EVAL_022",
+  "payable": 44901,
+  "insurer_paid": 37128,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Room / ICU rent above eligible limit",
+      "amount": 6000,
+      "verdict": "matches",
+      "correct_amount": 6000,
+      "why": "Cap 4,000/day (2% of 2,00,000); (5,500-4,000) x 4 (cl. 4.1(i))."
+    },
+    {
+      "deduction": "Less: Medicated burn dressings - Crepe bandage - List I (not payable)",
+      "amount": 11250,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "Medicated burn dressings are the treatment itself, not a crepe bandage; not in Annexure A List I (item 16 is crepe bandage only)."
+    },
+    {
+      "deduction": "Less: Discharge procedure charges - List II (part of room charges)",
+      "amount": 460,
+      "verdict": "matches",
+      "correct_amount": 460,
+      "why": "Annexure A List II item 30 (cl. 4.7)."
+    },
+    {
+      "deduction": "Less: Proportionate deduction (room category above eligibility)",
+      "amount": 4268,
+      "verdict": "consequential",
+      "correct_amount": 7336,
+      "why": "Method right (ratio 4,000/5,500, medicines exempt, cl. 4.1 Note 2) but base must include the wrongly disallowed dressings 11,250."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 1954,
+      "verdict": "consequential",
+      "correct_amount": 2363,
+      "why": "5% of admissible (cl. 9.3); differs because of the dressings disallowance."
+    }
+  ],
+  "notes": "'Pharmacy and IV fluids' treated as medicines (exempt from Note 2). Medicated burn dressings treated as payable consumables subject to the proportionate cut. Underpaid by 7,773."
+}

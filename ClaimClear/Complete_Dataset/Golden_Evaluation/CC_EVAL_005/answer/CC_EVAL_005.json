@@ -1,0 +1,58 @@
+{
+  "case_id": "CC_EVAL_005",
+  "base_id": "H6",
+  "variant": 2,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "copay",
+  "insurer_error": {
+    "kind": "copay_pct",
+    "pct": 10
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 80020,
+    "admissible": 79150,
+    "copay": 3958,
+    "payable": 75192,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 79150,
+    "copay": 7915,
+    "payable": 71235,
+    "rejected": null
+  },
+  "underpaid_by": 3957,
+  "letter_deductions": [
+    {
+      "deduction": "Gloves and masks - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 870,
+      "verdict": "matches",
+      "correct_amount": 870
+    },
+    {
+      "deduction": "Co-payment 10%",
+      "clause_cited": "9.3",
+      "amount": 7915,
+      "verdict": "disputable",
+      "correct_amount": 3958
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 10%",
+      "clause": "9.3",
+      "correct": 3958,
+      "insurer": 7915,
+      "excess_deducted": 3957
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Atrial fibrillation; cardiac ICU within limit."
+}

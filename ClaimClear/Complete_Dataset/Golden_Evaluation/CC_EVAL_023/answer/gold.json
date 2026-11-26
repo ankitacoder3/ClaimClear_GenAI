@@ -1,0 +1,44 @@
+{
+  "case_id": "CC_EVAL_023",
+  "payable": 228752,
+  "insurer_paid": 186944,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Room / ICU rent above eligible limit",
+      "amount": 10000,
+      "verdict": "disputable",
+      "correct_amount": 5000,
+      "why": "Cap is min(2% of 4,00,000, 5,000) = 5,000/day, not 4,000; excess (6,000-5,000) x 5 = 5,000 (cl. 4.1(i))."
+    },
+    {
+      "deduction": "Less: Knee immobilizer - List I (not payable)",
+      "amount": 2400,
+      "verdict": "matches",
+      "correct_amount": 2400,
+      "why": "Annexure A List I item 46 (cl. 4.7)."
+    },
+    {
+      "deduction": "Less: Walker - List I (not payable)",
+      "amount": 1800,
+      "verdict": "matches",
+      "correct_amount": 1800,
+      "why": "Annexure A List I item 34 walking aids (cl. 4.7)."
+    },
+    {
+      "deduction": "Less: Proportionate deduction (room category above eligibility)",
+      "amount": 78017,
+      "verdict": "consequential",
+      "correct_amount": 39008,
+      "why": "Method right (medicines exempt, implant included per DECISIONS 1) but ratio must be 5,000/6,000, not 4,000/6,000 (cl. 4.1 Note 2)."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 9839,
+      "verdict": "consequential",
+      "correct_amount": 12040,
+      "why": "5% of admissible (cl. 9.3); differs because of the wrong room cap."
+    }
+  ],
+  "notes": "Insurer used a 4,000/day room cap (as if SI were 2,00,000); with SI 4,00,000 the cap is 5,000. Implant (89,100) is subject to the proportionate cut because the wording exempts only medicines (DECISIONS 1). Underpaid by 41,808."
+}

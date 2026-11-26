@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_EVAL_047",
+  "payable": 0,
+  "insurer_paid": 0,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: The treatment billed, a total abdominal hysterectomy, is not consistent with the insured person recorded under this policy, and the hospital could not confirm the admission. The claim is repudiated.",
+      "amount": 112200,
+      "verdict": "matches",
+      "correct_amount": 112200,
+      "why": "Matches the policy: the claim is not genuine."
+    }
+  ],
+  "notes": "Matches the policy: the claim is not genuine."
+}

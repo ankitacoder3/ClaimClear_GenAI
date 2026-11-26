@@ -1,0 +1,136 @@
+{
+  "case_id": "CC_DEV_024",
+  "base_id": "SET-09",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "dev",
+  "planted_type": "synthetic_fake",
+  "insurer_error": null,
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 94800,
+    "admissible": null,
+    "copay": null,
+    "payable": 0,
+    "rejected": {
+      "reason": "The bill gives a discharge date (09-Apr-2026) before the admission date (12-Apr-2026) and a bill date of 31-Jun-2026, which does not exist. The hospital could not confirm the admission, so the claim is repudiated.",
+      "clause": ""
+    }
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": {
+      "reason": "The bill gives a discharge date (09-Apr-2026) before the admission date (12-Apr-2026) and a bill date of 31-Jun-2026, which does not exist. The hospital could not confirm the admission, so the claim is repudiated.",
+      "clause": ""
+    }
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: The bill gives a discharge date (09-Apr-2026) before the admission date (12-Apr-2026) and a bill date of 31-Jun-2026, which does not exist. The hospital could not confirm the admission, so the claim is repudiated.",
+      "amount": 94800,
+      "verdict": "matches",
+      "correct_amount": 94800,
+      "reason": "not_genuine"
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "FAKE-03",
+      "category": "synthetic_fake",
+      "status": "Fake",
+      "title": "Impossible dates",
+      "format": "Digital PDF",
+      "what_changed_and_where": "Details block: Bill Date is 31-Jun-2026, and Discharged (09-Apr) comes before Admitted (12-Apr).",
+      "expected_verdict": "reject",
+      "expected_flags": [
+        "date_discharge_before_admission",
+        "date_invalid_calendar",
+        "length_of_stay_mismatch"
+      ],
+      "attack_goal": "Fabricated bill whose author did not keep the timeline consistent.",
+      "detection_signals": [
+        "Discharge is 3 days before admission",
+        "31 June does not exist",
+        "3 nights billed with a negative stay"
+      ],
+      "notes": ""
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-FAKE-03",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for FAKE-03",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-09",
+      "category": "settlement_letters",
+      "status": "Good",
+      "title": "Fabricated bill repudiated: impossible dates",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Correct rejection: discharge before admission and a bill dated 31-Jun-2026.",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "The insurer's decision is right. ClaimClear must not draft a grievance.",
+      "detection_signals": [
+        "Rejection reason is supported by the bill",
+        "Nothing is payable under the policy"
+      ],
+      "notes": ""
+    }
+  },
+  "open_question_flags": [],
+  "story": "Impossible dates",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_DEV_024",
+    "source_case": "dev/case-004",
+    "documents": {
+      "02_itemised_bill.pdf": "FAKE-03",
+      "01_policy_schedule.pdf": "SCH-FAKE-03",
+      "03_settlement_letter.pdf": "SET-09"
+    },
+    "scenario": {
+      "type": "synthetic_fake",
+      "title": "Impossible dates",
+      "what_changed": "Details block: Bill Date is 31-Jun-2026, and Discharged (09-Apr) comes before Admitted (12-Apr).",
+      "attack_goal": "Fabricated bill whose author did not keep the timeline consistent.",
+      "expected_flags": [
+        "date_discharge_before_admission",
+        "date_invalid_calendar",
+        "length_of_stay_mismatch"
+      ]
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2026-101528",
+      "holder": "Mrunmayi Sathaye-Kore",
+      "sex": "F",
+      "dob": "1974-04-16",
+      "sum_insured": 500000,
+      "period_start": "2026-03-01",
+      "period_end": "2027-02-28",
+      "first_inception": "2023-03-01",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": []
+  }
+}

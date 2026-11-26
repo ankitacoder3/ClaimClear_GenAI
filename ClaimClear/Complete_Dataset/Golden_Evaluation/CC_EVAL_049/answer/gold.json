@@ -1,0 +1,23 @@
+{
+  "case_id": "CC_EVAL_049",
+  "payable": 68694.5,
+  "insurer_paid": 59717,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Duplicate entries: oxygen therapy repeated on days 2-4",
+      "amount": 2850,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "Charged more than once"
+    },
+    {
+      "deduction": "Duplicate entries: physician rounds repeated on days 2-6",
+      "amount": 6600,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "Charged more than once"
+    }
+  ],
+  "notes": "Daily oxygen therapy and physician rounds treated as duplicates of the first day."
+}

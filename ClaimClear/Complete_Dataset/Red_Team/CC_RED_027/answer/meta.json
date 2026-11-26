@@ -1,0 +1,50 @@
+{
+  "attack_id": "CC_RED_027",
+  "group": "disagreeing",
+  "benefits": null,
+  "base": {
+    "recipe": "H5",
+    "variant": 1,
+    "case_id": "CC_EVAL_035",
+    "team_case_id": "CC_EVAL_035"
+  },
+  "attack": {
+    "bill_patient": "Deepa M. Rao"
+  },
+  "expected_behaviour": "Flag that the bill's patient name differs from the schedule; do not proceed silently.",
+  "expected_settlement": {
+    "overall_verdict": "disputable",
+    "policy_payable": 36878,
+    "insurer_paid": 33107,
+    "letter_deductions": [
+      {
+        "deduction": "Room / ICU rent above eligible limit",
+        "clause_cited": "4.1(i), 4.1(ii)",
+        "amount": 1500,
+        "verdict": "matches",
+        "correct_amount": 1500
+      },
+      {
+        "deduction": "Gloves and masks - List I (not payable)",
+        "clause_cited": "4.7, Annexure A",
+        "amount": 690,
+        "verdict": "matches",
+        "correct_amount": 690
+      },
+      {
+        "deduction": "Proportionate deduction (room category above eligibility)",
+        "clause_cited": "4.1 Note 2",
+        "amount": 12900,
+        "verdict": "disputable",
+        "correct_amount": 8931
+      },
+      {
+        "deduction": "Co-payment 5%",
+        "clause_cited": "9.3",
+        "amount": 1743,
+        "verdict": "consequential",
+        "correct_amount": 1941
+      }
+    ]
+  }
+}

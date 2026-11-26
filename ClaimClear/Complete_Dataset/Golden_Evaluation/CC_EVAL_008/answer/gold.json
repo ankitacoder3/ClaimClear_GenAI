@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_EVAL_008",
+  "payable": 36878,
+  "insurer_paid": 0,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "The claim for Rs. 49,940/- is not admissible. Reason: Tonsillectomy: 24-month specific waiting period not completed (Clause 6.3)",
+      "amount": 49940,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "Cover continuous since 01/03/2024, so 24 months were complete before admission on 10/09/2026 (Cl. 6.3); the waiting period gives no ground to withhold anything"
+    }
+  ],
+  "notes": "Correct assessment: room Rs 6,500 vs cap Rs 5,000 (2% of Rs 3,00,000 = 6,000, max 5,000): excess Rs 1,500; proportionate ratio 5,000/6,500 applied to surgeon, anaesthetist, OT, consumables and pre-op tests (Rs 38,700) = Rs 8,931 deduction; gloves and masks Rs 690 not payable (List I); pharmacy exempt. Admissible Rs 38,819; co-pay Rs 1,941; payable Rs 36,878 vs Rs 0 paid. correct_amount 0 for the rejection line means the stated reason justifies no deduction; total rightful deductions are Rs 13,062 (claimed Rs 49,940 less payable Rs 36,878). Assumption: the daughter has been a member since 01/03/2024 (schedule gives one continuous-cover date for the floater and no later addition is shown)."
+}

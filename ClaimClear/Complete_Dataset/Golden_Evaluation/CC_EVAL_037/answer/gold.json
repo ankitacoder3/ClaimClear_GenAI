@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_EVAL_037",
+  "payable": 31207,
+  "insurer_paid": 0,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: First 30 days waiting period (Clause 6.2)",
+      "amount": 33890,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "Admission on 02/10/2026 is 38 days after first inception 25/08/2026, outside the 30-day exclusion (cl. 6.2(i))."
+    }
+  ],
+  "notes": "Payable computed: less mineral water 240 (List I), administrative 500 (List II), registration 300 (List IV), co-pay 5% of 32,850 = 1,643 (1,642.5 rounded half up) -> 31,207. Wrongly rejected."
+}

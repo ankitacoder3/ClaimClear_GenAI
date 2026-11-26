@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_EVAL_053",
+  "payable": 0,
+  "insurer_paid": 0,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: No policy numbered AS-2026-999999 exists in our records, so there is no cover for this claim. If you hold a policy with us, please write to us with its correct number.",
+      "amount": 185000,
+      "verdict": "matches",
+      "correct_amount": 185000,
+      "why": "Matches: there is no such policy."
+    }
+  ],
+  "notes": "Matches: there is no such policy."
+}

@@ -1,0 +1,64 @@
+{
+  "case_id": "CC_EVAL_025",
+  "base_id": "H14",
+  "variant": 2,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "copay",
+  "insurer_error": {
+    "kind": "copay_on_gross"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 72180,
+    "admissible": 71150,
+    "copay": 3558,
+    "payable": 67592,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 71150,
+    "copay": 3609,
+    "payable": 67541,
+    "rejected": null
+  },
+  "underpaid_by": 51,
+  "letter_deductions": [
+    {
+      "deduction": "Gauze and cotton - List III (part of procedure charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 640,
+      "verdict": "matches",
+      "correct_amount": 640
+    },
+    {
+      "deduction": "Documentation charges - List II (part of room charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 390,
+      "verdict": "matches",
+      "correct_amount": 390
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 3609,
+      "verdict": "disputable",
+      "correct_amount": 3558
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 3558,
+      "insurer": 3609,
+      "excess_deducted": 51
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Endoscopic sinus surgery at four years of cover."
+}

@@ -1,0 +1,30 @@
+{
+  "case_id": "CC_EVAL_015",
+  "payable": 207385,
+  "insurer_paid": 195000,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: ECG electrodes - List I (not payable)",
+      "amount": 600,
+      "verdict": "matches",
+      "correct_amount": 600,
+      "why": "Annexure A List I item 55 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 10915,
+      "verdict": "matches",
+      "correct_amount": 10915,
+      "why": "5% of Rs 2,18,300 (Cl. 9.3)"
+    },
+    {
+      "deduction": "Less: Sum insured balance for the policy year 1,95,000.00",
+      "amount": 12385,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "SI Rs 4,00,000 less earlier claim leaves Rs 2,25,000 (admitted) or Rs 2,33,750 (paid), not Rs 1,95,000; net Rs 2,07,385 fits (Cl. 2, 3.47)"
+    }
+  ],
+  "notes": "The only earlier claim shown (admitted Rs 1,75,000 / paid Rs 1,66,250) cannot produce a Rs 1,95,000 balance (that would need Rs 2,05,000 used - the earlier amount CLAIMED, not admitted or paid). Correct payable Rs 2,07,385 under either SI-consumption basis vs Rs 1,95,000 paid."
+}

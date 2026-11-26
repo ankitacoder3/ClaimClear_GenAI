@@ -1,0 +1,64 @@
+{
+  "case_id": "CC_DEV_016",
+  "base_id": "D4",
+  "variant": 1,
+  "tag": "MD",
+  "split": "dev",
+  "planted_type": "copay",
+  "insurer_error": {
+    "kind": "copay_on_gross"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 79170,
+    "admissible": 78150,
+    "copay": 3908,
+    "payable": 74242,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 78150,
+    "copay": 3959,
+    "payable": 74191,
+    "rejected": null
+  },
+  "underpaid_by": 51,
+  "letter_deductions": [
+    {
+      "deduction": "Crepe bandage - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 500,
+      "verdict": "matches",
+      "correct_amount": 500
+    },
+    {
+      "deduction": "Registration charges - List IV (part of cost of treatment)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 520,
+      "verdict": "matches",
+      "correct_amount": 520
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 3959,
+      "verdict": "disputable",
+      "correct_amount": 3908
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 3908,
+      "insurer": 3959,
+      "excess_deducted": 51
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Sunita's kidney stone three days after renewal."
+}

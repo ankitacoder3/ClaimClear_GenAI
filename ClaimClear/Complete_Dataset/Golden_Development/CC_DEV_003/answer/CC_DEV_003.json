@@ -1,0 +1,79 @@
+{
+  "case_id": "CC_DEV_003",
+  "base_id": "D7",
+  "variant": 1,
+  "tag": "SK",
+  "split": "dev",
+  "planted_type": "room_icu_cap",
+  "insurer_error": {
+    "kind": "icu_days",
+    "days": 1
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 70200,
+    "admissible": 69500,
+    "copay": 3475,
+    "payable": 66025,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 56500,
+    "copay": 2825,
+    "payable": 53675,
+    "rejected": null
+  },
+  "underpaid_by": 12350,
+  "letter_deductions": [
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause_cited": "4.1(i), 4.1(ii)",
+      "amount": 13000,
+      "verdict": "disputable",
+      "correct_amount": 0
+    },
+    {
+      "deduction": "Gauze and cotton - List III (part of procedure charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 550,
+      "verdict": "matches",
+      "correct_amount": 550
+    },
+    {
+      "deduction": "Urine bag - List IV (part of cost of treatment)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 150,
+      "verdict": "matches",
+      "correct_amount": 150
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 2825,
+      "verdict": "consequential",
+      "correct_amount": 3475
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 3475,
+      "insurer": 2825,
+      "excess_deducted": -650
+    },
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause": "4.1(i), 4.1(ii)",
+      "correct": 0,
+      "insurer": 13000,
+      "excess_deducted": 13000
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Snakebite in a farmer: three ICU days, one ward day."
+}

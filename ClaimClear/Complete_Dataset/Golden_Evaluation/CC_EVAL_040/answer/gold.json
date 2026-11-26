@@ -1,0 +1,30 @@
+{
+  "case_id": "CC_EVAL_040",
+  "payable": 250230,
+  "insurer_paid": 233750,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: ECG electrodes - List I (not payable)",
+      "amount": 600,
+      "verdict": "matches",
+      "correct_amount": 600,
+      "why": "Annexure A List I item 55."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 13170,
+      "verdict": "matches",
+      "correct_amount": 13170,
+      "why": "5% of 2,63,400 (cl. 9.3)."
+    },
+    {
+      "deduction": "Less: Sum insured balance for the policy year 2,33,750.00",
+      "amount": 16480,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "Balance must include the cumulative bonus 40,000 (cl. 2, 3.47): 4,40,000 - 1,66,250 = 2,73,750 (or 2,65,000 by admitted amount), both above the 2,50,230 net claim."
+    }
+  ],
+  "notes": "Insurer computed the remaining balance as 4,00,000 - 1,66,250 and ignored the 40,000 cumulative bonus shown on the schedule. Remaining SI is 2,73,750 by amount paid or 2,65,000 by amount admitted (DECISIONS 4); both exceed 2,50,230, so payable is the same either way. Underpaid by 16,480."
+}

@@ -1,0 +1,272 @@
+{
+  "case_id": "CC_DEV_024",
+  "split": "dev",
+  "source": "claimclear-synthetic",
+  "source_case": "dev/case-004",
+  "scenario": {
+    "type": "synthetic_fake",
+    "title": "Impossible dates",
+    "what_changed": "Details block: Bill Date is 31-Jun-2026, and Discharged (09-Apr) comes before Admitted (12-Apr).",
+    "attack_goal": "Fabricated bill whose author did not keep the timeline consistent.",
+    "expected_flags": [
+      "date_discharge_before_admission",
+      "date_invalid_calendar",
+      "length_of_stay_mismatch"
+    ]
+  },
+  "expected": {
+    "overall_verdict": "matches_policy",
+    "overall_verdict_source": "settlement_matches_policy",
+    "policy_payable": 0.0,
+    "insurer_paid": 0.0,
+    "gap": 0.0,
+    "disputable_amount": 0.0,
+    "unverified_amount": 0.0,
+    "deductions": [],
+    "rejection": {
+      "kind": "not_genuine",
+      "reason": "The bill gives a discharge date (09-Apr-2026) before the admission date (12-Apr-2026) and a bill date of 31-Jun-2026, which does not exist. The hospital could not confirm the admission, so the claim is repudiated.",
+      "expected_verdict": "matches_policy"
+    },
+    "notes": "Matches the policy: the claim is not genuine."
+  },
+  "documents": {
+    "bill.pdf": "FAKE-03",
+    "settlement_letter.pdf": "SET-09",
+    "policy_schedule.pdf": "SCH-FAKE-03"
+  },
+  "source_answer": {
+    "FAKE-03": {
+      "doc_id": "FAKE-03",
+      "file": "dev/cases/CC_DEV_024/bill.pdf",
+      "sha256": "afc29a08f390d85506ce11f6fe66010bab07ccb6416e0b50b568d74ad72925ce",
+      "category": "synthetic_fake",
+      "document_type": "bill",
+      "status": "Fake",
+      "what_changed_and_where": "Details block: Bill Date is 31-Jun-2026, and Discharged (09-Apr) comes before Admitted (12-Apr).",
+      "title": "Impossible dates",
+      "format": "Digital PDF",
+      "expected_verdict": "reject",
+      "expected_flags": [
+        "date_discharge_before_admission",
+        "date_invalid_calendar",
+        "length_of_stay_mismatch"
+      ],
+      "attack_goal": "Fabricated bill whose author did not keep the timeline consistent.",
+      "detection_signals": [
+        "Discharge is 3 days before admission",
+        "31 June does not exist",
+        "3 nights billed with a negative stay"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [
+        {
+          "provider_name": "Vrindaloka Memorial Hospital",
+          "provider_gstin": "00AAVFV1234Q1Z5",
+          "provider_registration_no": "FIC/PMC/HOSP/00412",
+          "invoice_no": "VML/26-27/000918",
+          "invoice_date": "31-Jun-2026",
+          "patient_name": "Mrunmayi Sathaye-Kore",
+          "sex": "F",
+          "age": 51,
+          "policy_no": "AS-2026-101528",
+          "uhid": "VML-0051177",
+          "ip_no": "IP/2604/0733",
+          "admission": "2026-04-12",
+          "discharge": "2026-04-09",
+          "diagnosis": "Acute appendicitis",
+          "procedure": "Laparoscopic appendectomy",
+          "tariff_key": "lap_appendectomy",
+          "line_items": [
+            {
+              "description": "Semi-private room",
+              "qty": 3.0,
+              "rate": 4500.0,
+              "printed_amount": 13500.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Nursing and duty doctor charges",
+              "qty": 3.0,
+              "rate": 1200.0,
+              "printed_amount": 3600.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Surgeon fee - laparoscopic appendectomy",
+              "qty": 1.0,
+              "rate": 27000.0,
+              "printed_amount": 27000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Anaesthetist fee",
+              "qty": 1.0,
+              "rate": 8500.0,
+              "printed_amount": 8500.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Operation theatre charges",
+              "qty": 1.0,
+              "rate": 17000.0,
+              "printed_amount": 17000.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Consultant visits",
+              "qty": 3.0,
+              "rate": 1500.0,
+              "printed_amount": 4500.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Laboratory investigations",
+              "qty": 1.0,
+              "rate": 6200.0,
+              "printed_amount": 6200.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "USG abdomen",
+              "qty": 1.0,
+              "rate": 2100.0,
+              "printed_amount": 2100.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Pharmacy - inpatient medicines",
+              "qty": 1.0,
+              "rate": 9800.0,
+              "printed_amount": 9800.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": false
+            },
+            {
+              "description": "Consumables - gloves, masks, syringes, caps",
+              "qty": 1.0,
+              "rate": 2600.0,
+              "printed_amount": 2600.0,
+              "gst_pct": 0.0,
+              "date": null,
+              "non_payable": true
+            }
+          ],
+          "sum_of_printed_lines": 94800.0,
+          "sum_of_qty_x_rate": 94800.0,
+          "cgst": 0.0,
+          "sgst": 0.0,
+          "discount": 0.0,
+          "recomputed_total": 94800.0,
+          "printed_total": 94800.0,
+          "advance": 0.0,
+          "balance_payable": 94800.0
+        }
+      ]
+    },
+    "SET-09": {
+      "doc_id": "SET-09",
+      "file": "dev/cases/CC_DEV_024/settlement_letter.pdf",
+      "sha256": "7ff027dfed8ce1baee6ae9a2a7bd8f5fec981a886650c64709893d56c1ac3889",
+      "category": "settlement_letters",
+      "document_type": "settlement",
+      "status": "Good",
+      "what_changed_and_where": "Correct rejection: discharge before admission and a bill dated 31-Jun-2026.",
+      "title": "Fabricated bill repudiated: impossible dates",
+      "format": "Insurer letter PDF",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "The insurer's decision is right. ClaimClear must not draft a grievance.",
+      "detection_signals": [
+        "Rejection reason is supported by the bill",
+        "Nothing is payable under the policy"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "FAKE-03",
+        "claim_no": "AGI/HC/2627/007104",
+        "letter_type": "rejection",
+        "letter_date": "2026-05-02",
+        "policy_no": "AS-2026-101528",
+        "patient_name": "Mrunmayi Sathaye-Kore",
+        "hospital": "Vrindaloka Memorial Hospital",
+        "bill_invoice_no": "VML/26-27/000918",
+        "admission": "2026-04-12",
+        "discharge": "2026-04-09",
+        "claimed_amount": 94800.0,
+        "copay_pct_applied": 5.0,
+        "rejection_kind": "not_genuine",
+        "duplicate_of": null,
+        "insurer_deductions": [],
+        "rejection_reason": "The bill gives a discharge date (09-Apr-2026) before the admission date (12-Apr-2026) and a bill date of 31-Jun-2026, which does not exist. The hospital could not confirm the admission, so the claim is repudiated.",
+        "rejection_expected_verdict": "matches_policy",
+        "insurer_admissible": 0.0,
+        "insurer_copay": 0.0,
+        "insurer_paid": 0.0,
+        "expected_payable": 0.0,
+        "disputable_amount": 0.0,
+        "unverified_amount": 0.0,
+        "insurer_method": "Matches the policy: the claim is not genuine."
+      }
+    },
+    "SCH-FAKE-03": {
+      "doc_id": "SCH-FAKE-03",
+      "file": "dev/cases/CC_DEV_024/policy_schedule.pdf",
+      "sha256": "3cf56ab91f284ce382ac4eb6e321b27d97c1438a6d319b3cb35292018bd78b86",
+      "category": "policy_schedules",
+      "document_type": "schedule",
+      "status": "Good",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "title": "Policy schedule for FAKE-03",
+      "format": "Insurer schedule PDF",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": "",
+      "details": {},
+      "invoices": [],
+      "document": {
+        "bill_doc_id": "FAKE-03",
+        "policy_no": "AS-2026-101528",
+        "holder": "Mrunmayi Sathaye-Kore",
+        "sex": "F",
+        "dob": "1974-04-16",
+        "sum_insured": 500000,
+        "period_start": "2026-03-01",
+        "period_end": "2027-02-28",
+        "first_inception": "2023-03-01",
+        "product": "Arogya Sanjeevani Policy",
+        "insurer": "Aarohan General Insurance Ltd.",
+        "address": "78 Fictional Residency, Pune 000411",
+        "issued": "2026-02-25",
+        "premium": 9225.0,
+        "wording_uin": "GODHLIP24179V022324",
+        "copay_pct": 5,
+        "in_insurer_records": true
+      }
+    }
+  }
+}

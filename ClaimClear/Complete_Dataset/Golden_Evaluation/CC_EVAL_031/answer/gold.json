@@ -1,0 +1,44 @@
+{
+  "case_id": "CC_EVAL_031",
+  "payable": 35055,
+  "insurer_paid": 16767,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Anti-VEGF injection (drug) - Not a medicine - procedure material",
+      "amount": 19250,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "The anti-VEGF drug is a medicine and the treatment itself (cl. 4.1(iv) medicines and drugs; cl. 4.6(F) covers intravitreal injections); not in Annexure A."
+    },
+    {
+      "deduction": "Less: Thermometer - List I (not payable)",
+      "amount": 300,
+      "verdict": "matches",
+      "correct_amount": 300,
+      "why": "Annexure A List I item 41."
+    },
+    {
+      "deduction": "Less: Mineral water - List I (not payable)",
+      "amount": 140,
+      "verdict": "matches",
+      "correct_amount": 140,
+      "why": "Annexure A List I item 12."
+    },
+    {
+      "deduction": "Less: Urine bag - List IV (part of cost of treatment)",
+      "amount": 200,
+      "verdict": "matches",
+      "correct_amount": 200,
+      "why": "Annexure A List IV item 18."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 883,
+      "verdict": "consequential",
+      "correct_amount": 1845,
+      "why": "5% of admissible 36,900 (cl. 9.3); differs because the drug was disallowed."
+    }
+  ],
+  "notes": "'Day care procedure room' treated as a procedure-room charge, not daily room rent, so no room cap applies (if it were room rent, 5,850 > 5,000 cap would trigger Note 2; insurer did not treat it so either). Cl. 4.6 balance is 82,000 (by admitted) or 85,400 (by paid); either way the claim (36,900) fits, so payable is the same. Underpaid by 18,288."
+}

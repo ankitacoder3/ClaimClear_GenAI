@@ -1,0 +1,30 @@
+{
+  "case_id": "CC_DEV_023",
+  "payable": 77583.34,
+  "insurer_paid": 77583.34,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Room rent above eligible limit (₹4,000 a day for 3 days)",
+      "amount": 12000,
+      "verdict": "matches",
+      "correct_amount": 12000,
+      "why": "Room rent is limited to 2% of sum insured, at most ₹5,000 a day"
+    },
+    {
+      "deduction": "Proportionate deduction on associated medical expenses (₹5,000 / ₹9,000)",
+      "amount": 35333.33,
+      "verdict": "matches",
+      "correct_amount": 35333.33,
+      "why": "Room category above eligibility, so associated expenses are reduced in the same proportion. Tests and pharmacy are not reduced."
+    },
+    {
+      "deduction": "Non-payable items: gloves, masks, syringes, caps",
+      "amount": 3000,
+      "verdict": "matches",
+      "correct_amount": 3000,
+      "why": "Listed as non-payable items under the policy"
+    }
+  ],
+  "notes": "Matches the policy wording."
+}

@@ -1,0 +1,78 @@
+{
+  "case_id": "CC_EVAL_036",
+  "base_id": "H8",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "proportionate",
+  "insurer_error": {
+    "kind": "prop_on_capped_room"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 61060,
+    "admissible": 47264,
+    "copay": 2363,
+    "payable": 44901,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 42900,
+    "copay": 2145,
+    "payable": 40755,
+    "rejected": null
+  },
+  "underpaid_by": 4146,
+  "letter_deductions": [
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause_cited": "4.1(i), 4.1(ii)",
+      "amount": 10364,
+      "verdict": "disputable",
+      "correct_amount": 6000
+    },
+    {
+      "deduction": "Discharge procedure charges - List II (part of room charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 460,
+      "verdict": "matches",
+      "correct_amount": 460
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause_cited": "4.1 Note 2",
+      "amount": 7336,
+      "verdict": "matches",
+      "correct_amount": 7336
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 2145,
+      "verdict": "consequential",
+      "correct_amount": 2363
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 2363,
+      "insurer": 2145,
+      "excess_deducted": -218
+    },
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause": "4.1(i), 4.1(ii)",
+      "correct": 6000,
+      "insurer": 10364,
+      "excess_deducted": 4364
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Kitchen burns three weeks into a new policy; room above limit."
+}

@@ -1,0 +1,93 @@
+{
+  "case_id": "CC_DEV_013",
+  "base_id": "D1",
+  "variant": 3,
+  "tag": "MD",
+  "split": "dev",
+  "planted_type": "proportionate",
+  "insurer_error": {
+    "kind": "prop_wrong_cap",
+    "cap": 4000
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 126010,
+    "admissible": 84419,
+    "copay": 4221,
+    "payable": 80198,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 74675,
+    "copay": 3734,
+    "payable": 70941,
+    "rejected": null
+  },
+  "underpaid_by": 9257,
+  "letter_deductions": [
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause_cited": "4.1(i), 4.1(ii)",
+      "amount": 11000,
+      "verdict": "matches",
+      "correct_amount": 11000
+    },
+    {
+      "deduction": "Gloves and masks - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 750,
+      "verdict": "matches",
+      "correct_amount": 750
+    },
+    {
+      "deduction": "Mineral water - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 160,
+      "verdict": "matches",
+      "correct_amount": 160
+    },
+    {
+      "deduction": "Admission kit - List II (part of room charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 450,
+      "verdict": "matches",
+      "correct_amount": 450
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause_cited": "4.1 Note 2",
+      "amount": 38975,
+      "verdict": "disputable",
+      "correct_amount": 29231
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 3734,
+      "verdict": "consequential",
+      "correct_amount": 4221
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 4221,
+      "insurer": 3734,
+      "excess_deducted": -487
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause": "4.1 Note 2",
+      "correct": 29231,
+      "insurer": 38975,
+      "excess_deducted": 9744
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Neha's gall bladder surgery: ICU night then private room, both above caps; pre-admission ultrasound."
+}

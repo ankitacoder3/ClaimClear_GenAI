@@ -1,0 +1,44 @@
+{
+  "case_id": "CC_EVAL_041",
+  "payable": 107350,
+  "insurer_paid": 107350,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Surgeon fee billed twice (bill row 3)",
+      "amount": 48000,
+      "verdict": "matches",
+      "correct_amount": 48000,
+      "why": "Same surgeon fee as bill row 2"
+    },
+    {
+      "deduction": "OT instrument set and table charges",
+      "amount": 18000,
+      "verdict": "matches",
+      "correct_amount": 18000,
+      "why": "Part of the operation theatre charges in bill row 4"
+    },
+    {
+      "deduction": "Non-payable items: sterile gloves, syringes, N95 masks",
+      "amount": 32220,
+      "verdict": "matches",
+      "correct_amount": 32220,
+      "why": "Listed as non-payable items under the policy"
+    },
+    {
+      "deduction": "Patient care kit",
+      "amount": 9000,
+      "verdict": "matches",
+      "correct_amount": 9000,
+      "why": "Listed as non-payable items under the policy"
+    },
+    {
+      "deduction": "Laboratory tests above the itemised rate",
+      "amount": 10000,
+      "verdict": "matches",
+      "correct_amount": 10000,
+      "why": "Printed ₹28,000 for 12 tests at ₹1,500 (₹18,000)"
+    }
+  ],
+  "notes": "Matches: padding removed."
+}

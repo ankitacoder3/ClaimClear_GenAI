@@ -1,0 +1,92 @@
+{
+  "case_id": "CC_DEV_004",
+  "base_id": "D5",
+  "variant": 2,
+  "tag": "SK",
+  "split": "dev",
+  "planted_type": "room_icu_cap",
+  "insurer_error": {
+    "kind": "icu_at_room_cap"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 84730,
+    "admissible": 83550,
+    "copay": 4178,
+    "payable": 79372,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 48630,
+    "copay": 2432,
+    "payable": 46198,
+    "rejected": null
+  },
+  "underpaid_by": 33174,
+  "letter_deductions": [
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause_cited": "4.1(i), 4.1(ii)",
+      "amount": 12000,
+      "verdict": "disputable",
+      "correct_amount": 0
+    },
+    {
+      "deduction": "Attendant food and mineral water - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 700,
+      "verdict": "matches",
+      "correct_amount": 700
+    },
+    {
+      "deduction": "Multivitamin tonic - outside post-hospitalisation period (75 days)",
+      "clause_cited": "4.5",
+      "amount": 480,
+      "verdict": "matches",
+      "correct_amount": 480
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause_cited": "4.1 Note 2",
+      "amount": 22920,
+      "verdict": "disputable",
+      "correct_amount": 0
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 2432,
+      "verdict": "consequential",
+      "correct_amount": 4178
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 4178,
+      "insurer": 2432,
+      "excess_deducted": -1746
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause": "4.1 Note 2",
+      "correct": 0,
+      "insurer": 22920,
+      "excess_deducted": 22920
+    },
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause": "4.1(i), 4.1(ii)",
+      "correct": 0,
+      "insurer": 12000,
+      "excess_deducted": 12000
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Dengue: ICU at exactly the limit, ward; pre and post-hospital bills."
+}

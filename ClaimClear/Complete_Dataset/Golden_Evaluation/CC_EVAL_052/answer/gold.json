@@ -1,0 +1,23 @@
+{
+  "case_id": "CC_EVAL_052",
+  "payable": 195700,
+  "insurer_paid": 99750,
+  "overall": "not_verifiable",
+  "letter_deductions": [
+    {
+      "deduction": "Charges above reasonable and customary rates",
+      "amount": 101000,
+      "verdict": "not_verifiable",
+      "correct_amount": null,
+      "why": "Charges exceed the reasonable and customary charges for this procedure in your city"
+    },
+    {
+      "deduction": "Non-payable items: gloves, masks, syringes, caps",
+      "amount": 3000,
+      "verdict": "matches",
+      "correct_amount": 3000,
+      "why": "Listed as non-payable items under the policy"
+    }
+  ],
+  "notes": "Reasonable-and-customary cut with no rate or tariff given."
+}

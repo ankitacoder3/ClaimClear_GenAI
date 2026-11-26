@@ -1,0 +1,88 @@
+{
+  "case_id": "CC_EVAL_012",
+  "base_id": "H4",
+  "variant": 3,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "non_payable",
+  "insurer_error": {
+    "kind": "disallow",
+    "line": "dia1",
+    "reason": "Admission primarily for investigation and evaluation",
+    "clause": "7.1"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 33890,
+    "admissible": 32850,
+    "copay": 1643,
+    "payable": 31207,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 25400,
+    "copay": 1270,
+    "payable": 24130,
+    "rejected": null
+  },
+  "underpaid_by": 7077,
+  "letter_deductions": [
+    {
+      "deduction": "Blood culture, Widal, CBC, LFT - Admission primarily for investigation and evaluation",
+      "clause_cited": "7.1",
+      "amount": 7450,
+      "verdict": "disputable",
+      "correct_amount": 0
+    },
+    {
+      "deduction": "Mineral water - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 240,
+      "verdict": "matches",
+      "correct_amount": 240
+    },
+    {
+      "deduction": "Administrative charges - List II (part of room charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 500,
+      "verdict": "matches",
+      "correct_amount": 500
+    },
+    {
+      "deduction": "Registration charges - List IV (part of cost of treatment)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 300,
+      "verdict": "matches",
+      "correct_amount": 300
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 1270,
+      "verdict": "consequential",
+      "correct_amount": 1643
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 1643,
+      "insurer": 1270,
+      "excess_deducted": -373
+    },
+    {
+      "deduction": "Blood culture, Widal, CBC, LFT - Admission primarily for investigation and evaluation",
+      "clause": "7.1",
+      "correct": 0,
+      "insurer": 7450,
+      "excess_deducted": 7450
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Typhoid soon after buying the policy (day 25 vs day 38)."
+}

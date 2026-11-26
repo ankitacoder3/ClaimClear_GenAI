@@ -1,0 +1,74 @@
+{
+  "case_id": "CC_EVAL_016",
+  "base_id": "H7",
+  "variant": 2,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "not_verifiable",
+  "insurer_error": {
+    "kind": "nv_tariff",
+    "amount": 3800
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 74310,
+    "admissible": 73650,
+    "copay": 3683,
+    "payable": 69967,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 73650,
+    "copay": 3683,
+    "payable": 66167,
+    "rejected": null
+  },
+  "underpaid_by": 3800,
+  "letter_deductions": [
+    {
+      "deduction": "Mineral water - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 290,
+      "verdict": "matches",
+      "correct_amount": 290
+    },
+    {
+      "deduction": "Registration charges - List IV (part of cost of treatment)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 370,
+      "verdict": "matches",
+      "correct_amount": 370
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 3683,
+      "verdict": "matches",
+      "correct_amount": 3683
+    },
+    {
+      "deduction": "Deduction as per network tariff agreement",
+      "clause_cited": "",
+      "amount": 3800,
+      "verdict": "not_verifiable",
+      "correct_amount": 0
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Deduction as per network tariff agreement",
+      "clause": "",
+      "correct": 0,
+      "insurer": 3800,
+      "excess_deducted": 3800
+    }
+  ],
+  "expected_verdict": "not_verifiable",
+  "doc_tweaks": {},
+  "open_question_flags": [
+    "si_depletion_by_paid"
+  ],
+  "story": "Second admission for jaundice; April claim used part of the sum insured."
+}

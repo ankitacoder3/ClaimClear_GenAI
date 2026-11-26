@@ -1,0 +1,172 @@
+{
+  "case_id": "CC_EVAL_045",
+  "base_id": "SET-06",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "heldout",
+  "planted_type": "genuine",
+  "insurer_error": null,
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 1059,
+    "admissible": null,
+    "copay": null,
+    "payable": 1006.05,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 1059,
+    "copay": 52.95,
+    "payable": 1006.05,
+    "rejected": null
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "GEN-04",
+      "category": "genuine",
+      "status": "Good",
+      "title": "Post-hospitalisation pharmacy invoice with GST",
+      "format": "Retail tax invoice PDF",
+      "what_changed_and_where": "Nothing changed. Retail invoice, so it has no admission dates.",
+      "expected_verdict": "clean_with_deductions",
+      "expected_flags": [],
+      "attack_goal": "None. Retail invoice with no admission fields, so extraction must not invent them.",
+      "detection_signals": [
+        "Links to claim CLM-2026-00214",
+        "15 days after discharge, inside the 60-day window"
+      ],
+      "notes": "Retail invoice has no admission or discharge dates."
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-GEN-04",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for GEN-04",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-06",
+      "category": "settlement_letters",
+      "status": "Good",
+      "title": "Post-hospitalisation medicines paid correctly",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Correct settlement of post-hospitalisation medicines (claim CLM-2026-00214). Only the 5% co-pay deducted.",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "None. False-alarm test on a small pharmacy claim.",
+      "detection_signals": [
+        "Within 60 days of discharge, same condition",
+        "Only the 5% co-pay deducted"
+      ],
+      "notes": ""
+    }
+  },
+  "open_question_flags": [],
+  "story": "Post-hospitalisation pharmacy invoice with GST",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_EVAL_045",
+    "source_case": "heldout/case-005",
+    "documents": {
+      "02_itemised_bill.pdf": "GEN-04",
+      "01_policy_schedule.pdf": "SCH-GEN-04",
+      "03_settlement_letter.pdf": "SET-06"
+    },
+    "scenario": {
+      "type": "genuine",
+      "title": "Post-hospitalisation pharmacy invoice with GST",
+      "what_changed": "Nothing changed. Retail invoice, so it has no admission dates.",
+      "attack_goal": "None. Retail invoice with no admission fields, so extraction must not invent them.",
+      "expected_flags": []
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2026-100764",
+      "holder": "Kairav Menthe",
+      "sex": "M",
+      "dob": "1991-05-14",
+      "sum_insured": 500000,
+      "period_start": "2026-01-10",
+      "period_end": "2027-01-09",
+      "first_inception": "2024-01-10",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": [
+      {
+        "claim_id": "CLM-2026-00214",
+        "policy_no": "AS-2026-100764",
+        "patient_name": "Kairav Menthe",
+        "status": "settled",
+        "provider": "Vrindaloka Memorial Hospital",
+        "invoice_no": "VML/25-26/008803",
+        "invoice_date": "2026-03-05",
+        "ip_no": "IP/2603/0412",
+        "admission": "2026-03-02",
+        "discharge": "2026-03-05",
+        "diagnosis": "Right inguinal hernia",
+        "billed_amount": 112200.0,
+        "settled_amount": 104595.0,
+        "line_fingerprint": "9a9a8b9105f8dfd1",
+        "line_items": [
+          {
+            "description": "Semi-private room",
+            "amount": 12900.0
+          },
+          {
+            "description": "Nursing and duty doctor charges",
+            "amount": 3300.0
+          },
+          {
+            "description": "Surgeon fee - laparoscopic hernia repair",
+            "amount": 31000.0
+          },
+          {
+            "description": "Anaesthetist fee",
+            "amount": 10000.0
+          },
+          {
+            "description": "Operation theatre charges",
+            "amount": 21000.0
+          },
+          {
+            "description": "Consultant visits",
+            "amount": 4500.0
+          },
+          {
+            "description": "Laboratory investigations",
+            "amount": 5300.0
+          },
+          {
+            "description": "Pharmacy - inpatient medicines",
+            "amount": 8600.0
+          },
+          {
+            "description": "Consumables - gloves, masks, syringes, caps",
+            "amount": 2100.0
+          },
+          {
+            "description": "Prolene mesh",
+            "amount": 13500.0
+          }
+        ]
+      }
+    ]
+  }
+}

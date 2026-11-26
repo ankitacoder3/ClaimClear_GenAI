@@ -1,0 +1,44 @@
+{
+  "case_id": "CC_DEV_010",
+  "payable": 92197,
+  "insurer_paid": 79451,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Discharge procedure charges - List II (part of room charges)",
+      "amount": 470,
+      "verdict": "matches",
+      "correct_amount": 470,
+      "why": "List II item 30 (Clause 4.7)."
+    },
+    {
+      "deduction": "Less: Documentation charges - List II (part of room charges)",
+      "amount": 280,
+      "verdict": "matches",
+      "correct_amount": 280,
+      "why": "List II item 29."
+    },
+    {
+      "deduction": "Less: Attendant food - List I (not payable)",
+      "amount": 1200,
+      "verdict": "matches",
+      "correct_amount": 1200,
+      "why": "List I (food other than patient diet / attendant charges)."
+    },
+    {
+      "deduction": "Less: Proportionate deduction (room category above eligibility)",
+      "amount": 13417,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "Room 4,800/day is within the cap of 5,000 (2% of 2.5L = 5,000, Clause 4.1(i)); Note 2 does not apply."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 4182,
+      "verdict": "consequential",
+      "correct_amount": 4853,
+      "why": "Method right; base cut by the wrong 13,417. 5% of 97,050 = 4,852.5 -> 4,853."
+    }
+  ],
+  "notes": "Deluxe twin sharing at 4,800 is below the 5,000 room cap, so no proportionate deduction."
+}

@@ -1,0 +1,23 @@
+{
+  "case_id": "CC_DEV_029",
+  "payable": 82745,
+  "insurer_paid": 78280,
+  "overall": "not_verifiable",
+  "letter_deductions": [
+    {
+      "deduction": "Non-payable items: gloves, masks, IV sets",
+      "amount": 2900,
+      "verdict": "matches",
+      "correct_amount": 2900,
+      "why": "Listed as non-payable items under the policy"
+    },
+    {
+      "deduction": "Other deductions",
+      "amount": 4700,
+      "verdict": "not_verifiable",
+      "correct_amount": null,
+      "why": "As per policy terms and conditions"
+    }
+  ],
+  "notes": "No item or clause given for ₹4,700, and no known calculation produces it."
+}

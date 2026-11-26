@@ -1,0 +1,30 @@
+{
+  "case_id": "CC_EVAL_001",
+  "payable": 138367,
+  "insurer_paid": 120317,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Room / ICU rent above eligible limit",
+      "amount": 19000,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "ICU Rs 9,500/day is below the Rs 10,000 ICU cap and room Rs 4,000/day below the Rs 5,000 room cap (Cl. 4.1(i),(ii)); nothing is above limit"
+    },
+    {
+      "deduction": "Less: Crepe bandage - List I (not payable)",
+      "amount": 330,
+      "verdict": "matches",
+      "correct_amount": 330,
+      "why": "Crepe bandage is Annexure A List I item 16 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 6333,
+      "verdict": "consequential",
+      "correct_amount": 7283,
+      "why": "5% co-pay (Cl. 9.3) is right but on Rs 1,45,650 it is Rs 7,283"
+    }
+  ],
+  "notes": "No room or ICU limit is exceeded for a Rs 5,00,000 SI (caps Rs 5,000 room / Rs 10,000 ICU), so the Rs 19,000 deduction has no basis and no proportionate deduction applies. Correct payable Rs 1,38,367 vs Rs 1,20,317 paid (short by Rs 18,050). Letter arithmetic itself is internally consistent."
+}

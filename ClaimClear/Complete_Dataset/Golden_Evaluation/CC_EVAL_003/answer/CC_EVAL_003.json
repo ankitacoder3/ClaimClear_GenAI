@@ -1,0 +1,46 @@
+{
+  "case_id": "CC_EVAL_003",
+  "base_id": "H4",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "none",
+  "insurer_error": null,
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 33890,
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": {
+      "reason": "First 30 days waiting period",
+      "clause": "6.2"
+    }
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": {
+      "reason": "First 30 days waiting period",
+      "clause": "6.2"
+    }
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: First 30 days waiting period",
+      "clause_cited": "6.2",
+      "amount": 33890,
+      "verdict": "matches",
+      "correct_amount": 33890
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Typhoid soon after buying the policy (day 25 vs day 38)."
+}

@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_DEV_024",
+  "payable": 0,
+  "insurer_paid": 0,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: The bill gives a discharge date (09-Apr-2026) before the admission date (12-Apr-2026) and a bill date of 31-Jun-2026, which does not exist. The hospital could not confirm the admission, so the claim is repudiated.",
+      "amount": 94800,
+      "verdict": "matches",
+      "correct_amount": 94800,
+      "why": "Matches the policy: the claim is not genuine."
+    }
+  ],
+  "notes": "Matches the policy: the claim is not genuine."
+}

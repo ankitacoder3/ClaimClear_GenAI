@@ -1,0 +1,44 @@
+{
+  "case_id": "CC_DEV_004",
+  "payable": 79372,
+  "insurer_paid": 46198,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Room / ICU rent above eligible limit",
+      "amount": 12000,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "ICU 10,000/day = ICU cap 10,000 (Clause 4.1(ii)); semi-private 3,500 < room cap 4,000 (4.1(i)); no excess."
+    },
+    {
+      "deduction": "Less: Attendant food and mineral water - List I (not payable)",
+      "amount": 700,
+      "verdict": "matches",
+      "correct_amount": 700,
+      "why": "Annexure A List I items 9, 12 (Clause 4.7)."
+    },
+    {
+      "deduction": "Less: Multivitamin tonic - outside post-hospitalisation period (75 days)",
+      "amount": 480,
+      "verdict": "matches",
+      "correct_amount": 480,
+      "why": "11/12/2026 is 75 days after discharge; Clause 4.5 allows 60 days."
+    },
+    {
+      "deduction": "Less: Proportionate deduction (room category above eligibility)",
+      "amount": 22920,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "Clause 4.1 Note 2 applies only when room/ICU rate exceeds the limit; neither does."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 2432,
+      "verdict": "consequential",
+      "correct_amount": 4178,
+      "why": "5% method right (Clause 9.3) but base cut by the two wrong deductions; 5% of 83,550 = 4,177.5 -> 4,178."
+    }
+  ],
+  "notes": "Insurer appears to have applied the 2% room cap (4,000) to ICU days. Room cap computed on base SI 2,00,000 (4,000/day); even with CB (4,200) the result is unchanged."
+}

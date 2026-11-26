@@ -1,0 +1,49 @@
+{
+  "case_id": "CC_EVAL_006",
+  "base_id": "H10",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "none",
+  "insurer_error": null,
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 218900,
+    "admissible": 218300,
+    "copay": 10915,
+    "payable": 207385,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 218300,
+    "copay": 10915,
+    "payable": 207385,
+    "rejected": null
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "ECG electrodes - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 600,
+      "verdict": "matches",
+      "correct_amount": 600
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 10915,
+      "verdict": "matches",
+      "correct_amount": 10915
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {},
+  "open_question_flags": [
+    "si_depletion_by_paid"
+  ],
+  "story": "Angioplasty after an earlier angiography this year."
+}

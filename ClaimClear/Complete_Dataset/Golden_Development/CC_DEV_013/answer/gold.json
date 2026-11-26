@@ -1,0 +1,51 @@
+{
+  "case_id": "CC_DEV_013",
+  "payable": 80198,
+  "insurer_paid": 70941,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Room / ICU rent above eligible limit",
+      "amount": 11000,
+      "verdict": "matches",
+      "correct_amount": 11000,
+      "why": "Room 3 x (8,000 - 5,000) = 9,000 + ICU 2,000 (Clause 4.1(i)/(ii))."
+    },
+    {
+      "deduction": "Less: Gloves and masks - List I (not payable)",
+      "amount": 750,
+      "verdict": "matches",
+      "correct_amount": 750,
+      "why": "List I items 56, 60."
+    },
+    {
+      "deduction": "Less: Mineral water - List I (not payable)",
+      "amount": 160,
+      "verdict": "matches",
+      "correct_amount": 160,
+      "why": "List I item 12."
+    },
+    {
+      "deduction": "Less: Admission kit - List II (part of room charges)",
+      "amount": 450,
+      "verdict": "matches",
+      "correct_amount": 450,
+      "why": "List II item 27."
+    },
+    {
+      "deduction": "Less: Proportionate deduction (room category above eligibility)",
+      "amount": 38975,
+      "verdict": "disputable",
+      "correct_amount": 29231,
+      "why": "Ratio should be 5,000/8,000 = 0.625 (lower of room 0.625 and ICU 0.833): 77,950 x 0.375 = 29,231; insurer used a 50% cut (77,950 x 0.5)."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 3734,
+      "verdict": "consequential",
+      "correct_amount": 4221,
+      "why": "Method right; base reduced by the wrong proportionate cut. 5% of 84,419."
+    }
+  ],
+  "notes": "Both room and ICU exceed caps; per DECISIONS #2 the lower ratio is applied. Drugs & IV fluids treated as medicines (exempt); consumables, implants, diagnostics are proportioned (DECISIONS #1). Pre-hospitalisation bill not proportioned (Note 2 covers expenses \"incurred at the Hospital\"). The insurer's 38,975 equals exactly 50% of the non-medicine charges; no ratio in the documents gives 0.5."
+}

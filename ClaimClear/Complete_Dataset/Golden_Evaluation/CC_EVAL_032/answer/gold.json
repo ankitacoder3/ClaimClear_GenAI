@@ -1,0 +1,44 @@
+{
+  "case_id": "CC_EVAL_032",
+  "payable": 88492,
+  "insurer_paid": 75857,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Prolene mesh 15x15 - Mesh - surgical consumable, not payable",
+      "amount": 13300,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "Mesh is the implant of the hernia repair (cl. 4.1(iv) surgical appliances); not in any Annexure A list."
+    },
+    {
+      "deduction": "Less: Abdominal binder - List I (not payable)",
+      "amount": 900,
+      "verdict": "matches",
+      "correct_amount": 900,
+      "why": "Annexure A List I item 51."
+    },
+    {
+      "deduction": "Less: Discharge procedure charges - List II (part of room charges)",
+      "amount": 350,
+      "verdict": "matches",
+      "correct_amount": 350,
+      "why": "Annexure A List II item 30."
+    },
+    {
+      "deduction": "Less: Pharmacy refill - outside post-hospitalisation period (70 days)",
+      "amount": 1450,
+      "verdict": "matches",
+      "correct_amount": 1450,
+      "why": "Cl. 4.5 / 3.37: 60 days from discharge 30/07/2026 ends 28/09/2026; bill dated 08/10/2026."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 3993,
+      "verdict": "consequential",
+      "correct_amount": 4658,
+      "why": "5% of admissible 93,150 (cl. 9.3); differs because the mesh was disallowed."
+    }
+  ],
+  "notes": "Post-hospitalisation dressing visits on day 6 and day 15 are within 60 days and payable. Underpaid by 12,635."
+}

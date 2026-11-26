@@ -1,0 +1,83 @@
+{
+  "case_id": "CC_EVAL_008",
+  "base_id": "H5",
+  "variant": 2,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "waiting_period",
+  "insurer_error": {
+    "kind": "reject_waiting",
+    "clause": "6.3",
+    "basis": "Tonsillectomy: 24-month specific waiting period not completed"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 49940,
+    "admissible": 38819,
+    "copay": 1941,
+    "payable": 36878,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": {
+      "reason": "Tonsillectomy: 24-month specific waiting period not completed",
+      "clause": "6.3"
+    }
+  },
+  "underpaid_by": 36878,
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: Tonsillectomy: 24-month specific waiting period not completed",
+      "clause_cited": "6.3",
+      "amount": 49940,
+      "verdict": "disputable",
+      "correct_amount": 0
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 1941,
+      "insurer": 0,
+      "excess_deducted": -1941
+    },
+    {
+      "deduction": "Gloves and masks - List I (not payable)",
+      "clause": "4.7, Annexure A",
+      "correct": 690,
+      "insurer": 0,
+      "excess_deducted": -690
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause": "4.1 Note 2",
+      "correct": 8931,
+      "insurer": 0,
+      "excess_deducted": -8931
+    },
+    {
+      "deduction": "Claim not admissible: Tonsillectomy: 24-month specific waiting period not completed",
+      "clause": "6.3",
+      "correct": 0,
+      "insurer": 49940,
+      "excess_deducted": 49940
+    },
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause": "4.1(i), 4.1(ii)",
+      "correct": 1500,
+      "insurer": 0,
+      "excess_deducted": -1500
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Child's tonsil surgery on a family floater; room above limit."
+}

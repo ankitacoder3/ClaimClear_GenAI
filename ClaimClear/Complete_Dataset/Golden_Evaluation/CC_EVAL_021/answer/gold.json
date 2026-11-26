@@ -1,0 +1,51 @@
+{
+  "case_id": "CC_EVAL_021",
+  "payable": 66139,
+  "insurer_paid": 61712,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Room / ICU rent above eligible limit",
+      "amount": 4000,
+      "verdict": "matches",
+      "correct_amount": 4000,
+      "why": "Cap 2% of 2,00,000 = 4,000/day; (5,000-4,000) x 4 days (cl. 4.1(i))."
+    },
+    {
+      "deduction": "Less: Urine bag - List IV (part of cost of treatment)",
+      "amount": 180,
+      "verdict": "matches",
+      "correct_amount": 180,
+      "why": "Annexure A List IV item 18 (cl. 4.7)."
+    },
+    {
+      "deduction": "Less: Attendant food - List I (not payable)",
+      "amount": 380,
+      "verdict": "matches",
+      "correct_amount": 380,
+      "why": "Annexure A List I item 9 / 24 (cl. 4.7)."
+    },
+    {
+      "deduction": "Less: Discharge procedure charges - List II (part of room charges)",
+      "amount": 360,
+      "verdict": "matches",
+      "correct_amount": 360,
+      "why": "Annexure A List II item 30 (cl. 4.7)."
+    },
+    {
+      "deduction": "Less: Proportionate deduction (room category above eligibility)",
+      "amount": 12240,
+      "verdict": "disputable",
+      "correct_amount": 7580,
+      "why": "Cl. 4.1 Note 2 exempts cost of medicines; insurer cut 20% of 61,200 incl. pharmacy 23,300; correct 20% of 37,900."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 3248,
+      "verdict": "consequential",
+      "correct_amount": 3481,
+      "why": "5% of admissible (cl. 9.3); differs only because the proportionate cut was too large."
+    }
+  ],
+  "notes": "Insurer applied the proportionate deduction to the pharmacy line (23,300) as well; cl. 4.1 Note 2 exempts cost of medicines, so the cut should be on 37,900 only. Underpaid by 4,427."
+}

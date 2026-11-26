@@ -1,0 +1,30 @@
+{
+  "case_id": "CC_DEV_011",
+  "payable": 35625,
+  "insurer_paid": 35625,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Eye kit and drape - List III (part of procedure charges)",
+      "amount": 900,
+      "verdict": "matches",
+      "correct_amount": 900,
+      "why": "List III items 14-15 (Clause 4.7)."
+    },
+    {
+      "deduction": "Less: Cataract limit (right eye), balance available INR 37,500.00",
+      "amount": 17200,
+      "verdict": "matches",
+      "correct_amount": 17200,
+      "why": "Clause 4.3 per-eye limit 37,500; 54,700 - 37,500."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 1875,
+      "verdict": "matches",
+      "correct_amount": 1875,
+      "why": "5% of 37,500 (Clause 9.3)."
+    }
+  ],
+  "notes": "All steps agree. SI remaining not binding."
+}

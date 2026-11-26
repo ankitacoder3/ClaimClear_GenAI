@@ -1,0 +1,51 @@
+{
+  "case_id": "CC_EVAL_024",
+  "payable": 47991,
+  "insurer_paid": 47991,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Room / ICU rent above eligible limit",
+      "amount": 3000,
+      "verdict": "matches",
+      "correct_amount": 3000,
+      "why": "Cap 2% of 1,00,000 = 2,000/day; (3,000-2,000) x 3 (cl. 4.1(i))."
+    },
+    {
+      "deduction": "Less: Crepe bandage - List I (not payable)",
+      "amount": 350,
+      "verdict": "matches",
+      "correct_amount": 350,
+      "why": "Annexure A List I item 16 (cl. 4.7)."
+    },
+    {
+      "deduction": "Less: Documentation charges - List II (part of room charges)",
+      "amount": 300,
+      "verdict": "matches",
+      "correct_amount": 300,
+      "why": "Annexure A List II item 29 (cl. 4.7)."
+    },
+    {
+      "deduction": "Less: Proportionate deduction (room category above eligibility)",
+      "amount": 17833,
+      "verdict": "matches",
+      "correct_amount": 17833,
+      "why": "1/3 of 53,500 (non-medicine hospital charges), ratio 2,000/3,000 (cl. 4.1 Note 2)."
+    },
+    {
+      "deduction": "Less: Ambulance charges above limit",
+      "amount": 600,
+      "verdict": "matches",
+      "correct_amount": 600,
+      "why": "Road ambulance capped at 2,000 per hospitalisation (cl. 4.1.1(v))."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 2526,
+      "verdict": "matches",
+      "correct_amount": 2526,
+      "why": "5% of 50,517 (cl. 9.3)."
+    }
+  ],
+  "notes": "Ambulance: the wording caps road ambulance at 2,000 per hospitalisation (cl. 4.1.1(v)) although List I item 67 says 'Ambulance'; the specific cover clause is read as overriding List I. Ambulance is treated as outside the Note 2 proportionate cut (transport, not a charge that varies with room category); if it were included, 2,000 x (1 - 2/3) = 667 more would be cut."
+}

@@ -1,0 +1,120 @@
+{
+  "case_id": "CC_DEV_034",
+  "base_id": "SET-20",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "dev",
+  "planted_type": "adversarial",
+  "insurer_error": null,
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 341500,
+    "admissible": null,
+    "copay": null,
+    "payable": 324425,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 341500,
+    "copay": 17075,
+    "payable": 324425,
+    "rejected": null
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "ADV-04",
+      "category": "adversarial",
+      "status": "Modified",
+      "title": "One admission split into two invoices under the approval threshold",
+      "format": "Digital PDF",
+      "what_changed_and_where": "Pages 1-2: one admission billed as two invoices with different Bill Nos. but the same IP No. Each is under ₹2,00,000; together ₹3,41,500.",
+      "expected_verdict": "flag_for_review",
+      "expected_flags": [
+        "invoice_splitting",
+        "threshold_evasion",
+        "senior_approval_required"
+      ],
+      "attack_goal": "Keep each invoice under the ₹2,00,000 senior-approval threshold.",
+      "detection_signals": [
+        "Same IP number, UHID and dates on both invoices",
+        "₹1,98,900 + ₹1,42,600 = ₹3,41,500 for one admission"
+      ],
+      "notes": "Both totals are honest and the combined total is within tariff. Only the routing is wrong."
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-ADV-04",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for ADV-04",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-20",
+      "category": "settlement_letters",
+      "status": "Good",
+      "title": "Split invoices assessed together and paid correctly",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Both invoices of the split admission assessed together (₹3,41,500). Only the 5% co-pay deducted.",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "None. Tests that ClaimClear reads both invoices as one claim.",
+      "detection_signals": [
+        "Both invoices combined: ₹3,41,500"
+      ],
+      "notes": "The claimed amount is the sum of both invoices. Tools that settle one invoice at a time will undercount."
+    }
+  },
+  "open_question_flags": [],
+  "story": "One admission split into two invoices under the approval threshold",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_DEV_034",
+    "source_case": "dev/case-014",
+    "documents": {
+      "02_itemised_bill.pdf": "ADV-04",
+      "01_policy_schedule.pdf": "SCH-ADV-04",
+      "03_settlement_letter.pdf": "SET-20"
+    },
+    "scenario": {
+      "type": "adversarial",
+      "title": "One admission split into two invoices under the approval threshold",
+      "what_changed": "Pages 1-2: one admission billed as two invoices with different Bill Nos. but the same IP No. Each is under ₹2,00,000; together ₹3,41,500.",
+      "attack_goal": "Keep each invoice under the ₹2,00,000 senior-approval threshold.",
+      "expected_flags": [
+        "invoice_splitting",
+        "threshold_evasion",
+        "senior_approval_required"
+      ]
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2026-101917",
+      "holder": "Advait Porwekar",
+      "sex": "M",
+      "dob": "1960-06-06",
+      "sum_insured": 500000,
+      "period_start": "2026-04-15",
+      "period_end": "2027-04-14",
+      "first_inception": "2020-04-15",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": []
+  }
+}

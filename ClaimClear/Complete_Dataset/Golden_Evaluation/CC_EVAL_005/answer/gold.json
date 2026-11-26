@@ -1,0 +1,23 @@
+{
+  "case_id": "CC_EVAL_005",
+  "payable": 75192,
+  "insurer_paid": 71235,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Gloves and masks - List I (not payable)",
+      "amount": 870,
+      "verdict": "matches",
+      "correct_amount": 870,
+      "why": "Gloves List I item 56, mask List I item 60 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Co-payment 10%",
+      "amount": 7915,
+      "verdict": "disputable",
+      "correct_amount": 3958,
+      "why": "Policy co-pay is 5% on every claim (Cl. 9.3; schedule); no age-based or other higher co-pay exists in the wording"
+    }
+  ],
+  "notes": "ICU Rs 9,000/day within Rs 10,000 cap; room Rs 4,000/day within Rs 5,000 cap. Co-pay 5% of Rs 79,150 = Rs 3,957.5, rounded half up to Rs 3,958. Correct payable Rs 75,192 vs Rs 71,235 paid."
+}

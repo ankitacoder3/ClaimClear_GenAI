@@ -1,0 +1,130 @@
+{
+  "case_id": "CC_EVAL_053",
+  "base_id": "SET-08",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "heldout",
+  "planted_type": "synthetic_fake",
+  "insurer_error": null,
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 185000,
+    "admissible": null,
+    "copay": null,
+    "payable": 0,
+    "rejected": {
+      "reason": "No policy numbered AS-2026-999999 exists in our records, so there is no cover for this claim. If you hold a policy with us, please write to us with its correct number.",
+      "clause": ""
+    }
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": {
+      "reason": "No policy numbered AS-2026-999999 exists in our records, so there is no cover for this claim. If you hold a policy with us, please write to us with its correct number.",
+      "clause": ""
+    }
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: No policy numbered AS-2026-999999 exists in our records, so there is no cover for this claim. If you hold a policy with us, please write to us with its correct number.",
+      "amount": 185000,
+      "verdict": "matches",
+      "correct_amount": 185000,
+      "reason": "policy_not_found"
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "FAKE-02",
+      "category": "synthetic_fake",
+      "status": "Fake",
+      "title": "Invented policy and lump-sum bill on a copied letterhead",
+      "format": "Digital PDF",
+      "what_changed_and_where": "Whole bill invented. Header: copied hospital name with wrong address, GSTIN and registration. Details: invented policy and patient. Row 1: single lump sum.",
+      "expected_verdict": "reject",
+      "expected_flags": [
+        "policy_not_found",
+        "patient_not_on_policy",
+        "provider_identity_mismatch",
+        "lump_sum_no_itemisation"
+      ],
+      "attack_goal": "Get paid on a policy that does not exist, under a real provider's name.",
+      "detection_signals": [
+        "Policy number absent from policies.json",
+        "GSTIN and registration differ from the registry entry for the same name",
+        "One all-inclusive line",
+        "Vague diagnosis"
+      ],
+      "notes": ""
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-FAKE-02",
+      "category": "policy_schedules",
+      "status": "Fake",
+      "title": "Policy schedule for FAKE-02 (forged: no such policy)",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Whole schedule forged: policy AS-2026-999999 is not in the insurer's records.",
+      "expected_verdict": "schedule_not_in_records",
+      "expected_flags": [
+        "policy_not_found"
+      ],
+      "attack_goal": "Make an invented policy look real.",
+      "detection_signals": [
+        "Policy number is not in reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-08",
+      "category": "settlement_letters",
+      "status": "Good",
+      "title": "Claim on a policy that does not exist",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Correct rejection: policy AS-2026-999999 does not exist.",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "The insurer's decision is right. ClaimClear must not draft a grievance.",
+      "detection_signals": [
+        "Policy number is not in the insurer's records",
+        "The schedule filed with the bill is forged"
+      ],
+      "notes": ""
+    }
+  },
+  "open_question_flags": [],
+  "story": "Invented policy and lump-sum bill on a copied letterhead",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_EVAL_053",
+    "source_case": "heldout/case-013",
+    "documents": {
+      "02_itemised_bill.pdf": "FAKE-02",
+      "01_policy_schedule.pdf": "SCH-FAKE-02",
+      "03_settlement_letter.pdf": "SET-08"
+    },
+    "scenario": {
+      "type": "synthetic_fake",
+      "title": "Invented policy and lump-sum bill on a copied letterhead",
+      "what_changed": "Whole bill invented. Header: copied hospital name with wrong address, GSTIN and registration. Details: invented policy and patient. Row 1: single lump sum.",
+      "attack_goal": "Get paid on a policy that does not exist, under a real provider's name.",
+      "expected_flags": [
+        "policy_not_found",
+        "patient_not_on_policy",
+        "provider_identity_mismatch",
+        "lump_sum_no_itemisation"
+      ]
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": null,
+    "claim_history": []
+  }
+}

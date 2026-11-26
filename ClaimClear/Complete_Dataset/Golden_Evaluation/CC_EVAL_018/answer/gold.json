@@ -1,0 +1,30 @@
+{
+  "case_id": "CC_EVAL_018",
+  "payable": 95000,
+  "insurer_paid": 47500,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Registration charges - List IV (part of cost of treatment)",
+      "amount": 500,
+      "verdict": "matches",
+      "correct_amount": 500,
+      "why": "Annexure A List IV item 1 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Modern treatment limit, balance available 50,000.00",
+      "amount": 91200,
+      "verdict": "disputable",
+      "correct_amount": 41200,
+      "why": "Cl. 4.6 limit is Rs 1,00,000; the only earlier claim (UTI) used none of it, so balance is Rs 1,00,000, not Rs 50,000"
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 2500,
+      "verdict": "consequential",
+      "correct_amount": 5000,
+      "why": "5% co-pay (Cl. 9.3) right; on Rs 1,00,000 it is Rs 5,000"
+    }
+  ],
+  "notes": "Nothing in the documents supports a Rs 50,000 balance: the earlier claim of 02/06/2026 was for UTI (medical) and even its full admitted Rs 38,000 would not reduce the Cl. 4.6 limit to Rs 50,000. Room within cap. SI remaining Rs 1,62,000 / Rs 1,63,900 does not bind. Correct payable Rs 95,000 vs Rs 47,500 paid."
+}

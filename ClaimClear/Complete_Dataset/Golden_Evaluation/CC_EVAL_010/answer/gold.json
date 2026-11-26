@@ -1,0 +1,51 @@
+{
+  "case_id": "CC_EVAL_010",
+  "payable": 109875,
+  "insurer_paid": 108925,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Room / ICU rent above eligible limit",
+      "amount": 5000,
+      "verdict": "disputable",
+      "correct_amount": 4000,
+      "why": "Room Rs 6,000 vs cap Rs 5,000 x 4 days = Rs 4,000 (Cl. 4.1(i))"
+    },
+    {
+      "deduction": "Less: Crepe bandage - List I (not payable)",
+      "amount": 450,
+      "verdict": "matches",
+      "correct_amount": 450,
+      "why": "Annexure A List I item 16 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Splint - List I (not payable)",
+      "amount": 1200,
+      "verdict": "matches",
+      "correct_amount": 1200,
+      "why": "Annexure A List I item 43 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Proportionate deduction (room category above eligibility)",
+      "amount": 16642,
+      "verdict": "matches",
+      "correct_amount": 16642,
+      "why": "Ratio 5,000/6,000 on non-medicine hospital charges Rs 99,850 = Rs 16,642 (Cl. 4.1 Note 2)"
+    },
+    {
+      "deduction": "Less: Ambulance charges above limit",
+      "amount": 1500,
+      "verdict": "matches",
+      "correct_amount": 1500,
+      "why": "Road ambulance Rs 3,500 capped at Rs 2,000 (Cl. 4.1.1(v))"
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 5733,
+      "verdict": "consequential",
+      "correct_amount": 5783,
+      "why": "5% co-pay (Cl. 9.3) right; on correct admissible Rs 1,15,658 it is Rs 5,783"
+    }
+  ],
+  "notes": "Room excess overstated by Rs 1,000 (4 days x Rs 1,000 = Rs 4,000, not Rs 5,000). Proportionate base excludes pharmacy (exempt), List I items and the ambulance (treated as a separately capped transport benefit, not an in-hospital expense tied to the room category) - the insurer used the same base. Correct payable Rs 1,09,875 vs Rs 1,08,925 paid (short Rs 950)."
+}

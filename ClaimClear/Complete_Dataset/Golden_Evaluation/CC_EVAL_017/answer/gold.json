@@ -1,0 +1,37 @@
+{
+  "case_id": "CC_EVAL_017",
+  "payable": 123785,
+  "insurer_paid": 123785,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Crepe bandage - List I (not payable)",
+      "amount": 450,
+      "verdict": "matches",
+      "correct_amount": 450,
+      "why": "Annexure A List I item 16 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Splint - List I (not payable)",
+      "amount": 1200,
+      "verdict": "matches",
+      "correct_amount": 1200,
+      "why": "Annexure A List I item 43 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Ambulance charges above limit",
+      "amount": 1500,
+      "verdict": "matches",
+      "correct_amount": 1500,
+      "why": "Road ambulance Rs 3,500 capped at Rs 2,000 (Cl. 4.1.1(v))"
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 6515,
+      "verdict": "matches",
+      "correct_amount": 6515,
+      "why": "5% of Rs 1,30,300 (Cl. 9.3)"
+    }
+  ],
+  "notes": "Room Rs 4,500/day within Rs 5,000 cap; no proportionate deduction. Accident exception to the 30-day waiting period applies (Cl. 6.2)."
+}

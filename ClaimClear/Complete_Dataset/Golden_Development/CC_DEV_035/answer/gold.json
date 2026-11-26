@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_DEV_035",
+  "payable": 0,
+  "insurer_paid": 0,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: The hospital named on the bill is not registered with the local authority and could not be traced at the address given, so it does not meet the policy's definition of a hospital. The bill could not be verified, and the claim is not payable.",
+      "amount": 145000,
+      "verdict": "matches",
+      "correct_amount": 145000,
+      "why": "Matches the policy: the claim is not genuine."
+    }
+  ],
+  "notes": "Matches the policy: the claim is not genuine."
+}

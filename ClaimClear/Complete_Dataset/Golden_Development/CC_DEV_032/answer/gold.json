@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_DEV_032",
+  "payable": 0,
+  "insurer_paid": 0,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: Our investigation found charges for services that were not provided: 9 room days and 4 ICU days for a 3-night stay, ventilator support and an MRI that the diagnosis does not support, and services dated after discharge. Under the fraud condition of the policy, the claim is repudiated.",
+      "amount": 182162.5,
+      "verdict": "matches",
+      "correct_amount": 182162.5,
+      "why": "Matches the policy: the claim is not genuine."
+    }
+  ],
+  "notes": "Matches the policy: the claim is not genuine."
+}

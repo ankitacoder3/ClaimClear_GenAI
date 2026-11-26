@@ -1,0 +1,23 @@
+{
+  "case_id": "CC_EVAL_051",
+  "payable": 95095,
+  "insurer_paid": 95095,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Amount not supported by the itemised charges",
+      "amount": 12000,
+      "verdict": "matches",
+      "correct_amount": 12000,
+      "why": "The net amount of ₹1,14,400 is ₹12,000 more than the sub total of ₹1,02,400"
+    },
+    {
+      "deduction": "Non-payable items: gloves, masks, syringes, caps",
+      "amount": 2300,
+      "verdict": "matches",
+      "correct_amount": 2300,
+      "why": "Listed as non-payable items under the policy"
+    }
+  ],
+  "notes": "Matches the policy wording."
+}

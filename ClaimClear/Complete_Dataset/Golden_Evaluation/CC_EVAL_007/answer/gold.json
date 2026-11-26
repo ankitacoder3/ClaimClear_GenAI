@@ -1,0 +1,30 @@
+{
+  "case_id": "CC_EVAL_007",
+  "payable": 265810,
+  "insurer_paid": 265810,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Knee immobilizer - List I (not payable)",
+      "amount": 2400,
+      "verdict": "matches",
+      "correct_amount": 2400,
+      "why": "Annexure A List I item 46 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Walker - List I (not payable)",
+      "amount": 1800,
+      "verdict": "matches",
+      "correct_amount": 1800,
+      "why": "Walking aid, Annexure A List I item 34 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 13990,
+      "verdict": "matches",
+      "correct_amount": 13990,
+      "why": "5% of Rs 2,79,800 (Cl. 9.3)"
+    }
+  ],
+  "notes": "Private room Rs 5,000/day equals the Rs 5,000 cap, so no proportionate deduction. In-patient physiotherapy is a hospital treatment charge and payable. 48-month waiting period completed by about 2 months only; if cover were not continuous it would fail, but the schedule states continuous cover since 15 July 2022."
+}

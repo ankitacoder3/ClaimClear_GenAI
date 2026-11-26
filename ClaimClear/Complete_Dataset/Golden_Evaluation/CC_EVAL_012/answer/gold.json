@@ -1,0 +1,44 @@
+{
+  "case_id": "CC_EVAL_012",
+  "payable": 31207,
+  "insurer_paid": 24130,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Blood culture, Widal, CBC, LFT - Admission primarily for investigation and evaluation",
+      "amount": 7450,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "Admission was for IV antibiotic treatment of typhoid; tests relate to the current diagnosis, so Cl. 7.1 does not exclude them; payable under Cl. 4.1(iv)"
+    },
+    {
+      "deduction": "Less: Mineral water - List I (not payable)",
+      "amount": 240,
+      "verdict": "matches",
+      "correct_amount": 240,
+      "why": "Annexure A List I item 12 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Administrative charges - List II (part of room charges)",
+      "amount": 500,
+      "verdict": "matches",
+      "correct_amount": 500,
+      "why": "Annexure A List II item 29 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Registration charges - List IV (part of cost of treatment)",
+      "amount": 300,
+      "verdict": "matches",
+      "correct_amount": 300,
+      "why": "Annexure A List IV item 1 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 1270,
+      "verdict": "consequential",
+      "correct_amount": 1643,
+      "why": "5% co-pay (Cl. 9.3) right; on correct admissible Rs 32,850 it is Rs 1,643"
+    }
+  ],
+  "notes": "Room Rs 1,800/day within Rs 3,000 cap (2% of Rs 1,50,000). Correct payable Rs 31,207 vs Rs 24,130 paid. Letter arithmetic itself is consistent (Rs 25,400 x 5% = Rs 1,270)."
+}

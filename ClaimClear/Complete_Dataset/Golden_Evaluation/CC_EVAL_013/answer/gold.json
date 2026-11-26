@@ -1,0 +1,37 @@
+{
+  "case_id": "CC_EVAL_013",
+  "payable": 88492,
+  "insurer_paid": 88492,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Abdominal binder - List I (not payable)",
+      "amount": 900,
+      "verdict": "matches",
+      "correct_amount": 900,
+      "why": "Annexure A List I item 51 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Discharge procedure charges - List II (part of room charges)",
+      "amount": 350,
+      "verdict": "matches",
+      "correct_amount": 350,
+      "why": "Annexure A List II item 30 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Pharmacy refill - outside post-hospitalisation period (70 days)",
+      "amount": 1450,
+      "verdict": "matches",
+      "correct_amount": 1450,
+      "why": "Bill dated 08/10/2026 is 70 days after discharge 30/07/2026; limit is 60 days (Cl. 3.37, 4.5)"
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 4658,
+      "verdict": "matches",
+      "correct_amount": 4658,
+      "why": "5% of admissible Rs 93,150 = Rs 4,657.5, rounded half up (Cl. 9.3)"
+    }
+  ],
+  "notes": "Room Rs 5,000/day equals the cap (2% of Rs 2,50,000 = Rs 5,000), so no room excess or proportionate deduction. The two dressing/review visits (05/08 and 14/08/2026) are within 60 days and payable. Claimed total Rs 95,850 = bill Rs 92,800 + other bills Rs 3,050. Claim, policy and patient identifiers agree across schedule, bill, other bills and letter."
+}

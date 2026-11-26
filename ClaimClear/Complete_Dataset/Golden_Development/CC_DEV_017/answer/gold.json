@@ -1,0 +1,30 @@
+{
+  "case_id": "CC_DEV_017",
+  "payable": 20045,
+  "insurer_paid": 18620,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Gastroenterologist visit (day 2) - Duplicate entry of consultation",
+      "amount": 1500,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "Not a duplicate: day 1 is the duty doctor (1,200), day 2 a gastroenterologist (1,500), different dates/doctors; payable under Clause 4.1(iii). Annexure A cited does not list consultations."
+    },
+    {
+      "deduction": "Less: File opening charges - List II (part of room charges)",
+      "amount": 300,
+      "verdict": "matches",
+      "correct_amount": 300,
+      "why": "List II item 34 (Clause 4.7)."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 980,
+      "verdict": "consequential",
+      "correct_amount": 1055,
+      "why": "Method right; base cut by the wrong 1,500. 5% of 21,100."
+    }
+  ],
+  "notes": "No duplicated line in this bill."
+}

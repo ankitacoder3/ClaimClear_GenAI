@@ -1,0 +1,204 @@
+{
+  "case_id": "CC_DEV_015",
+  "split": "dev",
+  "source": "gen-data",
+  "source_case": "CC_DEV_015",
+  "scenario": {
+    "type": "not_verifiable",
+    "recipe": "D6 variant 3",
+    "insurer_error": {
+      "kind": "nv_missing_annexure",
+      "line": "med2",
+      "amount": 4300
+    },
+    "summary": "Pneumonia on a senior floater; husband's earlier claim; ambulance."
+  },
+  "expected": {
+    "overall_verdict": "not_verifiable",
+    "overall_verdict_source": "not_verifiable",
+    "policy_payable": 72532,
+    "insurer_paid": 68232,
+    "gap": 4300,
+    "deductions": [
+      {
+        "particulars": "Less: Nebuliser kit - List I (not payable)",
+        "amount": 650,
+        "verdict": "matches_policy",
+        "verdict_source": "matches",
+        "correct_amount": 650,
+        "why": "List I item 38/57 (Clause 4.7)."
+      },
+      {
+        "particulars": "Less: Urine bag - List IV (part of cost of treatment)",
+        "amount": 180,
+        "verdict": "matches_policy",
+        "verdict_source": "matches",
+        "correct_amount": 180,
+        "why": "List IV item 18."
+      },
+      {
+        "particulars": "Less: Ambulance charges above limit",
+        "amount": 800,
+        "verdict": "matches_policy",
+        "verdict_source": "matches",
+        "correct_amount": 800,
+        "why": "Clause 4.1.1(v): max 2,000."
+      },
+      {
+        "particulars": "Less: Co-payment 5%",
+        "amount": 3818,
+        "verdict": "matches_policy",
+        "verdict_source": "matches",
+        "correct_amount": 3818,
+        "why": "5% of 76,350 (Clause 9.3). Note the letter takes co-pay before the pharmacy deduction; if that deduction stood, co-pay should be 3,603 on 72,050."
+      },
+      {
+        "particulars": "Less: Pharmacy items not payable as per annexure",
+        "amount": 4300,
+        "verdict": "not_verifiable",
+        "verdict_source": "not_verifiable",
+        "correct_amount": 0,
+        "why": "No clause cited and the pharmacy annexure is not in the documents, so no one can check which items are in the 4,300 or which Annexure A list they fall under."
+      }
+    ],
+    "notes": "Ambulance: List I item 67 lists \"AMBULANCE\" as not payable, but Clause 4.1.1(v) specifically covers road ambulance up to 2,000 per hospitalisation; the specific benefit is applied (2,000 paid, 800 deducted). Gold payable 72,532 excludes the unverifiable 4,300 pharmacy deduction. If the 4,300 is upheld, correct figure is 72,050 - 3,603 co-pay = 68,447 (insurer paid 68,232 because co-pay was taken before that deduction). Need the pharmacy annexure."
+  },
+  "documents": {
+    "policy_wording.pdf": "00_policy_wording.pdf",
+    "policy_schedule.pdf": "01_policy_schedule.pdf",
+    "bill.pdf": "02_itemised_bill.pdf",
+    "settlement_letter.pdf": "03_settlement_letter.pdf",
+    "earlier_settlement_1.pdf": "04_earlier_settlement_1.pdf"
+  },
+  "source_answer": {
+    "meta": {
+      "case_id": "CC_DEV_015",
+      "base_id": "D6",
+      "variant": 3,
+      "tag": "SK",
+      "split": "dev",
+      "planted_type": "not_verifiable",
+      "insurer_error": {
+        "kind": "nv_missing_annexure",
+        "line": "med2",
+        "amount": 4300
+      },
+      "wording": "IFFCO",
+      "wording_uin": "IFFHLIP20161V011920",
+      "correct_settlement": {
+        "billed": 77980,
+        "admissible": 76350,
+        "copay": 3818,
+        "payable": 72532,
+        "rejected": null
+      },
+      "insurer_settlement": {
+        "admissible": 76350,
+        "copay": 3818,
+        "payable": 68232,
+        "rejected": null
+      },
+      "underpaid_by": 4300,
+      "letter_deductions": [
+        {
+          "deduction": "Nebuliser kit - List I (not payable)",
+          "clause_cited": "4.7, Annexure A",
+          "amount": 650,
+          "verdict": "matches",
+          "correct_amount": 650
+        },
+        {
+          "deduction": "Urine bag - List IV (part of cost of treatment)",
+          "clause_cited": "4.7, Annexure A",
+          "amount": 180,
+          "verdict": "matches",
+          "correct_amount": 180
+        },
+        {
+          "deduction": "Ambulance charges above limit",
+          "clause_cited": "4.1.1(v)",
+          "amount": 800,
+          "verdict": "matches",
+          "correct_amount": 800
+        },
+        {
+          "deduction": "Co-payment 5%",
+          "clause_cited": "9.3",
+          "amount": 3818,
+          "verdict": "matches",
+          "correct_amount": 3818
+        },
+        {
+          "deduction": "Pharmacy items not payable as per annexure",
+          "clause_cited": "",
+          "amount": 4300,
+          "verdict": "not_verifiable",
+          "correct_amount": 0
+        }
+      ],
+      "deductions_missing_from_letter": [],
+      "wrong_deductions": [
+        {
+          "deduction": "Pharmacy items not payable as per annexure",
+          "clause": "",
+          "correct": 0,
+          "insurer": 4300,
+          "excess_deducted": 4300
+        }
+      ],
+      "expected_verdict": "not_verifiable",
+      "doc_tweaks": {
+        "pharmacy_annexure_missing": "med2"
+      },
+      "open_question_flags": [
+        "si_depletion_by_paid"
+      ],
+      "story": "Pneumonia on a senior floater; husband's earlier claim; ambulance."
+    },
+    "gold": {
+      "case_id": "CC_DEV_015",
+      "payable": 72532,
+      "insurer_paid": 68232,
+      "overall": "not_verifiable",
+      "letter_deductions": [
+        {
+          "deduction": "Less: Nebuliser kit - List I (not payable)",
+          "amount": 650,
+          "verdict": "matches",
+          "correct_amount": 650,
+          "why": "List I item 38/57 (Clause 4.7)."
+        },
+        {
+          "deduction": "Less: Urine bag - List IV (part of cost of treatment)",
+          "amount": 180,
+          "verdict": "matches",
+          "correct_amount": 180,
+          "why": "List IV item 18."
+        },
+        {
+          "deduction": "Less: Ambulance charges above limit",
+          "amount": 800,
+          "verdict": "matches",
+          "correct_amount": 800,
+          "why": "Clause 4.1.1(v): max 2,000."
+        },
+        {
+          "deduction": "Less: Co-payment 5%",
+          "amount": 3818,
+          "verdict": "matches",
+          "correct_amount": 3818,
+          "why": "5% of 76,350 (Clause 9.3). Note the letter takes co-pay before the pharmacy deduction; if that deduction stood, co-pay should be 3,603 on 72,050."
+        },
+        {
+          "deduction": "Less: Pharmacy items not payable as per annexure",
+          "amount": 4300,
+          "verdict": "not_verifiable",
+          "correct_amount": 0,
+          "why": "No clause cited and the pharmacy annexure is not in the documents, so no one can check which items are in the 4,300 or which Annexure A list they fall under."
+        }
+      ],
+      "notes": "Ambulance: List I item 67 lists \"AMBULANCE\" as not payable, but Clause 4.1.1(v) specifically covers road ambulance up to 2,000 per hospitalisation; the specific benefit is applied (2,000 paid, 800 deducted). Gold payable 72,532 excludes the unverifiable 4,300 pharmacy deduction. If the 4,300 is upheld, correct figure is 72,050 - 3,603 co-pay = 68,447 (insurer paid 68,232 because co-pay was taken before that deduction). Need the pharmacy annexure."
+    },
+    "worksheet_md": "# Worksheet CC_DEV_015\n\n## Facts from the documents\n- Policy AS/2025/504009/12 (Deepa K. Bose), FAMILY FLOATER (self 71 F, PED hypertension; spouse 74 M), SI 5,00,000 + CB 50,000, period 1 Dec 2025 - 30 Nov 2026, continuous since 1 Dec 2019.\n- Admission 14 Oct 2026, discharge 20 Oct 2026 = 6 days, 6 room-days billed. Community-acquired pneumonia.\n- Earlier claim this policy year (spouse, TURP): admitted 1,26,000, paid 1,19,700.\n- Pharmacy line reads \"Pharmacy (details as per annexure enclosed)\" 22,700, but no pharmacy annexure is among the documents.\n\n## Eligibility checks\n- Renewal with continuous cover since 1 Dec 2019; admission 14 Oct 2026 lies within the policy period 1 Dec 2025 - 30 Nov 2026 (Clause 2). 30-day (6.2), 24/48-month (6.3) and PED (6.1) waiting periods: none apply (pneumonia; PED hypertension unrelated and >36 months anyway).\n\n## Limits (Clause 4.1(i), 4.1(ii))\n- Room rent cap = min(2% x SI 500,000.00, 5,000) = 5,000.00 per day\n- ICU cap = min(5% x SI 500,000.00, 10,000) = 10,000.00 per day\n- Sum insured used for these % limits is the base SI in the schedule (Clause 3.47 defines SI separately from Cumulative Bonus).\n\n## Proportionate deduction ratio (Clause 4.1 Note 2; DECISIONS #1, #2)\n- No room/ICU line exceeds its cap -> no proportionate deduction (ratio = 1).\n\n## Bill lines\n| # | Item | Billed | Treatment | Clause | Admissible before proportion |\n|---|---|---:|---|---|---:|\n| 1 | General ward - room rent | 13,200.00 | Room 6 d x 2,200.00 ; cap 5,000.00 /day -> eligible 13,200.00 | 4.1(i) | 13,200.00 |\n| 2 | Pulmonologist visits | 8,900.00 | Payable | 4.1(iii)/(iv) | 8,900.00 |\n| 3 | Chest X-ray, CBC, cultures, ABG | 14,150.00 | Payable | 4.1(iii)/(iv) | 14,150.00 |\n| 4 | Pharmacy (details as per annexure enclosed - annexure not provided) | 22,700.00 | Payable (medicines) | 4.1(iv); 4.1 Note 2 | 22,700.00 |\n| 5 | Consumables | 7,000.00 | Payable | 4.1(iii)/(iv) | 7,000.00 |\n| 6 | Oxygen charges | 8,400.00 | Payable | 4.1(iv) oxygen | 8,400.00 |\n| 7 | Road ambulance | 2,800.00 | Road ambulance capped at 2,000 per hospitalisation (not payable 800.00) | 4.1.1(v) | 2,000.00 |\n| 8 | Nebuliser kit | 650.00 | Not payable: List I items 38 (nebulizer kit) / 57 (nebulisation kit) | 4.7, Annexure A | 0.00 |\n| 9 | Urine bag | 180.00 | Not payable: List IV item 18 - subsumed into cost of treatment | 4.7, Annexure A | 0.00 |\n| | **Total billed/claimed** | **77,980.00** | | | **76,350.00** |\n\n- Check: hospital lines sum to 77,980.00 vs bill grand total 77,980.00 -> agree\n- Total claimed (hospital + other bills) = 77,980.00\n\n## Step results\n1. Room/ICU excess over caps (4.1(i)/(ii)): 0.00\n2. Non-payable / subsumed items (4.7, Annexure A; 4.1.1(v); 4.5): 1,630.00\n3. Proportionate deduction: nil\n4. Admissible before sub-limit/co-pay = 76,350.00\n5. Sub-limits: none applicable\n6. Co-payment 5% (Clause 9.3; DECISIONS #3, on admissible after all deductions/sub-limits): 76,350.00 x 5% = 3,817.50 -> 3,818\n7. Net after co-pay = 72,532.00\n8. Sum insured + CB this policy year = 550,000.00; earlier claims paid 119,700.00 / admitted 126,000.00 -> available 430,300.00 (by paid) / 424,000.00 (by admitted) (Clause 2, 3.47, DECISIONS #4)\n9. **Payable = 72,532**\n\n## Comparison with the settlement letter\n| Letter deduction | Amount | Verdict | Correct amount | Why |\n|---|---:|---|---:|---|\n| Less: Nebuliser kit - List I (not payable) | 650 | matches | 650 | List I item 38/57 (Clause 4.7). |\n| Less: Urine bag - List IV (part of cost of treatment) | 180 | matches | 180 | List IV item 18. |\n| Less: Ambulance charges above limit | 800 | matches | 800 | Clause 4.1.1(v): max 2,000. |\n| Less: Co-payment 5% | 3,818 | matches | 3,818 | 5% of 76,350 (Clause 9.3). Note the letter takes co-pay before the pharmacy deduction; if that deduction stood, co-pay should be 3,603 on 72,050. |\n| Less: Pharmacy items not payable as per annexure | 4,300 | not_verifiable | 0 | No clause cited and the pharmacy annexure is not in the documents, so no one can check which items are in the 4,300 or which Annexure A list they fall under. |\n\n- Insurer paid: 68,232 ; gold payable: 72,532 ; difference (payable - paid): 4,300\n- Overall: **not_verifiable**\n\n## Notes\nAmbulance: List I item 67 lists \"AMBULANCE\" as not payable, but Clause 4.1.1(v) specifically covers road ambulance up to 2,000 per hospitalisation; the specific benefit is applied (2,000 paid, 800 deducted). Gold payable 72,532 excludes the unverifiable 4,300 pharmacy deduction. If the 4,300 is upheld, correct figure is 72,050 - 3,603 co-pay = 68,447 (insurer paid 68,232 because co-pay was taken before that deduction). Need the pharmacy annexure.\n"
+  }
+}

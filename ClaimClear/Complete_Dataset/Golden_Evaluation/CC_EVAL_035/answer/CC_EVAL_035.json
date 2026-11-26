@@ -1,0 +1,79 @@
+{
+  "case_id": "CC_EVAL_035",
+  "base_id": "H5",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "proportionate",
+  "insurer_error": {
+    "kind": "prop_wrong_rate",
+    "rate": 7500
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 49940,
+    "admissible": 38819,
+    "copay": 1941,
+    "payable": 36878,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 34850,
+    "copay": 1743,
+    "payable": 33107,
+    "rejected": null
+  },
+  "underpaid_by": 3771,
+  "letter_deductions": [
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause_cited": "4.1(i), 4.1(ii)",
+      "amount": 1500,
+      "verdict": "matches",
+      "correct_amount": 1500
+    },
+    {
+      "deduction": "Gloves and masks - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 690,
+      "verdict": "matches",
+      "correct_amount": 690
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause_cited": "4.1 Note 2",
+      "amount": 12900,
+      "verdict": "disputable",
+      "correct_amount": 8931
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 1743,
+      "verdict": "consequential",
+      "correct_amount": 1941
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 1941,
+      "insurer": 1743,
+      "excess_deducted": -198
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause": "4.1 Note 2",
+      "correct": 8931,
+      "insurer": 12900,
+      "excess_deducted": 3969
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Child's tonsil surgery on a family floater; room above limit."
+}

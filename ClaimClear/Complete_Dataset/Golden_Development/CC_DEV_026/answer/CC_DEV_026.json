@@ -1,0 +1,162 @@
+{
+  "case_id": "CC_DEV_026",
+  "base_id": "SET-15",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "dev",
+  "planted_type": "malicious",
+  "insurer_error": null,
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 90200,
+    "admissible": null,
+    "copay": null,
+    "payable": 0,
+    "rejected": {
+      "reason": "Hospital records show the admission on 12-Feb-2026, 11 days after your policy started on 01-Feb-2026. Treatment of an illness in the first 30 days of cover is excluded under the initial waiting period, so the claim is not payable. The bill you sent gives different dates, name and age from the hospital's records.",
+      "clause": ""
+    }
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": {
+      "reason": "Hospital records show the admission on 12-Feb-2026, 11 days after your policy started on 01-Feb-2026. Treatment of an illness in the first 30 days of cover is excluded under the initial waiting period, so the claim is not payable. The bill you sent gives different dates, name and age from the hospital's records.",
+      "clause": ""
+    }
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: Hospital records show the admission on 12-Feb-2026, 11 days after your policy started on 01-Feb-2026. Treatment of an illness in the first 30 days of cover is excluded under the initial waiting period, so the claim is not payable. The bill you sent gives different dates, name and age from the hospital's records.",
+      "amount": 90200,
+      "verdict": "matches",
+      "correct_amount": 90200,
+      "reason": "waiting_period"
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "MAL-04",
+      "category": "malicious",
+      "status": "Modified",
+      "title": "Altered admission date and mismatched patient details",
+      "format": "Digital PDF",
+      "what_changed_and_where": "Details block: dates moved from 12-Feb to 10-13 Mar, name Parashkar to Parashar, age 29 to 41. Line dates and IP No. were left showing February.",
+      "expected_verdict": "reject",
+      "expected_flags": [
+        "header_line_date_conflict",
+        "waiting_period_evasion",
+        "patient_name_mismatch",
+        "patient_age_mismatch"
+      ],
+      "attack_goal": "Move an admission that fell in the 30-day waiting period to a date after it.",
+      "detection_signals": [
+        "Header says March, every line and the IP number say February",
+        "Policy began 01-Feb-2026, so the true dates are inside the waiting period",
+        "Name differs from Parashkar; age 41 against 29 on the policy"
+      ],
+      "notes": ""
+    },
+    "04_discharge_summary.pdf": {
+      "doc_id": "DS-04",
+      "category": "discharge_summaries",
+      "status": "Good",
+      "title": "True summary that exposes the altered bill MAL-04",
+      "format": "Discharge summary PDF",
+      "what_changed_and_where": "Nothing changed in this summary. It gives the true stay (12-15 Feb 2026), name Parashkar and age 29, which expose the altered bill MAL-04 and show the admission fell inside the 30-day waiting period.",
+      "expected_verdict": "inconsistent_with_bill",
+      "expected_flags": [
+        "admission_date_conflict_with_bill",
+        "discharge_date_conflict_with_bill",
+        "patient_name_conflict_with_bill",
+        "patient_age_conflict_with_bill",
+        "inside_initial_waiting_period"
+      ],
+      "attack_goal": "None in this document. Read with MAL-04, it shows the bill's dates, name and age were changed.",
+      "detection_signals": [
+        "Admitted 12-Feb-2026, the bill says 10-Mar-2026",
+        "Name Parashkar and age 29 match the policy, the bill does not",
+        "Admission is 11 days after the policy began, inside the 30-day waiting period"
+      ],
+      "notes": ""
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-MAL-04",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for MAL-04",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Gives the true name Parashkar and first inception 01-Feb-2026, which the altered bill contradicts.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-15",
+      "category": "settlement_letters",
+      "status": "Good",
+      "title": "Altered bill rejected inside the initial waiting period",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Correct rejection: true admission 12-Feb-2026 is inside the 30-day initial waiting period. Letter gives the true name and dates.",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "The insurer's decision is right. ClaimClear must not draft a grievance.",
+      "detection_signals": [
+        "True admission 12-Feb-2026, 11 days after first inception",
+        "Insurer used the hospital's records, not the altered bill"
+      ],
+      "notes": "Read with MAL-04 and DS-04. The letter gives the true name and dates; the bill shows the altered ones."
+    }
+  },
+  "open_question_flags": [],
+  "story": "Altered admission date and mismatched patient details",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_DEV_026",
+    "source_case": "dev/case-006",
+    "documents": {
+      "02_itemised_bill.pdf": "MAL-04",
+      "04_discharge_summary.pdf": "DS-04",
+      "01_policy_schedule.pdf": "SCH-MAL-04",
+      "03_settlement_letter.pdf": "SET-15"
+    },
+    "scenario": {
+      "type": "malicious",
+      "title": "Altered admission date and mismatched patient details",
+      "what_changed": "Details block: dates moved from 12-Feb to 10-13 Mar, name Parashkar to Parashar, age 29 to 41. Line dates and IP No. were left showing February.",
+      "attack_goal": "Move an admission that fell in the 30-day waiting period to a date after it.",
+      "expected_flags": [
+        "header_line_date_conflict",
+        "waiting_period_evasion",
+        "patient_name_mismatch",
+        "patient_age_mismatch"
+      ]
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2026-100815",
+      "holder": "Nivedita Parashkar",
+      "sex": "F",
+      "dob": "1996-12-27",
+      "sum_insured": 1000000,
+      "period_start": "2026-02-01",
+      "period_end": "2027-01-31",
+      "first_inception": "2026-02-01",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": []
+  }
+}

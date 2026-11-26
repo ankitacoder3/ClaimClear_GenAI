@@ -1,0 +1,8 @@
+{
+  "case_id": "CC_EVAL_045",
+  "payable": 1006.05,
+  "insurer_paid": 1006.05,
+  "overall": "matches",
+  "letter_deductions": [],
+  "notes": "Matches the policy wording: post-hospitalisation expenses within 60 days, for the same condition."
+}

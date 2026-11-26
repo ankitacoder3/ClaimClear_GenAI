@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_EVAL_039",
+  "payable": 123785,
+  "insurer_paid": 0,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: First 30 days waiting period (Clause 6.2)",
+      "amount": 133450,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "Cl. 6.2(i) does not apply to claims arising due to an accident; fracture from a road traffic accident."
+    }
+  ],
+  "notes": "Payable computed: less ambulance above 2,000 (1,500, cl. 4.1.1(v)), crepe bandage 450 and splint 1,200 (List I), co-pay 5% of 1,30,300 = 6,515 -> 1,23,785. Plate and screws (implant) payable. Wrongly rejected."
+}

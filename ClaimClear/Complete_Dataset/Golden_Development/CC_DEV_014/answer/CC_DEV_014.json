@@ -1,0 +1,73 @@
+{
+  "case_id": "CC_DEV_014",
+  "base_id": "D2",
+  "variant": 3,
+  "tag": "MD",
+  "split": "dev",
+  "planted_type": "sublimit",
+  "insurer_error": {
+    "kind": "prior_rejected_counted"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 55600,
+    "admissible": 25000,
+    "copay": 1250,
+    "payable": 23750,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 25000,
+    "copay": 1250,
+    "payable": 9600,
+    "rejected": null
+  },
+  "underpaid_by": 14150,
+  "letter_deductions": [
+    {
+      "deduction": "Eye kit and drape - List III (part of procedure charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 900,
+      "verdict": "matches",
+      "correct_amount": 900
+    },
+    {
+      "deduction": "Cataract limit (right eye), balance available",
+      "clause_cited": "4.3",
+      "amount": 29700,
+      "verdict": "matches",
+      "correct_amount": 29700
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 1250,
+      "verdict": "matches",
+      "correct_amount": 1250
+    },
+    {
+      "deduction": "Sum insured balance for the policy year",
+      "clause_cited": "2, 3.47",
+      "amount": 14150,
+      "verdict": "disputable",
+      "correct_amount": 0
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Sum insured balance for the policy year",
+      "clause": "2, 3.47",
+      "correct": 0,
+      "insurer": 14150,
+      "excess_deducted": 14150
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [
+    "si_depletion_by_paid"
+  ],
+  "story": "Prakash's right-eye cataract; left eye done earlier this year."
+}

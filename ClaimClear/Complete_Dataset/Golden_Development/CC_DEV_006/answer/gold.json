@@ -1,0 +1,30 @@
+{
+  "case_id": "CC_DEV_006",
+  "payable": 79372,
+  "insurer_paid": 79372,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Attendant food and mineral water - List I (not payable)",
+      "amount": 700,
+      "verdict": "matches",
+      "correct_amount": 700,
+      "why": "Annexure A List I (Clause 4.7)."
+    },
+    {
+      "deduction": "Less: Multivitamin tonic - outside post-hospitalisation period (75 days)",
+      "amount": 480,
+      "verdict": "matches",
+      "correct_amount": 480,
+      "why": "Outside 60 days (Clause 4.5)."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 4178,
+      "verdict": "matches",
+      "correct_amount": 4178,
+      "why": "5% of 83,550 (Clause 9.3)."
+    }
+  ],
+  "notes": "All steps agree. Multivitamin would also fall under Excl14 (7.11) unless prescribed; moot since outside the window."
+}

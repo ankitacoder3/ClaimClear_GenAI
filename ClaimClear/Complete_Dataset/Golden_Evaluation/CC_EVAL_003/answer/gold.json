@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_EVAL_003",
+  "payable": 0,
+  "insurer_paid": 0,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "The claim for 33,890.00 is not admissible. Reason: First 30 days waiting period (Clause 6.2)",
+      "amount": 33890,
+      "verdict": "matches",
+      "correct_amount": 33890,
+      "why": "Illness admission 25 days after first inception, within the 30-day waiting period (Cl. 6.2)"
+    }
+  ],
+  "notes": "Rejection is correct. No itemised computation needed. Bill items would otherwise include List I mineral water and List II/IV admin/registration charges, irrelevant here."
+}

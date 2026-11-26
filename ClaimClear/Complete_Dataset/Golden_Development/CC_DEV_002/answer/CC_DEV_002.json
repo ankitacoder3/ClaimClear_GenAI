@@ -1,0 +1,73 @@
+{
+  "case_id": "CC_DEV_002",
+  "base_id": "D2",
+  "variant": 2,
+  "tag": "MD",
+  "split": "dev",
+  "planted_type": "sublimit",
+  "insurer_error": {
+    "kind": "cataract_shared_eyes"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 55600,
+    "admissible": 37500,
+    "copay": 1875,
+    "payable": 35625,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 7500,
+    "copay": 375,
+    "payable": 7125,
+    "rejected": null
+  },
+  "underpaid_by": 28500,
+  "letter_deductions": [
+    {
+      "deduction": "Eye kit and drape - List III (part of procedure charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 900,
+      "verdict": "matches",
+      "correct_amount": 900
+    },
+    {
+      "deduction": "Cataract limit (right eye), balance available",
+      "clause_cited": "4.3",
+      "amount": 47200,
+      "verdict": "disputable",
+      "correct_amount": 17200
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 375,
+      "verdict": "consequential",
+      "correct_amount": 1875
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 1875,
+      "insurer": 375,
+      "excess_deducted": -1500
+    },
+    {
+      "deduction": "Cataract limit (right eye), balance available",
+      "clause": "4.3",
+      "correct": 17200,
+      "insurer": 47200,
+      "excess_deducted": 30000
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [
+    "si_depletion_by_paid"
+  ],
+  "story": "Prakash's right-eye cataract; left eye done earlier this year."
+}

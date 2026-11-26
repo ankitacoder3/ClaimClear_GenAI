@@ -1,0 +1,73 @@
+{
+  "case_id": "CC_EVAL_019",
+  "base_id": "H7",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "sublimit",
+  "insurer_error": {
+    "kind": "prior_at_billed"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 74310,
+    "admissible": 73650,
+    "copay": 3683,
+    "payable": 69967,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 73650,
+    "copay": 3683,
+    "payable": 55000,
+    "rejected": null
+  },
+  "underpaid_by": 14967,
+  "letter_deductions": [
+    {
+      "deduction": "Mineral water - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 290,
+      "verdict": "matches",
+      "correct_amount": 290
+    },
+    {
+      "deduction": "Registration charges - List IV (part of cost of treatment)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 370,
+      "verdict": "matches",
+      "correct_amount": 370
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 3683,
+      "verdict": "matches",
+      "correct_amount": 3683
+    },
+    {
+      "deduction": "Sum insured balance for the policy year",
+      "clause_cited": "2, 3.47",
+      "amount": 14967,
+      "verdict": "disputable",
+      "correct_amount": 0
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Sum insured balance for the policy year",
+      "clause": "2, 3.47",
+      "correct": 0,
+      "insurer": 14967,
+      "excess_deducted": 14967
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [
+    "si_depletion_by_paid"
+  ],
+  "story": "Second admission for jaundice; April claim used part of the sum insured."
+}

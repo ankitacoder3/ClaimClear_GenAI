@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_DEV_040",
+  "payable": 0,
+  "insurer_paid": 0,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: This hospitalisation was already settled under claim CLM-2025-00811 (Vrindaloka Memorial Hospital, admitted 18-Aug-2025). Our records show no reversal of that claim, so the same expenses cannot be paid again.",
+      "amount": 86340,
+      "verdict": "matches",
+      "correct_amount": 86340,
+      "why": "Matches: the expenses were already paid."
+    }
+  ],
+  "notes": "Matches: the expenses were already paid."
+}

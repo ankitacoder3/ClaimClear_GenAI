@@ -1,0 +1,84 @@
+{
+  "case_id": "CC_DEV_015",
+  "base_id": "D6",
+  "variant": 3,
+  "tag": "SK",
+  "split": "dev",
+  "planted_type": "not_verifiable",
+  "insurer_error": {
+    "kind": "nv_missing_annexure",
+    "line": "med2",
+    "amount": 4300
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 77980,
+    "admissible": 76350,
+    "copay": 3818,
+    "payable": 72532,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 76350,
+    "copay": 3818,
+    "payable": 68232,
+    "rejected": null
+  },
+  "underpaid_by": 4300,
+  "letter_deductions": [
+    {
+      "deduction": "Nebuliser kit - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 650,
+      "verdict": "matches",
+      "correct_amount": 650
+    },
+    {
+      "deduction": "Urine bag - List IV (part of cost of treatment)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 180,
+      "verdict": "matches",
+      "correct_amount": 180
+    },
+    {
+      "deduction": "Ambulance charges above limit",
+      "clause_cited": "4.1.1(v)",
+      "amount": 800,
+      "verdict": "matches",
+      "correct_amount": 800
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 3818,
+      "verdict": "matches",
+      "correct_amount": 3818
+    },
+    {
+      "deduction": "Pharmacy items not payable as per annexure",
+      "clause_cited": "",
+      "amount": 4300,
+      "verdict": "not_verifiable",
+      "correct_amount": 0
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Pharmacy items not payable as per annexure",
+      "clause": "",
+      "correct": 0,
+      "insurer": 4300,
+      "excess_deducted": 4300
+    }
+  ],
+  "expected_verdict": "not_verifiable",
+  "doc_tweaks": {
+    "pharmacy_annexure_missing": "med2"
+  },
+  "open_question_flags": [
+    "si_depletion_by_paid"
+  ],
+  "story": "Pneumonia on a senior floater; husband's earlier claim; ambulance."
+}

@@ -1,0 +1,30 @@
+{
+  "case_id": "CC_DEV_002",
+  "payable": 35625,
+  "insurer_paid": 7125,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Eye kit and drape - List III (part of procedure charges)",
+      "amount": 900,
+      "verdict": "matches",
+      "correct_amount": 900,
+      "why": "Eye kit / eye drape are List III items 14-15 (Clause 4.7)."
+    },
+    {
+      "deduction": "Less: Cataract limit (right eye), balance available INR 7,500.00",
+      "amount": 47200,
+      "verdict": "disputable",
+      "correct_amount": 17200,
+      "why": "Clause 4.3 limit is per eye: right eye has the full 37,500; the 30,000 used was for the left eye. 54,700 - 37,500 = 17,200."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 375,
+      "verdict": "consequential",
+      "correct_amount": 1875,
+      "why": "Method right (Clause 9.3) but on the wrong 7,500 base; 5% of 37,500 = 1,875."
+    }
+  ],
+  "notes": "Insurer netted the left-eye claim against the right-eye cataract limit; Clause 4.3 says \"per each eye in one policy year\". SI remaining (1,50,000 less 28,500 paid or 30,000 admitted) is not binding."
+}

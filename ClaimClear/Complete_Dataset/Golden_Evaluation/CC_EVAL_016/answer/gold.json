@@ -1,0 +1,37 @@
+{
+  "case_id": "CC_EVAL_016",
+  "payable": 69967,
+  "insurer_paid": 66167,
+  "overall": "not_verifiable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Mineral water - List I (not payable)",
+      "amount": 290,
+      "verdict": "matches",
+      "correct_amount": 290,
+      "why": "Annexure A List I item 12 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Registration charges - List IV (part of cost of treatment)",
+      "amount": 370,
+      "verdict": "matches",
+      "correct_amount": 370,
+      "why": "Annexure A List IV item 1 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 3683,
+      "verdict": "matches",
+      "correct_amount": 3683,
+      "why": "5% of Rs 73,650 = Rs 3,682.5, rounded half up (Cl. 9.3)"
+    },
+    {
+      "deduction": "Less: Deduction as per network tariff agreement",
+      "amount": 3800,
+      "verdict": "not_verifiable",
+      "correct_amount": 0,
+      "why": "No clause cited and no tariff agreement among the documents; the wording has no tariff-deduction clause and this is a reimbursement claim, so nothing supports it"
+    }
+  ],
+  "notes": "Everything checkable matches; the Rs 3,800 \"network tariff\" deduction cites no clause and no tariff document is provided, so it cannot be verified - on the documents the policy requires Rs 69,967 (Rs 3,800 more than paid). It is also deducted after the co-pay, so the co-pay was computed on the pre-tariff amount. SI cap does not bind on either basis (Rs 74,000 / Rs 80,300)."
+}

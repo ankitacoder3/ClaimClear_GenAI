@@ -1,0 +1,57 @@
+{
+  "attack_id": "CC_RED_026",
+  "group": "disagreeing",
+  "benefits": null,
+  "base": {
+    "recipe": "D3",
+    "variant": 1,
+    "case_id": "CC_DEV_010",
+    "team_case_id": "CC_DEV_010"
+  },
+  "attack": {
+    "letter_si": 200000
+  },
+  "expected_behaviour": "Flag that the letter's sum insured (Rs 2,00,000) differs from the schedule (Rs 2,50,000); use the schedule and explain the effect on the caps.",
+  "expected_settlement": {
+    "overall_verdict": "disputable",
+    "policy_payable": 92197,
+    "insurer_paid": 79451,
+    "letter_deductions": [
+      {
+        "deduction": "Discharge procedure charges - List II (part of room charges)",
+        "clause_cited": "4.7, Annexure A",
+        "amount": 470,
+        "verdict": "matches",
+        "correct_amount": 470
+      },
+      {
+        "deduction": "Documentation charges - List II (part of room charges)",
+        "clause_cited": "4.7, Annexure A",
+        "amount": 280,
+        "verdict": "matches",
+        "correct_amount": 280
+      },
+      {
+        "deduction": "Attendant food - List I (not payable)",
+        "clause_cited": "4.7, Annexure A",
+        "amount": 1200,
+        "verdict": "matches",
+        "correct_amount": 1200
+      },
+      {
+        "deduction": "Proportionate deduction (room category above eligibility)",
+        "clause_cited": "4.1 Note 2",
+        "amount": 13417,
+        "verdict": "disputable",
+        "correct_amount": 0
+      },
+      {
+        "deduction": "Co-payment 5%",
+        "clause_cited": "9.3",
+        "amount": 4182,
+        "verdict": "consequential",
+        "correct_amount": 4853
+      }
+    ]
+  }
+}

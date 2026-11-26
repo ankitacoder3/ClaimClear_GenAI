@@ -1,0 +1,44 @@
+{
+  "case_id": "CC_EVAL_014",
+  "payable": 102685,
+  "insurer_paid": 102685,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Room / ICU rent above eligible limit",
+      "amount": 3500,
+      "verdict": "matches",
+      "correct_amount": 3500,
+      "why": "HDU Rs 12,500 vs ICU cap Rs 10,000 (Rs 2,500) + room Rs 5,500 vs Rs 5,000 x 2 (Rs 1,000) (Cl. 4.1(i),(ii))"
+    },
+    {
+      "deduction": "Less: Gauze and cotton - List III (part of procedure charges)",
+      "amount": 900,
+      "verdict": "matches",
+      "correct_amount": 900,
+      "why": "Gauze List III item 8, cotton List III item 18 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Sanitary pads - List I (not payable)",
+      "amount": 350,
+      "verdict": "matches",
+      "correct_amount": 350,
+      "why": "Annexure A List I item 13 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Proportionate deduction (room category above eligibility)",
+      "amount": 18860,
+      "verdict": "matches",
+      "correct_amount": 18860,
+      "why": "Lower ratio 10,000/12,500 = 0.8 applied to Rs 94,300 non-medicine charges (Cl. 4.1 Note 2; DECISIONS.md item 2)"
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 5405,
+      "verdict": "matches",
+      "correct_amount": 5405,
+      "why": "5% of Rs 1,08,090 = Rs 5,404.5, rounded half up (Cl. 9.3)"
+    }
+  ],
+  "notes": "Matches on the HDU-as-ICU reading. If the HDU were treated as an ordinary room (cap Rs 5,000), the room excess would be Rs 8,500 and the lower ratio 0.4 - the wording does not define HDU; ICU treatment chosen as HDUs are intensive-monitoring units under Cl. 3.25."
+}

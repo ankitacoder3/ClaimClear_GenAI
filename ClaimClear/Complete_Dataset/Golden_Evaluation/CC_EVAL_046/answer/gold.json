@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_EVAL_046",
+  "payable": 0,
+  "insurer_paid": 0,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: This hospitalisation was already settled under claim CLM-2025-01042 (Tarangi Health Institute, admitted 06-Oct-2025, left inguinal hernia). The same expenses cannot be paid twice.",
+      "amount": 108050,
+      "verdict": "matches",
+      "correct_amount": 108050,
+      "why": "Matches: the expenses were already paid."
+    }
+  ],
+  "notes": "Matches: the expenses were already paid."
+}

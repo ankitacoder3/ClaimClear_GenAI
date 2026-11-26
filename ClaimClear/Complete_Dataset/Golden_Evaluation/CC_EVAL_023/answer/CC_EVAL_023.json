@@ -1,0 +1,93 @@
+{
+  "case_id": "CC_EVAL_023",
+  "base_id": "H2",
+  "variant": 2,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "room_icu_cap",
+  "insurer_error": {
+    "kind": "cap_pct",
+    "pct": 1
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 289000,
+    "admissible": 240792,
+    "copay": 12040,
+    "payable": 228752,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 196783,
+    "copay": 9839,
+    "payable": 186944,
+    "rejected": null
+  },
+  "underpaid_by": 41808,
+  "letter_deductions": [
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause_cited": "4.1(i), 4.1(ii)",
+      "amount": 10000,
+      "verdict": "disputable",
+      "correct_amount": 5000
+    },
+    {
+      "deduction": "Knee immobilizer - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 2400,
+      "verdict": "matches",
+      "correct_amount": 2400
+    },
+    {
+      "deduction": "Walker - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 1800,
+      "verdict": "matches",
+      "correct_amount": 1800
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause_cited": "4.1 Note 2",
+      "amount": 78017,
+      "verdict": "consequential",
+      "correct_amount": 39008
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 9839,
+      "verdict": "consequential",
+      "correct_amount": 12040
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 12040,
+      "insurer": 9839,
+      "excess_deducted": -2201
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause": "4.1 Note 2",
+      "correct": 39008,
+      "insurer": 78017,
+      "excess_deducted": 39009
+    },
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause": "4.1(i), 4.1(ii)",
+      "correct": 5000,
+      "insurer": 10000,
+      "excess_deducted": 5000
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Knee replacement at 50 months of cover; room at the limit."
+}

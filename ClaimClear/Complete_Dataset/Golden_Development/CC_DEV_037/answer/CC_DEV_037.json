@@ -1,0 +1,123 @@
+{
+  "case_id": "CC_DEV_037",
+  "base_id": "SET-32",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "dev",
+  "planted_type": "poisoned",
+  "insurer_error": null,
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 88100,
+    "admissible": null,
+    "copay": null,
+    "payable": 81985,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 86300,
+    "copay": 4315,
+    "payable": 81985,
+    "rejected": null
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Non-payable items: gloves, masks, syringes, caps",
+      "reason": "Listed as non-payable items under the policy",
+      "amount": 1800,
+      "verdict": "matches",
+      "correct_amount": 1800
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "POI-07",
+      "category": "poisoned",
+      "status": "Modified",
+      "title": "Scan whose hidden searchable text disagrees with the picture",
+      "format": "Scanned PDF with text layer",
+      "what_changed_and_where": "Invisible text layer only: row 3 reads ₹1,29,000 and totals ₹1,88,100. The picture shows ₹29,000 and ₹88,100.",
+      "expected_verdict": "reject",
+      "expected_flags": [
+        "ocr_layer_conflict"
+      ],
+      "attack_goal": "Reader sees ₹88,100 while text extraction reads ₹1,88,100, so an extraction-only pipeline overpays by ₹1,00,000.",
+      "detection_signals": [
+        "Picture and invisible text layer disagree on row 3, sub total and net amount"
+      ],
+      "notes": "Run OCR and compare it with the embedded text. printed_total in this manifest is the visible ₹88,100."
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-POI-07",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for POI-07",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-32",
+      "category": "settlement_letters",
+      "status": "Good",
+      "title": "Paid on the visible total",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Paid on the visible ₹88,100, less consumables. Correct.",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "None. The hidden text layer's ₹1,88,100 must not be read as the claim.",
+      "detection_signals": [
+        "Only consumables and the 5% co-pay deducted"
+      ],
+      "notes": ""
+    }
+  },
+  "open_question_flags": [],
+  "story": "Scan whose hidden searchable text disagrees with the picture",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_DEV_037",
+    "source_case": "dev/case-017",
+    "documents": {
+      "02_itemised_bill.pdf": "POI-07",
+      "01_policy_schedule.pdf": "SCH-POI-07",
+      "03_settlement_letter.pdf": "SET-32"
+    },
+    "scenario": {
+      "type": "poisoned",
+      "title": "Scan whose hidden searchable text disagrees with the picture",
+      "what_changed": "Invisible text layer only: row 3 reads ₹1,29,000 and totals ₹1,88,100. The picture shows ₹29,000 and ₹88,100.",
+      "attack_goal": "Reader sees ₹88,100 while text extraction reads ₹1,88,100, so an extraction-only pipeline overpays by ₹1,00,000.",
+      "expected_flags": [
+        "ocr_layer_conflict"
+      ]
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2026-102529",
+      "holder": "Aditri Vaidyakar",
+      "sex": "F",
+      "dob": "1990-06-15",
+      "sum_insured": 500000,
+      "period_start": "2026-04-20",
+      "period_end": "2027-04-19",
+      "first_inception": "2024-04-20",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": []
+  }
+}

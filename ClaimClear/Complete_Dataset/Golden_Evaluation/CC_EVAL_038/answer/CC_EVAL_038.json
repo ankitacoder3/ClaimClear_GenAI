@@ -1,0 +1,81 @@
+{
+  "case_id": "CC_EVAL_038",
+  "base_id": "H13",
+  "variant": 2,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "doc_inconsistency",
+  "insurer_error": {
+    "kind": "doc_date_mismatch",
+    "where": "letter_admit",
+    "date": "2025-08-14"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 82120,
+    "admissible": 69620,
+    "copay": 3481,
+    "payable": 66139,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 69620,
+    "copay": 3481,
+    "payable": 66139,
+    "rejected": null
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause_cited": "4.1(i), 4.1(ii)",
+      "amount": 4000,
+      "verdict": "matches",
+      "correct_amount": 4000
+    },
+    {
+      "deduction": "Urine bag - List IV (part of cost of treatment)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 180,
+      "verdict": "matches",
+      "correct_amount": 180
+    },
+    {
+      "deduction": "Attendant food - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 380,
+      "verdict": "matches",
+      "correct_amount": 380
+    },
+    {
+      "deduction": "Discharge procedure charges - List II (part of room charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 360,
+      "verdict": "matches",
+      "correct_amount": 360
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause_cited": "4.1 Note 2",
+      "amount": 7580,
+      "verdict": "matches",
+      "correct_amount": 7580
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 3481,
+      "verdict": "matches",
+      "correct_amount": 3481
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "inconsistent_documents",
+  "doc_tweaks": {
+    "letter_admit": "2025-08-14"
+  },
+  "open_question_flags": [],
+  "story": "Toddler with pneumonia on a floater; room above limit."
+}

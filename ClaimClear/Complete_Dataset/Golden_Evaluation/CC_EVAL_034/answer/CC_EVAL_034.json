@@ -1,0 +1,76 @@
+{
+  "case_id": "CC_EVAL_034",
+  "base_id": "H14",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "waiting_period",
+  "insurer_error": {
+    "kind": "reject_waiting",
+    "clause": "6.3",
+    "basis": "Sinus surgery: 48-month waiting period not completed"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 72180,
+    "admissible": 71150,
+    "copay": 3558,
+    "payable": 67592,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": {
+      "reason": "Sinus surgery: 48-month waiting period not completed",
+      "clause": "6.3"
+    }
+  },
+  "underpaid_by": 67592,
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: Sinus surgery: 48-month waiting period not completed",
+      "clause_cited": "6.3",
+      "amount": 72180,
+      "verdict": "disputable",
+      "correct_amount": 0
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 3558,
+      "insurer": 0,
+      "excess_deducted": -3558
+    },
+    {
+      "deduction": "Gauze and cotton - List III (part of procedure charges)",
+      "clause": "4.7, Annexure A",
+      "correct": 640,
+      "insurer": 0,
+      "excess_deducted": -640
+    },
+    {
+      "deduction": "Documentation charges - List II (part of room charges)",
+      "clause": "4.7, Annexure A",
+      "correct": 390,
+      "insurer": 0,
+      "excess_deducted": -390
+    },
+    {
+      "deduction": "Claim not admissible: Sinus surgery: 48-month waiting period not completed",
+      "clause": "6.3",
+      "correct": 0,
+      "insurer": 72180,
+      "excess_deducted": 72180
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Endoscopic sinus surgery at four years of cover."
+}

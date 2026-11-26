@@ -1,0 +1,30 @@
+{
+  "case_id": "CC_EVAL_004",
+  "payable": 95000,
+  "insurer_paid": 95000,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Registration charges - List IV (part of cost of treatment)",
+      "amount": 500,
+      "verdict": "matches",
+      "correct_amount": 500,
+      "why": "Annexure A List IV item 1 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Modern treatment limit, balance available 1,00,000.00",
+      "amount": 41200,
+      "verdict": "matches",
+      "correct_amount": 41200,
+      "why": "Cl. 4.6 item J limit 50% of SI = Rs 1,00,000; admissible Rs 1,41,200 cut to Rs 1,00,000"
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 5000,
+      "verdict": "matches",
+      "correct_amount": 5000,
+      "why": "5% of Rs 1,00,000 (Cl. 9.3), applied after sub-limit per DECISIONS.md item 3"
+    }
+  ],
+  "notes": "Room Rs 3,800/day is within the Rs 4,000 cap (2% of Rs 2,00,000). SI remaining after the earlier claim is Rs 1,62,000 (admitted basis) or Rs 1,63,900 (paid basis); neither binds. Assumes the Cl. 4.6 limit caps the whole hospitalisation claim for the procedure."
+}

@@ -1,0 +1,44 @@
+{
+  "case_id": "CC_DEV_015",
+  "payable": 72532,
+  "insurer_paid": 68232,
+  "overall": "not_verifiable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Nebuliser kit - List I (not payable)",
+      "amount": 650,
+      "verdict": "matches",
+      "correct_amount": 650,
+      "why": "List I item 38/57 (Clause 4.7)."
+    },
+    {
+      "deduction": "Less: Urine bag - List IV (part of cost of treatment)",
+      "amount": 180,
+      "verdict": "matches",
+      "correct_amount": 180,
+      "why": "List IV item 18."
+    },
+    {
+      "deduction": "Less: Ambulance charges above limit",
+      "amount": 800,
+      "verdict": "matches",
+      "correct_amount": 800,
+      "why": "Clause 4.1.1(v): max 2,000."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 3818,
+      "verdict": "matches",
+      "correct_amount": 3818,
+      "why": "5% of 76,350 (Clause 9.3). Note the letter takes co-pay before the pharmacy deduction; if that deduction stood, co-pay should be 3,603 on 72,050."
+    },
+    {
+      "deduction": "Less: Pharmacy items not payable as per annexure",
+      "amount": 4300,
+      "verdict": "not_verifiable",
+      "correct_amount": 0,
+      "why": "No clause cited and the pharmacy annexure is not in the documents, so no one can check which items are in the 4,300 or which Annexure A list they fall under."
+    }
+  ],
+  "notes": "Ambulance: List I item 67 lists \"AMBULANCE\" as not payable, but Clause 4.1.1(v) specifically covers road ambulance up to 2,000 per hospitalisation; the specific benefit is applied (2,000 paid, 800 deducted). Gold payable 72,532 excludes the unverifiable 4,300 pharmacy deduction. If the 4,300 is upheld, correct figure is 72,050 - 3,603 co-pay = 68,447 (insurer paid 68,232 because co-pay was taken before that deduction). Need the pharmacy annexure."
+}

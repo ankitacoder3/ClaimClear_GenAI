@@ -1,0 +1,131 @@
+{
+  "case_id": "CC_EVAL_047",
+  "base_id": "SET-10",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "heldout",
+  "planted_type": "synthetic_fake",
+  "insurer_error": null,
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 112200,
+    "admissible": null,
+    "copay": null,
+    "payable": 0,
+    "rejected": {
+      "reason": "The treatment billed, a total abdominal hysterectomy, is not consistent with the insured person recorded under this policy, and the hospital could not confirm the admission. The claim is repudiated.",
+      "clause": ""
+    }
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": {
+      "reason": "The treatment billed, a total abdominal hysterectomy, is not consistent with the insured person recorded under this policy, and the hospital could not confirm the admission. The claim is repudiated.",
+      "clause": ""
+    }
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: The treatment billed, a total abdominal hysterectomy, is not consistent with the insured person recorded under this policy, and the hospital could not confirm the admission. The claim is repudiated.",
+      "amount": 112200,
+      "verdict": "matches",
+      "correct_amount": 112200,
+      "reason": "not_genuine"
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "FAKE-04",
+      "category": "synthetic_fake",
+      "status": "Fake",
+      "title": "Procedure that cannot apply to this patient",
+      "format": "Digital PDF",
+      "what_changed_and_where": "Details block and row 3: hysterectomy on a male patient. Every other field passes.",
+      "expected_verdict": "reject",
+      "expected_flags": [
+        "gender_procedure_mismatch"
+      ],
+      "attack_goal": "A clean-looking bill that only fails on clinical sense. Arithmetic, policy and tariff all pass.",
+      "detection_signals": [
+        "Male policyholder with a hysterectomy",
+        "No other signal exists"
+      ],
+      "notes": ""
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-FAKE-04",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for FAKE-04",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-10",
+      "category": "settlement_letters",
+      "status": "Good",
+      "title": "Fabricated bill repudiated: treatment impossible for the insured person",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Correct rejection: hysterectomy billed for a male insured person.",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "The insurer's decision is right. ClaimClear must not draft a grievance.",
+      "detection_signals": [
+        "Rejection reason is supported by the bill",
+        "Nothing is payable under the policy"
+      ],
+      "notes": ""
+    }
+  },
+  "open_question_flags": [],
+  "story": "Procedure that cannot apply to this patient",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_EVAL_047",
+    "source_case": "heldout/case-007",
+    "documents": {
+      "02_itemised_bill.pdf": "FAKE-04",
+      "01_policy_schedule.pdf": "SCH-FAKE-04",
+      "03_settlement_letter.pdf": "SET-10"
+    },
+    "scenario": {
+      "type": "synthetic_fake",
+      "title": "Procedure that cannot apply to this patient",
+      "what_changed": "Details block and row 3: hysterectomy on a male patient. Every other field passes.",
+      "attack_goal": "A clean-looking bill that only fails on clinical sense. Arithmetic, policy and tariff all pass.",
+      "expected_flags": [
+        "gender_procedure_mismatch"
+      ]
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2025-100903",
+      "holder": "Vihaan Sothwal",
+      "sex": "M",
+      "dob": "1976-02-18",
+      "sum_insured": 400000,
+      "period_start": "2025-09-01",
+      "period_end": "2026-08-31",
+      "first_inception": "2023-09-01",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": []
+  }
+}

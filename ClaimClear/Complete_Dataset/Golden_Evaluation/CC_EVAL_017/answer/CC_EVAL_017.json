@@ -1,0 +1,61 @@
+{
+  "case_id": "CC_EVAL_017",
+  "base_id": "H9",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "none",
+  "insurer_error": null,
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 133450,
+    "admissible": 130300,
+    "copay": 6515,
+    "payable": 123785,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 130300,
+    "copay": 6515,
+    "payable": 123785,
+    "rejected": null
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Crepe bandage - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 450,
+      "verdict": "matches",
+      "correct_amount": 450
+    },
+    {
+      "deduction": "Splint - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 1200,
+      "verdict": "matches",
+      "correct_amount": 1200
+    },
+    {
+      "deduction": "Ambulance charges above limit",
+      "clause_cited": "4.1.1(v)",
+      "amount": 1500,
+      "verdict": "matches",
+      "correct_amount": 1500
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 6515,
+      "verdict": "matches",
+      "correct_amount": 6515
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Road accident 16 days into a new policy; plate fixation; ambulance."
+}

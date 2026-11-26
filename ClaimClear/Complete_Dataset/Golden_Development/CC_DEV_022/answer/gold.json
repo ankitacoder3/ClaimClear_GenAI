@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_DEV_022",
+  "payable": 36575,
+  "insurer_paid": 28500,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Cataract limit: admissible ₹30,000 for the right eye",
+      "amount": 8500,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "Cataract treatment is limited to 15% of sum insured per eye"
+    }
+  ],
+  "notes": "Cataract limit taken as 15% of sum insured instead of the lower of 25% of sum insured and ₹40,000 per eye."
+}

@@ -1,0 +1,30 @@
+{
+  "case_id": "CC_EVAL_028",
+  "payable": 95000,
+  "insurer_paid": 66500,
+  "overall": "not_verifiable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Registration charges - List IV (part of cost of treatment)",
+      "amount": 500,
+      "verdict": "matches",
+      "correct_amount": 500,
+      "why": "Annexure A List IV item 1 (cl. 4.7)."
+    },
+    {
+      "deduction": "Less: Modern treatment limit, balance available 70,000.00",
+      "amount": 71200,
+      "verdict": "not_verifiable",
+      "correct_amount": 41200,
+      "why": "Cl. 4.6 limit is 1,00,000; a 70,000 balance implies 30,000 used earlier this year under cl. 4.6, which no document shows; on the documents the cut is 1,41,200 - 1,00,000 = 41,200."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 3500,
+      "verdict": "consequential",
+      "correct_amount": 5000,
+      "why": "5% of admissible (cl. 9.3); method right, amount follows the sub-limit balance (5% of 70,000 if the insurer's balance is right, 5% of 1,00,000 on the documents)."
+    }
+  ],
+  "notes": "Cl. 4.6 sub-limit read as applying to the whole hospitalisation claim for that procedure (admissible capped before co-pay, DECISIONS 3). The settlement depends on the insurer's statement that only 70,000 of the 1,00,000 cl. 4.6 limit remains; no earlier claim is documented, so this cannot be checked. On the documents the payable is 95,000 (1,00,000 less 5% co-pay); if the insurer's 70,000 balance is substantiated, its 66,500 is correct. The policyholder should ask for the earlier claim details. No sum-insured issue: SI 2,00,000 with no documented earlier use."
+}

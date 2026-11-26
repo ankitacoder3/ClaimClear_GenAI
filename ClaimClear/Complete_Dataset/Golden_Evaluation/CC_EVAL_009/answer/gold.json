@@ -1,0 +1,37 @@
+{
+  "case_id": "CC_EVAL_009",
+  "payable": 35055,
+  "insurer_paid": 35055,
+  "overall": "inconsistent_documents",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Thermometer - List I (not payable)",
+      "amount": 300,
+      "verdict": "matches",
+      "correct_amount": 300,
+      "why": "Annexure A List I item 41 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Mineral water - List I (not payable)",
+      "amount": 140,
+      "verdict": "matches",
+      "correct_amount": 140,
+      "why": "Annexure A List I item 12 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Urine bag - List IV (part of cost of treatment)",
+      "amount": 200,
+      "verdict": "matches",
+      "correct_amount": 200,
+      "why": "Annexure A List IV item 18 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 1845,
+      "verdict": "matches",
+      "correct_amount": 1845,
+      "why": "5% of Rs 36,900 (Cl. 9.3)"
+    }
+  ],
+  "notes": "DOCUMENT INCONSISTENCY: the bill says admission and discharge on 25/09/2026 (day care), but the anti-VEGF injection drug line - the core of the procedure - is dated 26/09/2026, the day after discharge. Either the date is a clerical error or the drug was not given during the day-care episode; the documents cannot resolve it. Payable Rs 35,055 assumes the drug was part of the 25/09/2026 procedure (the insurer did the same). If the line were treated as outside the episode, Rs 19,250 would drop out. The Rs 5,850 \"day care procedure room\" is treated as a procedure charge rather than room rent (no overnight stay), so no room cap/proportionate deduction; if it were treated as room rent it would exceed the Rs 5,000 cap. Cl. 4.6 limit not reached on either SI basis."
+}

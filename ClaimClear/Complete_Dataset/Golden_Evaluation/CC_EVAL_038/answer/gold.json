@@ -1,0 +1,51 @@
+{
+  "case_id": "CC_EVAL_038",
+  "payable": 66139,
+  "insurer_paid": 66139,
+  "overall": "inconsistent_documents",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Room / ICU rent above eligible limit",
+      "amount": 4000,
+      "verdict": "matches",
+      "correct_amount": 4000,
+      "why": "Cap 4,000/day; (5,000-4,000) x 4 (cl. 4.1(i))."
+    },
+    {
+      "deduction": "Less: Urine bag - List IV (part of cost of treatment)",
+      "amount": 180,
+      "verdict": "matches",
+      "correct_amount": 180,
+      "why": "Annexure A List IV item 18."
+    },
+    {
+      "deduction": "Less: Attendant food - List I (not payable)",
+      "amount": 380,
+      "verdict": "matches",
+      "correct_amount": 380,
+      "why": "Annexure A List I item 9 / 24."
+    },
+    {
+      "deduction": "Less: Discharge procedure charges - List II (part of room charges)",
+      "amount": 360,
+      "verdict": "matches",
+      "correct_amount": 360,
+      "why": "Annexure A List II item 30."
+    },
+    {
+      "deduction": "Less: Proportionate deduction (room category above eligibility)",
+      "amount": 7580,
+      "verdict": "matches",
+      "correct_amount": 7580,
+      "why": "20% of 37,900, medicines exempt (cl. 4.1 Note 2)."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 3481,
+      "verdict": "matches",
+      "correct_amount": 3481,
+      "why": "5% of 69,620 (cl. 9.3)."
+    }
+  ],
+  "notes": "Amounts all match the policy; but the letter's admission date (14-Aug-2025) contradicts the bill (14-Aug-2026). Treated as a typo in the letter; the money is right."
+}

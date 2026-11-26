@@ -1,0 +1,73 @@
+{
+  "case_id": "CC_DEV_007",
+  "base_id": "D8",
+  "variant": 2,
+  "tag": "SK",
+  "split": "dev",
+  "planted_type": "doc_inconsistency",
+  "insurer_error": {
+    "kind": "doc_duplicate_line",
+    "line": "dia1b"
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 22500,
+    "admissible": 21100,
+    "copay": 1055,
+    "payable": 20045,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 22200,
+    "copay": 1110,
+    "payable": 21090,
+    "rejected": null
+  },
+  "underpaid_by": -1045,
+  "letter_deductions": [
+    {
+      "deduction": "File opening charges - List II (part of room charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 300,
+      "verdict": "matches",
+      "correct_amount": 300
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 1110,
+      "verdict": "consequential",
+      "correct_amount": 1055
+    }
+  ],
+  "deductions_missing_from_letter": [
+    {
+      "deduction": "Serum electrolytes (code LAB-114) - duplicate of an earlier bill line (not actually incurred)",
+      "clause": "3.28",
+      "correct_amount": 1100
+    }
+  ],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 1055,
+      "insurer": 1110,
+      "excess_deducted": 55
+    },
+    {
+      "deduction": "Serum electrolytes (code LAB-114) - duplicate of an earlier bill line (not actually incurred)",
+      "clause": "3.28",
+      "correct": 1100,
+      "insurer": 0,
+      "excess_deducted": -1100
+    }
+  ],
+  "expected_verdict": "inconsistent_documents",
+  "doc_tweaks": {
+    "duplicate_line": "dia1b"
+  },
+  "open_question_flags": [],
+  "story": "Gastroenteritis; two doctors on two days; a test billed twice."
+}

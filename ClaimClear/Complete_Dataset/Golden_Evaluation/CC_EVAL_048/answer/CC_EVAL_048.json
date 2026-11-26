@@ -1,0 +1,198 @@
+{
+  "case_id": "CC_EVAL_048",
+  "base_id": "SET-25",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "heldout",
+  "planted_type": "formats",
+  "insurer_error": {
+    "kind": "pre_hospitalisation_not_applied",
+    "flags": [
+      "pre_hospitalisation_not_applied",
+      "wrongful_rejection"
+    ],
+    "method": "Pre-hospitalisation expenses treated as outpatient expenses."
+  },
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 10004,
+    "admissible": null,
+    "copay": null,
+    "payable": 9503.8,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": {
+      "reason": "Diagnostic tests done without hospitalisation are outpatient expenses and are not covered under the policy.",
+      "clause": ""
+    }
+  },
+  "underpaid_by": 9503.8,
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: Diagnostic tests done without hospitalisation are outpatient expenses and are not covered under the policy.",
+      "amount": 10004,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "reason": "not_covered"
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Claim not admissible: Diagnostic tests done without hospitalisation are outpatient expenses and are not covered under the policy.",
+      "clause": "",
+      "correct": 0,
+      "insurer": 10004,
+      "excess_deducted": 10004
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "FMT-05",
+      "category": "formats",
+      "status": "Good",
+      "title": "Landscape e-invoice with IRN and QR code",
+      "format": "Landscape e-invoice PDF with QR",
+      "what_changed_and_where": "Content unchanged. Only the format: landscape e-invoice with IRN and QR code.",
+      "expected_verdict": "clean_with_deductions",
+      "expected_flags": [],
+      "attack_goal": "None. Landscape layout and machine-readable block.",
+      "detection_signals": [
+        "QR payload agrees with the printed total",
+        "Mix of exempt and taxed lines",
+        "64-character IRN must not be read as an amount or policy number"
+      ],
+      "notes": ""
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-FMT-05",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for FMT-05",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-25",
+      "category": "settlement_letters",
+      "status": "Insurer error",
+      "title": "Pre-hospitalisation tests rejected as outpatient",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Reason for rejection: pre-hospitalisation tests for the CLM-2026-00176 admission called outpatient. ₹7,410 clearly disputable, ₹2,093.80 unverified.",
+      "expected_verdict": "settlement_disputable",
+      "expected_flags": [
+        "pre_hospitalisation_not_applied",
+        "wrongful_rejection"
+      ],
+      "attack_goal": "None. Tests whether ClaimClear links the tests to the admitted claim.",
+      "detection_signals": [
+        "Tests 9 days before admission for L4-L5 disc prolapse under claim CLM-2026-00176",
+        "MRI lumbar spine is clearly for the same condition; the other tests may be"
+      ],
+      "notes": "The MRI (₹7,800) is plainly for the disc prolapse. Whether the blood tests and home collection were part of the same work-up can't be told from the papers, so that part is unverified."
+    }
+  },
+  "open_question_flags": [],
+  "story": "Landscape e-invoice with IRN and QR code",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_EVAL_048",
+    "source_case": "heldout/case-008",
+    "documents": {
+      "02_itemised_bill.pdf": "FMT-05",
+      "01_policy_schedule.pdf": "SCH-FMT-05",
+      "03_settlement_letter.pdf": "SET-25"
+    },
+    "scenario": {
+      "type": "formats",
+      "title": "Landscape e-invoice with IRN and QR code",
+      "what_changed": "Content unchanged. Only the format: landscape e-invoice with IRN and QR code.",
+      "attack_goal": "None. Landscape layout and machine-readable block.",
+      "expected_flags": []
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2025-102254",
+      "holder": "Aarav Mulgunde",
+      "sex": "M",
+      "dob": "1975-04-03",
+      "sum_insured": 500000,
+      "period_start": "2025-11-01",
+      "period_end": "2026-10-31",
+      "first_inception": "2022-11-01",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": [
+      {
+        "claim_id": "CLM-2026-00176",
+        "policy_no": "AS-2025-102254",
+        "patient_name": "Aarav Mulgunde",
+        "status": "settled",
+        "provider": "Tarangi Health Institute",
+        "invoice_no": "THI/25-26/009640",
+        "invoice_date": "2026-02-21",
+        "ip_no": "IP-26-00541",
+        "admission": "2026-02-18",
+        "discharge": "2026-02-21",
+        "diagnosis": "L4-L5 disc prolapse",
+        "billed_amount": 105900.0,
+        "settled_amount": 98420.0,
+        "line_fingerprint": "c9d92edaad905eb4",
+        "line_items": [
+          {
+            "description": "Semi-private room",
+            "amount": 12600.0
+          },
+          {
+            "description": "Nursing and duty doctor charges",
+            "amount": 3300.0
+          },
+          {
+            "description": "Surgeon fee - lumbar microdiscectomy",
+            "amount": 33000.0
+          },
+          {
+            "description": "Anaesthetist fee",
+            "amount": 11000.0
+          },
+          {
+            "description": "Operation theatre charges",
+            "amount": 24000.0
+          },
+          {
+            "description": "Consultant visits",
+            "amount": 5100.0
+          },
+          {
+            "description": "Laboratory investigations",
+            "amount": 5200.0
+          },
+          {
+            "description": "Pharmacy - inpatient medicines",
+            "amount": 9400.0
+          },
+          {
+            "description": "Consumables - gloves, masks, syringes, caps",
+            "amount": 2300.0
+          }
+        ]
+      }
+    ]
+  }
+}

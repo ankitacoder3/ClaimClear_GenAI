@@ -1,0 +1,61 @@
+{
+  "case_id": "CC_EVAL_013",
+  "base_id": "H12",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "none",
+  "insurer_error": null,
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 95850,
+    "admissible": 93150,
+    "copay": 4658,
+    "payable": 88492,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 93150,
+    "copay": 4658,
+    "payable": 88492,
+    "rejected": null
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Abdominal binder - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 900,
+      "verdict": "matches",
+      "correct_amount": 900
+    },
+    {
+      "deduction": "Discharge procedure charges - List II (part of room charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 350,
+      "verdict": "matches",
+      "correct_amount": 350
+    },
+    {
+      "deduction": "Pharmacy refill - outside post-hospitalisation period (70 days)",
+      "clause_cited": "4.5",
+      "amount": 1450,
+      "verdict": "matches",
+      "correct_amount": 1450
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 4658,
+      "verdict": "matches",
+      "correct_amount": 4658
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Hernia repair, day-wise bill; post-discharge dressings and a late refill."
+}

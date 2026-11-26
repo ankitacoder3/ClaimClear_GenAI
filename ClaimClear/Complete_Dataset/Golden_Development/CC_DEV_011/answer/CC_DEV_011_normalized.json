@@ -1,0 +1,142 @@
+{
+  "case_id": "CC_DEV_011",
+  "split": "dev",
+  "source": "gen-data",
+  "source_case": "CC_DEV_011",
+  "scenario": {
+    "type": "none",
+    "recipe": "D2 variant 1",
+    "insurer_error": null,
+    "summary": "Prakash's right-eye cataract; left eye done earlier this year."
+  },
+  "expected": {
+    "overall_verdict": "matches_policy",
+    "overall_verdict_source": "matches",
+    "policy_payable": 35625,
+    "insurer_paid": 35625,
+    "gap": 0,
+    "deductions": [
+      {
+        "particulars": "Less: Eye kit and drape - List III (part of procedure charges)",
+        "amount": 900,
+        "verdict": "matches_policy",
+        "verdict_source": "matches",
+        "correct_amount": 900,
+        "why": "List III items 14-15 (Clause 4.7)."
+      },
+      {
+        "particulars": "Less: Cataract limit (right eye), balance available INR 37,500.00",
+        "amount": 17200,
+        "verdict": "matches_policy",
+        "verdict_source": "matches",
+        "correct_amount": 17200,
+        "why": "Clause 4.3 per-eye limit 37,500; 54,700 - 37,500."
+      },
+      {
+        "particulars": "Less: Co-payment 5%",
+        "amount": 1875,
+        "verdict": "matches_policy",
+        "verdict_source": "matches",
+        "correct_amount": 1875,
+        "why": "5% of 37,500 (Clause 9.3)."
+      }
+    ],
+    "notes": "All steps agree. SI remaining not binding."
+  },
+  "documents": {
+    "policy_wording.pdf": "00_policy_wording.pdf",
+    "policy_schedule.pdf": "01_policy_schedule.pdf",
+    "bill.pdf": "02_itemised_bill.pdf",
+    "settlement_letter.pdf": "03_settlement_letter.pdf",
+    "earlier_settlement_1.pdf": "04_earlier_settlement_1.pdf"
+  },
+  "source_answer": {
+    "meta": {
+      "case_id": "CC_DEV_011",
+      "base_id": "D2",
+      "variant": 1,
+      "tag": "MD",
+      "split": "dev",
+      "planted_type": "none",
+      "insurer_error": null,
+      "wording": "IFFCO",
+      "wording_uin": "IFFHLIP20161V011920",
+      "correct_settlement": {
+        "billed": 55600,
+        "admissible": 37500,
+        "copay": 1875,
+        "payable": 35625,
+        "rejected": null
+      },
+      "insurer_settlement": {
+        "admissible": 37500,
+        "copay": 1875,
+        "payable": 35625,
+        "rejected": null
+      },
+      "underpaid_by": 0,
+      "letter_deductions": [
+        {
+          "deduction": "Eye kit and drape - List III (part of procedure charges)",
+          "clause_cited": "4.7, Annexure A",
+          "amount": 900,
+          "verdict": "matches",
+          "correct_amount": 900
+        },
+        {
+          "deduction": "Cataract limit (right eye), balance available",
+          "clause_cited": "4.3",
+          "amount": 17200,
+          "verdict": "matches",
+          "correct_amount": 17200
+        },
+        {
+          "deduction": "Co-payment 5%",
+          "clause_cited": "9.3",
+          "amount": 1875,
+          "verdict": "matches",
+          "correct_amount": 1875
+        }
+      ],
+      "deductions_missing_from_letter": [],
+      "wrong_deductions": [],
+      "expected_verdict": "matches",
+      "doc_tweaks": {},
+      "open_question_flags": [
+        "si_depletion_by_paid"
+      ],
+      "story": "Prakash's right-eye cataract; left eye done earlier this year."
+    },
+    "gold": {
+      "case_id": "CC_DEV_011",
+      "payable": 35625,
+      "insurer_paid": 35625,
+      "overall": "matches",
+      "letter_deductions": [
+        {
+          "deduction": "Less: Eye kit and drape - List III (part of procedure charges)",
+          "amount": 900,
+          "verdict": "matches",
+          "correct_amount": 900,
+          "why": "List III items 14-15 (Clause 4.7)."
+        },
+        {
+          "deduction": "Less: Cataract limit (right eye), balance available INR 37,500.00",
+          "amount": 17200,
+          "verdict": "matches",
+          "correct_amount": 17200,
+          "why": "Clause 4.3 per-eye limit 37,500; 54,700 - 37,500."
+        },
+        {
+          "deduction": "Less: Co-payment 5%",
+          "amount": 1875,
+          "verdict": "matches",
+          "correct_amount": 1875,
+          "why": "5% of 37,500 (Clause 9.3)."
+        }
+      ],
+      "notes": "All steps agree. SI remaining not binding."
+    },
+    "worksheet_md": "# Worksheet CC_DEV_011\n\n## Facts from the documents\n- Policy AS/2025/658678/79, individual, SI 150,000, CB 0, period 01/11/2025-31/10/2026, continuous since 01/11/2021. PED declared: Type 2 diabetes.\n- Day care 05/10/2026: phacoemulsification with foldable IOL, RIGHT eye (cataract is Annexure C item 57 day care; 4.1.1(iv), 4.1 Note 1).\n- Earlier claim this policy year: LEFT eye cataract, admitted 30,000, paid 28,500.\n\n## Eligibility checks\n- Renewal with continuous cover since 01/11/2021; admission 05/10/2026 lies within the policy period 01/11/2025-31/10/2026 (Clause 2). 30-day (6.2), 24/48-month (6.3) and PED (6.1) waiting periods: cataract 24-month wait (6.3 i.9) completed; PED diabetes unrelated.\n- No room/ICU charge (day care) -> no room caps or proportion.\n\n## Limits (Clause 4.1(i), 4.1(ii))\n- Room rent cap = min(2% x SI 150,000.00, 5,000) = 3,000.00 per day\n- ICU cap = min(5% x SI 150,000.00, 10,000) = 7,500.00 per day\n- Sum insured used for these % limits is the base SI in the schedule (Clause 3.47 defines SI separately from Cumulative Bonus).\n\n## Proportionate deduction ratio (Clause 4.1 Note 2; DECISIONS #1, #2)\n- No room/ICU line exceeds its cap -> no proportionate deduction (ratio = 1).\n\n## Bill lines\n| # | Item | Billed | Treatment | Clause | Admissible before proportion |\n|---|---|---:|---|---|---:|\n| 1 | Surgeon fee | 22,000.00 | Payable | 4.1(iii)/(iv) | 22,000.00 |\n| 2 | OT and day care charges | 9,000.00 | Payable | 4.1(iii)/(iv) | 9,000.00 |\n| 3 | Foldable IOL | 18,000.00 | Payable | 4.1(iv) surgical appliances/implant | 18,000.00 |\n| 4 | Eye drops and medicines | 2,400.00 | Payable (medicines) | 4.1(iv); 4.1 Note 2 | 2,400.00 |\n| 5 | Consumables | 1,800.00 | Payable | 4.1(iii)/(iv) | 1,800.00 |\n| 6 | Eye kit and drape | 900.00 | Not payable: List III items 14-15 (eye kit, eye drape) - subsumed into procedure charges | 4.7, Annexure A | 0.00 |\n| 7 | A-scan biometry, blood sugar | 1,500.00 | Payable | 4.1(iii)/(iv) | 1,500.00 |\n| | **Total billed/claimed** | **55,600.00** | | | **54,700.00** |\n\n- Check: hospital lines sum to 55,600.00 vs bill grand total 55,600.00 -> agree\n- Total claimed (hospital + other bills) = 55,600.00\n\n## Step results\n1. Room/ICU excess over caps (4.1(i)/(ii)): 0.00\n2. Non-payable / subsumed items (4.7, Annexure A; 4.1.1(v); 4.5): 900.00\n3. Proportionate deduction: nil\n4. Admissible before sub-limit/co-pay = 54,700.00\n5. Sub-limit: Cataract (Clause 4.3) = lower of 25% x 1,50,000 = 37,500 or 40,000, per eye; right eye unused -> available 37,500.00\n   Sub-limit deduction 17,200.00 ; admissible after sub-limit 37,500.00\n6. Co-payment 5% (Clause 9.3; DECISIONS #3, on admissible after all deductions/sub-limits): 37,500.00 x 5% = 1,875.00 -> 1,875\n7. Net after co-pay = 35,625.00\n8. Sum insured + CB this policy year = 150,000.00; earlier claims paid 28,500.00 / admitted 30,000.00 -> available 121,500.00 (by paid) / 120,000.00 (by admitted) (Clause 2, 3.47, DECISIONS #4)\n9. **Payable = 35,625**\n\n## Comparison with the settlement letter\n| Letter deduction | Amount | Verdict | Correct amount | Why |\n|---|---:|---|---:|---|\n| Less: Eye kit and drape - List III (part of procedure charges) | 900 | matches | 900 | List III items 14-15 (Clause 4.7). |\n| Less: Cataract limit (right eye), balance available INR 37,500.00 | 17,200 | matches | 17,200 | Clause 4.3 per-eye limit 37,500; 54,700 - 37,500. |\n| Less: Co-payment 5% | 1,875 | matches | 1,875 | 5% of 37,500 (Clause 9.3). |\n\n- Insurer paid: 35,625 ; gold payable: 35,625 ; difference (payable - paid): 0\n- Overall: **matches**\n\n## Notes\nAll steps agree. SI remaining not binding.\n"
+  }
+}

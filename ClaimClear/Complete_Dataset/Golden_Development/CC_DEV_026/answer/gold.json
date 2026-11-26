@@ -1,0 +1,16 @@
+{
+  "case_id": "CC_DEV_026",
+  "payable": 0,
+  "insurer_paid": 0,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: Hospital records show the admission on 12-Feb-2026, 11 days after your policy started on 01-Feb-2026. Treatment of an illness in the first 30 days of cover is excluded under the initial waiting period, so the claim is not payable. The bill you sent gives different dates, name and age from the hospital's records.",
+      "amount": 90200,
+      "verdict": "matches",
+      "correct_amount": 90200,
+      "why": "Matches: the admission is inside the 30-day initial waiting period."
+    }
+  ],
+  "notes": "Matches: the admission is inside the 30-day initial waiting period."
+}

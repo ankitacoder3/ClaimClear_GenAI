@@ -1,0 +1,93 @@
+{
+  "case_id": "CC_EVAL_002",
+  "base_id": "H12",
+  "variant": 2,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "proportionate",
+  "insurer_error": {
+    "kind": "prop_wrong_cap",
+    "cap": 4000
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 97850,
+    "admissible": 80792,
+    "copay": 4040,
+    "payable": 76752,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 68433,
+    "copay": 3422,
+    "payable": 65011,
+    "rejected": null
+  },
+  "underpaid_by": 11741,
+  "letter_deductions": [
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause_cited": "4.1(i), 4.1(ii)",
+      "amount": 2000,
+      "verdict": "matches",
+      "correct_amount": 2000
+    },
+    {
+      "deduction": "Abdominal binder - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 900,
+      "verdict": "matches",
+      "correct_amount": 900
+    },
+    {
+      "deduction": "Discharge procedure charges - List II (part of room charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 350,
+      "verdict": "matches",
+      "correct_amount": 350
+    },
+    {
+      "deduction": "Pharmacy refill - outside post-hospitalisation period (70 days)",
+      "clause_cited": "4.5",
+      "amount": 1450,
+      "verdict": "matches",
+      "correct_amount": 1450
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause_cited": "4.1 Note 2",
+      "amount": 24717,
+      "verdict": "disputable",
+      "correct_amount": 12358
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 3422,
+      "verdict": "consequential",
+      "correct_amount": 4040
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 4040,
+      "insurer": 3422,
+      "excess_deducted": -618
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause": "4.1 Note 2",
+      "correct": 12358,
+      "insurer": 24717,
+      "excess_deducted": 12359
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Hernia repair, day-wise bill; post-discharge dressings and a late refill."
+}

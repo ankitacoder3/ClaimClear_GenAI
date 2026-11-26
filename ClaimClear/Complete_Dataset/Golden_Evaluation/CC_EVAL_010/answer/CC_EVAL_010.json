@@ -1,0 +1,93 @@
+{
+  "case_id": "CC_EVAL_010",
+  "base_id": "H9",
+  "variant": 2,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "room_icu_cap",
+  "insurer_error": {
+    "kind": "room_days",
+    "days": 5
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 139450,
+    "admissible": 115658,
+    "copay": 5783,
+    "payable": 109875,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 114658,
+    "copay": 5733,
+    "payable": 108925,
+    "rejected": null
+  },
+  "underpaid_by": 950,
+  "letter_deductions": [
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause_cited": "4.1(i), 4.1(ii)",
+      "amount": 5000,
+      "verdict": "disputable",
+      "correct_amount": 4000
+    },
+    {
+      "deduction": "Crepe bandage - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 450,
+      "verdict": "matches",
+      "correct_amount": 450
+    },
+    {
+      "deduction": "Splint - List I (not payable)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 1200,
+      "verdict": "matches",
+      "correct_amount": 1200
+    },
+    {
+      "deduction": "Proportionate deduction (room category above eligibility)",
+      "clause_cited": "4.1 Note 2",
+      "amount": 16642,
+      "verdict": "matches",
+      "correct_amount": 16642
+    },
+    {
+      "deduction": "Ambulance charges above limit",
+      "clause_cited": "4.1.1(v)",
+      "amount": 1500,
+      "verdict": "matches",
+      "correct_amount": 1500
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 5733,
+      "verdict": "consequential",
+      "correct_amount": 5783
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 5783,
+      "insurer": 5733,
+      "excess_deducted": -50
+    },
+    {
+      "deduction": "Room / ICU rent above eligible limit",
+      "clause": "4.1(i), 4.1(ii)",
+      "correct": 4000,
+      "insurer": 5000,
+      "excess_deducted": 1000
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [],
+  "story": "Road accident 16 days into a new policy; plate fixation; ambulance."
+}

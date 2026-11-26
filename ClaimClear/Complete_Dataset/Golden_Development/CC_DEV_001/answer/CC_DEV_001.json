@@ -1,0 +1,74 @@
+{
+  "case_id": "CC_DEV_001",
+  "base_id": "D7",
+  "variant": 2,
+  "tag": "SK",
+  "split": "dev",
+  "planted_type": "not_verifiable",
+  "insurer_error": {
+    "kind": "nv_room_lumpsum",
+    "amount": 3000
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 70200,
+    "admissible": 69500,
+    "copay": 3475,
+    "payable": 66025,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 69500,
+    "copay": 3475,
+    "payable": 63025,
+    "rejected": null
+  },
+  "underpaid_by": 3000,
+  "letter_deductions": [
+    {
+      "deduction": "Gauze and cotton - List III (part of procedure charges)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 550,
+      "verdict": "matches",
+      "correct_amount": 550
+    },
+    {
+      "deduction": "Urine bag - List IV (part of cost of treatment)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 150,
+      "verdict": "matches",
+      "correct_amount": 150
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 3475,
+      "verdict": "matches",
+      "correct_amount": 3475
+    },
+    {
+      "deduction": "Room and nursing charges - deduction as per eligibility",
+      "clause_cited": "",
+      "amount": 3000,
+      "verdict": "not_verifiable",
+      "correct_amount": 0
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Room and nursing charges - deduction as per eligibility",
+      "clause": "",
+      "correct": 0,
+      "insurer": 3000,
+      "excess_deducted": 3000
+    }
+  ],
+  "expected_verdict": "not_verifiable",
+  "doc_tweaks": {
+    "room_lumpsum": true
+  },
+  "open_question_flags": [],
+  "story": "Snakebite in a farmer: three ICU days, one ward day."
+}

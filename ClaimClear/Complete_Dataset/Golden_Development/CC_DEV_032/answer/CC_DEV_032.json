@@ -1,0 +1,143 @@
+{
+  "case_id": "CC_DEV_032",
+  "base_id": "SET-11",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "dev",
+  "planted_type": "synthetic_fake",
+  "insurer_error": null,
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 182162.5,
+    "admissible": null,
+    "copay": null,
+    "payable": 0,
+    "rejected": {
+      "reason": "Our investigation found charges for services that were not provided: 9 room days and 4 ICU days for a 3-night stay, ventilator support and an MRI that the diagnosis does not support, and services dated after discharge. Under the fraud condition of the policy, the claim is repudiated.",
+      "clause": ""
+    }
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": {
+      "reason": "Our investigation found charges for services that were not provided: 9 room days and 4 ICU days for a 3-night stay, ventilator support and an MRI that the diagnosis does not support, and services dated after discharge. Under the fraud condition of the policy, the claim is repudiated.",
+      "clause": ""
+    }
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: Our investigation found charges for services that were not provided: 9 room days and 4 ICU days for a 3-night stay, ventilator support and an MRI that the diagnosis does not support, and services dated after discharge. Under the fraud condition of the policy, the claim is repudiated.",
+      "amount": 182162.5,
+      "verdict": "matches",
+      "correct_amount": 182162.5,
+      "reason": "not_genuine"
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "FAKE-05",
+      "category": "synthetic_fake",
+      "status": "Fake",
+      "title": "Phantom services and inconsistent tax",
+      "format": "Digital PDF",
+      "what_changed_and_where": "Rows 1-2: 9 room and 4 ICU days in a 3-night stay. Rows 3-4: ventilator and MRI brain for gastroenteritis. Row 7: dated after discharge. Totals: CGST and SGST differ.",
+      "expected_verdict": "reject",
+      "expected_flags": [
+        "room_days_exceed_stay",
+        "services_after_discharge",
+        "clinically_unjustified_services",
+        "above_tariff_range",
+        "icu_above_limit",
+        "gst_split_mismatch"
+      ],
+      "attack_goal": "Pad a short, simple admission with services that never happened.",
+      "detection_signals": [
+        "9 room days and 4 ICU days in a 3-night stay",
+        "Physiotherapy dated after discharge",
+        "Ventilator and MRI brain for mild gastroenteritis",
+        "CGST and SGST differ"
+      ],
+      "notes": ""
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-FAKE-05",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for FAKE-05",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-11",
+      "category": "settlement_letters",
+      "status": "Good",
+      "title": "Fabricated bill repudiated: phantom services",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Correct rejection under the fraud condition: services not provided.",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "The insurer's decision is right. ClaimClear must not draft a grievance.",
+      "detection_signals": [
+        "Rejection reason is supported by the bill",
+        "Nothing is payable under the policy"
+      ],
+      "notes": ""
+    }
+  },
+  "open_question_flags": [],
+  "story": "Phantom services and inconsistent tax",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_DEV_032",
+    "source_case": "dev/case-012",
+    "documents": {
+      "02_itemised_bill.pdf": "FAKE-05",
+      "01_policy_schedule.pdf": "SCH-FAKE-05",
+      "03_settlement_letter.pdf": "SET-11"
+    },
+    "scenario": {
+      "type": "synthetic_fake",
+      "title": "Phantom services and inconsistent tax",
+      "what_changed": "Rows 1-2: 9 room and 4 ICU days in a 3-night stay. Rows 3-4: ventilator and MRI brain for gastroenteritis. Row 7: dated after discharge. Totals: CGST and SGST differ.",
+      "attack_goal": "Pad a short, simple admission with services that never happened.",
+      "expected_flags": [
+        "room_days_exceed_stay",
+        "services_after_discharge",
+        "clinically_unjustified_services",
+        "above_tariff_range",
+        "icu_above_limit",
+        "gst_split_mismatch"
+      ]
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2026-101603",
+      "holder": "Hridaan Bhuskute",
+      "sex": "M",
+      "dob": "1962-10-08",
+      "sum_insured": 500000,
+      "period_start": "2026-01-01",
+      "period_end": "2026-12-31",
+      "first_inception": "2020-01-01",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": []
+  }
+}

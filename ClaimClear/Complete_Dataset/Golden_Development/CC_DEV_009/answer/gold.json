@@ -1,0 +1,37 @@
+{
+  "case_id": "CC_DEV_009",
+  "payable": 79372,
+  "insurer_paid": 69777,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Platelet transfusion (SDP) - Blood products not payable",
+      "amount": 10100,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "Clause 4.1(iv) expressly covers blood; platelets/SDP are not on any Annexure A list."
+    },
+    {
+      "deduction": "Less: Attendant food and mineral water - List I (not payable)",
+      "amount": 700,
+      "verdict": "matches",
+      "correct_amount": 700,
+      "why": "Annexure A List I (Clause 4.7)."
+    },
+    {
+      "deduction": "Less: Multivitamin tonic - outside post-hospitalisation period (75 days)",
+      "amount": 480,
+      "verdict": "matches",
+      "correct_amount": 480,
+      "why": "Outside 60 days (Clause 4.5)."
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 3673,
+      "verdict": "consequential",
+      "correct_amount": 4178,
+      "why": "Method right (Clause 9.3) but base cut by the wrong 10,100; 5% of 83,550."
+    }
+  ],
+  "notes": "Blood/blood products are payable under 4.1(iv)."
+}

@@ -1,0 +1,74 @@
+{
+  "case_id": "CC_EVAL_018",
+  "base_id": "H3",
+  "variant": 2,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "sublimit",
+  "insurer_error": {
+    "kind": "modern_pct",
+    "pct": 25
+  },
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "correct_settlement": {
+    "billed": 141700,
+    "admissible": 100000,
+    "copay": 5000,
+    "payable": 95000,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 50000,
+    "copay": 2500,
+    "payable": 47500,
+    "rejected": null
+  },
+  "underpaid_by": 47500,
+  "letter_deductions": [
+    {
+      "deduction": "Registration charges - List IV (part of cost of treatment)",
+      "clause_cited": "4.7, Annexure A",
+      "amount": 500,
+      "verdict": "matches",
+      "correct_amount": 500
+    },
+    {
+      "deduction": "Modern treatment limit, balance available",
+      "clause_cited": "4.6",
+      "amount": 91200,
+      "verdict": "disputable",
+      "correct_amount": 41200
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "clause_cited": "9.3",
+      "amount": 2500,
+      "verdict": "consequential",
+      "correct_amount": 5000
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [
+    {
+      "deduction": "Co-payment 5%",
+      "clause": "9.3",
+      "correct": 5000,
+      "insurer": 2500,
+      "excess_deducted": -2500
+    },
+    {
+      "deduction": "Modern treatment limit, balance available",
+      "clause": "4.6",
+      "correct": 41200,
+      "insurer": 91200,
+      "excess_deducted": 50000
+    }
+  ],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {},
+  "open_question_flags": [
+    "si_depletion_by_paid"
+  ],
+  "story": "Laser prostate surgery (modern treatment); unrelated earlier claim."
+}

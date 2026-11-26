@@ -1,0 +1,121 @@
+{
+  "case_id": "CC_DEV_027",
+  "base_id": "SET-23",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "dev",
+  "planted_type": "formats",
+  "insurer_error": {
+    "kind": "copay_misapplied",
+    "flags": [
+      "copay_misapplied"
+    ],
+    "method": "Co-payment applied at 10% instead of the policy's 5%."
+  },
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 12800,
+    "admissible": null,
+    "copay": null,
+    "payable": 12160,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 12800,
+    "copay": 1280,
+    "payable": 11520,
+    "rejected": null
+  },
+  "underpaid_by": 640,
+  "letter_deductions": [],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "disputable",
+  "doc_tweaks": {
+    "02_itemised_bill.png": {
+      "doc_id": "FMT-03",
+      "category": "formats",
+      "status": "Good",
+      "title": "Hand-filled nursing home bill on a pre-printed form",
+      "format": "Scanned PNG of hand-filled form",
+      "what_changed_and_where": "Content unchanged. Only the format: scanned hand-filled form.",
+      "expected_verdict": "clean_with_deductions",
+      "expected_flags": [],
+      "attack_goal": "None. Handwriting extraction stress test.",
+      "detection_signals": [
+        "Script font with baseline jitter",
+        "Amounts as 3000/- with Rs. and no rupee sign",
+        "Stamp and signature over a printed grid"
+      ],
+      "notes": ""
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-FMT-03",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for FMT-03",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-23",
+      "category": "settlement_letters",
+      "status": "Insurer error",
+      "title": "Co-payment taken as 10% instead of 5%",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Totals: co-payment taken as 10% instead of 5%. Underpaid by ₹640.",
+      "expected_verdict": "settlement_disputable",
+      "expected_flags": [
+        "copay_misapplied"
+      ],
+      "attack_goal": "None. Tests whether ClaimClear checks the co-payment against the wording.",
+      "detection_signals": [
+        "Co-payment 10%; the policy has 5% on every claim"
+      ],
+      "notes": ""
+    }
+  },
+  "open_question_flags": [],
+  "story": "Hand-filled nursing home bill on a pre-printed form",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_DEV_027",
+    "source_case": "dev/case-007",
+    "documents": {
+      "02_itemised_bill.png": "FMT-03",
+      "01_policy_schedule.pdf": "SCH-FMT-03",
+      "03_settlement_letter.pdf": "SET-23"
+    },
+    "scenario": {
+      "type": "formats",
+      "title": "Hand-filled nursing home bill on a pre-printed form",
+      "what_changed": "Content unchanged. Only the format: scanned hand-filled form.",
+      "attack_goal": "None. Handwriting extraction stress test.",
+      "expected_flags": []
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2026-102133",
+      "holder": "Ojas Pendharke",
+      "sex": "M",
+      "dob": "1990-10-12",
+      "sum_insured": 200000,
+      "period_start": "2026-01-05",
+      "period_end": "2027-01-04",
+      "first_inception": "2024-01-05",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": []
+  }
+}

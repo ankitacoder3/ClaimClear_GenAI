@@ -1,0 +1,37 @@
+{
+  "case_id": "CC_EVAL_019",
+  "payable": 69967,
+  "insurer_paid": 55000,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Less: Mineral water - List I (not payable)",
+      "amount": 290,
+      "verdict": "matches",
+      "correct_amount": 290,
+      "why": "Annexure A List I item 12 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Registration charges - List IV (part of cost of treatment)",
+      "amount": 370,
+      "verdict": "matches",
+      "correct_amount": 370,
+      "why": "Annexure A List IV item 1 (Cl. 4.7)"
+    },
+    {
+      "deduction": "Less: Co-payment 5%",
+      "amount": 3683,
+      "verdict": "matches",
+      "correct_amount": 3683,
+      "why": "5% of Rs 73,650 = Rs 3,682.5, rounded half up (Cl. 9.3)"
+    },
+    {
+      "deduction": "Less: Sum insured balance for the policy year Rs 55,000/-",
+      "amount": 14967,
+      "verdict": "disputable",
+      "correct_amount": 0,
+      "why": "SI Rs 2,00,000 less earlier claim leaves Rs 74,000 (admitted) or Rs 80,300 (paid), not Rs 55,000; net Rs 69,967 fits (Cl. 2, 3.47)"
+    }
+  ],
+  "notes": "Rs 55,000 balance would need Rs 1,45,000 used - the earlier amount CLAIMED, not admitted or paid. Correct payable Rs 69,967 under both SI bases vs Rs 55,000 paid."
+}

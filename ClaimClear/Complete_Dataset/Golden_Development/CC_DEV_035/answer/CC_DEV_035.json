@@ -1,0 +1,139 @@
+{
+  "case_id": "CC_DEV_035",
+  "base_id": "SET-07",
+  "variant": 1,
+  "tag": "Synthetic",
+  "split": "dev",
+  "planted_type": "synthetic_fake",
+  "insurer_error": null,
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "correct_settlement": {
+    "billed": 145000,
+    "admissible": null,
+    "copay": null,
+    "payable": 0,
+    "rejected": {
+      "reason": "The hospital named on the bill is not registered with the local authority and could not be traced at the address given, so it does not meet the policy's definition of a hospital. The bill could not be verified, and the claim is not payable.",
+      "clause": ""
+    }
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": {
+      "reason": "The hospital named on the bill is not registered with the local authority and could not be traced at the address given, so it does not meet the policy's definition of a hospital. The bill could not be verified, and the claim is not payable.",
+      "clause": ""
+    }
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Claim not admissible: The hospital named on the bill is not registered with the local authority and could not be traced at the address given, so it does not meet the policy's definition of a hospital. The bill could not be verified, and the claim is not payable.",
+      "amount": 145000,
+      "verdict": "matches",
+      "correct_amount": 145000,
+      "reason": "not_genuine"
+    }
+  ],
+  "deductions_missing_from_letter": [],
+  "wrong_deductions": [],
+  "expected_verdict": "matches",
+  "doc_tweaks": {
+    "02_itemised_bill.pdf": {
+      "doc_id": "FAKE-01",
+      "category": "synthetic_fake",
+      "status": "Fake",
+      "title": "Hospital that does not exist, with a malformed GSTIN",
+      "format": "Digital PDF",
+      "what_changed_and_where": "Whole bill invented. Header: unregistered hospital, 13-character GSTIN. Details: no UHID or IP number. Rows 1-6: round amounts and vague names.",
+      "expected_verdict": "reject",
+      "expected_flags": [
+        "provider_not_in_registry",
+        "gstin_invalid_format",
+        "round_number_pattern",
+        "vague_line_descriptions"
+      ],
+      "attack_goal": "Claim for an admission at an invented hospital.",
+      "detection_signals": [
+        "Provider absent from providers.json",
+        "GSTIN has 13 characters, not 15",
+        "All amounts are round",
+        "No registration number, UHID or IP number"
+      ],
+      "notes": ""
+    },
+    "01_policy_schedule.pdf": {
+      "doc_id": "SCH-FAKE-01",
+      "category": "policy_schedules",
+      "status": "Good",
+      "title": "Policy schedule for FAKE-01",
+      "format": "Insurer schedule PDF",
+      "what_changed_and_where": "Nothing changed. Matches reference/policies.json.",
+      "expected_verdict": "schedule_matches_records",
+      "expected_flags": [],
+      "attack_goal": "None.",
+      "detection_signals": [
+        "Matches reference/policies.json"
+      ],
+      "notes": ""
+    },
+    "03_settlement_letter.pdf": {
+      "doc_id": "SET-07",
+      "category": "settlement_letters",
+      "status": "Good",
+      "title": "Fabricated bill repudiated: unregistered hospital",
+      "format": "Insurer letter PDF",
+      "what_changed_and_where": "Correct rejection: the hospital is unregistered and the bill can't be verified.",
+      "expected_verdict": "settlement_matches_policy",
+      "expected_flags": [],
+      "attack_goal": "The insurer's decision is right. ClaimClear must not draft a grievance.",
+      "detection_signals": [
+        "Rejection reason is supported by the bill",
+        "Nothing is payable under the policy"
+      ],
+      "notes": ""
+    }
+  },
+  "open_question_flags": [],
+  "story": "Hospital that does not exist, with a malformed GSTIN",
+  "source": {
+    "dataset": "ClaimClear synthetic dataset",
+    "case": "CC_DEV_035",
+    "source_case": "dev/case-015",
+    "documents": {
+      "02_itemised_bill.pdf": "FAKE-01",
+      "01_policy_schedule.pdf": "SCH-FAKE-01",
+      "03_settlement_letter.pdf": "SET-07"
+    },
+    "scenario": {
+      "type": "synthetic_fake",
+      "title": "Hospital that does not exist, with a malformed GSTIN",
+      "what_changed": "Whole bill invented. Header: unregistered hospital, 13-character GSTIN. Details: no UHID or IP number. Rows 1-6: round amounts and vague names.",
+      "attack_goal": "Claim for an admission at an invented hospital.",
+      "expected_flags": [
+        "provider_not_in_registry",
+        "gstin_invalid_format",
+        "round_number_pattern",
+        "vague_line_descriptions"
+      ]
+    },
+    "note": "correct_settlement admissible and copay are not in the synthetic answer key, so they are left null rather than computed. Earlier claims for these cases are in the insurer's records below, not in the documents."
+  },
+  "insurer_records": {
+    "policy": {
+      "policy_no": "AS-2025-101467",
+      "holder": "Arnav Tellikere",
+      "sex": "M",
+      "dob": "1980-07-11",
+      "sum_insured": 500000,
+      "period_start": "2025-12-01",
+      "period_end": "2026-11-30",
+      "first_inception": "2022-12-01",
+      "product": "Arogya Sanjeevani Policy",
+      "insurer": "Aarohan General Insurance Ltd."
+    },
+    "claim_history": []
+  }
+}

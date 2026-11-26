@@ -1,0 +1,8 @@
+{
+  "case_id": "CC_DEV_027",
+  "payable": 12160,
+  "insurer_paid": 11520,
+  "overall": "disputable",
+  "letter_deductions": [],
+  "notes": "Co-payment applied at 10% instead of the policy's 5%."
+}
