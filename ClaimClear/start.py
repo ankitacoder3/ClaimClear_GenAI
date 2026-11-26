@@ -305,6 +305,42 @@ def chat_port(asked: "int | None") -> int:
     return DEFAULT_CHAT_PORT
 
 
+MONITORING = REPO / "deploy" / "monitoring"
+
+
+def start_monitoring(env: dict) -> list:
+    """Docker image only (CLAIMCLEAR_MONITORING=1): Prometheus, Grafana and nginx next to the chat. nginx is the one
+    public port (8000): the chat at /, Grafana at /grafana/, Prometheus at /prometheus/. Grafana is read-only for
+    visitors; its admin password is GRAFANA_ADMIN_PASSWORD (a Space secret), else a random one."""
+    if os.environ.get("CLAIMCLEAR_MONITORING") != "1" or not all(shutil.which(b) for b in ("prometheus", "grafana", "nginx")):
+        return []
+    import secrets
+    data = REPO / "var"
+    (data / "prometheus").mkdir(parents=True, exist_ok=True)
+    (data / "grafana" / "logs").mkdir(parents=True, exist_ok=True)
+    grafana_env = {**env,
+                   "GF_SERVER_HTTP_ADDR": "127.0.0.1", "GF_SERVER_HTTP_PORT": "3000",
+                   "GF_SERVER_ROOT_URL": "%(protocol)s://%(domain)s/grafana/", "GF_SERVER_SERVE_FROM_SUB_PATH": "true",
+                   "GF_PATHS_DATA": str(data / "grafana"), "GF_PATHS_LOGS": str(data / "grafana" / "logs"),
+                   "GF_PATHS_PLUGINS": str(data / "grafana" / "plugins"),
+                   "GF_PATHS_PROVISIONING": str(MONITORING / "grafana" / "provisioning"),
+                   "GF_AUTH_ANONYMOUS_ENABLED": "true", "GF_AUTH_ANONYMOUS_ORG_ROLE": "Viewer",
+                   "GF_USERS_ALLOW_SIGN_UP": "false", "GF_ANALYTICS_REPORTING_ENABLED": "false",
+                   "GF_ANALYTICS_CHECK_FOR_UPDATES": "false", "GF_SECURITY_DISABLE_GRAVATAR": "true",
+                   "GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH": str(MONITORING / "grafana" / "dashboards" / "claimclear.json"),
+                   "GF_SECURITY_ADMIN_PASSWORD": os.environ.get("GRAFANA_ADMIN_PASSWORD") or secrets.token_urlsafe(16)}
+    quiet = {"stdout": subprocess.DEVNULL, "stderr": subprocess.DEVNULL}
+    procs = [subprocess.Popen(["prometheus", f"--config.file={MONITORING / 'prometheus.yml'}",
+                               f"--storage.tsdb.path={data / 'prometheus'}", "--storage.tsdb.retention.time=7d",
+                               "--web.listen-address=127.0.0.1:9090", "--web.external-url=/prometheus/",
+                               "--web.route-prefix=/prometheus"], cwd=MONITORING, **quiet),
+             subprocess.Popen(["grafana", "server", "--homepath", os.environ.get("GRAFANA_HOME", "/opt/grafana")],
+                              env=grafana_env, **quiet),
+             subprocess.Popen(["nginx", "-e", "/dev/stderr", "-c", str(MONITORING / "nginx.conf"), "-g", "daemon off;"])]
+    say("monitoring: Prometheus at /prometheus/, Grafana at /grafana/ (read-only), behind nginx on port 8000")
+    return procs
+
+
 def run_chat(agents_py: Path, env: dict, open_browser: bool, port: int) -> int:
     """UI2, the Chainlit chat (the default): runs until Ctrl+C."""
     if port_open(port):
@@ -426,6 +462,7 @@ def main() -> int:
     env = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1", "CLAIMCLEAR_MCP_MODE": "http",
            "CLAIMCLEAR_SERVER_PYTHON": str(server_py), "CLAIMCLEAR_REPO": str(REPO)}
     servers = start_servers(server_py, env)
+    monitoring = start_monitoring(env)
     try:
         if args.servers_only:
             say("servers are running. Press Ctrl+C to stop them.")
@@ -444,6 +481,9 @@ def main() -> int:
     except KeyboardInterrupt:
         return 0
     finally:
+        for proc in monitoring:
+            if proc.poll() is None:
+                proc.terminate()
         if servers is not None and servers.poll() is None:
             servers.terminate()                     # dev_servers.py stops its five children on exit
             try:

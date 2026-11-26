@@ -47,6 +47,7 @@ import security  # noqa: E402
 from security import consistency_check  # noqa: E402
 
 import findings
+import metrics
 import store_docs
 from case_status import documents_block, review_readiness
 from identify import identify_documents
@@ -69,6 +70,9 @@ def setup_log() -> None:
         parent.setLevel(logging.INFO)
 
 
+metrics.start()                                       # /metrics for Prometheus (Docker image only)
+
+
 def log(event: str, **details) -> None:
     """One line: the chat's session (first 8 characters), the event, and its details as JSON."""
     try:
@@ -76,6 +80,7 @@ def log(event: str, **details) -> None:
     except Exception:
         session = "-"
     LOG.info("%s %s %s", session, event, json.dumps(details, ensure_ascii=False, default=str)[:3000])
+    metrics.observe(event, details)
 
 
 def logged(handler):
@@ -85,6 +90,7 @@ def logged(handler):
         try:
             return await handler(*args, **kwargs)
         except Exception as exc:
+            metrics.observe("handler_error", {})
             LOG.exception("%s error in %s", getattr(getattr(cl.context, "session", None), "id", "-")[:8],
                           handler.__name__)
             await cl.Message(content=f"Something went wrong ({type(exc).__name__}: {str(exc)[:200]}). "

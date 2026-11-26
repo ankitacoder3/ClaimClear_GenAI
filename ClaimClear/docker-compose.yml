@@ -8,7 +8,7 @@ services:
       - path: .env
         required: false
     ports:
-      - "80:80"       # UI2, the chat, at http://localhost
+      - "80:8000"     # UI2, the chat, at http://localhost (8000 inside: the container runs without root)
     volumes:
       - claimclear-var:/app/var   # uploads, case store, logs (cleared on start unless CLAIMCLEAR_KEEP_DATA=1)
     restart: unless-stopped
