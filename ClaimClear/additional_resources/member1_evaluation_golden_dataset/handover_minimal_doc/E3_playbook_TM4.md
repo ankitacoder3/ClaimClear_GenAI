@@ -20,6 +20,19 @@ CLAIMCLEAR_PLAYBOOK=on  .venv-agents/Scripts/python ui_chainlit/ui_judge_eval.py
 
 PowerShell: `$env:CLAIMCLEAR_PLAYBOOK="on"` before the command. Linux/macOS: `.venv-agents/bin/python`.
 
+## Choosing the models (all optional)
+
+Every model can be set on the `ui_judge_eval.py` command line; otherwise `ClaimClear/.env` decides (see
+`.env.example`), else the default below. Each run prints the models it used and saves them as `models.json` next to
+its results.
+
+| Model | Option | Default (`.env` setting, else built-in) |
+|---|---|---|
+| System (chat answers, free-form explanation, `llm` guard) | `--model` | `CLAIMCLEAR_CHAT_MODEL`, else `openai/gpt-4.1-mini` |
+| Document reading | `--extraction-model` | `CLAIMCLEAR_EXTRACTION_MODEL`, else the system model |
+| Security guards | `--guards`, `--guard-model` | `CLAIMCLEAR_GUARDS` (`rules,safeguard`); `CLAIMCLEAR_GUARD_MODEL_SAFEGUARD`, else `openai/gpt-oss-safeguard-20b` |
+| Judge | `--judge-model` | `CLAIMCLEAR_JUDGE_MODEL`, else `openai/gpt-4.1-mini` (the guide wants another family, e.g. `google/gemini-3.1-flash-lite`) |
+
 ## How the loop works (no adjudicator in our design)
 
 1. **Run** the dev cases through the chat's real path (`ui_judge_eval.py`); the **LLM judge** grades each against the

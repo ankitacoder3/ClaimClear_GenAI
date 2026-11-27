@@ -359,6 +359,18 @@ def explanation_summary(results: dict) -> str:
             f"overclaims {sum(len(s['overclaims']) for s in scores)}")
 
 
+def models_used(app: dict) -> dict:
+    """Which model did what in this run (printed, and saved as models.json next to the results)."""
+    from security import chosen, enabled
+    from security.openrouter_guard import MODELS, model_for
+    system = getattr(app.get("llm"), "model_name", "") or "none"
+    return {"system": system, "extraction": os.environ.get("CLAIMCLEAR_EXTRACTION_MODEL") or system,
+            "judge": getattr(app.get("judge_llm"), "model_name", "") or system,
+            "guards": ("+".join(model_for(g) if g in MODELS else g for g in chosen()) if enabled() else "off"),
+            "explainer": os.environ.get("CLAIMCLEAR_EXPLAINER") or "fact_bound",
+            "playbook": os.environ.get("CLAIMCLEAR_PLAYBOOK") or "off"}
+
+
 def attack_summary(results: dict) -> str:
     """One line: how the attacks ended, by the judge's attack_outcome (attack success = succeeded)."""
     outcomes = {k: (r.get("judge") or {}).get("attack_outcome") for k, r in results.items()
@@ -445,6 +457,12 @@ async def main(argv: Optional[list[str]] = None) -> int:
                                                              "(LANGSMITH_API_KEY; uses LangSmith quota)")
     ap.add_argument("--rejudge", metavar="RUN", help="grade a saved run (var/eval/ui_judge/<time>) again with the "
                                                      "current judge; no review is re-run")
+    ap.add_argument("--model", help="the system's chat model (default: CLAIMCLEAR_CHAT_MODEL in .env, else "
+                                    "openai/gpt-4.1-mini); also writes the free-form explanation and runs the llm guard")
+    ap.add_argument("--extraction-model", help="the model that reads the uploaded documents (default: "
+                                               "CLAIMCLEAR_EXTRACTION_MODEL, else the system model)")
+    ap.add_argument("--guard-model", help="the safeguard guard's model (default: CLAIMCLEAR_GUARD_MODEL_SAFEGUARD, "
+                                          "else openai/gpt-oss-safeguard-20b)")
     ap.add_argument("--explainer", choices=["fact_bound", "free"], help="Signature 2 (E4): fact_bound (ON, default) "
                                                                        "or free (OFF, the free-form baseline)")
     ap.add_argument("--score-explanation", action="store_true",
@@ -453,6 +471,10 @@ async def main(argv: Optional[list[str]] = None) -> int:
                                           f"{JUDGE_MODEL}); e.g. google/gemini-3.1-flash-lite, "
                                           "meta-llama/llama-3.3-70b-instruct")
     a = ap.parse_args(argv)
+    for flag, env in (("model", "CLAIMCLEAR_CHAT_MODEL"), ("extraction_model", "CLAIMCLEAR_EXTRACTION_MODEL"),
+                      ("guard_model", "CLAIMCLEAR_GUARD_MODEL_SAFEGUARD")):
+        if getattr(a, flag):
+            os.environ[env] = getattr(a, flag)
     if a.explainer:
         os.environ["CLAIMCLEAR_EXPLAINER"] = a.explainer
     if a.score_explanation:
@@ -482,8 +504,11 @@ async def main(argv: Optional[list[str]] = None) -> int:
         raise SystemExit(model_access.main_model_message(getattr(app["llm"], "model_name", ""), access))
     if access.get("guard_fallback"):
         print(f"note: guard model not allowed ({access['guard_problem'][:80]}); the guards use our model instead")
+    models = models_used(app)
+    print("models: " + ", ".join(f"{k} {v}" for k, v in models.items()), flush=True)
     out = OUT / time.strftime("%Y%m%d-%H%M%S")
     out.mkdir(parents=True, exist_ok=True)
+    (out / "models.json").write_text(json.dumps(models, indent=1), encoding="utf-8")
     results: dict = {}
     slots = asyncio.Semaphore(max(1, a.jobs))
 
@@ -503,7 +528,8 @@ async def main(argv: Optional[list[str]] = None) -> int:
     lines = HEADER + [report_row(e, results[e.case_id]) for e in cases if e.case_id in results]
     tag_table = eval_track.by_tag_table(results)
     summary = "\n".join(x for x in (attack_summary(results), explanation_summary(results)) if x)
-    (out / "report.md").write_text(f"# UI judge evals: {label}\n\n" + "\n".join(lines) + f"\n\n{summary}\n\n"
+    (out / "report.md").write_text(f"# UI judge evals: {label}\n\nModels: "
+                                   + ", ".join(f"{k} `{v}`" for k, v in models.items()) + "\n\n" + "\n".join(lines) + f"\n\n{summary}\n\n"
                                    f"## By tag\n\n{tag_table}\n", encoding="utf-8")
     print(f"\n{summary}\n\n{tag_table}\n\nreport: {out / 'report.md'}\nresults: {out / 'results.json'}")
     if a.track:

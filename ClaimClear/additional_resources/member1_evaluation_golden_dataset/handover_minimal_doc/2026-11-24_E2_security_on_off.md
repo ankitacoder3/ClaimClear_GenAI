@@ -29,7 +29,7 @@ below work on the course key):
 .venv-agents/Scripts/python ui_chainlit/judge_kappa.py labels.csv var/eval/ui_judge/<run time>/rejudged_<model>.json
 ```
 
-`--rejudge` grades a saved run again with another judge (no review re-run; writes `rejudged_<model>.json`).
+(model options: see below) `--rejudge` grades a saved run again with another judge (no review re-run; writes `rejudged_<model>.json`).
 `judge_kappa.py` gives Cohen's kappa against hand labels (`labels.csv`: `case,verdict` with pass / partial / fail)
 or between two judges' files. Default judge: `CLAIMCLEAR_JUDGE_MODEL`, else `openai/gpt-4.1-mini`.
 
@@ -37,6 +37,19 @@ or between two judges' files. Default judge: `CLAIMCLEAR_JUDGE_MODEL`, else `ope
 cases (RT-N). Each run writes `var/eval/ui_judge/<time>/report.md` and `results.json`, one line in
 `ui_chainlit/eval_history.csv`, and a LangSmith experiment. Cost ≈ $1.60 per run (gpt-4.1-mini + judge + guards).
 Linux/macOS: `.venv-agents/bin/python`.
+
+## Choosing the models (all optional)
+
+Every model can be set on the `ui_judge_eval.py` command line; otherwise `ClaimClear/.env` decides (see
+`.env.example`), else the default below. Each run prints the models it used and saves them as `models.json` next to
+its results.
+
+| Model | Option | Default (`.env` setting, else built-in) |
+|---|---|---|
+| System (chat answers, free-form explanation, `llm` guard) | `--model` | `CLAIMCLEAR_CHAT_MODEL`, else `openai/gpt-4.1-mini` |
+| Document reading | `--extraction-model` | `CLAIMCLEAR_EXTRACTION_MODEL`, else the system model |
+| Security guards | `--guards`, `--guard-model` | `CLAIMCLEAR_GUARDS` (`rules,safeguard`); `CLAIMCLEAR_GUARD_MODEL_SAFEGUARD`, else `openai/gpt-oss-safeguard-20b` |
+| Judge | `--judge-model` | `CLAIMCLEAR_JUDGE_MODEL`, else `openai/gpt-4.1-mini` (the guide wants another family, e.g. `google/gemini-3.1-flash-lite`) |
 
 ## What "ON" turns on
 

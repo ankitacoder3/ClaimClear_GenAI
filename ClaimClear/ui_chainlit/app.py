@@ -108,6 +108,16 @@ def load_dotenv() -> None:
                 os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
 
 
+def extraction_model(llm):
+    """The model that reads uploaded documents: ``CLAIMCLEAR_EXTRACTION_MODEL`` on OpenRouter when set, else the chat
+    model itself."""
+    name = os.environ.get("CLAIMCLEAR_EXTRACTION_MODEL")
+    if not name or llm is None or not os.environ.get("OPENROUTER_API_KEY"):
+        return llm
+    from langchain_openai import ChatOpenAI
+    return ChatOpenAI(model=name, api_key=os.environ["OPENROUTER_API_KEY"], base_url=chat.OPENROUTER_URL, temperature=0)
+
+
 async def ready() -> dict:
     if not APP:
         load_dotenv()
@@ -117,7 +127,8 @@ async def ready() -> dict:
         llm = chat.chat_model_from_env()
         from claimclear_graph import free_explainer                # Signature 2 OFF only with CLAIMCLEAR_EXPLAINER=free
         free = free_explainer.llm_free_explainer(llm) if llm and free_explainer.mode() == "free" else None
-        graph = build_claimclear_graph(Services(toolkit=tk, extractor=llm_extractor(llm) if llm else None,
+        reader = extraction_model(llm)                              # CLAIMCLEAR_EXTRACTION_MODEL, else the chat model
+        graph = build_claimclear_graph(Services(toolkit=tk, extractor=llm_extractor(reader) if reader else None,
                                                 free_explainer=free),
                                        checkpointer=MemorySaver())
         APP.update(cm=cm, toolkit=tk, llm=llm, graph=graph, gate=HumanApprovalGateway(graph), access=None)

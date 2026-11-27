@@ -26,6 +26,19 @@ Run (from `ClaimClear/`, servers up with `python start.py --servers-only`; start
 Add `--judge-model google/gemini-3.1-flash-lite` for a judge from another model family (the brief asks for one).
 Linux/macOS: `.venv-agents/bin/python`.
 
+## Choosing the models (all optional)
+
+Every model can be set on the `ui_judge_eval.py` command line; otherwise `ClaimClear/.env` decides (see
+`.env.example`), else the default below. Each run prints the models it used and saves them as `models.json` next to
+its results.
+
+| Model | Option | Default (`.env` setting, else built-in) |
+|---|---|---|
+| System (chat answers, free-form explanation, `llm` guard) | `--model` | `CLAIMCLEAR_CHAT_MODEL`, else `openai/gpt-4.1-mini` |
+| Document reading | `--extraction-model` | `CLAIMCLEAR_EXTRACTION_MODEL`, else the system model |
+| Security guards | `--guards`, `--guard-model` | `CLAIMCLEAR_GUARDS` (`rules,safeguard`); `CLAIMCLEAR_GUARD_MODEL_SAFEGUARD`, else `openai/gpt-oss-safeguard-20b` |
+| Judge | `--judge-model` | `CLAIMCLEAR_JUDGE_MODEL`, else `openai/gpt-4.1-mini` (the guide wants another family, e.g. `google/gemini-3.1-flash-lite`) |
+
 ## What is measured (`--score-explanation`)
 
 A judge reads only the explanation the user saw (`ExplanationScore` in `ui_judge_eval.py`):
@@ -43,13 +56,16 @@ per-case scores are in `results.json` (`explanation`). Settlement accuracy is re
 10 dev cases (gen-dev-c1c12e, acf2ec, 821b7c, e795d7, 147e01; syn-dev-001, 005, 016, 019; RT-N-004), one run each,
 judge `google/gemini-3.1-flash-lite` (another family than the system's gpt-4.1-mini):
 
-| | ON (fact-bound) | OFF (free-form) |
-|---|---|---|
-| Overclaims (guarantees, invented rules or deadlines, judgements) | **1** | 8 |
-| Unsupported claims | **12** | 18 |
-| Comprehension (what, why, how much, next step, deadline) | 4.2/5 | **4.7/5** |
-| Clarity | 4.1/5 | **4.4/5** |
-| Time per case | **37.6 s** | 40.3 s (one more model call) |
+| Measure | Better | ON (fact-bound) | OFF (free-form) |
+|---|---|---|---|
+| Overclaims (guarantees, invented rules or deadlines, judgements) | lower | **1** | 8 |
+| Unsupported claims | lower | **12** | 18 |
+| Time per case | lower | **37.6 s** | 40.3 s (one more model call) |
+| Comprehension (what, why, how much, next step, deadline) | higher | 4.2/5 | **4.7/5** |
+| Clarity | higher | 4.1/5 | **4.4/5** |
+
+ON wins the safety rows (the point of Signature 2); OFF reads slightly better. Most of ON's 12 unsupported claims
+are not invented by the explainer: it repeats known issues from earlier steps faithfully (see below).
 
 **Where it helped** (free-form text, OFF):
 - syn-dev-016: "The insurer must settle or reject your claim within 15 days of your dispute" and "you may be entitled to
