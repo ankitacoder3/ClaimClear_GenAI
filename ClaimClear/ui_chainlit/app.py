@@ -115,7 +115,10 @@ async def ready() -> dict:
         cm = ClaimClearToolkit()
         tk = await cm.__aenter__()          # kept open for the life of the process
         llm = chat.chat_model_from_env()
-        graph = build_claimclear_graph(Services(toolkit=tk, extractor=llm_extractor(llm) if llm else None),
+        from claimclear_graph import free_explainer                # Signature 2 OFF only with CLAIMCLEAR_EXPLAINER=free
+        free = free_explainer.llm_free_explainer(llm) if llm and free_explainer.mode() == "free" else None
+        graph = build_claimclear_graph(Services(toolkit=tk, extractor=llm_extractor(llm) if llm else None,
+                                                free_explainer=free),
                                        checkpointer=MemorySaver())
         APP.update(cm=cm, toolkit=tk, llm=llm, graph=graph, gate=HumanApprovalGateway(graph), access=None)
         if llm is not None:                                   # which models the key may use (one tiny call each)

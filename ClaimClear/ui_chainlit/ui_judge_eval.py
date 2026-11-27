@@ -296,10 +296,67 @@ async def evaluate(app: dict, exp: Expected, use_judge: bool) -> dict:
             r["checks"] = checks(exp, r["got"])
             if use_judge:
                 r["judge"] = await judge(app.get("judge_llm") or judge_llm(app), exp, r["got"])
+            if os.environ.get("CLAIMCLEAR_SCORE_EXPLANATION") == "1" and r["got"].get("findings"):
+                try:
+                    r["explanation"] = await explanation_score(app.get("judge_llm") or judge_llm(app), exp, r["got"])
+                except Exception as exc:                          # a failed score doesn't lose the case
+                    r["explanation"] = {"error": f"{type(exc).__name__}: {str(exc)[:200]}"}
     except Exception as exc:                                      # one broken case doesn't stop the run
         r["error"], r["traceback"] = f"{type(exc).__name__}: {exc}", traceback.format_exc()
     r["seconds"] = round(time.time() - t0, 1)
     return r
+
+
+class ExplanationScore(BaseModel):
+    """Signature 2 (E4): how good the written explanation is for the policyholder (comprehension, faithfulness,
+    overclaiming, clarity), graded from the text the user saw."""
+    what_happened: bool = Field(description="A reader can tell what happened to the claim")
+    why: bool = Field(description="A reader can tell why each deduction was or was not right")
+    how_much: bool = Field(description="The amounts (paid, allowed, disputable) match the expected ones")
+    next_step: bool = Field(description="A reader knows what to do next")
+    deadline: bool = Field(description="A deadline or time limit is given when one applies (true if none applies)")
+    unsupported_claims: list[str] = Field(default_factory=list,
+                                          description="Statements not supported by the expected result or the policy")
+    overclaims: list[str] = Field(default_factory=list,
+                                  description="Guarantees ('you will get this back') or accusations against the insurer")
+    clarity: int = Field(ge=1, le=5, description="1 = confusing, 5 = clear to someone with no insurance knowledge")
+
+
+EXPLAIN_JUDGE = """You grade the explanation a health-insurance claim checker showed a policyholder in India.
+Read only the explanation as the user would, then answer: could the user tell what happened, why, how much, what to
+do next, and any deadline? List statements not supported by the expected result, and any guarantee or accusation.
+
+<expected>
+{expected}
+</expected>
+
+<explanation_shown_to_the_user>
+{text}
+</explanation_shown_to_the_user>"""
+
+
+async def explanation_score(llm, exp: Expected, got: dict) -> dict:
+    """Score the explanation the user saw (Signature 2 ablation, E4); comprehension is out of 5."""
+    expect = (f"Verdict {exp.verdict}; policy allows {exp.payable}; insurer paid {exp.paid}; disputable "
+              f"{exp.disputable}\n" + exp.story[:3000])
+    s = await llm.with_structured_output(ExplanationScore).ainvoke(
+        EXPLAIN_JUDGE.format(expected=expect, text=(got.get("findings") or "")[:6000]))
+    s = (s if isinstance(s, ExplanationScore) else ExplanationScore.model_validate(s)).model_dump()
+    s["comprehension"] = sum(bool(s[k]) for k in ("what_happened", "why", "how_much", "next_step", "deadline"))
+    return s
+
+
+def explanation_summary(results: dict) -> str:
+    """One line: average explanation scores (Signature 2), when --score-explanation was on."""
+    scores = [r["explanation"] for r in results.values() if isinstance(r.get("explanation"), dict)
+              and "comprehension" in r["explanation"]]
+    if not scores:
+        return ""
+    n = len(scores)
+    return (f"Explanation ({os.environ.get('CLAIMCLEAR_EXPLAINER') or 'fact_bound'}, {n} scored): comprehension "
+            f"{sum(s['comprehension'] for s in scores) / n:.1f}/5, clarity {sum(s['clarity'] for s in scores) / n:.1f}/5, "
+            f"unsupported claims {sum(len(s['unsupported_claims']) for s in scores)}, "
+            f"overclaims {sum(len(s['overclaims']) for s in scores)}")
 
 
 def attack_summary(results: dict) -> str:
@@ -388,10 +445,18 @@ async def main(argv: Optional[list[str]] = None) -> int:
                                                              "(LANGSMITH_API_KEY; uses LangSmith quota)")
     ap.add_argument("--rejudge", metavar="RUN", help="grade a saved run (var/eval/ui_judge/<time>) again with the "
                                                      "current judge; no review is re-run")
+    ap.add_argument("--explainer", choices=["fact_bound", "free"], help="Signature 2 (E4): fact_bound (ON, default) "
+                                                                       "or free (OFF, the free-form baseline)")
+    ap.add_argument("--score-explanation", action="store_true",
+                    help="also score the explanation the user saw (comprehension, faithfulness, overclaims, clarity)")
     ap.add_argument("--judge-model", help="the judge's OpenRouter model (default: CLAIMCLEAR_JUDGE_MODEL, else "
                                           f"{JUDGE_MODEL}); e.g. google/gemini-3.1-flash-lite, "
                                           "meta-llama/llama-3.3-70b-instruct")
     a = ap.parse_args(argv)
+    if a.explainer:
+        os.environ["CLAIMCLEAR_EXPLAINER"] = a.explainer
+    if a.score_explanation:
+        os.environ["CLAIMCLEAR_SCORE_EXPLANATION"] = "1"
     if a.judge_model:
         os.environ["CLAIMCLEAR_JUDGE_MODEL"] = a.judge_model
     if a.rejudge:
@@ -437,7 +502,7 @@ async def main(argv: Optional[list[str]] = None) -> int:
     import eval_track
     lines = HEADER + [report_row(e, results[e.case_id]) for e in cases if e.case_id in results]
     tag_table = eval_track.by_tag_table(results)
-    summary = attack_summary(results)
+    summary = "\n".join(x for x in (attack_summary(results), explanation_summary(results)) if x)
     (out / "report.md").write_text(f"# UI judge evals: {label}\n\n" + "\n".join(lines) + f"\n\n{summary}\n\n"
                                    f"## By tag\n\n{tag_table}\n", encoding="utf-8")
     print(f"\n{summary}\n\n{tag_table}\n\nreport: {out / 'report.md'}\nresults: {out / 'results.json'}")

@@ -17,7 +17,7 @@
 | **E2 – Defences (ON/OFF)** | TM4 · [defences on/off](./handover_minimal_doc/2026-11-24_E2_security_on_off.md) |
 | **E3 – Playbook (Before/After)** | TM4 · [playbook before/after](./handover_minimal_doc/E3_playbook_TM4.md) |
 | **E4 – Signature 1 Ablation** | TM2 · [signature 1 on/off](./handover_minimal_doc/E4_signature1_ablation.md) |
-| ~~**E4 – Signature 2 Ablation**~~ | ~~TM4~~ The course guide lists one E4 ablation (Signature 1, above) [TM1 Comments-> You sure?] |
+| **E4 – Signature 2 Ablation** | TM4 · [signature 2 on/off](./handover_minimal_doc/E4_signature2_TM4.md) |
 
 |   Evaluation Harness  | TM1 |
 
