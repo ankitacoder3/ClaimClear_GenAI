@@ -1,0 +1,26 @@
+{
+  "case_id": "CC_EVAL_065",
+  "payable": 418000,
+  "insurer_paid": 0,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Cosmetic or plastic surgery exclusion",
+      "amount": 440000,
+      "correct_amount": 0,
+      "verdict": "disputable",
+      "clause_cited": "Go Digit Excl08; C.I.1",
+      "why": "The operative summary and attending certification connect the jaw reconstruction to the prior oral cancer resection and document restoration of function. The reconstruction uses a conventional technique; no robotic or listed modern-treatment sublimit is assumed."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 0,
+      "correct_amount": 22000,
+      "verdict": "consequential",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "notes": "Draft payable Rs 418,000 versus paid Rs 0. The operative summary and attending certification connect the jaw reconstruction to the prior oral cancer resection and document restoration of function. The reconstruction uses a conventional technique; no robotic or listed modern-treatment sublimit is assumed.",
+  "review_status": "draft_pending_independent_review"
+}

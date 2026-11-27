@@ -1,0 +1,48 @@
+{
+  "case_id": "CC_EVAL_070",
+  "base_id": "EXP-070",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "expansion_70",
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "story": "Ambulance and nonmedical transport on one invoice",
+  "insurer_error": {
+    "kind": "disputable",
+    "description": "Transport disallowed above combined ambulance cap"
+  },
+  "correct_settlement": {
+    "billed": 152000,
+    "admissible": 149600,
+    "copay": 7480,
+    "payable": 142120,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 150000,
+    "copay": 7500,
+    "payable": 142500,
+    "rejected": false
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Transport disallowed above combined ambulance cap",
+      "amount": 2000,
+      "correct_amount": 2400,
+      "verdict": "disputable",
+      "clause_cited": "IFFCO-Tokio 4.1.1(v); 9.3",
+      "why": "The road ambulance trip sheet confirms a medically indicated transfer to the admitting hospital. The separate ride receipt is for the patient's family after discharge, with no ambulance or medical service. Only the Rs 1,600 road ambulance charge enters the Rs 2,000 cap calculation."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 7500,
+      "correct_amount": 7480,
+      "verdict": "consequential",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "review_status": "draft_pending_independent_review"
+}

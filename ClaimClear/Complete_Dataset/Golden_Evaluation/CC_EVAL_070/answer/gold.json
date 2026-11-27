@@ -1,0 +1,26 @@
+{
+  "case_id": "CC_EVAL_070",
+  "payable": 142120,
+  "insurer_paid": 142500,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Transport disallowed above combined ambulance cap",
+      "amount": 2000,
+      "correct_amount": 2400,
+      "verdict": "disputable",
+      "clause_cited": "IFFCO-Tokio 4.1.1(v); 9.3",
+      "why": "The road ambulance trip sheet confirms a medically indicated transfer to the admitting hospital. The separate ride receipt is for the patient's family after discharge, with no ambulance or medical service. Only the Rs 1,600 road ambulance charge enters the Rs 2,000 cap calculation."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 7500,
+      "correct_amount": 7480,
+      "verdict": "consequential",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "notes": "Draft payable Rs 142,120 versus paid Rs 142,500. The road ambulance trip sheet confirms a medically indicated transfer to the admitting hospital. The separate ride receipt is for the patient's family after discharge, with no ambulance or medical service. Only the Rs 1,600 road ambulance charge enters the Rs 2,000 cap calculation.",
+  "review_status": "draft_pending_independent_review"
+}

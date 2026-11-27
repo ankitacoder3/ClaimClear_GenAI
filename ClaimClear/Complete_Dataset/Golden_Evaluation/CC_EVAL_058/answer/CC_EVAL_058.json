@@ -1,0 +1,48 @@
+{
+  "case_id": "CC_EVAL_058",
+  "base_id": "EXP-058",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "expansion_58",
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "story": "Cancer surgery and pre-admission tests",
+  "insurer_error": {
+    "kind": "disputable",
+    "description": "All pre-admission tests disallowed"
+  },
+  "correct_settlement": {
+    "billed": 370000,
+    "admissible": 334000,
+    "copay": 16700,
+    "payable": 317300,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 310000,
+    "copay": 15500,
+    "payable": 294500,
+    "rejected": false
+  },
+  "underpaid_by": 22800,
+  "letter_deductions": [
+    {
+      "deduction": "All pre-admission tests disallowed",
+      "amount": 60000,
+      "correct_amount": 36000,
+      "verdict": "disputable",
+      "clause_cited": "Go Digit C.I.4; C.I.1",
+      "why": "The inpatient admission began 10 Aug 2026. The attending note links the staging scan and biopsy to the operation but identifies the 31 Jul test as unrelated. The scan was 14 days before admission, the biopsy 35 days before, and the unrelated test 10 days before."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 15500,
+      "correct_amount": 16700,
+      "verdict": "consequential",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "review_status": "draft_pending_independent_review"
+}

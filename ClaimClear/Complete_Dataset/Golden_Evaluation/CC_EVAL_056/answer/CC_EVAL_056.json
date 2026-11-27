@@ -1,0 +1,40 @@
+{
+  "case_id": "CC_EVAL_056",
+  "base_id": "EXP-056",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "expansion_56",
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "story": "Recreational football ankle fracture with delayed claim notice",
+  "insurer_error": {
+    "kind": "disputable",
+    "description": "Full claim declined for late notification"
+  },
+  "correct_settlement": {
+    "billed": 180000,
+    "admissible": null,
+    "copay": null,
+    "payable": null,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": true
+  },
+  "underpaid_by": null,
+  "letter_deductions": [
+    {
+      "deduction": "Full claim declined for late notification",
+      "amount": 180000,
+      "correct_amount": null,
+      "verdict": "disputable",
+      "clause_cited": "IFFCO-Tokio 9.1(i) and 9.2 Note 3",
+      "why": "Notice arrived 39 hours after emergency admission. The clinical and notification records support reconsideration on merit because they document a reason beyond the insured person’s control and prompt notice after capacity returned. The wording permits discretionary condonation. The reimbursement papers were filed 12 days after discharge. Keep the correct payable, co-payment and underpayment open."
+    }
+  ],
+  "review_status": "draft_pending_independent_review"
+}

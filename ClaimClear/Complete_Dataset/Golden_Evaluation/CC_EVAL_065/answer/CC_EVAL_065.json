@@ -1,0 +1,48 @@
+{
+  "case_id": "CC_EVAL_065",
+  "base_id": "EXP-065",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "expansion_65",
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "story": "Jaw reconstruction after oral cancer surgery",
+  "insurer_error": {
+    "kind": "disputable",
+    "description": "Cosmetic or plastic surgery exclusion"
+  },
+  "correct_settlement": {
+    "billed": 440000,
+    "admissible": 440000,
+    "copay": 22000,
+    "payable": 418000,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": true
+  },
+  "underpaid_by": 418000,
+  "letter_deductions": [
+    {
+      "deduction": "Cosmetic or plastic surgery exclusion",
+      "amount": 440000,
+      "correct_amount": 0,
+      "verdict": "disputable",
+      "clause_cited": "Go Digit Excl08; C.I.1",
+      "why": "The operative summary and attending certification connect the jaw reconstruction to the prior oral cancer resection and document restoration of function. The reconstruction uses a conventional technique; no robotic or listed modern-treatment sublimit is assumed."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 0,
+      "correct_amount": 22000,
+      "verdict": "consequential",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "review_status": "draft_pending_independent_review"
+}

@@ -1,0 +1,26 @@
+{
+  "case_id": "CC_EVAL_059",
+  "payable": 156750,
+  "insurer_paid": 0,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Admission classified as investigation only",
+      "amount": 165000,
+      "correct_amount": 0,
+      "verdict": "disputable",
+      "clause_cited": "IFFCO-Tokio 7.1 (Excl04); 4.1",
+      "why": "The discharge summary records confirmed pulmonary tuberculosis before admission and a four-night inpatient stay for documented treatment and monitoring. Tests supported the active treatment. The patient was not admitted primarily to establish a diagnosis."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 0,
+      "correct_amount": 8250,
+      "verdict": "consequential",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "notes": "Draft payable Rs 156,750 versus paid Rs 0. The discharge summary records confirmed pulmonary tuberculosis before admission and a four-night inpatient stay for documented treatment and monitoring. Tests supported the active treatment. The patient was not admitted primarily to establish a diagnosis.",
+  "review_status": "draft_pending_independent_review"
+}

@@ -1,0 +1,40 @@
+{
+  "case_id": "CC_EVAL_067",
+  "base_id": "EXP-067",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "expansion_67",
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "story": "Balance claim across two insurers",
+  "insurer_error": {
+    "kind": "not_verifiable",
+    "description": "Primary payment treated as closing the full claim"
+  },
+  "correct_settlement": {
+    "billed": 410000,
+    "admissible": null,
+    "copay": null,
+    "payable": null,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": true
+  },
+  "underpaid_by": null,
+  "letter_deductions": [
+    {
+      "deduction": "Primary payment treated as closing the full claim",
+      "amount": 410000,
+      "correct_amount": null,
+      "verdict": "not_verifiable",
+      "clause_cited": "IFFCO-Tokio 10.8(a); 9.3; companion Go Digit Multiple Policies clause",
+      "why": "Primary Go Digit statement confirms payment of Rs 190,000 and exhausted available annual cover on this episode. IFFCO-Tokio is the secondary policy. The packet deliberately omits the secondary policy's agreed admissibility and coordination breakdown. The gross unpaid balance is Rs 220,000. The exact secondary payout requires its own adjudication; any payment must avoid duplicate recovery."
+    }
+  ],
+  "review_status": "draft_pending_independent_review"
+}

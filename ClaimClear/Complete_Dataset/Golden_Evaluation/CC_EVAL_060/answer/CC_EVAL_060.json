@@ -1,0 +1,48 @@
+{
+  "case_id": "CC_EVAL_060",
+  "base_id": "EXP-060",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "expansion_60",
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "story": "Stroke admission followed by custodial care",
+  "insurer_error": {
+    "kind": "disputable",
+    "description": "Full claim declined under Excl05"
+  },
+  "correct_settlement": {
+    "billed": 380000,
+    "admissible": 300000,
+    "copay": 15000,
+    "payable": 285000,
+    "rejected": false
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": true
+  },
+  "underpaid_by": 285000,
+  "letter_deductions": [
+    {
+      "deduction": "Full claim declined under Excl05",
+      "amount": 380000,
+      "correct_amount": 80000,
+      "verdict": "disputable",
+      "clause_cited": "Go Digit C.I.1 and Excl05",
+      "why": "The hospital discharge record and dated charges identify Rs 300,000 for active inpatient stroke treatment. Apply Excl05 to Rs 80,000 in personal care and accommodation at the separate nursing facility. The schedule provides Rs 500,000 available cover and a 5% co-payment. Co-payment is Rs 15,000, leaving Rs 285,000 payable on the synthetic facts."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 0,
+      "correct_amount": 15000,
+      "verdict": "consequential",
+      "clause_cited": "Co-payment",
+      "why": "Apply 5% to the admissible amount after separating the two care phases."
+    }
+  ],
+  "review_status": "draft_pending_independent_review"
+}

@@ -1,0 +1,48 @@
+{
+  "case_id": "CC_EVAL_068",
+  "base_id": "EXP-068",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "expansion_68",
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "story": "AYUSH inpatient facility eligibility",
+  "insurer_error": {
+    "kind": "disputable",
+    "description": "Facility classified as wellness-only"
+  },
+  "correct_settlement": {
+    "billed": 100000,
+    "admissible": 100000,
+    "copay": 5000,
+    "payable": 95000,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": true
+  },
+  "underpaid_by": 95000,
+  "letter_deductions": [
+    {
+      "deduction": "Facility classified as wellness-only",
+      "amount": 100000,
+      "correct_amount": 0,
+      "verdict": "disputable",
+      "clause_cited": "Go Digit AYUSH Hospital definition; C.I.2; Excl13",
+      "why": "The facility record documents a registered standalone AYUSH hospital with seven inpatient beds, a registered AYUSH practitioner in charge around the clock, dedicated therapy facilities and daily patient records. Admission was for inpatient medical treatment with a documented plan, not a wellness or spa stay."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 0,
+      "correct_amount": 5000,
+      "verdict": "consequential",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "review_status": "draft_pending_independent_review"
+}

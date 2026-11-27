@@ -1,0 +1,48 @@
+{
+  "case_id": "CC_EVAL_062",
+  "base_id": "EXP-062",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "expansion_62",
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "story": "Badminton Achilles tendon repair",
+  "insurer_error": {
+    "kind": "disputable",
+    "description": "Reduce operative package to nonsurgical package"
+  },
+  "correct_settlement": {
+    "billed": 155000,
+    "admissible": 155000,
+    "copay": 7750,
+    "payable": 147250,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 75000,
+    "copay": 3750,
+    "payable": 71250,
+    "rejected": false
+  },
+  "underpaid_by": 76000,
+  "letter_deductions": [
+    {
+      "deduction": "Reduce operative package to nonsurgical package",
+      "amount": 80000,
+      "correct_amount": 0,
+      "verdict": "disputable",
+      "clause_cited": "IFFCO-Tokio 4.1; applicable network tariff excerpt",
+      "why": "The recreational badminton incident record describes a sudden Achilles rupture. Operative notes confirm surgical tendon repair. The fictional network tariff in force on admission lists Rs 140,000 for operative repair and Rs 60,000 for nonsurgical management. This claim satisfies the operative row."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 3750,
+      "correct_amount": 7750,
+      "verdict": "consequential",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "review_status": "draft_pending_independent_review"
+}

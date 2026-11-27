@@ -1,0 +1,48 @@
+{
+  "case_id": "CC_EVAL_061",
+  "base_id": "EXP-061",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "expansion_61",
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "story": "Dance rehearsal ACL reconstruction",
+  "insurer_error": {
+    "kind": "disputable",
+    "description": "Professional hazardous or adventure sports exclusion"
+  },
+  "correct_settlement": {
+    "billed": 185000,
+    "admissible": 185000,
+    "copay": 9250,
+    "payable": 175750,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": true
+  },
+  "underpaid_by": 175750,
+  "letter_deductions": [
+    {
+      "deduction": "Professional hazardous or adventure sports exclusion",
+      "amount": 185000,
+      "correct_amount": 0,
+      "verdict": "disputable",
+      "clause_cited": "Go Digit Excl09; C.I.1",
+      "why": "A venue incident note records an awkward landing at an ordinary paid stage dance rehearsal. There was no stunt, acrobatic apparatus, competition, hazardous sport or adventure activity in the exercise. MRI and the operative note confirm ACL rupture and reconstruction."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 0,
+      "correct_amount": 9250,
+      "verdict": "consequential",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "review_status": "draft_pending_independent_review"
+}

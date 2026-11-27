@@ -1,0 +1,26 @@
+{
+  "case_id": "CC_EVAL_055",
+  "payable": 351500,
+  "insurer_paid": 532000,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Charges outside the admission under review",
+      "amount": 0,
+      "correct_amount": 190000,
+      "verdict": "disputable",
+      "clause_cited": "IFFCO-Tokio 4.1; 9.3",
+      "why": "The consolidated statement includes admissions A1 and A2. The submitted claim covers A1 only. A2 has its own admission ID and appears on the statement for reconciliation; it has not been submitted under A1. The insurer included both episodes in the A1 settlement. Review A1 only."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 28000,
+      "correct_amount": 18500,
+      "verdict": "consequential",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "notes": "Draft payable Rs 351,500 versus paid Rs 532,000. The consolidated statement includes admissions A1 and A2. The submitted claim covers A1 only. A2 has its own admission ID and appears on the statement for reconciliation; it has not been submitted under A1. The insurer included both episodes in the A1 settlement. Review A1 only.",
+  "review_status": "draft_pending_independent_review"
+}

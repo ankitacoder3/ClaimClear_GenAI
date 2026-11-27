@@ -1,0 +1,26 @@
+{
+  "case_id": "CC_EVAL_054",
+  "payable": 370500,
+  "insurer_paid": 237500,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Modern-treatment limit applied to full bill",
+      "amount": 230000,
+      "correct_amount": 90000,
+      "verdict": "disputable",
+      "clause_cited": "Go Digit C.I.6(E); C.I.1",
+      "why": "The oncology administration record links the Rs 40,000 administration charge to the immunotherapy course. A separate ward treatment record identifies the Rs 128,000 pneumonia charges and Rs 12,000 room charges as unrelated to that course. The schedule sum insured is Rs 500,000. The scenario assumes the linked administration falls within the qualifying treatment charge, subject to reviewer confirmation."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 12500,
+      "correct_amount": 19500,
+      "verdict": "consequential",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "notes": "Draft payable Rs 370,500 versus paid Rs 237,500. The oncology administration record links the Rs 40,000 administration charge to the immunotherapy course. A separate ward treatment record identifies the Rs 128,000 pneumonia charges and Rs 12,000 room charges as unrelated to that course. The schedule sum insured is Rs 500,000. The scenario assumes the linked administration falls within the qualifying treatment charge, subject to reviewer confirmation.",
+  "review_status": "draft_pending_independent_review"
+}

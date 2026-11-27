@@ -1,0 +1,56 @@
+{
+  "case_id": "CC_EVAL_057",
+  "base_id": "EXP-057",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "expansion_57",
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "story": "Matched-donor bone marrow transplant",
+  "insurer_error": {
+    "kind": "matches",
+    "description": "Donor screening charges"
+  },
+  "correct_settlement": {
+    "billed": 800000,
+    "admissible": 250000,
+    "copay": 12500,
+    "payable": 237500,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 250000,
+    "copay": 12500,
+    "payable": 237500,
+    "rejected": false
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Donor screening charges",
+      "amount": 40000,
+      "correct_amount": 40000,
+      "verdict": "matches",
+      "clause_cited": "Go Digit C.I.6(L); Annexure A, List I item 11",
+      "why": "The recipient transplant summary identifies a hematological malignancy and matched-donor hematopoietic transplant. All Rs 760,000 recipient charges are documented as part of the transplant episode; room is included in the package. The separately itemised Rs 40,000 invoice covers donor screening only. Treat this settlement as a correct control if the reviewer confirms the treatment allocation and clause reading."
+    },
+    {
+      "deduction": "Recipient modern-treatment sublimit",
+      "amount": 510000,
+      "correct_amount": 510000,
+      "verdict": "matches",
+      "clause_cited": "Go Digit C.I.6(L); Annexure A, List I item 11",
+      "why": "The recipient transplant summary identifies a hematological malignancy and matched-donor hematopoietic transplant. All Rs 760,000 recipient charges are documented as part of the transplant episode; room is included in the package. The separately itemised Rs 40,000 invoice covers donor screening only. Treat this settlement as a correct control if the reviewer confirms the treatment allocation and clause reading."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 12500,
+      "correct_amount": 12500,
+      "verdict": "matches",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "review_status": "draft_pending_independent_review"
+}

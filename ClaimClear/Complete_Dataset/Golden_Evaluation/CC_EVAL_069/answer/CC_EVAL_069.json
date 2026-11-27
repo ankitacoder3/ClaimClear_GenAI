@@ -1,0 +1,48 @@
+{
+  "case_id": "CC_EVAL_069",
+  "base_id": "EXP-069",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "expansion_69",
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "story": "Hospital admission during an installment grace period",
+  "insurer_error": {
+    "kind": "disputable",
+    "description": "Admission before receipt of overdue monthly installment"
+  },
+  "correct_settlement": {
+    "billed": 134000,
+    "admissible": 134000,
+    "copay": 6700,
+    "payable": 127300,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": true
+  },
+  "underpaid_by": 127300,
+  "letter_deductions": [
+    {
+      "deduction": "Admission before receipt of overdue monthly installment",
+      "amount": 134000,
+      "correct_amount": 0,
+      "verdict": "disputable",
+      "clause_cited": "IFFCO-Tokio 10.17(ii); 9.3",
+      "why": "The policy schedule specifies monthly installments. Payment was due 05 Aug 2026 and received 12 Aug 2026. Admission began 10 Aug and ended 12 Aug, within the monthly installment grace period. The policy was still within its annual term; this was not a renewal gap."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 0,
+      "correct_amount": 6700,
+      "verdict": "consequential",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "review_status": "draft_pending_independent_review"
+}

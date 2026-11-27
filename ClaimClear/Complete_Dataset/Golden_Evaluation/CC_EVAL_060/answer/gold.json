@@ -1,0 +1,26 @@
+{
+  "case_id": "CC_EVAL_060",
+  "payable": 285000,
+  "insurer_paid": 0,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Full claim declined under Excl05",
+      "amount": 380000,
+      "correct_amount": 80000,
+      "verdict": "disputable",
+      "clause_cited": "Go Digit C.I.1 and Excl05",
+      "why": "The hospital discharge record and dated charges identify Rs 300,000 for active inpatient stroke treatment. Apply Excl05 to Rs 80,000 in personal care and accommodation at the separate nursing facility. The schedule provides Rs 500,000 available cover and a 5% co-payment. Co-payment is Rs 15,000, leaving Rs 285,000 payable on the synthetic facts."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 0,
+      "correct_amount": 15000,
+      "verdict": "consequential",
+      "clause_cited": "Co-payment",
+      "why": "Apply 5% to the admissible amount after separating the two care phases."
+    }
+  ],
+  "notes": "The hospital discharge record and dated charges identify Rs 300,000 for active inpatient stroke treatment. Apply Excl05 to Rs 80,000 in personal care and accommodation at the separate nursing facility. The schedule provides Rs 500,000 available cover and a 5% co-payment. Co-payment is Rs 15,000, leaving Rs 285,000 payable on the synthetic facts.",
+  "review_status": "draft_pending_independent_review"
+}

@@ -1,0 +1,18 @@
+{
+  "case_id": "CC_EVAL_067",
+  "payable": null,
+  "insurer_paid": 0,
+  "overall": "not_verifiable",
+  "letter_deductions": [
+    {
+      "deduction": "Primary payment treated as closing the full claim",
+      "amount": 410000,
+      "correct_amount": null,
+      "verdict": "not_verifiable",
+      "clause_cited": "IFFCO-Tokio 10.8(a); 9.3; companion Go Digit Multiple Policies clause",
+      "why": "Primary Go Digit statement confirms payment of Rs 190,000 and exhausted available annual cover on this episode. IFFCO-Tokio is the secondary policy. The packet deliberately omits the secondary policy's agreed admissibility and coordination breakdown. The gross unpaid balance is Rs 220,000. The exact secondary payout requires its own adjudication; any payment must avoid duplicate recovery."
+    }
+  ],
+  "notes": "Exact payable is not verifiable from the supplied evidence. Insurer paid Rs 0. Primary Go Digit statement confirms payment of Rs 190,000 and exhausted available annual cover on this episode. IFFCO-Tokio is the secondary policy. The packet deliberately omits the secondary policy's agreed admissibility and coordination breakdown. The gross unpaid balance is Rs 220,000. The exact secondary payout requires its own adjudication; any payment must avoid duplicate recovery.",
+  "review_status": "draft_pending_independent_review"
+}

@@ -1,0 +1,26 @@
+{
+  "case_id": "CC_EVAL_066",
+  "payable": 137750,
+  "insurer_paid": 0,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "All expenses at a notified excluded provider",
+      "amount": 245000,
+      "correct_amount": 100000,
+      "verdict": "disputable",
+      "clause_cited": "IFFCO-Tokio 7.8 (Excl11); 9.3",
+      "why": "The prior provider notice names the facility as excluded. Emergency admission followed a serious accident on 10 Aug 2026. The attending note records stabilization on 12 Aug and suitability for transfer. The bill separates treatment up to stabilization from later charges at the same facility."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 0,
+      "correct_amount": 7250,
+      "verdict": "consequential",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "notes": "Draft payable Rs 137,750 versus paid Rs 0. The prior provider notice names the facility as excluded. Emergency admission followed a serious accident on 10 Aug 2026. The attending note records stabilization on 12 Aug and suitability for transfer. The bill separates treatment up to stabilization from later charges at the same facility.",
+  "review_status": "draft_pending_independent_review"
+}

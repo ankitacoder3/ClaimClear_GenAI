@@ -1,0 +1,48 @@
+{
+  "case_id": "CC_EVAL_054",
+  "base_id": "EXP-054",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "expansion_54",
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "story": "Lung cancer immunotherapy",
+  "insurer_error": {
+    "kind": "disputable",
+    "description": "Modern-treatment limit applied to full bill"
+  },
+  "correct_settlement": {
+    "billed": 480000,
+    "admissible": 390000,
+    "copay": 19500,
+    "payable": 370500,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 250000,
+    "copay": 12500,
+    "payable": 237500,
+    "rejected": false
+  },
+  "underpaid_by": 133000,
+  "letter_deductions": [
+    {
+      "deduction": "Modern-treatment limit applied to full bill",
+      "amount": 230000,
+      "correct_amount": 90000,
+      "verdict": "disputable",
+      "clause_cited": "Go Digit C.I.6(E); C.I.1",
+      "why": "The oncology administration record links the Rs 40,000 administration charge to the immunotherapy course. A separate ward treatment record identifies the Rs 128,000 pneumonia charges and Rs 12,000 room charges as unrelated to that course. The schedule sum insured is Rs 500,000. The scenario assumes the linked administration falls within the qualifying treatment charge, subject to reviewer confirmation."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 12500,
+      "correct_amount": 19500,
+      "verdict": "consequential",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "review_status": "draft_pending_independent_review"
+}

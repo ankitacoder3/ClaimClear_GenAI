@@ -1,0 +1,48 @@
+{
+  "case_id": "CC_EVAL_066",
+  "base_id": "EXP-066",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "expansion_66",
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "story": "Emergency stabilization at an excluded provider",
+  "insurer_error": {
+    "kind": "disputable",
+    "description": "All expenses at a notified excluded provider"
+  },
+  "correct_settlement": {
+    "billed": 245000,
+    "admissible": 145000,
+    "copay": 7250,
+    "payable": 137750,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": true
+  },
+  "underpaid_by": 137750,
+  "letter_deductions": [
+    {
+      "deduction": "All expenses at a notified excluded provider",
+      "amount": 245000,
+      "correct_amount": 100000,
+      "verdict": "disputable",
+      "clause_cited": "IFFCO-Tokio 7.8 (Excl11); 9.3",
+      "why": "The prior provider notice names the facility as excluded. Emergency admission followed a serious accident on 10 Aug 2026. The attending note records stabilization on 12 Aug and suitability for transfer. The bill separates treatment up to stabilization from later charges at the same facility."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 0,
+      "correct_amount": 7250,
+      "verdict": "consequential",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "review_status": "draft_pending_independent_review"
+}

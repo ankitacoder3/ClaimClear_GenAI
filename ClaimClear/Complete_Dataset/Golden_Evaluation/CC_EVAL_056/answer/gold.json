@@ -1,0 +1,18 @@
+{
+  "case_id": "CC_EVAL_056",
+  "payable": null,
+  "insurer_paid": 0,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Full claim declined for late notification",
+      "amount": 180000,
+      "correct_amount": null,
+      "verdict": "disputable",
+      "clause_cited": "IFFCO-Tokio 9.1(i) and 9.2 Note 3",
+      "why": "Notice arrived 39 hours after emergency admission. The clinical and notification records support reconsideration on merit because they document a reason beyond the insured person’s control and prompt notice after capacity returned. The wording permits discretionary condonation. The reimbursement papers were filed 12 days after discharge. Keep the correct payable, co-payment and underpayment open."
+    }
+  ],
+  "notes": "Notice arrived 39 hours after emergency admission. The clinical and notification records support reconsideration on merit because they document a reason beyond the insured person’s control and prompt notice after capacity returned. The wording permits discretionary condonation. The reimbursement papers were filed 12 days after discharge. Keep the correct payable, co-payment and underpayment open.",
+  "review_status": "draft_pending_independent_review"
+}

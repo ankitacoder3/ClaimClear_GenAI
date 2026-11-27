@@ -1,0 +1,7 @@
+# CC_EVAL_067 · Two-insurer balance claim
+
+In `CC_EVAL_067`, the packet confirms the ₹4,10,000 gross bill and the ₹1,90,000 primary payment. The remaining ₹2,20,000 is the unpaid gross balance. The secondary insurer's admissibility and coordination breakdown is missing, so the review can confirm the balance but must leave the secondary payable amount open. This is a partial verification of the records. The verdict does not establish a partial payout.
+
+IRDAI's 2024 health insurance circular describes how a chosen primary insurer coordinates with other insurers when its available cover is below the admissible claim amount. Any further payment remains subject to the applicable policy conditions. [IRDAI Master Circular on Health Insurance Business, 29 May 2024, paragraph 18](https://actuariesindia.org/sites/default/files/inline-files/5.%20Master%20Circular%20on%20Health%20Insurance%20Business%202024.pdf)
+
+Published Insurance Ombudsman case summaries document similar claim sequences. In the Kandoi matter, Reliance and Oriental both paid part of the expenses for the same hospitalization. In the R. Vijaya matter, two insurers made payments and the claimant submitted the remaining balance to a third insurer. These historical cases establish that the scenario occurs in practice. The ClaimClear packet uses synthetic facts and its own policy terms. [Kandoi, complaint GI-1634/2011-2012](https://cioins.co.in/GIC/mediclaim/Mediclaim-Book20.pdf) · [R. Vijaya v. ICICI Lombard](https://www.cioins.co.in/GIC/mediclaim/Mediclaim-Book13.pdf)

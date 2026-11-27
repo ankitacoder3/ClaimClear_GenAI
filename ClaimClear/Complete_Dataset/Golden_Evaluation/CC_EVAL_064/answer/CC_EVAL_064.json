@@ -1,0 +1,48 @@
+{
+  "case_id": "CC_EVAL_064",
+  "base_id": "EXP-064",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "expansion_64",
+  "wording": "IFFCO",
+  "wording_uin": "IFFHLIP20161V011920",
+  "story": "Immune thrombocytopenia and credit note",
+  "insurer_error": {
+    "kind": "matches",
+    "description": "Hospital credit note for unused drug"
+  },
+  "correct_settlement": {
+    "billed": 275000,
+    "admissible": 255000,
+    "copay": 12750,
+    "payable": 242250,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 255000,
+    "copay": 12750,
+    "payable": 242250,
+    "rejected": false
+  },
+  "underpaid_by": 0,
+  "letter_deductions": [
+    {
+      "deduction": "Hospital credit note for unused drug",
+      "amount": 20000,
+      "correct_amount": 20000,
+      "verdict": "matches",
+      "clause_cited": "IFFCO-Tokio 4.1; 9.3",
+      "why": "The hospital credit note CN-064 reduces the drug charge by Rs 20,000 before settlement. The insurer deducts the credit once from the gross amount and applies the scheduled co-payment."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 12750,
+      "correct_amount": 12750,
+      "verdict": "matches",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "review_status": "draft_pending_independent_review"
+}

@@ -1,0 +1,48 @@
+{
+  "case_id": "CC_EVAL_063",
+  "base_id": "EXP-063",
+  "variant": 1,
+  "tag": "Holdout",
+  "split": "heldout",
+  "planted_type": "expansion_63",
+  "wording": "GODIGIT",
+  "wording_uin": "GODHLIP24179V022324",
+  "story": "Diabetes complication after policy migration",
+  "insurer_error": {
+    "kind": "disputable",
+    "description": "Pre-existing condition waiting period counted from migration"
+  },
+  "correct_settlement": {
+    "billed": 230000,
+    "admissible": 230000,
+    "copay": 11500,
+    "payable": 218500,
+    "rejected": null
+  },
+  "insurer_settlement": {
+    "admissible": 0,
+    "copay": 0,
+    "payable": 0,
+    "rejected": true
+  },
+  "underpaid_by": 218500,
+  "letter_deductions": [
+    {
+      "deduction": "Pre-existing condition waiting period counted from migration",
+      "amount": 230000,
+      "correct_amount": 0,
+      "verdict": "disputable",
+      "clause_cited": "Go Digit Excl01; Migration provision",
+      "why": "Same-insurer migration endorsement confirms uninterrupted equivalent cover from 01 Jan 2022. Coverage migrated on 01 Jan 2026 with no sum-insured increase. The insurer accepted the disclosed diabetes. On 10 Aug 2026 credited continuity exceeded 36 months."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 0,
+      "correct_amount": 11500,
+      "verdict": "consequential",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "review_status": "draft_pending_independent_review"
+}

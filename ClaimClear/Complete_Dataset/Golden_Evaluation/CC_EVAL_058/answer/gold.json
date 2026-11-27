@@ -1,0 +1,26 @@
+{
+  "case_id": "CC_EVAL_058",
+  "payable": 317300,
+  "insurer_paid": 294500,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "All pre-admission tests disallowed",
+      "amount": 60000,
+      "correct_amount": 36000,
+      "verdict": "disputable",
+      "clause_cited": "Go Digit C.I.4; C.I.1",
+      "why": "The inpatient admission began 10 Aug 2026. The attending note links the staging scan and biopsy to the operation but identifies the 31 Jul test as unrelated. The scan was 14 days before admission, the biopsy 35 days before, and the unrelated test 10 days before."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 15500,
+      "correct_amount": 16700,
+      "verdict": "consequential",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "notes": "Draft payable Rs 317,300 versus paid Rs 294,500. The inpatient admission began 10 Aug 2026. The attending note links the staging scan and biopsy to the operation but identifies the 31 Jul test as unrelated. The scan was 14 days before admission, the biopsy 35 days before, and the unrelated test 10 days before.",
+  "review_status": "draft_pending_independent_review"
+}

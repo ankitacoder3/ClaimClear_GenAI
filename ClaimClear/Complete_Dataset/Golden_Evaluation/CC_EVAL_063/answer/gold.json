@@ -1,0 +1,26 @@
+{
+  "case_id": "CC_EVAL_063",
+  "payable": 218500,
+  "insurer_paid": 0,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Pre-existing condition waiting period counted from migration",
+      "amount": 230000,
+      "correct_amount": 0,
+      "verdict": "disputable",
+      "clause_cited": "Go Digit Excl01; Migration provision",
+      "why": "Same-insurer migration endorsement confirms uninterrupted equivalent cover from 01 Jan 2022. Coverage migrated on 01 Jan 2026 with no sum-insured increase. The insurer accepted the disclosed diabetes. On 10 Aug 2026 credited continuity exceeded 36 months."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 0,
+      "correct_amount": 11500,
+      "verdict": "consequential",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "notes": "Draft payable Rs 218,500 versus paid Rs 0. Same-insurer migration endorsement confirms uninterrupted equivalent cover from 01 Jan 2022. Coverage migrated on 01 Jan 2026 with no sum-insured increase. The insurer accepted the disclosed diabetes. On 10 Aug 2026 credited continuity exceeded 36 months.",
+  "review_status": "draft_pending_independent_review"
+}

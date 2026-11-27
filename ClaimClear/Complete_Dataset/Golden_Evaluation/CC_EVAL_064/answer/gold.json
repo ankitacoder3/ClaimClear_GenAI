@@ -1,0 +1,26 @@
+{
+  "case_id": "CC_EVAL_064",
+  "payable": 242250,
+  "insurer_paid": 242250,
+  "overall": "matches",
+  "letter_deductions": [
+    {
+      "deduction": "Hospital credit note for unused drug",
+      "amount": 20000,
+      "correct_amount": 20000,
+      "verdict": "matches",
+      "clause_cited": "IFFCO-Tokio 4.1; 9.3",
+      "why": "The hospital credit note CN-064 reduces the drug charge by Rs 20,000 before settlement. The insurer deducts the credit once from the gross amount and applies the scheduled co-payment."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 12750,
+      "correct_amount": 12750,
+      "verdict": "matches",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "notes": "Draft payable Rs 242,250 versus paid Rs 242,250. The hospital credit note CN-064 reduces the drug charge by Rs 20,000 before settlement. The insurer deducts the credit once from the gross amount and applies the scheduled co-payment.",
+  "review_status": "draft_pending_independent_review"
+}

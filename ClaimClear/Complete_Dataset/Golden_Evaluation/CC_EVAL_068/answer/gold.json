@@ -1,0 +1,26 @@
+{
+  "case_id": "CC_EVAL_068",
+  "payable": 95000,
+  "insurer_paid": 0,
+  "overall": "disputable",
+  "letter_deductions": [
+    {
+      "deduction": "Facility classified as wellness-only",
+      "amount": 100000,
+      "correct_amount": 0,
+      "verdict": "disputable",
+      "clause_cited": "Go Digit AYUSH Hospital definition; C.I.2; Excl13",
+      "why": "The facility record documents a registered standalone AYUSH hospital with seven inpatient beds, a registered AYUSH practitioner in charge around the clock, dedicated therapy facilities and daily patient records. Admission was for inpatient medical treatment with a documented plan, not a wellness or spa stay."
+    },
+    {
+      "deduction": "Co-payment 5%",
+      "amount": 0,
+      "correct_amount": 5000,
+      "verdict": "consequential",
+      "why": "Recalculate on the admissible amount.",
+      "clause_cited": "Co-payment"
+    }
+  ],
+  "notes": "Draft payable Rs 95,000 versus paid Rs 0. The facility record documents a registered standalone AYUSH hospital with seven inpatient beds, a registered AYUSH practitioner in charge around the clock, dedicated therapy facilities and daily patient records. Admission was for inpatient medical treatment with a documented plan, not a wellness or spa stay.",
+  "review_status": "draft_pending_independent_review"
+}
