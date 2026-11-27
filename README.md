@@ -212,7 +212,6 @@ The chat uses the same model setting as step 3 (`ClaimClear/.env`). Upload a cas
 ```bash
 # all smoke tests in one command (CI runs the same on every push); free
 .venv-agents/Scripts/python tests/run_smoke.py
-.venv-agents/Scripts/python tests/run_smoke.py --llm      # also one case through the LLM judge (servers up; ~$0.02)
 
 # UI judge evals: a bundle of cases through the chat's path, graded by an LLM judge (servers up)
 cd ui_chainlit
