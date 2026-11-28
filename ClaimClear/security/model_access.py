@@ -15,7 +15,7 @@ import os
 import urllib.error
 import urllib.request
 
-from .openrouter_guard import MODELS, OPENROUTER_URL, model_for
+from .openrouter_guard import MODELS, OPENROUTER_URL
 
 SET_KEY = ("Set an OpenRouter key that allows {model}: from the ClaimClear folder run "
            "`python start.py --set-openrouter-key` (or edit OPENROUTER_API_KEY in ClaimClear/.env), then restart.")
@@ -51,7 +51,7 @@ async def check(main_model: str, local: bool = False) -> dict:
 
     ``local``: the chat model is a local LLM (no OpenRouter key needed for it); the guard model is still checked."""
     main_problem = "" if local else await probe(main_model)
-    guard_problem = await probe(model_for("safeguard")) if os.environ.get("OPENROUTER_API_KEY") else "no OPENROUTER_API_KEY"
+    guard_problem = await probe(MODELS["safeguard"]) if os.environ.get("OPENROUTER_API_KEY") else "no OPENROUTER_API_KEY"
     return {"main_ok": not main_problem, "main_problem": main_problem,
             "guard_fallback": bool(guard_problem), "guard_problem": guard_problem}
 
@@ -62,5 +62,5 @@ def main_model_message(main_model: str, access: dict) -> str:
 
 
 def guard_message(main_model: str, access: dict) -> str:
-    return (f"_Security checks: the key doesn't allow `{model_for('safeguard')}` ({access['guard_problem'][:90]}), so "
+    return (f"_Security checks: the key doesn't allow `{MODELS['safeguard']}` ({access['guard_problem'][:90]}), so "
             f"they use `{main_model}` instead (a little costlier)._")

@@ -18,12 +18,6 @@ OPENROUTER_URL = "https://openrouter.ai/api/v1"
 MODELS = {"safeguard": "openai/gpt-oss-safeguard-20b", "llamaguard": "meta-llama/llama-guard-4-12b",
           "nemotron": "nvidia/nemotron-3.5-content-safety"}
 
-
-def model_for(key: str) -> str:
-    """The guard's model: ``CLAIMCLEAR_GUARD_MODEL_<KEY>`` (e.g. CLAIMCLEAR_GUARD_MODEL_SAFEGUARD) when set, else the
-    default above. The safeguard guard sends our written policy, so any instruction-following model can stand in."""
-    return os.environ.get(f"CLAIMCLEAR_GUARD_MODEL_{key.upper()}") or MODELS[key]
-
 SAFEGUARD_FORMAT = """
 
 Classify the content below against this policy. Answer with exactly one line:
@@ -42,7 +36,7 @@ class OpenRouterGuard(InputGuard):
 
     def __init__(self, key: str, max_chars: int = 8000):
         super().__init__()
-        self.name, self.model, self.max_chars = key, model_for(key), max_chars
+        self.name, self.model, self.max_chars = key, MODELS[key], max_chars
         self._chat = None
 
     def chat(self):

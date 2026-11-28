@@ -54,12 +54,6 @@ def make(services: Services) -> dict:
                 rule_clause[ref] = found["clauses"][0]
                 clauses.setdefault(found["clauses"][0]["clause_id"], found["clauses"][0])
 
-        if services.free_explainer is not None and attempt == 1:      # Signature 2 OFF (E4 ablation)
-            text = await services.free_explainer(letter_audit, list(rule_clause.values()))
-            return {"draft": {}, "explanation": text, "audit_table_markdown": "", "explainer_mode": "free",
-                    "clauses": clauses, "draft_attempt": attempt, "critic_stage": STAGE_DRAFT_READY,
-                    "route": "draft_ready", "trace": [f"Explainer: free-form (Signature 2 OFF), {len(text)} chars"]}
-
         sentences: list[ExplanationSentence] = []
         paid, payable = letter_audit.get("insurer_paid"), letter_audit.get("policy_payable")
         disputable, unverified = letter_audit.get("disputable_amount"), letter_audit.get("unverified_amount")

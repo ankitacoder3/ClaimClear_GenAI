@@ -1,4 +1,4 @@
-"""ClaimClear in one command: install, configure, start the servers, open the chat (UI2) in your browser.
+"""ClaimClear in one command: install, configure, start the servers, open the web UI in your browser.
 
     Windows (CMD):    start.bat
     macOS / Linux:    ./start.sh
@@ -6,11 +6,10 @@
 
 First run (a few minutes): creates the two Python environments, installs everything, tries to install
 Tesseract OCR, loads the development cases and builds the policy index. Later runs skip all of that and
-start in seconds. Then it starts the five MCP servers (ports 8101-8105) in the background and opens the chat
-(UI2, Chainlit: http://localhost, port 80) in your browser: upload documents, the review starts by itself, ask
-questions. Ctrl+C here stops everything. ``--ui1`` opens the earlier web UI (UI1, http://127.0.0.1:8000) instead
-(it then stops when its page is closed). ``--port N`` or ``CLAIMCLEAR_CHAT_PORT=N`` picks another port for the chat; when port 80 is taken or not allowed
-(Linux without root), the default falls back to 8001.
+start in seconds. Then it starts the five MCP servers (ports 8101-8105) in the background, starts the web UI
+(http://127.0.0.1:8000) and opens it in your browser. Upload documents, watch the agents work live, and ask
+questions in the chat. Everything keeps running until you close the ClaimClear page (or press its Close
+button, or Ctrl+C here); then the UI and the servers stop by themselves.
 
 The chat model: if a local LLM is running (Ollama, LM Studio or llama.cpp; start one with start_llm.bat or
 ./start_llm.sh), it is chosen by default, so medical records never leave this computer. Otherwise an OpenRouter
@@ -20,10 +19,7 @@ wording, and the sample cases and gen-data-style PDFs are read without a model.
 Privacy: uploaded documents, chats and dry-run filings are kept only while ClaimClear runs. They are deleted
 when the page closes (and at start-up, should a previous run have been killed). ``--keep-data`` keeps them.
 
-    python start.py --ui1             open UI1 (the earlier web UI) instead of the chat
-    python start.py --port 8001       the chat on another port (default 80; also CLAIMCLEAR_CHAT_PORT)
-    python start.py --setup-only      build the environments and data, then exit (used by the Docker image)
-    python start.py --console         the terminal console instead of a UI
+    python start.py --console         the terminal console instead of the web UI
     python start.py --no-browser      don't open the browser (open the printed address yourself)
     python start.py --auto SET-01     no questions asked: run one case, approve, exit (a self-check)
     python start.py --servers-only    just keep the servers running (Ctrl+C stops them)
@@ -286,99 +282,11 @@ def free_port(start: int = 8000) -> int:
     sys.exit("[start] no free port for the web UI between 8000 and 8049")
 
 
-UI_HOST = os.environ.get("CLAIMCLEAR_UI_HOST", "127.0.0.1")     # 0.0.0.0 inside Docker
-DEFAULT_CHAT_PORT, FALLBACK_CHAT_PORT = 80, 8001
-
-
-def chat_port(asked: "int | None") -> int:
-    """The chat's port: --port, else CLAIMCLEAR_CHAT_PORT, else 80; port 80 falls back to 8001 only when it was not
-    asked for and is taken or not allowed (Linux and macOS ports below 1024 need root on some systems)."""
-    if asked:
-        return asked
-    if os.environ.get("CLAIMCLEAR_CHAT_PORT"):
-        return int(os.environ["CLAIMCLEAR_CHAT_PORT"])
-    no_root = sys.platform.startswith("linux") and hasattr(os, "geteuid") and os.geteuid() != 0
-    if port_open(DEFAULT_CHAT_PORT) or no_root:
-        say(f"port {DEFAULT_CHAT_PORT} is {'in use' if port_open(DEFAULT_CHAT_PORT) else 'not allowed without root'}: "
-            f"the chat uses {FALLBACK_CHAT_PORT}")
-        return FALLBACK_CHAT_PORT
-    return DEFAULT_CHAT_PORT
-
-
-MONITORING = REPO / "deploy" / "monitoring"
-
-
-def start_monitoring(env: dict) -> list:
-    """Docker image only (CLAIMCLEAR_MONITORING=1): Prometheus, Grafana and nginx next to the chat. nginx is the one
-    public port (8000): the chat at /, Grafana at /grafana/, Prometheus at /prometheus/. Grafana is read-only for
-    visitors; its admin password is GRAFANA_ADMIN_PASSWORD (a Space secret), else a random one."""
-    if os.environ.get("CLAIMCLEAR_MONITORING") != "1" or not all(shutil.which(b) for b in ("prometheus", "grafana", "nginx")):
-        return []
-    import secrets
-    data = REPO / "var"
-    (data / "prometheus").mkdir(parents=True, exist_ok=True)
-    (data / "grafana" / "logs").mkdir(parents=True, exist_ok=True)
-    grafana_env = {**env,
-                   "GF_SERVER_HTTP_ADDR": "127.0.0.1", "GF_SERVER_HTTP_PORT": "3000",
-                   "GF_SERVER_ROOT_URL": "%(protocol)s://%(domain)s/grafana/", "GF_SERVER_SERVE_FROM_SUB_PATH": "true",
-                   "GF_PATHS_DATA": str(data / "grafana"), "GF_PATHS_LOGS": str(data / "grafana" / "logs"),
-                   "GF_PATHS_PLUGINS": str(data / "grafana" / "plugins"),
-                   "GF_PATHS_PROVISIONING": str(MONITORING / "grafana" / "provisioning"),
-                   "GF_AUTH_ANONYMOUS_ENABLED": "true", "GF_AUTH_ANONYMOUS_ORG_ROLE": "Viewer",
-                   "GF_USERS_ALLOW_SIGN_UP": "false", "GF_ANALYTICS_REPORTING_ENABLED": "false",
-                   "GF_ANALYTICS_CHECK_FOR_UPDATES": "false", "GF_SECURITY_DISABLE_GRAVATAR": "true",
-                   "GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH": str(MONITORING / "grafana" / "dashboards" / "claimclear.json"),
-                   "GF_SECURITY_ADMIN_PASSWORD": os.environ.get("GRAFANA_ADMIN_PASSWORD") or secrets.token_urlsafe(16)}
-    quiet = {"stdout": subprocess.DEVNULL, "stderr": subprocess.DEVNULL}
-    procs = [subprocess.Popen(["prometheus", f"--config.file={MONITORING / 'prometheus.yml'}",
-                               f"--storage.tsdb.path={data / 'prometheus'}", "--storage.tsdb.retention.time=7d",
-                               "--web.listen-address=127.0.0.1:9090", "--web.external-url=/prometheus/",
-                               "--web.route-prefix=/prometheus"], cwd=MONITORING, **quiet),
-             subprocess.Popen(["grafana", "server", "--homepath", os.environ.get("GRAFANA_HOME", "/opt/grafana")],
-                              env=grafana_env, **quiet),
-             subprocess.Popen(["nginx", "-e", "/dev/stderr", "-c", str(MONITORING / "nginx.conf"), "-g", "daemon off;"])]
-    say("monitoring: Prometheus at /prometheus/, Grafana at /grafana/ (read-only), behind nginx on port 8000")
-    return procs
-
-
-def run_chat(agents_py: Path, env: dict, open_browser: bool, port: int) -> int:
-    """UI2, the Chainlit chat (the default): runs until Ctrl+C."""
-    if port_open(port):
-        sys.exit(f"[start] port {port} is in use (another chat running?); choose one with --port")
-    url = "http://localhost/" if port == 80 else f"http://localhost:{port}/"
-    chat = subprocess.Popen([str(agents_py), "-m", "chainlit", "run", "app.py", "--host", UI_HOST,
-                             "--port", str(port), "-h"], cwd=REPO / "ui_chainlit", env=env)
-    try:
-        for _ in range(240):                         # first start compiles the UI: give it up to two minutes
-            if chat.poll() is not None or port_open(port):
-                break
-            time.sleep(0.5)
-        if chat.poll() is None:
-            say(f"ClaimClear is ready at {url} (the chat). Press Ctrl+C here to stop everything.")
-            if open_browser:
-                import webbrowser
-                try:
-                    webbrowser.open(url)
-                except Exception:
-                    pass
-        return chat.wait()
-    except KeyboardInterrupt:
-        return 0
-    finally:
-        if chat.poll() is None:
-            chat.terminate()
-            try:
-                chat.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                chat.kill()
-
-
 def run_web(agents_py: Path, env: dict, open_browser: bool) -> int:
     """Start the web UI and wait until the user closes the page (the UI then exits by itself)."""
     port = free_port()
     url = f"http://127.0.0.1:{port}/"
-    web = subprocess.Popen([str(agents_py), "-m", "claimclear_graph.webapp", "--host", UI_HOST, "--port", str(port)],
-                           cwd=REPO, env=env,
+    web = subprocess.Popen([str(agents_py), "-m", "claimclear_graph.webapp", "--port", str(port)], cwd=REPO, env=env,
                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace")
     try:
         for line in web.stdout:
@@ -412,10 +320,6 @@ def main() -> int:
     ap.add_argument("--auto", metavar="CASE", help="run one case without prompts (approve at the gate) and exit")
     ap.add_argument("--servers-only", action="store_true", help="start the servers and keep them running")
     ap.add_argument("--console", action="store_true", help="the terminal console instead of the web UI")
-    ap.add_argument("--ui1", action="store_true", help="open UI1 (the earlier web UI) instead of the chat (UI2)")
-    ap.add_argument("--port", type=int, help="the chat's port (default 80, else CLAIMCLEAR_CHAT_PORT; falls back to "
-                                             "8001 when 80 is taken)")
-    ap.add_argument("--setup-only", action="store_true", help="build the environments and data, then exit")
     ap.add_argument("--no-browser", action="store_true", help="don't open the browser automatically")
     ap.add_argument("--keep-data", action="store_true",
                     help="keep uploaded documents, chats and filings after closing (default: deleted)")
@@ -447,14 +351,11 @@ def main() -> int:
     server_py = ensure_env(".venv", "the servers",
                            [["-r", "requirements-servers.txt"], [x for p in SERVER_PACKAGES for x in ("-e", p)]],
                            ["requirements-servers.txt", *[f"{p}/pyproject.toml" for p in SERVER_PACKAGES]], args.reinstall)
-    agents_py = ensure_env(".venv-agents", "the agents", [["-r", "requirements-agents.txt"], ["-r", "requirements-ui.txt"]],
-                           ["requirements-agents.txt", "requirements-ui.txt", "agents/toolkit/pyproject.toml",
+    agents_py = ensure_env(".venv-agents", "the agents", [["-r", "requirements-agents.txt"]],
+                           ["requirements-agents.txt", "agents/toolkit/pyproject.toml",
                             "agents/orchestration/pyproject.toml"], args.reinstall)
     ensure_tesseract()
     ensure_data(server_py)
-    if args.setup_only:
-        say("setup done (environments and data); start ClaimClear with: python start.py")
-        return 0
     keep = args.keep_data or os.environ.get("CLAIMCLEAR_KEEP_DATA") == "1"
     if not keep:
         purge_user_data(server_py)                  # leftovers of a run that was killed
@@ -462,7 +363,6 @@ def main() -> int:
     env = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1", "CLAIMCLEAR_MCP_MODE": "http",
            "CLAIMCLEAR_SERVER_PYTHON": str(server_py), "CLAIMCLEAR_REPO": str(REPO)}
     servers = start_servers(server_py, env)
-    monitoring = start_monitoring(env)
     try:
         if args.servers_only:
             say("servers are running. Press Ctrl+C to stop them.")
@@ -472,8 +372,7 @@ def main() -> int:
         if args.console or args.auto:
             cmd = [str(agents_py), str(REPO / "agents" / "orchestration" / "examples" / "console.py")]
             return subprocess.call(cmd + (["--auto", args.auto] if args.auto else []), cwd=REPO, env=env)
-        code = (run_web(agents_py, env, open_browser=not args.no_browser) if args.ui1 else
-                run_chat(agents_py, env, open_browser=not args.no_browser, port=chat_port(args.port)))
+        code = run_web(agents_py, env, open_browser=not args.no_browser)
         if not keep:
             purge_user_data(server_py)
             say("your uploaded documents, chats and filings were deleted (use --keep-data to keep them)")
@@ -481,9 +380,6 @@ def main() -> int:
     except KeyboardInterrupt:
         return 0
     finally:
-        for proc in monitoring:
-            if proc.poll() is None:
-                proc.terminate()
         if servers is not None and servers.poll() is None:
             servers.terminate()                     # dev_servers.py stops its five children on exit
             try:

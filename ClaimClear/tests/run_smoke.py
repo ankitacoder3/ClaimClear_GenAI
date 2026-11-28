@@ -1,6 +1,7 @@
 """Run all smoke tests with one command (CI runs the same). From the ClaimClear folder:
 
     .venv-agents/Scripts/python tests/run_smoke.py          # free: build, eval tracking, the chat UI's quick tests
+    .venv-agents/Scripts/python tests/run_smoke.py --llm    # also one case through the LLM judge (servers up; ~$0.02)
 
 (bin/python on macOS / Linux.)
 """
@@ -18,6 +19,8 @@ SUITES = [("smoke tests", ROOT, "tests/smoke"), ("security", ROOT, "security/tes
 
 def main() -> int:
     env = dict(os.environ)
+    if "--llm" in sys.argv[1:]:
+        env["CLAIMCLEAR_LLM_SMOKE"] = "1"
     failed = []
     for name, cwd, path in SUITES:
         print(f"\n== {name}", flush=True)

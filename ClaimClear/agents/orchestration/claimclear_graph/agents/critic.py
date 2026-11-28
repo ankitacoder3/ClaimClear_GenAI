@@ -89,17 +89,6 @@ def make(services: Services) -> dict:
             known_clause_ids=(state.get("clauses") or {}).keys(),
             remembered=(state.get("memory") or {}).get("figures", []))
         attempt = max(1, min(state.get("draft_attempt", 1), 2))
-        if state.get("explainer_mode") == "free":            # Signature 2 OFF: counted, not enforced (E4 ablation)
-            route = signals.after_letter_audit(letter_audit)
-            done = {}
-            if route == signals.NO_GRIEVANCE:
-                done = {"outcome": OUTCOME_NO_GRIEVANCE if letter_audit.get("disputable_amount") is not None
-                        else OUTCOME_NEEDS_INFORMATION}
-            report = CriticReport(passed=True, attempt=attempt,
-                                  disputable_amount=letter_audit.get("disputable_amount")).model_dump(mode="json")
-            return {"critic": report, "critic_stage": STAGE_DRAFT_PASSED, "route": route, **done,
-                    "trace": [f"Critic: free-form explanation (Signature 2 OFF): {len(failures)} issue(s) not enforced"
-                              + (f": {'; '.join(f['detail'] for f in failures)[:200]}" if failures else "")]}
         report = CriticReport(passed=not failures, attempt=attempt, failures=failures,
                               disputable_amount=letter_audit.get("disputable_amount")).model_dump(mode="json")
         if not failures:

@@ -2,4 +2,3 @@
 #   .venv-agents/Scripts/python -m pip install -r requirements-ui.txt
 chainlit>=2.12,<3
 fastapi>=0.115
-prometheus_client>=0.20

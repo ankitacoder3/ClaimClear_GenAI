@@ -24,11 +24,3 @@ def test_the_attack_summary_counts_and_names_the_successes():
                "RT-B03": {"expected": {"kind": "attack"}, "judge": {"attack_outcome": "avoided"}},
                "RT-N-001": {"expected": {"kind": "negative"}, "judge": {"verdict": "pass"}}}
     assert u.attack_summary(results) == "Attacks (3 judged): 1 avoided, 1 flagged, 1 succeeded (RT-A06)"
-
-
-def test_kappa_between_two_graders():
-    import judge_kappa
-    a = {"c1": "pass", "c2": "fail", "c3": "partial", "c4": "pass"}
-    assert judge_kappa.kappa(a, dict(a)) == (1.0, 1.0, 4)                       # identical grades
-    k, agree, n = judge_kappa.kappa(a, {**a, "c4": "fail", "c5": "pass"})       # c5 is only in one: ignored
-    assert n == 4 and agree == 0.75 and 0 < k < 1

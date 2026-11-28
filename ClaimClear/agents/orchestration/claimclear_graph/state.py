@@ -60,7 +60,6 @@ class GraphState(CaseState, total=False):
     draft_attempt: int                           # 1 = full explanation, 2 = plain verdict table (fallback)
     # ---- user-facing text ----------------------------------------------------------------
     explanation: str                             # the plain-language explanation (draft sentences joined)
-    explainer_mode: str                          # "free" for the Signature 2 OFF ablation; else fact-bound
     audit_table_markdown: str                    # one row per letter row: insurer vs policy amount, verdict, clause
     # ---- approval gate and filing --------------------------------------------------------
     approval_token: Optional[str]                # issued by the gate for grievance.text_sha256
