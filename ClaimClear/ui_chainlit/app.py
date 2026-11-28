@@ -21,6 +21,7 @@ End to end with the servers and the model:        CLAIMCLEAR_LIVE=1 ../.venv-age
 """
 from __future__ import annotations
 
+import contextlib
 import functools
 import json
 import logging
@@ -39,7 +40,7 @@ from claimclear_graph.extraction import llm_extractor
 from claimclear_graph.gateway import HumanApprovalGateway, issue_token, text_sha256
 from claimclear_graph.graph import build_claimclear_graph, initial_state
 from claimclear_graph.services import Services
-from claimclear_graph.webapp.server import REPO, SAMPLES, upload_case
+from claimclear_graph.webapp.server import REPO, SAMPLES
 from claimclear_tools import ClaimClearToolError, ClaimClearToolkit
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))     # ClaimClear/security
@@ -96,6 +97,17 @@ def logged(handler):
             await cl.Message(content=f"Something went wrong ({type(exc).__name__}: {str(exc)[:200]}). "
                                      f"The details are in {LOG_PATH.name}.").send()
     return run
+
+
+@contextlib.asynccontextmanager
+async def busy():
+    """The chat's busy flag for work started by a button: Chainlit sets it only for typed messages, and an
+    approval prompt turns it back on after the click, so without this the send button stays a stop square."""
+    await cl.context.emitter.task_start()
+    try:
+        yield
+    finally:
+        await cl.context.emitter.task_end()
 
 
 def load_dotenv() -> None:
@@ -179,14 +191,14 @@ async def start() -> None:
 @cl.action_callback("sample")
 @logged
 async def on_sample(action: cl.Action) -> None:
+    """A sample is an upload: its files appear as your message, then the same steps as the 📎."""
     folder = SAMPLE_DIR / action.payload["name"]
     log("sample", name=action.payload["name"])
-    await cl.Message(content=f"Running the sample: **{action.label}**").send()
-    result = await upload_case([(p, "") for p in sorted(folder.iterdir()) if p.is_file()])
-    if result.get("case_id"):                                  # questions in this chat now go to the sample's case
-        meta = cl.user_session.get("chat")
-        meta["case_id"] = meta["review_case"] = result["case_id"]
-    await run_case(result)
+    paths = [p for p in sorted(folder.iterdir()) if p.is_file()]
+    await cl.Message(content="", author="User", type="user_message",
+                     elements=[cl.File(name=p.name, path=str(p), display="inline") for p in paths]).send()
+    async with busy():
+        await handle([(p, p.name) for p in paths], "")
 
 
 # --------------------------------------------------------------------------- messages: files and questions
@@ -199,10 +211,14 @@ async def on_message(msg: cl.Message) -> None:
         from security import model_access
         await cl.Message(content=model_access.main_model_message(getattr(APP["llm"], "model_name", ""), access)).send()
         return
-    files = [(Path(e.path), e.name) for e in (msg.elements or []) if getattr(e, "path", None)]
+    await handle([(Path(e.path), e.name) for e in (msg.elements or []) if getattr(e, "path", None)], msg.content)
+
+
+async def handle(files: list[tuple[Path, str]], text: str) -> None:
+    """Uploaded files, then the question (or, with files alone, what was uploaded and what is still needed)."""
     if files:
         await take_uploads(files)
-    question = msg.content.strip() or ("What have I uploaded, and what else do you need?" if files else "")
+    question = text.strip() or ("What have I uploaded, and what else do you need?" if files else "")
     if question:
         await ask(question)
 
@@ -377,19 +393,6 @@ async def records(case_id: str, case: dict):
 
 # --------------------------------------------------------------------------- showing the review
 
-async def run_case(result: dict) -> None:
-    if not result or result.get("error"):
-        await cl.Message(content=f"I couldn't take those documents: {result.get('error') if result else 'no reply'}").send()
-        return
-    docs = ", ".join(f"{d.get('name')} ({d.get('role')})" for d in result.get("documents", []))
-    await cl.Message(content=f"Case for policy **{result.get('policy_no')}**: {docs}").send()
-    cl.user_session.set("thread_id", f"cl-{uuid.uuid4().hex[:12]}")
-    cl.user_session.set("shown", False)
-    cl.user_session.set("outcome", None)
-    ex = result.get("extraction") or {}
-    await advance(initial_state(result["case_id"], claim=ex.get("claim"), letter=ex.get("letter")))
-
-
 async def advance(inp) -> None:
     """Run the graph until it ends or pauses; show each agent's step as it finishes."""
     app, flags = await ready(), (cl.user_session.get("chat") or {}).get("security_flags") or []
@@ -447,15 +450,20 @@ async def report() -> None:
             content=f"### Grievance draft\nNothing is sent without your approval. _The review is paused until you "
                     f"choose below._\n\n```\n{g.get('text', '')}\n```",
             actions=[cl.Action(name="approve", payload={"d": "approve"}, label="Approve and file"),
-                     cl.Action(name="reject", payload={"d": "reject"}, label="Don't file")],
+                     cl.Action(name="reject", payload={"d": "reject"}, label="Don't file"),
+                     cl.Action(name="later", payload={"d": "later"}, label="Decide later")],
             timeout=900).send()
-        if res and res.get("payload", {}).get("d") == "approve":
-            decision = {"decision": "approve", "approval_token": issue_token(text_sha256(g.get("text", "")),
-                                                                            gate.gate_secret)}
-        else:
-            decision = {"decision": "reject", "reason": "declined in the chat" if res else "no answer in time"}
-        log("review_decision", decision=decision["decision"], reason=decision.get("reason"))
-        await advance(Command(resume=decision))
+        choice = (res or {}).get("payload", {}).get("d") or "timeout"
+        if choice == "later":                                  # the review stays paused at the gate
+            log("review_decision", decision="later")
+            tid = cl.user_session.get("thread_id")
+            buttons = [cl.Action(name="grievance", payload={"d": d, "thread": tid}, label=label)
+                       for d, label in (("approve", "Approve and file"), ("reject", "Don't file"))]
+            cl.user_session.set("grievance_buttons", buttons)
+            await cl.Message(content="Nothing is filed. The draft above waits for you: ask me anything meanwhile, "
+                                     "and choose here when you're ready.", actions=buttons).send()
+            return
+        await decide(choice, g.get("text", ""))
         return
 
     if st.get("outcome") and cl.user_session.get("outcome") != st["outcome"]:
@@ -464,3 +472,30 @@ async def report() -> None:
         sub = st.get("submission") or {}
         extra = f" Reference: {sub.get('reference')}." if sub.get("reference") else ""
         await cl.Message(content=f"**Outcome:** {st['outcome'].replace('_', ' ')}.{extra}").send()
+
+
+async def decide(choice: str, draft: str) -> None:
+    """Resume the paused review with the user's choice; approval carries a token for this exact draft."""
+    gate = (await ready())["gate"]
+    if choice == "approve":
+        decision = {"decision": "approve", "approval_token": issue_token(text_sha256(draft), gate.gate_secret)}
+    else:
+        decision = {"decision": "reject", "reason": "declined in the chat" if choice == "reject" else "no answer in time"}
+    log("review_decision", decision=decision["decision"], reason=decision.get("reason"))
+    await advance(Command(resume=decision))
+
+
+@cl.action_callback("grievance")
+@logged
+async def on_grievance(action: cl.Action) -> None:
+    """The choice made later, from the buttons under "Nothing is filed"."""
+    app = await ready()
+    for b in cl.user_session.get("grievance_buttons") or []:
+        await b.remove()
+    cl.user_session.set("grievance_buttons", None)
+    if action.payload.get("thread") != cl.user_session.get("thread_id") or not await app["gate"].is_paused_for_approval(cfg()):
+        await cl.Message(content="That draft is no longer waiting for a decision.").send()
+        return
+    draft = ((await app["graph"].aget_state(cfg())).values.get("grievance") or {}).get("text", "")
+    async with busy():
+        await decide(action.payload["d"], draft)
