@@ -45,9 +45,9 @@ The following checklist outlines the pre-evaluation handover requirements, assig
 |---|---|---|---|---|
 | 1 | **E1 – Architecture (C0/C1/C2)** | TM3 | Architecture configurations and CLI/switch to select C0, C1, or C2 | ☐ |
 | 2 | **E2 – Defences (ON/OFF)** | TM4 | Defence ON/OFF switch and corresponding handover documentation | ☐1 |
-| 3 | **E3 – Playbook (Before/After)** | TM4 (TM3) | Before/After playbook configuration and corresponding switch | ☐ |
+| 3 | **E3 – Playbook (Before/After)** | TM4 (TM3) | Before/After playbook configuration and corresponding switch | ☐1 |
 | 4 | **E4 – Signature 1 Ablation (ON/OFF)** | TM2 | Signature 1 ON/OFF switch and corresponding handover documentation | ☐1 |
-| 5 | **E4 – Signature 2 Ablation (ON/OFF)** | TM4 | Signature 2 ON/OFF switch and corresponding handover documentation | ☐ |
+| 5 | **E4 – Signature 2 Ablation (ON/OFF)** | TM4 | Signature 2 ON/OFF switch and corresponding handover documentation | ☐1 |
 | 6 | **Evaluation Harness** | TM1 | Evaluation harness setup, execution instructions, and required configuration details | ☐ |
 
 **Completion criteria:**
