@@ -1,5 +1,5 @@
 @echo off
-rem ClaimClear in one command (Windows CMD): installs on first run, starts the servers, opens the web UI.
+rem ClaimClear in one command (Windows CMD): installs on first run, starts the servers, opens the chat (UI2).
 setlocal
 cd /d "%~dp0"
 chcp 65001 >nul
