@@ -47,6 +47,7 @@ import security  # noqa: E402
 from security import consistency_check  # noqa: E402
 
 import findings
+import metrics
 import store_docs
 from case_status import documents_block, review_readiness
 from identify import identify_documents
@@ -69,6 +70,9 @@ def setup_log() -> None:
         parent.setLevel(logging.INFO)
 
 
+metrics.start()                                       # /metrics for Prometheus (Docker image only)
+
+
 def log(event: str, **details) -> None:
     """One line: the chat's session (first 8 characters), the event, and its details as JSON."""
     try:
@@ -76,6 +80,7 @@ def log(event: str, **details) -> None:
     except Exception:
         session = "-"
     LOG.info("%s %s %s", session, event, json.dumps(details, ensure_ascii=False, default=str)[:3000])
+    metrics.observe(event, details)
 
 
 def logged(handler):
@@ -85,6 +90,7 @@ def logged(handler):
         try:
             return await handler(*args, **kwargs)
         except Exception as exc:
+            metrics.observe("handler_error", {})
             LOG.exception("%s error in %s", getattr(getattr(cl.context, "session", None), "id", "-")[:8],
                           handler.__name__)
             await cl.Message(content=f"Something went wrong ({type(exc).__name__}: {str(exc)[:200]}). "
@@ -102,6 +108,16 @@ def load_dotenv() -> None:
                 os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
 
 
+def extraction_model(llm):
+    """The model that reads uploaded documents: ``CLAIMCLEAR_EXTRACTION_MODEL`` on OpenRouter when set, else the chat
+    model itself."""
+    name = os.environ.get("CLAIMCLEAR_EXTRACTION_MODEL")
+    if not name or llm is None or not os.environ.get("OPENROUTER_API_KEY"):
+        return llm
+    from langchain_openai import ChatOpenAI
+    return ChatOpenAI(model=name, api_key=os.environ["OPENROUTER_API_KEY"], base_url=chat.OPENROUTER_URL, temperature=0)
+
+
 async def ready() -> dict:
     if not APP:
         load_dotenv()
@@ -109,7 +125,11 @@ async def ready() -> dict:
         cm = ClaimClearToolkit()
         tk = await cm.__aenter__()          # kept open for the life of the process
         llm = chat.chat_model_from_env()
-        graph = build_claimclear_graph(Services(toolkit=tk, extractor=llm_extractor(llm) if llm else None),
+        from claimclear_graph import free_explainer                # Signature 2 OFF only with CLAIMCLEAR_EXPLAINER=free
+        free = free_explainer.llm_free_explainer(llm) if llm and free_explainer.mode() == "free" else None
+        reader = extraction_model(llm)                              # CLAIMCLEAR_EXTRACTION_MODEL, else the chat model
+        graph = build_claimclear_graph(Services(toolkit=tk, extractor=llm_extractor(reader) if reader else None,
+                                                free_explainer=free),
                                        checkpointer=MemorySaver())
         APP.update(cm=cm, toolkit=tk, llm=llm, graph=graph, gate=HumanApprovalGateway(graph), access=None)
         if llm is not None:                                   # which models the key may use (one tiny call each)

@@ -14,10 +14,10 @@
 | **Experiment** | **Team Member** |
 |---|---|
 | **E1 – Architecture (C0/C1/C2)** | TM3 |
-| **E2 – Defences (ON/OFF)** | TM4 · [defences on/off](../member4_ui_security_deployment/2026-11-24_E2_security_on_off.md) |
-| **E3 – Playbook (Before/After)** | To be decided in the team chat (TM4)|
-| **E4 – Signature 1 Ablation** | TM2 |
-| ~~**E4 – Signature 2 Ablation**~~ | ~~TM4~~ The course guide lists one E4 ablation (Signature 1, above) [TM1 Comments-> You sure?] |
+| **E2 – Defences (ON/OFF)** | TM4 · [defences on/off](./handover_minimal_doc/2026-11-24_E2_security_on_off.md) |
+| **E3 – Playbook (Before/After)** | TM4 · [playbook before/after](./handover_minimal_doc/E3_playbook_TM4.md) |
+| **E4 – Signature 1 Ablation** | TM2 · [signature 1 on/off](./handover_minimal_doc/E4_signature1_ablation.md) |
+| **E4 – Signature 2 Ablation** | TM4 · [signature 2 on/off](./handover_minimal_doc/E4_signature2_TM4.md) |
 
 |   Evaluation Harness  | TM1 |
 
@@ -34,3 +34,27 @@
 *[As the handover was originally expected by your respective Deadline #2, which was 24-11-2026 for everyone (except TM4, whose Deadline #2 is 25-11-2026), after which evaluation was to begin.]*
 
 **Hard deadline (all): Thursday (Deadline #2) [26-11-26].**
+
+---
+
+## Pre-Evaluation Handover Checklist
+
+The following checklist outlines the pre-evaluation handover requirements, assigned team members, and completion status for each experiment component and the evaluation harness.
+
+| No. | Experiment / Component | Responsible Team Member | Handover Requirement | Status |
+|---|---|---|---|---|
+| 1 | **E1 – Architecture (C0/C1/C2)** | TM3 | Architecture configurations and CLI/switch to select C0, C1, or C2 | ☐ |
+| 2 | **E2 – Defences (ON/OFF)** | TM4 | Defence ON/OFF switch and corresponding handover documentation | ☐1 |
+| 3 | **E3 – Playbook (Before/After)** | TM4 (TM3) | Before/After playbook configuration and corresponding switch | ☐ |
+| 4 | **E4 – Signature 1 Ablation (ON/OFF)** | TM2 | Signature 1 ON/OFF switch and corresponding handover documentation | ☐1 |
+| 5 | **E4 – Signature 2 Ablation (ON/OFF)** | TM4 | Signature 2 ON/OFF switch and corresponding handover documentation | ☐ |
+| 6 | **Evaluation Harness** | TM1 | Evaluation harness setup, execution instructions, and required configuration details | ☐ |
+
+**Completion criteria:**
+- [-1 ] Required code is placed under `./handover_code/`.
+- [ ] Minimal handover documentation is placed under `./handover_minimal_doc/`.
+- [ ] Each experiment can be configured or varied using a CLI command, switch, or GUI control.
+- [ ] Each handover includes sufficient instructions to run the relevant experiment independently.
+- [ ] All handovers are verified before evaluation begins.
+
+----

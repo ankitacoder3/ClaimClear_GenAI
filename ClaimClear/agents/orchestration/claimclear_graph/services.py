@@ -106,6 +106,9 @@ class Services:
       initial state (the app's upload step or a labelled development stand-in). Only visible text may reach a model.
     * ``rewriter`` / ``language``: ``async (text, language) -> text`` rewriting the explanation into plain language
       or another language (``language.llm_rewriter``); the critic checks the rewritten text.
+    * ``free_explainer``: Signature 2 OFF (E4 ablation, ``free_explainer.py``): ``async (letter_audit, clauses) ->
+      text`` writes the explanation in one model call, with no sentence links; the critic then does not enforce its
+      figure checks. ``None`` (the default) keeps the fact-bound explainer (Signature 2 ON).
     * ``max_revisions``: critic failures allowed before the graph falls back (loop guard): the 1st
       audit failure retries the auditor, the 2nd replans, the 3rd stops the loop.
     * ``retry_attempts`` / ``retry_backoff``: retries for retryable tool errors (seconds, doubled each time).
@@ -116,6 +119,7 @@ class Services:
     extractor: Optional[Callable[..., Awaitable[dict]]] = None
     rewriter: Optional[Callable[[str, str], Awaitable[str]]] = None
     language: str = "en"
+    free_explainer: Optional[Callable[[dict, list], Awaitable[str]]] = None
     max_revisions: int = 3
     retry_attempts: int = 2
     retry_backoff: float = 0.5
