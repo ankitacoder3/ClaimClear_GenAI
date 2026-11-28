@@ -14,7 +14,7 @@ No person is present, so: the engine's questions are left **unanswered** (the gr
 it can, as C0 does), and a grievance waiting at the approval gate is **rejected** (nothing is filed).
 
 **LLM extraction** (``--llm-extract``): the claim and the letter are *not* handed to the graph; the document
-reader extracts them from the documents with an LLM (``claimclear_graph.extraction.llm_extractor``), and each
+reader extracts them from the documents with an LLM (``claimclear_graph.checked_extraction``), and each
 extraction is compared with the stand-in's (bill total, line count, letter rows and their amounts, paid amount).
 Needs the app's model: a local LLM (``CLAIMCLEAR_LLM_BASE_URL``) or ``OPENROUTER_API_KEY``; the model can be
 overridden with ``$CLAIMCLEAR_EXTRACTION_MODEL``. Results go to
@@ -164,8 +164,8 @@ async def main(argv=None) -> int:
     args = p.parse_args(argv)
     extractor = None
     if args.llm_extract:
-        from claimclear_graph.extraction import llm_extractor
-        extractor = llm_extractor(llm_from_env())
+        from claimclear_graph.checked_extraction import make_extractor   # CLAIMCLEAR_READER=classic: the original
+        extractor = make_extractor(llm_from_env())
     c0 = c0_module()
     c0.WORK.mkdir(parents=True, exist_ok=True)
     mapping, extracted = c0.prepare()

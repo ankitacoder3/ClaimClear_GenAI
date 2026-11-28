@@ -35,7 +35,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.types import Command
 
 from claimclear_graph import chat
-from claimclear_graph.extraction import llm_extractor
+from claimclear_graph.checked_extraction import make_extractor   # the checked reader (CLAIMCLEAR_READER=classic: the original)
 from claimclear_graph.gateway import HumanApprovalGateway, issue_token, text_sha256
 from claimclear_graph.graph import build_claimclear_graph, initial_state
 from claimclear_graph.services import Services
@@ -128,7 +128,7 @@ async def ready() -> dict:
         from claimclear_graph import free_explainer                # Signature 2 OFF only with CLAIMCLEAR_EXPLAINER=free
         free = free_explainer.llm_free_explainer(llm) if llm and free_explainer.mode() == "free" else None
         reader = extraction_model(llm)                              # CLAIMCLEAR_EXTRACTION_MODEL, else the chat model
-        graph = build_claimclear_graph(Services(toolkit=tk, extractor=llm_extractor(reader) if reader else None,
+        graph = build_claimclear_graph(Services(toolkit=tk, extractor=make_extractor(reader),
                                                 free_explainer=free),
                                        checkpointer=MemorySaver())
         APP.update(cm=cm, toolkit=tk, llm=llm, graph=graph, gate=HumanApprovalGateway(graph), access=None)

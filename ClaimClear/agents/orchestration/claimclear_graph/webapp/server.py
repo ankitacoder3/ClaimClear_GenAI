@@ -60,7 +60,7 @@ from starlette.websockets import WebSocket, WebSocketDisconnect
 from claimclear_memory import MemoryStore
 
 from .. import chat, episodic
-from ..extraction import llm_extractor
+from ..checked_extraction import make_extractor   # the checked reader (CLAIMCLEAR_READER=classic: the original)
 from ..gateway import HumanApprovalGateway, issue_token, text_sha256
 from ..graph import build_claimclear_graph, initial_state
 from ..services import Services
@@ -142,7 +142,7 @@ def write_env(values: dict[str, str], remove: tuple = ()) -> None:
 
 def make_graph(st) -> None:
     """(Re)build the graph and the gate from the app state: toolkit, model, checkpointer, memory."""
-    st.graph = build_claimclear_graph(Services(toolkit=st.toolkit, extractor=llm_extractor(st.llm) if st.llm else None,
+    st.graph = build_claimclear_graph(Services(toolkit=st.toolkit, extractor=make_extractor(st.llm),
                                                memory_store=st.memory_store), checkpointer=st.saver)
     st.gate = HumanApprovalGateway(st.graph)
 
